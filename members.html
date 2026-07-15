@@ -25,11 +25,16 @@
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)};overflow:hidden;background-size:cover;background-position:center;flex:none
   .navr{display:flex;align-items:center;gap:14px;font-size:14px}
   .navr .who{color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
+  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:3px;cursor:pointer;background:#fff;user-select:none}
+  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .25s ease}
+  .lang-slider .knob.right{transform:translateX(28px)}
+  .lang-slider .lbl{font-size:11px;font-weight:600;color:var(--text2);padding:0 7px;font-family:var(--body)}
+  .lang-slider .lbl.on{color:var(--red)}
 
   main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:36px 24px 64px}
   .state{display:none}
@@ -45,7 +50,7 @@
   .sub{color:var(--text2);margin-bottom:24px;font-size:15px}
   .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:14px;cursor:pointer;font-family:var(--body)}
   .pcard:hover{border-color:var(--red)}
-  .pcard .ico{flex:none;width:52px;height:52px;border-radius:10px;background:var(--red-soft);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:24px}
+  .pcard .ico{flex:none;width:52px;height:52px;border-radius:10px;background:var(--red-soft);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:24px;min-width:52px}
   .pcard h3{font-size:17px;margin-bottom:3px;font-family:var(--head)}
   .pcard p{font-size:13.5px;color:var(--text2)}
   .pcard .kind{margin-left:auto;flex:none;font-size:12px;font-weight:600;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:999px;padding:3px 10px}
@@ -68,9 +73,9 @@
 <body>
 <header>
   <div class="nav">
-    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
+    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <div class="navr">
-      <button id="langBtn" type="button"></button>
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
       <span class="who" id="who"></span>
       <button id="outBtn" style="display:none" type="button">Выйти</button>
     </div>
@@ -95,11 +100,11 @@
   </div>
 
   <div class="state" id="stateList">
-    <div class="banner">✓ С возвращением! Всё, что вы купили, — ниже.</div>
+    <div class="banner">С возвращением! Всё, что вы купили, — ниже.</div>
     <h1 class="page">Мои покупки</h1>
     <p class="sub">Нажмите на материал, чтобы открыть его.</p>
     <div id="list"></div>
-    <p class="note">Пожалуйста, не передавайте аккаунт другим — каждая покупка помогает делать новые материалы. 🙏</p>
+    <p class="note">Пожалуйста, не передавайте аккаунт другим — каждая покупка помогает делать новые материалы. </p>
   </div>
 
   <div class="state" id="stateDetail">
@@ -122,7 +127,7 @@
 
 <script src="catalog.js"></script>
 <script>
-var TYPE_ICON = { webinar: "\ud83d\udcfa", seminar: "\ud83c\udfab", course: "\ud83c\udf93" }
+var TYPE_ICON = { webinar: "", seminar: "", course: "" }
 var M = { products: [], content: {}, owned: [] }
 
 function showState(id) {
@@ -138,7 +143,7 @@ function renderList() {
 		var b = document.createElement("button")
 		b.className = "pcard"
 		b.type = "button"
-		b.innerHTML = '<span class="ico">' + (TYPE_ICON[p.type] || "\ud83c\udfac") + '</span><span><h3></h3><p></p></span><span class="kind"></span><span class="arrow">›</span>'
+		b.innerHTML = '<span class="ico"></span><span><h3></h3><p></p></span><span class="kind"></span><span class="arrow">›</span>'
 		b.querySelector("h3").textContent = p.title
 		b.querySelector("p").textContent = p.desc
 		b.querySelector(".kind").textContent = TYPE_LABEL[p.type] || p.type
@@ -158,7 +163,7 @@ function openItem(id) {
 	if (isRealLink(c.video)) {
 		v.innerHTML = '<iframe src="' + c.video + '" loading="lazy" allow="autoplay; fullscreen" allowfullscreen title="Видео"></iframe>'
 	} else {
-		v.innerHTML = '<div class="ph"><span class="big">\ud83c\udfac</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
+		v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
 	}
 	var t = document.getElementById("dText")
 	if (c.text) {

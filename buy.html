@@ -25,11 +25,18 @@
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)};overflow:hidden;background-size:cover;background-position:center;flex:none
   .back{font-size:14px;color:var(--text2)}
   .back:hover{color:var(--red)}
-  .switch{border:1px solid var(--border);background:#fff;border-radius:6px;padding:7px 12px;font-family:var(--body);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer}
-  .switch:hover{border-color:var(--red);color:var(--red)}
+  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:3px;cursor:pointer;background:#fff;user-select:none}
+  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .25s ease}
+  .lang-slider .knob.right{transform:translateX(28px)}
+  .lang-slider .lbl{font-size:11px;font-weight:600;color:var(--text2);padding:0 7px;font-family:var(--body)}
+  .lang-slider .lbl.on{color:var(--red)}
+  .price-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+  .price-main{font-family:var(--head);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
+  .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
+  .price-sub:hover{color:var(--red)}
 
   main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:36px 24px 64px}
   .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:28px;margin-bottom:18px}
@@ -76,10 +83,9 @@
 <body>
 <header>
   <div class="nav">
-    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
+    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="switch" id="curBtn" type="button"></button>
-      <button class="switch" id="langBtn" type="button"></button>
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
       <a class="back" href="index.html#catalog">← Назад в каталог</a>
     </div>
   </div>
@@ -95,13 +101,13 @@
         <h2><span id="iTitle">…</span><span class="kind" id="iKind"></span></h2>
         <p id="iDesc"></p>
       </div>
-      <span class="price" id="iPrice"></span>
+      <div class="price-wrap"><span class="price-main" id="iPrice"></span><span class="price-sub" id="iPriceSub"></span></div>
     </div>
 
     <h3 class="step"><span class="n">1</span>Выберите способ оплаты</h3>
     <div class="tabs" role="tablist">
-      <button class="tab on" id="tabMbank" type="button">🏦 МБанк</button>
-      <button class="tab" id="tabVisa" type="button">💳 Карта Visa</button>
+      <button class="tab on" id="tabMbank" type="button">МБанк</button>
+      <button class="tab" id="tabVisa" type="button">Карта Visa</button>
     </div>
     <div class="pane on" id="paneMbank">
       <div id="mbankNums"></div>
@@ -126,7 +132,7 @@
     <label for="buyer">Ваше имя</label>
     <input type="text" id="buyer" placeholder="Айзат">
     <button class="submit" id="send" type="button">Я оплатил(а) — пришлите логин</button>
-    <div class="ok" id="ok">✓ <strong>Заявка пол��чена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
+    <div class="ok" id="ok"><strong>Заявка пол��чена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
     <div class="err" id="err"></div>
   </div>
 </main>
@@ -154,6 +160,13 @@ function renderItem() {
 	document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
 	document.getElementById("iDesc").textContent = p.desc
 	document.getElementById("iPrice").textContent = formatPrice(p.price)
+	document.getElementById("iPriceSub").textContent = formatPriceSub(p.price)
+}
+document.addEventListener("click", function(e){
+	if(e.target.id === "iPriceSub" || (e.target.classList && e.target.classList.contains("price-sub"))){
+		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
+		location.reload()
+	}
 }
 
 function isVisaNumber(n) {
@@ -179,7 +192,7 @@ function payRows(mount, list, emptyText) {
 		row.querySelector(".val").textContent = n.value
 		row.querySelector(".copy").addEventListener("click", function () {
 			navigator.clipboard && navigator.clipboard.writeText(n.value)
-			this.textContent = "Скопировано ✓"
+			this.textContent = "Скопировано"
 		})
 		mount.appendChild(row)
 	})
@@ -200,7 +213,7 @@ function renderPayment() {
 		} else {
 			var ph = document.createElement("div")
 			ph.className = "qr-ph"
-			ph.innerHTML = '<span class="big">\u2b1b</span><span>QR-код скоро появится — оплатите по номеру</span>'
+			ph.innerHTML = '<span class="big">QR</span><span>QR-код скоро появится — оплатите по номеру</span>'
 			qr.appendChild(ph)
 		}
 	})

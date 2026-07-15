@@ -25,7 +25,7 @@
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)};overflow:hidden;background-size:cover;background-position:center;flex:none
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
@@ -90,7 +90,7 @@
 <body>
 <header>
   <div class="nav">
-    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust · Админ</a>
+    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust · Админ</a>
     <div class="navr">
       <span id="who"></span>
       <button id="outBtn" style="display:none" type="button">Выйти</button>
@@ -113,11 +113,12 @@
     <div class="tip"><strong>С чего начать:</strong> вкладка «Цены» — быстро менять цены, «Каталог» — добавлять новые материалы, «Аккаунты» — создавать логины для покупателей.</div>
 
     <div class="mtabs">
-      <button class="mtab on" data-p="orders" type="button">📥 Заявки</button>
-      <button class="mtab" data-p="prices" type="button">💰 Цены</button>
-      <button class="mtab" data-p="products" type="button">🎬 Каталог</button>
-      <button class="mtab" data-p="payment" type="button">💳 Способы оплаты</button>
-      <button class="mtab" data-p="accounts" type="button">👥 Аккаунты</button>
+      <button class="mtab on" data-p="orders" type="button">Заявки</button>
+      <button class="mtab" data-p="prices" type="button">Цены</button>
+      <button class="mtab" data-p="products" type="button">Каталог</button>
+      <button class="mtab" data-p="payment" type="button">Способы оплаты</button>
+      <button class="mtab" data-p="accounts" type="button">Аккаунты</button>
+      <button class="mtab" data-p="logo" type="button">Логотип</button>
     </div>
 
     <div class="panel on" id="p-orders">
@@ -143,7 +144,7 @@
           <select id="fType"><option value="webinar">Вебинар</option><option value="seminar">Семинар</option><option value="course">Курс</option></select></div>
         <div><label for="fPrice">Цена (сом)</label><input type="number" id="fPrice" min="0" step="1" placeholder="3500"></div>
         <div><label for="fTitle">Название</label><input type="text" id="fTitle" placeholder="Финансовое планирование"></div>
-        <div class="full"><label for="fDesc">Короткое описание</label><input type="text" id="fDesc" placeholder="Что получит покупатель — одним предложением"></div>
+        <div class="full"><label for="fDesc">Короткое описание</label><input type="text" id="fDesc" placeholder="Что получит покупатель — о��ним предложением"></div>
         <div class="full"><label for="fPreview">Ссылка на видео-анонс (видят все)</label><input type="text" id="fPreview" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
         <div class="full"><label for="fFull">Полное видео (только покупателям)</label><input type="text" id="fFull" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
         <div class="full"><label for="fText">Материалы / те��ст (только покупателям)</label><textarea id="fText" placeholder="Конспек��, ссылки, домашнее задание…"></textarea></div>
@@ -174,6 +175,18 @@
         <button class="btn btn-sm" id="qrAdd" type="button">Добавить</button>
       </div>
       <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
+    </div>
+
+    <div class="panel" id="p-logo">
+      <h2>Логотип сайта</h2>
+      <p class="sub">Загрузите картинку (логотип), которая будет показываться слева в шапке вместо букв «GN». Рекомендуется квадратная картинка, не более 200x200 px.</p>
+      <div class="inline" style="align-items:flex-end">
+        <div><label for="logoFile">Файл картинки</label><input type="file" id="logoFile" accept="image/*"></div>
+        <button class="btn btn-sm" id="logoUpload" type="button">Загрузить</button>
+        <button class="btn btn-ghost btn-sm" id="logoRemove" type="button">Убрать картинку</button>
+      </div>
+      <div class="formfoot" style="margin-top:18px"><span class="flash" id="logoFlash"></span></div>
+      <p class="muted" style="margin-top:12px">Картинка сохраняется в браузере и показывается на всех страницах сайта у этого посетителя. Чтобы логотип видели все — загрузите картинку на Google Диск и дайте прямую ссылку админу (пока хранится локально).</p>
     </div>
 
     <div class="panel" id="p-accounts">
@@ -342,6 +355,27 @@ document.querySelectorAll(".mtab").forEach(function (t) {
 		document.querySelectorAll(".mtab").forEach(function (x) { x.classList.toggle("on", x === t) })
 		document.querySelectorAll(".panel").forEach(function (p) { p.classList.toggle("on", p.id === "p-" + t.getAttribute("data-p")) })
 	})
+})
+
+// Логотип
+document.getElementById("logoUpload").addEventListener("click", function () {
+	var file = document.getElementById("logoFile").files[0]
+	if (!file) { flash("logoFlash", "Выберите файл картинки.", false); return }
+	if (file.size > 200000) { flash("logoFlash", "Файл слишком большой — до 200 КБ.", false); return }
+	var reader = new FileReader()
+	reader.onload = function () {
+		try { localStorage.setItem("gn_logo", reader.result) } catch (e) { flash("logoFlash", "Не удалось сохранить — возможно слишком большой файл.", false); return }
+		var mark = document.getElementById("brandMark")
+		if (mark) { mark.innerHTML = ""; mark.style.backgroundImage = "url(" + reader.result + ")"; mark.style.backgroundSize = "cover"; mark.style.backgroundPosition = "center" }
+		flash("logoFlash", "Логотип загружен — показывается в шапке.", true)
+	}
+	reader.readAsDataURL(file)
+})
+document.getElementById("logoRemove").addEventListener("click", function () {
+	try { localStorage.removeItem("gn_logo") } catch (e) {}
+	var mark = document.getElementById("brandMark")
+	if (mark) { mark.innerHTML = "GN"; mark.style.backgroundImage = "" }
+	flash("logoFlash", "Картинка убрана — показываются буквы GN.", true)
 })
 
 // Генератор паролей
