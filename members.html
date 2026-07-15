@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Мой кабинет — GN FinTrust</title>
 <meta name="robots" content="noindex">
@@ -155,7 +156,7 @@ function openItem(id) {
 	var c = M.content[id] || {}
 	var v = document.getElementById("dVideo")
 	if (isRealLink(c.video)) {
-		v.innerHTML = '<iframe src="' + c.video + '" allow="autoplay; fullscreen" allowfullscreen title="Видео"></iframe>'
+		v.innerHTML = '<iframe src="' + c.video + '" loading="lazy" allow="autoplay; fullscreen" allowfullscreen title="Видео"></iframe>'
 	} else {
 		v.innerHTML = '<div class="ph"><span class="big">\ud83c\udfac</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
 	}
