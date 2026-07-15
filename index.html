@@ -35,11 +35,12 @@
   nav.links a{color:var(--text2);font-size:14px}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
-  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:1px;cursor:pointer;background:#fff;user-select:none;flex:none}
-  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .2s ease;cursor:grab}
-  .lang-slider .knob:active{cursor:grabbing}
-  .lang-slider .lbl{font-size:10px;font-weight:600;color:var(--text2);padding:0 5px;font-family:var(--body);line-height:28px}
-  .lang-slider .lbl.on{color:var(--red)}
+  .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
+  .lang-slider .knob{position:absolute;top:1px;left:1px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob.dragging{transition:none;cursor:grabbing}
+  .lang-slider .lbl{position:absolute;top:0;width:32px;line-height:30px;text-align:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
+  .lang-slider .lbl.l{left:0}
+  .lang-slider .lbl.r{right:0}
   .price-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0}
   .price-main{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
   .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
@@ -66,8 +67,8 @@
   .box{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:22px;opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,box-shadow .2s ease}
   .box.show{opacity:1;transform:translateY(0)}
   .box:hover{box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-3px)}
-  .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:-.01em;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;gap:10px}
-  .box>h3 .cnt{margin-left:auto;font-size:13px;font-weight:600;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:3px 12px;border-radius:999px}
+  .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
   .pcard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px}
   .pcard:last-child{margin-bottom:0}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
@@ -111,7 +112,7 @@
   <div class="wrap nav">
     <a class="brand" href="#"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <nav class="links">
-      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#how">Как купить</a>
       <a href="login.html" id="navLogin">Вход</a>

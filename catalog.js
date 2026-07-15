@@ -161,9 +161,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	var slider = document.getElementById("langSlider")
 	var knob = document.getElementById("langKnob")
 	if (slider && knob) {
-		var maxRight = 30 // ширина дорожки = knob 28px + padding 1px*2 = 30px хода
+		var maxRight = 34 // ход ползунка: дорожка 64px внутри, ползунок 28px, отступы по 1px
+		knob.textContent = GN_LANG === "ky" ? "KG" : "RU"
 		if (GN_LANG === "ky") knob.style.transform = "translateX(" + maxRight + "px)"
 		var dragging = false
+		var moved = false
 		var startX = 0
 		var startPos = 0
 		function getCurPos() {
@@ -172,6 +174,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		function setPos(p) {
 			knob.style.transform = "translateX(" + Math.max(0, Math.min(maxRight, p)) + "px)"
+		}
+		function toggleLang() {
+			GN_LANG = GN_LANG === "ru" ? "ky" : "ru"
+			try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
+			location.reload()
 		}
 		function commit() {
 			var p = getCurPos()
@@ -187,23 +194,26 @@ document.addEventListener("DOMContentLoaded", function () {
 		knob.addEventListener("mousedown", function (e) {
 			e.preventDefault()
 			dragging = true
+			moved = false
 			startX = e.clientX
 			startPos = getCurPos()
+			knob.classList.add("dragging")
 		})
 		document.addEventListener("mousemove", function (e) {
 			if (!dragging) return
+			if (Math.abs(e.clientX - startX) > 2) moved = true
 			setPos(startPos + (e.clientX - startX))
 		})
 		document.addEventListener("mouseup", function () {
 			if (!dragging) return
 			dragging = false
+			knob.classList.remove("dragging")
+			if (!moved) { toggleLang(); return }
 			commit()
 		})
 		slider.addEventListener("click", function (e) {
 			if (e.target === knob) return
-			GN_LANG = GN_LANG === "ru" ? "ky" : "ru"
-			try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
-			location.reload()
+			toggleLang()
 		})
 	}
 	// Логотип-картинка: если админ загрузил, показываем вместо букв GN

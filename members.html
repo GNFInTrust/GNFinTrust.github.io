@@ -30,11 +30,12 @@
   .navr .who{color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
-  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:1px;cursor:pointer;background:#fff;user-select:none;flex:none}
-  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .2s ease;cursor:grab}
-  .lang-slider .knob:active{cursor:grabbing}
-  .lang-slider .lbl{font-size:10px;font-weight:600;color:var(--text2);padding:0 5px;font-family:var(--body);line-height:28px}
-  .lang-slider .lbl.on{color:var(--red)}
+  .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
+  .lang-slider .knob{position:absolute;top:1px;left:1px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob.dragging{transition:none;cursor:grabbing}
+  .lang-slider .lbl{position:absolute;top:0;width:32px;line-height:30px;text-align:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
+  .lang-slider .lbl.l{left:0}
+  .lang-slider .lbl.r{right:0}
 
   main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:36px 24px 64px}
   .state{display:none}
@@ -75,7 +76,7 @@
   <div class="nav">
     <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <div class="navr">
-      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <span class="who" id="who"></span>
       <button id="outBtn" style="display:none" type="button">Выйти</button>
     </div>
