@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ — GN FinTrust</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
+    --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
+    --green:#2F7351; --green-soft:#E8F1EC;
+    --head:Georgia,"Times New Roman",serif;
+    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  h1,h2,h3{font-family:var(--head)}
+  a{color:var(--red);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  header{border-bottom:3px solid var(--red);background:#fff}
+  .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
+  .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
+  .navr button:hover{border-color:var(--red);color:var(--red)}
+
+  main{flex:1;width:100%;max-width:1160px;margin:0 auto;padding:32px 24px 64px}
+  .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
+  .gatebox h1{font-size:23px;margin-bottom:10px}
+  .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px}
+  .btn:hover{background:var(--red-dark)}
+  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
+  .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
+  .btn-sm{padding:7px 12px;min-height:34px;font-size:13px}
+
+  h1.page{font-size:26px;margin-bottom:4px}
+  .lede{color:var(--text2);font-size:14px;margin-bottom:22px}
+  .mtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:700;color:var(--text2);cursor:pointer}
+  .mtab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:26px}
+  .panel.on{display:block}
+  .panel h2{font-size:20px;margin-bottom:6px}
+  .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:18px;max-width:760px}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;color:var(--text2);font-weight:700;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
+  td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px}
+  .tag.new{background:#FFF3E2;color:#9a5b00;border:1px solid #f0d9b5}
+  .tag.done{background:var(--green-soft);color:var(--green);border:1px solid #bcd9c9}
+  .muted{color:var(--text2);font-size:12.5px}
+  .contact a{font-weight:700}
+  .empty{color:var(--text2);font-size:14px;padding:18px 4px}
+
+  form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
+  form.grid .full{grid-column:1/-1}
+  label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--text2)}
+  input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff}
+  textarea{min-height:70px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .formfoot{display:flex;align-items:center;gap:14px;margin:14px 0 26px}
+  .flash{display:none;font-size:13.5px;border-radius:6px;padding:9px 13px}
+  .flash.good{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green)}
+  .flash.bad{background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f}
+  .qr-thumb{width:64px;height:64px;object-fit:contain;border:1px solid var(--border);border-radius:6px;background:#fff}
+  .inline{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
+  .inline>div{flex:1;min-width:160px}
+  .checks{display:flex;flex-direction:column;gap:8px;margin:6px 0 2px}
+  .checks label{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:400;color:var(--text);margin:0}
+  .credbox{display:none;background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:18px}
+  .credbox h3{font-size:15px;margin-bottom:8px}
+  .credbox pre{background:#fff;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;font-family:Consolas,Menlo,monospace}
+  .credbox .row{display:flex;gap:8px;flex-wrap:wrap}
+  @media (max-width:760px){ form.grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust · Админ</a>
+    <div class="navr">
+      <span id="who"></span>
+      <button id="outBtn" style="display:none" type="button">Выйти</button>
+    </div>
+  </div>
+</header>
+<main>
+
+  <div id="gate">
+    <div class="gatebox">
+      <h1>Только для админов</h1>
+      <p id="gateText">Войдите в аккаунт админа, чтобы открыть панель. Как сделать себя админом — в README.</p>
+      <a class="btn" href="login.html">Войти</a>
+    </div>
+  </div>
+
+  <div id="panelWrap" style="display:none">
+    <h1 class="page">Админ-панель</h1>
+    <p class="lede">Заявки, каталог, способы оплаты и аккаунты покупателей — всё хранится в вашей базе Firebase.</p>
+
+    <div class="mtabs">
+      <button class="mtab on" data-p="orders" type="button">📥 Заявки</button>
+      <button class="mtab" data-p="products" type="button">🎬 Каталог</button>
+      <button class="mtab" data-p="payment" type="button">💳 Способы оплаты</button>
+      <button class="mtab" data-p="accounts" type="button">👥 Аккаунты</button>
+    </div>
+
+    <div class="panel on" id="p-orders">
+      <h2>Новые заявки</h2>
+      <p class="sub">Покупатель оплатил (или говорит, что оплатил) и ждёт логин. Проверьте, что деньги пришли, создайте аккаунт во вкладке «Аккаунты», затем нажмите на контакт — сообщение с данными для входа уже будет заполнено.</p>
+      <div id="ordersWrap"></div>
+    </div>
+
+    <div class="panel" id="p-products">
+      <h2>Добавить вебинар, семинар или курс</h2>
+      <p class="sub">Материал сразу появится на главной странице. Ссылки на видео — из Google Диска (формат /preview) или YouTube (embed).</p>
+      <form class="grid" id="prodForm">
+        <div><label for="fType">Тип</label>
+          <select id="fType"><option value="webinar">Вебинар</option><option value="seminar">Семинар</option><option value="course">Курс</option></select></div>
+        <div><label for="fPrice">Цена ($)</label><input type="number" id="fPrice" min="0" step="1" placeholder="40"></div>
+        <div><label for="fTitle">Название</label><input type="text" id="fTitle" placeholder="Финансовое планирование"></div>
+        <div class="full"><label for="fDesc">Короткое описание</label><input type="text" id="fDesc" placeholder="Что получит покупатель — одним предложением"></div>
+        <div class="full"><label for="fPreview">Ссылка на видео-анонс (видят все)</label><input type="text" id="fPreview" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
+        <div class="full"><label for="fFull">Полное видео (только покупателям)</label><input type="text" id="fFull" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
+        <div class="full"><label for="fText">Материалы / текст (только покупателям)</label><textarea id="fText" placeholder="Конспект, ссылки, домашнее задание…"></textarea></div>
+      </form>
+      <div class="formfoot">
+        <button class="btn" id="prodSave" type="button">Сохранить</button>
+        <span class="flash" id="prodFlash"></span>
+      </div>
+      <h2>Текущий каталог</h2>
+      <div id="prodWrap"></div>
+    </div>
+
+    <div class="panel" id="p-payment">
+      <h2>Номера для оплаты</h2>
+      <p class="sub">Эти номера покупатели видят на странице оплаты. Добавляйте и удаляйте в любой момент.</p>
+      <div id="numWrap"></div>
+      <div class="inline">
+        <div><label for="numLabel">Название</label><input type="text" id="numLabel" placeholder="Перевод MBank"></div>
+        <div><label for="numValue">Номер / карта</label><input type="text" id="numValue" placeholder="+996 700 000 001"></div>
+        <button class="btn btn-sm" id="numAdd" type="button">Добавить</button>
+      </div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
+      <h2>QR-коды</h2>
+      <p class="sub">Загрузите картинку QR-кода на Google Диск и вставьте ссылку формата drive.google.com/thumbnail?id=FILE_ID&amp;sz=w600.</p>
+      <div id="qrWrap"></div>
+      <div class="inline">
+        <div><label for="qrValue">Ссылка на картинку</label><input type="text" id="qrValue" placeholder="https://drive.google.com/thumbnail?id=…&sz=w600"></div>
+        <button class="btn btn-sm" id="qrAdd" type="button">Добавить</button>
+      </div>
+      <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
+    </div>
+
+    <div class="panel" id="p-accounts">
+      <h2>Создать аккаунт покупателю</h2>
+      <p class="sub">После проверки оплаты создайте аккаунт, отметьте покупку и отправьте человеку готовое сообщение с логином и паролем.</p>
+      <div class="inline">
+        <div><label for="aEmail">Логин (почта)</label><input type="email" id="aEmail" placeholder="buyer@gnfintrust.com"></div>
+        <div><label for="aPass">Пароль</label><input type="text" id="aPass" placeholder="Нажмите «Сгенерировать»"></div>
+        <button class="btn btn-ghost btn-sm" id="aGen" type="button">Сгенерировать</button>
+      </div>
+      <label style="margin-top:16px">Что купил(а):</label>
+      <div class="checks" id="aChecks"></div>
+      <div class="formfoot">
+        <button class="btn" id="aCreate" type="button">Создать аккаунт</button>
+        <span class="flash" id="aFlash"></span>
+      </div>
+      <div class="credbox" id="credBox">
+        <h3>Аккаунт готов — отправьте данные:</h3>
+        <pre id="credText"></pre>
+        <div class="row">
+          <button class="btn btn-ghost btn-sm" id="credCopy" type="button">Скопировать сообщение</button>
+          <a class="btn btn-sm" id="credWa" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+          <a class="btn btn-sm" id="credMail" target="_blank" rel="noopener">Отправить на почту</a>
+        </div>
+        <p class="muted" style="margin-top:10px">Telegram: откройте чат и вставьте скопированное сообщение.</p>
+      </div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
+      <h2>Все аккаунты</h2>
+      <p class="sub">Каждый аккаунт и все его покупки — ваша база клиентов.</p>
+      <div id="accWrap"></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="catalog.js"></script>
+<script>
+// ---------- Состояние и рендер (работает и без Firebase — для предпросмотра) ----------
+var A = { orders: [], products: [], payment: { numbers: [], qrs: [] }, accounts: [], editingId: null, fb: null }
+
+function esc(s) {
+	return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+		return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+	})
+}
+function flash(id, text, good) {
+	var el = document.getElementById(id)
+	el.textContent = text
+	el.className = "flash " + (good ? "good" : "bad")
+	el.style.display = "inline-block"
+	setTimeout(function () { el.style.display = "none" }, 4000)
+}
+function contactLink(method, contact) {
+	var c = String(contact || "").trim()
+	if (method === "WhatsApp") return "https://wa.me/" + c.replace(/[^\d]/g, "")
+	if (method === "Email") return "mailto:" + c
+	if (method === "Telegram") return "https://t.me/" + c.replace(/^@/, "")
+	return "#"
+}
+
+function renderOrders() {
+	var w = document.getElementById("ordersWrap")
+	if (!A.orders.length) { w.innerHTML = '<p class="empty">Заявок пока нет. Когда кто-то нажмёт «Я оплатил(а)» на сайте — заявка появится здесь.</p>'; return }
+	var rows = A.orders.map(function (o) {
+		return "<tr>" +
+			'<td class="muted">' + esc(String(o.createdAt || "").slice(0, 16).replace("T", " ")) + "</td>" +
+			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>$" + esc(o.price) + "</span></td>" +
+			"<td>" + esc(o.buyer || "—") + "</td>" +
+			'<td class="contact">' + esc(o.method) + '<br><a href="' + contactLink(o.method, o.contact) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
+			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : "новая") + "</span></td>" +
+			"<td>" + (o.status === "done" ? "" : '<button class="btn btn-ghost btn-sm" data-done="' + esc(o._id) + '">Выполнено</button> ') +
+			'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></td>' +
+			"</tr>"
+	}).join("")
+	w.innerHTML = "<table><thead><tr><th>Когда</th><th>Материал</th><th>Покупатель</th><th>Куда писать</th><th>Статус</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+}
+
+function renderProducts() {
+	var w = document.getElementById("prodWrap")
+	if (!A.products.length) { w.innerHTML = '<p class="empty">Каталог пуст — добавьте первый материал выше.</p>'; return }
+	var rows = A.products.map(function (p) {
+		return "<tr>" +
+			"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
+			"<td><strong>" + esc(p.title) + "</strong><br><span class='muted'>" + esc(p.desc) + "</span></td>" +
+			"<td>$" + esc(p.price) + "</td>" +
+			'<td><button class="btn btn-ghost btn-sm" data-edit="' + esc(p.id) + '">Изменить</button> <button class="btn btn-ghost btn-sm" data-del="' + esc(p.id) + '">Удалить</button></td>' +
+			"</tr>"
+	}).join("")
+	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Название</th><th>Цена</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+}
+
+function renderPayment() {
+	var w = document.getElementById("numWrap")
+	var nums = A.payment.numbers || []
+	w.innerHTML = nums.length
+		? "<table><tbody>" + nums.map(function (n, i) {
+			return "<tr><td><strong>" + esc(n.label) + "</strong></td><td>" + esc(n.value) + '</td><td style="text-align:right"><button class="btn btn-ghost btn-sm" data-numdel="' + i + '">Удалить</button></td></tr>'
+		}).join("") + "</tbody></table>"
+		: '<p class="empty">Номеров пока нет.</p>'
+	var q = document.getElementById("qrWrap")
+	var qrs = A.payment.qrs || []
+	q.innerHTML = qrs.length
+		? "<table><tbody>" + qrs.map(function (src, i) {
+			var img = isRealLink(src) ? '<img class="qr-thumb" src="' + esc(src) + '" alt="QR">' : '<span class="muted">' + esc(src) + "</span>"
+			return "<tr><td>" + img + '</td><td class="muted" style="word-break:break-all">' + esc(src) + '</td><td style="text-align:right"><button class="btn btn-ghost btn-sm" data-qrdel="' + i + '">Удалить</button></td></tr>'
+		}).join("") + "</tbody></table>"
+		: '<p class="empty">QR-кодов пока нет.</p>'
+	renderChecks()
+}
+
+function renderChecks() {
+	var box = document.getElementById("aChecks")
+	box.innerHTML = ""
+	A.products.forEach(function (p) {
+		var l = document.createElement("label")
+		l.innerHTML = '<input type="checkbox" value="' + esc(p.id) + '"> ' + esc(TYPE_LABEL[p.type] || p.type) + " · " + esc(p.title)
+		box.appendChild(l)
+	})
+	if (!A.products.length) box.innerHTML = '<span class="muted">Сначала добавьте материалы во вкладке «Каталог».</span>'
+}
+
+function renderAccounts() {
+	var w = document.getElementById("accWrap")
+	if (!A.accounts.length) { w.innerHTML = '<p class="empty">Аккаунтов пока нет.</p>'; return }
+	var rows = A.accounts.map(function (u) {
+		var names = (u.purchases || []).map(function (id) {
+			var p = productById(A.products, id)
+			return p ? p.title : id
+		})
+		return "<tr>" +
+			"<td><strong>" + esc(u.email) + "</strong>" + (u.admin ? ' <span class="tag done">админ</span>' : "") + "</td>" +
+			"<td>" + (names.length ? esc(names.join(", ")) : '<span class="muted">нет покупок</span>') + "</td>" +
+			'<td style="text-align:right"><button class="btn btn-ghost btn-sm" data-accedit="' + esc(u._id) + '">Изменить покупки</button></td>' +
+			"</tr>"
+	}).join("")
+	w.innerHTML = "<table><thead><tr><th>Логин</th><th>Покупки</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+}
+
+function renderAll(email) { showAdminUI(email); renderOrders(); renderProducts(); renderPayment(); renderAccounts() }
+function showAdminUI(email) {
+	document.getElementById("gate").style.display = "none"
+	document.getElementById("panelWrap").style.display = "block"
+	document.getElementById("who").textContent = email || ""
+	document.getElementById("outBtn").style.display = "inline-block"
+}
+
+// Вкладки
+document.querySelectorAll(".mtab").forEach(function (t) {
+	t.addEventListener("click", function () {
+		document.querySelectorAll(".mtab").forEach(function (x) { x.classList.toggle("on", x === t) })
+		document.querySelectorAll(".panel").forEach(function (p) { p.classList.toggle("on", p.id === "p-" + t.getAttribute("data-p")) })
+	})
+})
+
+// Генератор паролей
+document.getElementById("aGen").addEventListener("click", function () {
+	var chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789"
+	var out = ""
+	for (var i = 0; i < 10; i++) out += chars[Math.floor(Math.random() * chars.length)]
+	document.getElementById("aPass").value = out
+})
+</script>
+<script type="module">
+  const gateText = document.getElementById("gateText")
+  try {
+    const { firebaseConfig } = await import("./firebase-config.js")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) {
+      gateText.textContent = "Сайт ещё не подключён к Firebase — добавьте ключи в firebase-config.js (см. README), затем войдите как админ."
+      throw new Error("not configured")
+    }
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+    const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+    const app = initializeApp(firebaseConfig)
+    const auth = authMod.getAuth(app)
+    const db = fsMod.getFirestore(app)
+    A.fb = { app, auth, db, authMod, fsMod, firebaseConfig }
+
+    document.getElementById("outBtn").addEventListener("click", async () => { await authMod.signOut(auth); location.href = "index.html" })
+
+    authMod.onAuthStateChanged(auth, async (user) => {
+      if (!user) return
+      const uSnap = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
+      if (!uSnap.exists() || uSnap.data().admin !== true) {
+        gateText.textContent = "Этот аккаунт (" + (user.email || "") + ") не админ. Как выдать права — в README."
+        return
+      }
+      await reloadAll()
+      renderAll(user.email)
+    })
+
+    async function reloadAll() {
+      const [oSnap, pSnap, paySnap, uSnap] = await Promise.all([
+        fsMod.getDocs(fsMod.collection(db, "orders")),
+        fsMod.getDocs(fsMod.collection(db, "products")),
+        fsMod.getDoc(fsMod.doc(db, "settings", "payment")),
+        fsMod.getDocs(fsMod.collection(db, "users")),
+      ])
+      A.orders = []; oSnap.forEach((d) => A.orders.push(Object.assign({ _id: d.id }, d.data())))
+      A.orders.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
+      A.products = []; pSnap.forEach((d) => A.products.push(Object.assign({ id: d.id }, d.data())))
+      A.payment = paySnap.exists() ? paySnap.data() : { numbers: [], qrs: [] }
+      A.accounts = []; uSnap.forEach((d) => A.accounts.push(Object.assign({ _id: d.id }, d.data())))
+    }
+
+    // ----- Заявки -----
+    document.getElementById("ordersWrap").addEventListener("click", async (e) => {
+      const done = e.target.getAttribute("data-done"), del = e.target.getAttribute("data-del")
+      if (done) { await fsMod.updateDoc(fsMod.doc(db, "orders", done), { status: "done" }) }
+      if (del) { if (!confirm("Удалить заявку?")) return; await fsMod.deleteDoc(fsMod.doc(db, "orders", del)) }
+      if (done || del) { await reloadAll(); renderOrders() }
+    })
+
+    // ----- Каталог -----
+    document.getElementById("prodSave").addEventListener("click", async () => {
+      const title = document.getElementById("fTitle").value.trim()
+      const price = Number(document.getElementById("fPrice").value)
+      if (!title || !(price >= 0)) { flash("prodFlash", "Укажите название и цену.", false); return }
+      const id = A.editingId || (title.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 40) + "-" + Date.now().toString(36))
+      try {
+        await fsMod.setDoc(fsMod.doc(db, "products", id), {
+          type: document.getElementById("fType").value,
+          title, price,
+          desc: document.getElementById("fDesc").value.trim(),
+          preview: document.getElementById("fPreview").value.trim() || "PASTE_VIDEO_EMBED_LINK",
+        })
+        await fsMod.setDoc(fsMod.doc(db, "productContent", id), {
+          video: document.getElementById("fFull").value.trim(),
+          text: document.getElementById("fText").value.trim(),
+        })
+        A.editingId = null
+        document.querySelectorAll("#prodForm input, #prodForm textarea").forEach((i) => { i.value = "" })
+        flash("prodFlash", "Сохранено — уже на сайте.", true)
+        await reloadAll(); renderProducts(); renderChecks()
+      } catch (err) { flash("prodFlash", "Ошибка: " + (err.message || err), false) }
+    })
+    document.getElementById("prodWrap").addEventListener("click", async (e) => {
+      const edit = e.target.getAttribute("data-edit"), del = e.target.getAttribute("data-del")
+      if (edit) {
+        const p = productById(A.products, edit)
+        if (!p) return
+        A.editingId = edit
+        document.getElementById("fType").value = p.type
+        document.getElementById("fPrice").value = p.price
+        document.getElementById("fTitle").value = p.title
+        document.getElementById("fDesc").value = p.desc || ""
+        document.getElementById("fPreview").value = p.preview || ""
+        try {
+          const c = await fsMod.getDoc(fsMod.doc(db, "productContent", edit))
+          document.getElementById("fFull").value = (c.exists() && c.data().video) || ""
+          document.getElementById("fText").value = (c.exists() && c.data().text) || ""
+        } catch (err) { /* ignore */ }
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      }
+      if (del) {
+        if (!confirm("Удалить этот материал из каталога?")) return
+        await fsMod.deleteDoc(fsMod.doc(db, "products", del))
+        await fsMod.deleteDoc(fsMod.doc(db, "productContent", del))
+        await reloadAll(); renderProducts(); renderChecks()
+      }
+    })
+
+    // ----- Способы оплаты -----
+    async function savePayment() {
+      await fsMod.setDoc(fsMod.doc(db, "settings", "payment"), A.payment)
+      flash("payFlash", "Сохранено — покупатели уже видят изменения.", true)
+      renderPayment()
+    }
+    document.getElementById("numAdd").addEventListener("click", async () => {
+      const label = document.getElementById("numLabel").value.trim()
+      const value = document.getElementById("numValue").value.trim()
+      if (!label || !value) { flash("payFlash", "Заполните название и номер.", false); return }
+      A.payment.numbers = (A.payment.numbers || []).concat([{ label, value }])
+      document.getElementById("numLabel").value = ""; document.getElementById("numValue").value = ""
+      await savePayment()
+    })
+    document.getElementById("numWrap").addEventListener("click", async (e) => {
+      const i = e.target.getAttribute("data-numdel")
+      if (i == null) return
+      A.payment.numbers.splice(Number(i), 1)
+      await savePayment()
+    })
+    document.getElementById("qrAdd").addEventListener("click", async () => {
+      const v = document.getElementById("qrValue").value.trim()
+      if (!v) { flash("payFlash", "Вставьте ссылку на картинку QR-кода.", false); return }
+      A.payment.qrs = (A.payment.qrs || []).concat([v])
+      document.getElementById("qrValue").value = ""
+      await savePayment()
+    })
+    document.getElementById("qrWrap").addEventListener("click", async (e) => {
+      const i = e.target.getAttribute("data-qrdel")
+      if (i == null) return
+      A.payment.qrs.splice(Number(i), 1)
+      await savePayment()
+    })
+
+    // ----- Аккаунты -----
+    document.getElementById("aCreate").addEventListener("click", async () => {
+      const email = document.getElementById("aEmail").value.trim()
+      const pass = document.getElementById("aPass").value.trim()
+      const bought = Array.from(document.querySelectorAll("#aChecks input:checked")).map((c) => c.value)
+      if (!email || pass.length < 6) { flash("aFlash", "Нужны почта и пароль от 6 символов.", false); return }
+      try {
+        const secondary = initializeApp(A.fb.firebaseConfig, "acct-" + Date.now())
+        const secAuth = authMod.getAuth(secondary)
+        const res = await authMod.createUserWithEmailAndPassword(secAuth, email, pass)
+        await fsMod.setDoc(fsMod.doc(db, "users", res.user.uid), {
+          name: "", email, admin: false, purchases: bought, createdAt: new Date().toISOString(),
+        })
+        await authMod.signOut(secAuth)
+        const names = bought.map((id) => { const p = productById(A.products, id); return p ? p.title : id })
+        const msg = "GN FinTrust — ваш доступ готов!\nСайт: " + location.origin + location.pathname.replace("admin.html", "login.html") +
+          "\nЛогин: " + email + "\nПароль: " + pass +
+          "\nВаша покупка: " + (names.join(", ") || "—") +
+          "\nВойдите в «Мой кабинет» — всё уже там."
+        document.getElementById("credText").textContent = msg
+        document.getElementById("credWa").href = "https://wa.me/?text=" + encodeURIComponent(msg)
+        document.getElementById("credMail").href = "mailto:" + encodeURIComponent(email) + "?subject=" + encodeURIComponent("Ваш доступ — GN FinTrust") + "&body=" + encodeURIComponent(msg)
+        document.getElementById("credCopy").onclick = () => { navigator.clipboard && navigator.clipboard.writeText(msg); flash("aFlash", "Сообщение скопировано.", true) }
+        document.getElementById("credBox").style.display = "block"
+        flash("aFlash", "Аккаунт создан.", true)
+        await reloadAll(); renderAccounts()
+      } catch (err) { flash("aFlash", "Ошибка: " + (err.message || err), false) }
+    })
+    document.getElementById("accWrap").addEventListener("click", async (e) => {
+      const id = e.target.getAttribute("data-accedit")
+      if (!id) return
+      const u = A.accounts.find((x) => x._id === id)
+      const cur = (u && u.purchases || []).join(", ")
+      const ids = A.products.map((p) => p.id).join(", ")
+      const answer = prompt("Покупки этого аккаунта (id через запятую).\nДоступные: " + ids, cur)
+      if (answer == null) return
+      const purchases = answer.split(",").map((s) => s.trim()).filter(Boolean)
+      await fsMod.updateDoc(fsMod.doc(db, "users", id), { purchases })
+      await reloadAll(); renderAccounts()
+      flash("aFlash", "Покупки обновлены.", true)
+    })
+  } catch (e) { /* Firebase не настроен — остаётся экран входа */ }
+</script>
+</body>
+</html>

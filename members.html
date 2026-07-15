@@ -1,328 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Members area</title>
-<meta name="robots" content="noindex,nofollow">
+<title>Мой кабинет — GN FinTrust</title>
+<meta name="robots" content="noindex">
 <style>
   :root{
-    --text:#2C2C2B; --text2:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
-    --border:#E6E5E3; --blue:#2783DE; --blue-soft:#E5F2FC;
-    --green:#46A171; --green-soft:#E8F1EC;
-    --orange:#D5803B; --orange-soft:#FBEBDE;
-    --red:#E56458; --red-soft:#FCE9E7;
+    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
+    --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
+    --green:#2F7351; --green-soft:#E8F1EC;
+    --head:Georgia,"Times New Roman",serif;
+    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--soft);font-size:16px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
-  a{color:var(--blue);text-decoration:none}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-  header{border-bottom:1px solid var(--border);background:#fff}
-  .nav{max-width:1040px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;width:100%}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);font-size:17px}
-  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
-  .nav-right{display:flex;align-items:center;gap:16px}
-  .who{font-size:13px;color:var(--text2);display:none}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:inherit}
-  .btn-primary{background:var(--blue);color:#fff}
-  .btn-primary:hover{background:#1f6fc0}
-  .btn-ghost{background:#fff;border-color:var(--border);color:var(--text)}
-  .btn-ghost:hover{background:var(--soft)}
-  #signOutBtn{display:none}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  h1,h2,h3{font-family:var(--head)}
+  a{color:var(--red);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  header{border-bottom:3px solid var(--red);background:#fff}
+  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .navr{display:flex;align-items:center;gap:14px;font-size:14px}
+  .navr .who{color:var(--text2)}
+  .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
+  .navr button:hover{border-color:var(--red);color:var(--red)}
 
-  main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:40px 24px 64px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:20px}
-  h1{font-size:26px;letter-spacing:-.01em;margin-bottom:6px}
-  .lede{color:var(--text2);font-size:15px}
+  main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:36px 24px 64px}
   .state{display:none}
-  .state.active{display:block}
-  .center{text-align:center}
-  .center .btn{margin-top:18px}
+  .state.on{display:block}
+  .center{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
+  .center h1{font-size:24px;margin-bottom:10px}
+  .center p{color:var(--text2);font-size:15px;margin-bottom:24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:12px 24px;font-size:15px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:44px}
+  .btn:hover{background:var(--red-dark)}
 
-  .banner{border-radius:8px;padding:14px 16px;font-size:14px;margin-bottom:20px}
-  .banner-orange{background:var(--orange-soft);color:#a35d24;border:1px solid #eed3ba}
-  .banner-green{background:var(--green-soft);color:#2f7351;border:1px solid #bcd9c9}
+  .banner{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:13px 16px;font-size:14.5px;margin-bottom:26px}
+  h1.page{font-size:27px;margin-bottom:6px}
+  .sub{color:var(--text2);margin-bottom:24px;font-size:15px}
+  .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:14px;cursor:pointer;font-family:var(--body)}
+  .pcard:hover{border-color:var(--red)}
+  .pcard .ico{flex:none;width:52px;height:52px;border-radius:10px;background:var(--red-soft);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:24px}
+  .pcard h3{font-size:17px;margin-bottom:3px;font-family:var(--head)}
+  .pcard p{font-size:13.5px;color:var(--text2)}
+  .pcard .kind{margin-left:auto;flex:none;font-size:12px;font-weight:700;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:999px;padding:3px 10px}
+  .pcard .arrow{flex:none;color:var(--text2)}
+  .note{font-size:13px;color:var(--text2);margin-top:18px}
 
-  ol.steps{margin:16px 0 0 20px;display:grid;gap:8px;font-size:15px}
-  .note{font-size:13px;color:var(--text2);margin-top:16px}
-
-  /* Webinar list */
-  .wlist{display:grid;gap:14px;margin-top:20px}
-  .wcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px;cursor:pointer;font-family:inherit;font-size:inherit;color:inherit}
-  .wcard:hover{background:var(--soft)}
-  .wcard .thumb{flex:none;width:48px;height:48px;border-radius:8px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;font-size:22px}
-  .wcard .info{flex:1;min-width:0}
-  .wcard h3{font-size:16px;margin-bottom:2px}
-  .wcard p{font-size:13px;color:var(--text2)}
-  .wcard .go{flex:none;color:var(--text2);font-size:18px}
-  .wcard.locked{cursor:default;background:var(--soft)}
-  .wcard.locked:hover{background:var(--soft)}
-  .wcard.locked .thumb{background:var(--surface2,#F0EFED);filter:grayscale(1)}
-  .wcard.locked h3{color:var(--text2)}
-  .pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
-  .pill-green{background:var(--green-soft);color:#2f7351}
-  .pill-blue{background:var(--blue-soft);color:#1c5f9e}
-  .pill-orange{background:var(--orange-soft);color:#a35d24}
-  .pill-gray{background:#F0EFED;color:var(--text2)}
-
-  /* Webinar detail */
-  #backBtn{margin-bottom:16px}
-  .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:24px}
-  .meta-row .date{font-size:14px;color:var(--text2)}
-  .video-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#191919;border-radius:8px;overflow:hidden;margin-bottom:24px}
-  .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.75);font-size:14px;text-align:center;padding:24px;border:2px dashed rgba(255,255,255,.25);border-radius:8px}
-  .video-placeholder .big{font-size:34px}
-  .prose{font-size:16px;color:var(--text);display:grid;gap:14px;margin-bottom:28px;max-width:680px}
-  .photos{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-  .photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block}
-  .photo-placeholder{width:100%;aspect-ratio:4/3;border-radius:8px;border:2px dashed var(--border);background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text2);font-size:13px}
-  .photo-placeholder .big{font-size:28px}
-  h2.sect{font-size:17px;margin:0 0 14px}
-
-  @media (max-width:600px){
-    .wcard{flex-wrap:wrap}
-    .photos{grid-template-columns:1fr}
-    main{padding:28px 16px 48px}
-    .card{padding:24px 20px}
-  }
+  .back{display:inline-block;font-size:14px;color:var(--text2);margin-bottom:18px;background:none;border:0;cursor:pointer;font-family:var(--body)}
+  .back:hover{color:var(--red)}
+  .dtitle{font-size:26px;margin-bottom:4px}
+  .dkind{font-size:13px;color:var(--text2);margin-bottom:20px}
+  .video{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D;border-radius:10px;overflow:hidden;margin-bottom:22px}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .video .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.8);font-size:14px;text-align:center;padding:20px}
+  .video .ph .big{font-size:38px}
+  .dtext{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px}
+  .dtext p{margin-bottom:12px;font-size:15px}
+  .dtext p:last-child{margin-bottom:0}
 </style>
 </head>
 <body>
-
 <header>
   <div class="nav">
-    <a class="brand" href="index.html"><span class="brand-mark">A</span> Alex Dev</a>
-    <div class="nav-right">
+    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
+    <div class="navr">
       <span class="who" id="who"></span>
-      <button class="btn btn-ghost" id="signOutBtn" type="button">Sign out</button>
+      <button id="outBtn" style="display:none" type="button">Выйти</button>
     </div>
   </div>
 </header>
-
 <main>
 
-  <!-- State: not signed in (default) -->
-  <section class="state active card center" id="stateSignedOut">
-    <h1>Members area</h1>
-    <p class="lede">This page is for members only. Please log in to see your webinars.</p>
-    <a class="btn btn-primary" href="login.html">Log in / Sign up</a>
-  </section>
-
-  <!-- State: signed in, payment not confirmed yet -->
-  <section class="state" id="statePending">
-    <div class="banner banner-orange">⏳ Your account exists, but membership isn't active yet.</div>
-    <div class="card">
-      <h1>One step left</h1>
-      <p class="lede">To activate your access:</p>
-      <ol class="steps">
-        <li>Pay for your membership on the <a href="checkout.html">checkout page</a>.</li>
-        <li>Send the form there so I can match your payment — use the same email you logged in with.</li>
-        <li>I'll activate your account within 24 hours. Then refresh this page.</li>
-      </ol>
-      <p class="note">Already paid? Sit tight — activation is manual and usually takes just a few hours.</p>
+  <div class="state on" id="stateSignedOut">
+    <div class="center">
+      <h1>Мой кабинет</h1>
+      <p>Войдите с логином и паролем, которые мы прислали после покупки.</p>
+      <a class="btn" href="login.html">Войти</a>
     </div>
-  </section>
+  </div>
 
-  <!-- State: signed in and access granted — webinar list -->
-  <section class="state" id="stateActive">
-    <div class="banner banner-green" id="activeBanner">✓ Membership active</div>
-    <h1>Your webinars</h1>
-    <p class="lede">Press a webinar to watch the video, browse photos, and read the notes. 🔒 items need a higher tier.</p>
-    <div class="wlist" id="webinarList"></div>
-    <p class="note">Please don't share your account — memberships keep the webinars running. 🙏</p>
-  </section>
-
-  <!-- State: webinar detail -->
-  <section class="state" id="stateDetail">
-    <button class="btn btn-ghost" id="backBtn" type="button">← All webinars</button>
-    <div class="card">
-      <h1 id="dTitle"></h1>
-      <div class="meta-row"><span id="dPill"></span><span class="date" id="dDate"></span></div>
-      <div class="video-wrap" id="dVideo"></div>
-      <div class="prose" id="dText"></div>
-      <h2 class="sect">Photos</h2>
-      <div class="photos" id="dPhotos"></div>
+  <div class="state" id="stateEmpty">
+    <div class="center">
+      <h1>Пока пусто</h1>
+      <p>В вашем аккаунте ещё нет покупок. Если вы уже оплатили — мы добавим доступ сразу после проверки оплаты.</p>
+      <a class="btn" href="index.html#catalog">Открыть каталог</a>
     </div>
-  </section>
+  </div>
 
-  <!-- State: error -->
-  <section class="state card center" id="stateError">
-    <h1>Something went wrong</h1>
-    <p class="lede" id="errorText">Could not check your membership. Refresh the page to try again.</p>
-  </section>
+  <div class="state" id="stateList">
+    <div class="banner">✓ С возвращением! Всё, что вы купили, — ниже.</div>
+    <h1 class="page">Мои покупки</h1>
+    <p class="sub">Нажмите на материал, чтобы открыть его.</p>
+    <div id="list"></div>
+    <p class="note">Пожалуйста, не передавайте аккаунт другим — каждая покупка помогает делать новые материалы. 🙏</p>
+  </div>
+
+  <div class="state" id="stateDetail">
+    <button class="back" id="backBtn" type="button">← Мои покупки</button>
+    <h1 class="dtitle" id="dTitle"></h1>
+    <p class="dkind" id="dKind"></p>
+    <div class="video" id="dVideo"></div>
+    <div class="dtext" id="dText" style="display:none"></div>
+  </div>
+
+  <div class="state" id="stateError">
+    <div class="center">
+      <h1>Что-то пошло не так</h1>
+      <p id="errText">Не удалось загрузить ваши покупки. Обновите страницу или попробуйте позже.</p>
+      <a class="btn" href="login.html">К странице входа</a>
+    </div>
+  </div>
 
 </main>
 
+<script src="catalog.js"></script>
 <script>
-// =====================================================================
-// YOUR WEBINAR CONTENT — edit this list to add webinars.
-//
-// For each webinar:
-//   minTier: "Supporter", "Member", or "Pro" — the lowest rank that can open it.
-//   video:   PASTE an embed link:
-//            • Google Drive: open the video → Share → Copy link, then change
-//              the ending "/view?usp=..." to "/preview"
-//              e.g. https://drive.google.com/file/d/FILE_ID/preview
-//            • YouTube (unlisted): https://www.youtube.com/embed/VIDEO_ID
-//   photos:  PASTE direct image links (Google Drive image links work too:
-//            https://drive.google.com/thumbnail?id=FILE_ID&sz=w1200 )
-//   text:    paragraphs of notes, separated by a blank line (\n\n).
-// =====================================================================
-var WEBINARS = [
-	{
-		id: "rest-api",
-		title: "Building a REST API from scratch",
-		date: "Jul 24, 2026 · 90 min",
-		minTier: "Supporter",
-		video: "PASTE_VIDEO_EMBED_LINK",
-		photos: ["PASTE_PHOTO_LINK", "PASTE_PHOTO_LINK"],
-		text: "In this session we build a complete REST API from an empty folder: routing, validation, error handling, and a small database.\n\nDownload the source code from the link I send by email after each session. Questions are welcome any time in the chat.",
-	},
-	{
-		id: "github-actions",
-		title: "Deploying with GitHub Actions",
-		date: "Aug 7, 2026 · 60 min",
-		minTier: "Member",
-		video: "PASTE_VIDEO_EMBED_LINK",
-		photos: ["PASTE_PHOTO_LINK", "PASTE_PHOTO_LINK"],
-		text: "A hands-on workshop: automatic deployment of your site on every push, with ready-made workflow templates you can copy.",
-	},
-	{
-		id: "pro-roundtable",
-		title: "Pro roundtable: career Q&A",
-		date: "Aug 21, 2026 · 60 min",
-		minTier: "Pro",
-		video: "PASTE_VIDEO_EMBED_LINK",
-		photos: ["PASTE_PHOTO_LINK"],
-		text: "A small-group discussion for Pro members: portfolios, interviews, and honest career advice.",
-	},
-]
-
-// ---------- rendering (no need to edit below) ----------
-var TIER_RANK = { Supporter: 1, Member: 2, Pro: 3 }
-var TIER_PILL = { Supporter: "pill-green", Member: "pill-blue", Pro: "pill-orange" }
-var STATES = ["stateSignedOut", "statePending", "stateActive", "stateDetail", "stateError"]
-var currentTier = "Supporter"
+var TYPE_ICON = { webinar: "\ud83d\udcfa", seminar: "\ud83c\udfab", course: "\ud83c\udf93" }
+var M = { products: [], content: {}, owned: [] }
 
 function showState(id) {
-	for (var i = 0; i < STATES.length; i++) {
-		document.getElementById(STATES[i]).classList.toggle("active", STATES[i] === id)
-	}
-	window.scrollTo(0, 0)
+	document.querySelectorAll(".state").forEach(function (s) { s.classList.toggle("on", s.id === id) })
 }
 
-function renderWebinars(tier) {
-	currentTier = TIER_RANK[tier] ? tier : "Supporter"
-	document.getElementById("activeBanner").textContent =
-		"\u2713 Membership active \u2014 your rank: " + currentTier
-	var list = document.getElementById("webinarList")
+function renderList() {
+	var list = document.getElementById("list")
 	list.innerHTML = ""
-	var myRank = TIER_RANK[currentTier]
-	WEBINARS.forEach(function (w) {
-		var unlocked = myRank >= TIER_RANK[w.minTier]
-		var el = document.createElement(unlocked ? "button" : "div")
-		el.className = "wcard" + (unlocked ? "" : " locked")
-		if (unlocked) el.type = "button"
-		el.innerHTML =
-			'<span class="thumb">' + (unlocked ? "\ud83c\udfa5" : "\ud83d\udd12") + "</span>" +
-			'<span class="info"><h3>' + w.title + "</h3><p>" + w.date + "</p></span>" +
-			'<span class="pill ' + (unlocked ? TIER_PILL[w.minTier] : "pill-gray") + '">' +
-			(unlocked ? w.minTier + "+" : "Needs " + w.minTier) + "</span>" +
-			(unlocked ? '<span class="go">\u203a</span>' : "")
-		if (unlocked) el.addEventListener("click", function () { openWebinar(w.id) })
-		list.appendChild(el)
+	M.owned.forEach(function (id) {
+		var p = productById(M.products, id)
+		if (!p) return
+		var b = document.createElement("button")
+		b.className = "pcard"
+		b.type = "button"
+		b.innerHTML = '<span class="ico">' + (TYPE_ICON[p.type] || "\ud83c\udfac") + '</span><span><h3></h3><p></p></span><span class="kind"></span><span class="arrow">›</span>'
+		b.querySelector("h3").textContent = p.title
+		b.querySelector("p").textContent = p.desc
+		b.querySelector(".kind").textContent = TYPE_LABEL[p.type] || p.type
+		b.addEventListener("click", function () { openItem(p.id) })
+		list.appendChild(b)
 	})
+	showState(M.owned.length ? "stateList" : "stateEmpty")
 }
 
-function openWebinar(id) {
-	var w = null
-	for (var i = 0; i < WEBINARS.length; i++) if (WEBINARS[i].id === id) w = WEBINARS[i]
-	if (!w) return
-	document.getElementById("dTitle").textContent = w.title
-	document.getElementById("dDate").textContent = w.date
-	var pill = document.getElementById("dPill")
-	pill.className = "pill " + TIER_PILL[w.minTier]
-	pill.textContent = w.minTier + "+"
-
-	var video = document.getElementById("dVideo")
-	if (w.video && w.video.indexOf("PASTE") !== 0) {
-		video.innerHTML = '<iframe src="' + w.video + '" allow="autoplay; fullscreen" allowfullscreen title="Webinar video"></iframe>'
+function openItem(id) {
+	var p = productById(M.products, id)
+	if (!p) return
+	document.getElementById("dTitle").textContent = p.title
+	document.getElementById("dKind").textContent = (TYPE_LABEL[p.type] || p.type) + " · " + p.desc
+	var c = M.content[id] || {}
+	var v = document.getElementById("dVideo")
+	if (isRealLink(c.video)) {
+		v.innerHTML = '<iframe src="' + c.video + '" allow="autoplay; fullscreen" allowfullscreen title="Видео"></iframe>'
 	} else {
-		video.innerHTML = '<div class="video-placeholder"><span class="big">\ud83c\udfac</span><span>The video will appear here.<br>Site owner: paste your Google Drive or YouTube embed link in members.html.</span></div>'
+		v.innerHTML = '<div class="ph"><span class="big">\ud83c\udfac</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
 	}
-
-	var text = document.getElementById("dText")
-	text.innerHTML = ""
-	w.text.split("\n\n").forEach(function (p) {
-		var el = document.createElement("p")
-		el.textContent = p
-		text.appendChild(el)
-	})
-
-	var photos = document.getElementById("dPhotos")
-	photos.innerHTML = ""
-	;(w.photos || []).forEach(function (src) {
-		if (src && src.indexOf("PASTE") !== 0) {
-			var img = document.createElement("img")
-			img.src = src
-			img.alt = w.title
-			img.loading = "lazy"
-			photos.appendChild(img)
-		} else {
-			var ph = document.createElement("div")
-			ph.className = "photo-placeholder"
-			ph.innerHTML = '<span class="big">\ud83d\udcf7</span><span>Photo coming soon</span>'
-			photos.appendChild(ph)
-		}
-	})
+	var t = document.getElementById("dText")
+	if (c.text) {
+		t.innerHTML = ""
+		String(c.text).split(/\n+/).forEach(function (line) {
+			if (!line.trim()) return
+			var par = document.createElement("p")
+			par.textContent = line
+			t.appendChild(par)
+		})
+		t.style.display = "block"
+	} else {
+		t.style.display = "none"
+	}
 	showState("stateDetail")
 }
-
-document.getElementById("backBtn").addEventListener("click", function () {
-	showState("stateActive")
-})
+document.getElementById("backBtn").addEventListener("click", function () { showState("stateList") })
 </script>
-
 <script type="module">
-  async function main(){
-    let fb
-    try {
-      const { firebaseConfig } = await import("./firebase-config.js")
-      if (firebaseConfig.apiKey.startsWith("PASTE_")) return // not configured: keep signed-out state
-      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
-      const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
-      const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
-      const app = initializeApp(firebaseConfig)
-      fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), authMod, fsMod }
-    } catch (e) {
-      return // network/setup problem: keep signed-out state with login button
-    }
+  try {
+    const { firebaseConfig } = await import("./firebase-config.js")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("Сайт ещё не подключён к Firebase (см. README).")
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+    const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+    const app = initializeApp(firebaseConfig)
+    const auth = authMod.getAuth(app)
+    const db = fsMod.getFirestore(app)
 
-    fb.authMod.onAuthStateChanged(fb.auth, async (user) => {
+    authMod.onAuthStateChanged(auth, async (user) => {
       if (!user) { showState("stateSignedOut"); return }
-      const who = document.getElementById("who")
-      who.textContent = user.email || user.displayName || ""
-      who.style.display = "inline"
-      const signOutBtn = document.getElementById("signOutBtn")
-      signOutBtn.style.display = "inline-flex"
-      signOutBtn.onclick = async () => { await fb.authMod.signOut(fb.auth); location.href = "index.html" }
+      document.getElementById("who").textContent = user.email || ""
+      const outBtn = document.getElementById("outBtn")
+      outBtn.style.display = "inline-block"
+      outBtn.addEventListener("click", async () => { await authMod.signOut(auth); location.href = "index.html" })
       try {
-        const snap = await fb.fsMod.getDoc(fb.fsMod.doc(fb.db, "users", user.uid))
-        const data = snap.exists() ? snap.data() : null
-        if (data && data.access === true) {
-          renderWebinars(data.tier || "Supporter")
-          showState("stateActive")
-        } else {
-          showState("statePending")
+        const uSnap = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
+        M.owned = (uSnap.exists() && uSnap.data().purchases) || []
+        const pSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
+        const products = []
+        pSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
+        if (products.length) M.products = products
+        else M.products = DEMO_PRODUCTS
+        for (const id of M.owned) {
+          try {
+            const cSnap = await fsMod.getDoc(fsMod.doc(db, "productContent", id))
+            if (cSnap.exists()) M.content[id] = cSnap.data()
+          } catch (e) { /* нет доступа — пропускаем */ }
         }
+        renderList()
       } catch (e) {
-        document.getElementById("errorText").textContent = "Could not check your membership: " + ((e && e.message) || e)
+        document.getElementById("errText").textContent = "Ошибка: " + (e.message || e)
         showState("stateError")
       }
     })
+  } catch (e) {
+    /* Firebase не настроен — остаётся экран «Войти» */
   }
-  main()
 </script>
 </body>
 </html>

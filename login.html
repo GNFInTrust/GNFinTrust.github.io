@@ -1,183 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Log in — Members</title>
+<title>Вход — GN FinTrust</title>
+<meta name="robots" content="noindex">
 <style>
   :root{
-    --text:#2C2C2B; --text2:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
-    --border:#E6E5E3; --blue:#2783DE; --blue-soft:#E5F2FC;
-    --red:#E56458; --red-soft:#FCE9E7; --green:#46A171; --green-soft:#E8F1EC;
+    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
+    --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
+    --green:#2F7351; --green-soft:#E8F1EC;
+    --head:Georgia,"Times New Roman",serif;
+    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--soft);font-size:16px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
-  a{color:var(--blue);text-decoration:none}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-  header{border-bottom:1px solid var(--border);background:#fff}
-  .nav{max-width:1040px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);font-size:17px}
-  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  h1{font-family:var(--head)}
+  a{color:var(--red);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  header{border-bottom:3px solid var(--red);background:#fff}
+  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
   .back{font-size:14px;color:var(--text2)}
-  .back:hover{color:var(--text)}
-
-  main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px;width:100%;max-width:420px}
-  h1{font-size:24px;letter-spacing:-.01em;margin-bottom:6px;text-align:center}
-  .lede{color:var(--text2);font-size:14px;text-align:center;margin-bottom:24px}
-
-  .btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:8px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:48px;font-family:inherit;width:100%}
-  .btn-google{background:#fff;border-color:var(--border);color:var(--text)}
-  .btn-google:hover{background:var(--soft)}
-  .btn-primary{background:var(--blue);color:#fff}
-  .btn-primary:hover{background:#1f6fc0}
-  .btn-ghost{background:#fff;border-color:var(--border);color:var(--text)}
+  .back:hover{color:var(--red)}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:36px 32px;width:100%;max-width:420px}
+  h1{font-size:25px;text-align:center;margin-bottom:6px}
+  .lede{color:var(--text2);font-size:14.5px;text-align:center;margin-bottom:24px}
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--border);background:#fff;border-radius:6px;padding:12px;font-size:15px;font-weight:700;font-family:var(--body);cursor:pointer;min-height:48px}
+  .gbtn:hover{background:var(--soft)}
+  .div{display:flex;align-items:center;gap:12px;color:var(--text2);font-size:12px;margin:20px 0}
+  .div::before,.div::after{content:"";flex:1;height:1px;background:var(--border)}
+  label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+  input{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body)}
+  input:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .row{display:flex;gap:10px;margin-top:22px}
+  .btn{flex:1;border-radius:6px;padding:13px;font-size:15px;font-weight:700;font-family:var(--body);cursor:pointer;border:1px solid transparent;min-height:48px}
+  .btn-primary{background:var(--red);color:#fff;border:0}
+  .btn-primary:hover{background:var(--red-dark)}
+  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft)}
-
-  .divider{display:flex;align-items:center;gap:12px;color:var(--text2);font-size:13px;margin:20px 0}
-  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
-
-  form{display:grid;gap:14px}
-  .field{display:flex;flex-direction:column;gap:5px}
-  label{font-size:13px;font-weight:600;color:var(--text2)}
-  input{font:inherit;font-size:15px;padding:11px 12px;border:1px solid var(--border);border-radius:8px;min-height:44px;width:100%;color:var(--text)}
-  input:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-  .msg{display:none;border-radius:8px;padding:12px 14px;font-size:14px;margin-top:16px}
-  .msg.error{display:block;background:var(--red-soft);color:#a13a31;border:1px solid #f0c4bf}
-  .msg.ok{display:block;background:var(--green-soft);color:#2f7351;border:1px solid #bcd9c9}
-  .fine{font-size:13px;color:var(--text2);text-align:center;margin-top:20px}
+  .msg{display:none;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
+  .msg.err{background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f}
+  .msg.good{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green)}
+  .note{font-size:12.5px;color:var(--text2);text-align:center;margin-top:18px}
 </style>
 </head>
 <body>
-
 <header>
   <div class="nav">
-    <a class="brand" href="index.html"><span class="brand-mark">A</span> Alex Dev</a>
-    <a class="back" href="index.html">← Back to site</a>
+    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
+    <a class="back" href="index.html">← На сайт</a>
   </div>
 </header>
-
 <main>
   <div class="card">
-    <h1>Members area</h1>
-    <p class="lede">Log in or create an account to access your webinars.</p>
-
-    <button class="btn btn-google" id="googleBtn" type="button">
-      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
-      Continue with Google
+    <h1>Мой кабинет</h1>
+    <p class="lede">Войдите с логином и паролем, которые мы прислали после покупки.</p>
+    <button class="gbtn" id="googleBtn" type="button">
+      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Войти через Google
     </button>
-
-    <div class="divider">or use email</div>
-
-    <form id="emailForm">
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" type="email" required autocomplete="email" placeholder="you@gmail.com">
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters">
-      </div>
-      <div class="row2">
-        <button class="btn btn-primary" type="submit">Log in</button>
-        <button class="btn btn-ghost" id="signupBtn" type="button">Sign up</button>
-      </div>
-    </form>
-
-    <div class="msg" id="msg" role="alert"></div>
-    <p class="fine">New account? Sign up, pay on the <a href="checkout.html">checkout page</a>, and your access is activated within 24 hours.</p>
+    <div class="div">или по почте</div>
+    <label for="email">Почта</label>
+    <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+    <label for="pass">Пароль</label>
+    <input type="password" id="pass" placeholder="Не менее 6 символов" autocomplete="current-password">
+    <div class="row">
+      <button class="btn btn-primary" id="loginBtn" type="button">Войти</button>
+      <button class="btn btn-ghost" id="signupBtn" type="button">Регистрация</button>
+    </div>
+    <div class="msg" id="msg"></div>
+    <p class="note">Купили, но не получили логин? Мы отправляем доступ в WhatsApp, на почту или в Telegram после подтверждения оплаты.</p>
   </div>
 </main>
-
 <script type="module">
   const msg = document.getElementById("msg")
-  function show(kind, text){ msg.className = "msg " + kind; msg.textContent = text }
-
+  function show(text, good) {
+    msg.textContent = text
+    msg.className = "msg " + (good ? "good" : "err")
+    msg.style.display = "block"
+  }
   let fb = null
-  async function initFirebase(){
-    if (fb) return fb
+  async function boot() {
     try {
       const { firebaseConfig } = await import("./firebase-config.js")
       if (firebaseConfig.apiKey.startsWith("PASTE_")) {
-        show("error", "Firebase is not configured yet. The site owner must fill in firebase-config.js (see README).")
-        return null
+        show("Вход ещё не настроен — владелец сайта должен добавить ключи Firebase в firebase-config.js (см. README).", false)
+        return
       }
       const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
       const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
       const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
       const app = initializeApp(firebaseConfig)
       fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), authMod, fsMod }
-      return fb
     } catch (e) {
-      show("error", "Could not load the sign-in service. Check your internet connection and try again.")
-      return null
+      show("Не удалось загрузить систему входа: " + (e.message || e), false)
     }
   }
+  await boot()
 
-  // Create the member record in the database on first login (access starts as false).
-  async function ensureUserDoc(user){
-    const { db, fsMod } = fb
-    const ref = fsMod.doc(db, "users", user.uid)
-    const snap = await fsMod.getDoc(ref)
+  async function ensureUserDoc(user) {
+    const ref = fb.fsMod.doc(fb.db, "users", user.uid)
+    const snap = await fb.fsMod.getDoc(ref)
     if (!snap.exists()) {
-      await fsMod.setDoc(ref, {
+      await fb.fsMod.setDoc(ref, {
         name: user.displayName || "",
         email: user.email || "",
-        access: false,
-        tier: "",
+        admin: false,
+        purchases: [],
         createdAt: new Date().toISOString(),
       })
     }
   }
-
-  async function finish(user){
+  async function finish(user) {
     await ensureUserDoc(user)
-    show("ok", "Signed in! Redirecting…")
+    show("Добро пожаловать! Переходим…", true)
     location.href = "members.html"
   }
 
   document.getElementById("googleBtn").addEventListener("click", async () => {
-    const f = await initFirebase(); if (!f) return
+    if (!fb) return
     try {
-      const provider = new f.authMod.GoogleAuthProvider()
-      const result = await f.authMod.signInWithPopup(f.auth, provider)
-      await finish(result.user)
-    } catch (e) {
-      if (e && e.code !== "auth/popup-closed-by-user") show("error", "Google sign-in failed: " + (e.message || e))
-    }
+      const res = await fb.authMod.signInWithPopup(fb.auth, new fb.authMod.GoogleAuthProvider())
+      await finish(res.user)
+    } catch (e) { show(e.message || String(e), false) }
   })
-
-  document.getElementById("emailForm").addEventListener("submit", async (ev) => {
-    ev.preventDefault()
-    const f = await initFirebase(); if (!f) return
-    const email = document.getElementById("email").value.trim()
-    const password = document.getElementById("password").value
+  document.getElementById("loginBtn").addEventListener("click", async () => {
+    if (!fb) return
     try {
-      const result = await f.authMod.signInWithEmailAndPassword(f.auth, email, password)
-      await finish(result.user)
-    } catch (e) {
-      if (e && (e.code === "auth/user-not-found" || e.code === "auth/invalid-credential")) {
-        show("error", "No account found with these details. Press “Sign up” to create one.")
-      } else {
-        show("error", "Login failed: " + ((e && e.message) || e))
-      }
-    }
+      const res = await fb.authMod.signInWithEmailAndPassword(fb.auth, email.value.trim(), pass.value)
+      await finish(res.user)
+    } catch (e) { show("Не удалось войти: " + (e.message || e), false) }
   })
-
   document.getElementById("signupBtn").addEventListener("click", async () => {
-    const f = await initFirebase(); if (!f) return
-    const email = document.getElementById("email").value.trim()
-    const password = document.getElementById("password").value
-    if (!email || password.length < 6) { show("error", "Enter your email and a password of at least 6 characters, then press Sign up."); return }
+    if (!fb) return
     try {
-      const result = await f.authMod.createUserWithEmailAndPassword(f.auth, email, password)
-      await finish(result.user)
-    } catch (e) {
-      if (e && e.code === "auth/email-already-in-use") show("error", "This email already has an account — use Log in instead.")
-      else show("error", "Sign up failed: " + ((e && e.message) || e))
-    }
+      const res = await fb.authMod.createUserWithEmailAndPassword(fb.auth, email.value.trim(), pass.value)
+      await finish(res.user)
+    } catch (e) { show("Не удалось зарегистрироваться: " + (e.message || e), false) }
   })
 </script>
 </body>

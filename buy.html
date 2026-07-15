@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оплата — GN FinTrust</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
+    --text:#211D1D; --text2:#6E6867; --canvas:#FFFFFF; --soft:#FAF7F6; --border:#E8E2E1;
+    --green:#2F7351; --green-soft:#E8F1EC;
+    --head:Georgia,"Times New Roman",serif;
+    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  h1,h2,h3{font-family:var(--head)}
+  a{color:var(--red);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  header{border-bottom:3px solid var(--red);background:#fff}
+  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .back{font-size:14px;color:var(--text2)}
+  .back:hover{color:var(--red)}
+
+  main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:36px 24px 64px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:28px;margin-bottom:18px}
+  h1{font-size:26px;margin-bottom:4px}
+  .lede{color:var(--text2);font-size:15px}
+
+  .item{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--border);padding-bottom:14px;margin-bottom:14px}
+  .item h2{font-size:19px}
+  .item .kind{font-size:12px;font-weight:700;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;font-family:var(--body)}
+  .item .price{font-family:var(--head);font-size:24px;font-weight:700;color:var(--red);white-space:nowrap}
+  .item p{font-size:13.5px;color:var(--text2)}
+
+  h3.step{font-size:17px;margin:0 0 12px}
+  h3.step .n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:13px;font-family:var(--body);margin-right:8px;vertical-align:-3px}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px}
+  .tab{flex:1;padding:11px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--text2)}
+  .tab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .pane{display:none}
+  .pane.on{display:block}
+  .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:10px;background:var(--soft)}
+  .payrow .lbl{font-size:13px;color:var(--text2)}
+  .payrow .val{font-weight:700;font-size:15px}
+  .copy{border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .copy:hover{border-color:var(--red);color:var(--red)}
+  .qrs{display:flex;gap:14px;flex-wrap:wrap}
+  .qrs img{width:180px;height:180px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:#fff}
+  .qr-ph{width:180px;height:180px;border:2px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text2);font-size:12px;text-align:center;padding:10px}
+  .qr-ph .big{font-size:30px}
+  .hint{font-size:13px;color:var(--text2);margin-top:10px}
+
+  label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+  input[type=text],input[type=email]{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff}
+  input:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{border:1px solid var(--border);border-radius:999px;padding:10px 18px;background:#fff;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--text2)}
+  .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .submit{width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:6px;padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer}
+  .submit:hover{background:var(--red-dark)}
+  .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:16px;margin-top:18px;font-size:14.5px}
+  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
+    <a class="back" href="index.html#catalog">← Назад в каталог</a>
+  </div>
+</header>
+
+<main>
+  <h1>Оформление покупки</h1>
+  <p class="lede" style="margin-bottom:22px">Одна оплата — доступ навсегда. Без подписок.</p>
+
+  <div class="card">
+    <div class="item">
+      <div>
+        <h2><span id="iTitle">…</span><span class="kind" id="iKind"></span></h2>
+        <p id="iDesc"></p>
+      </div>
+      <span class="price" id="iPrice"></span>
+    </div>
+
+    <h3 class="step"><span class="n">1</span>Оплатите одним из двух способов</h3>
+    <div class="tabs" role="tablist">
+      <button class="tab on" id="tabNum" type="button">📞 По номеру</button>
+      <button class="tab" id="tabQr" type="button">⬛ QR-код</button>
+    </div>
+    <div class="pane on" id="paneNum"></div>
+    <div class="pane" id="paneQr"><div class="qrs" id="qrList"></div></div>
+    <p class="hint">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="step"><span class="n">2</span>Куда прислать ваш логин?</h3>
+    <p class="lede">Когда мы подтвердим оплату, пришлём личный логин, пароль и вашу покупку.</p>
+    <label>Способ связи</label>
+    <div class="chips" id="chips">
+      <button class="chip on" data-m="WhatsApp" type="button">WhatsApp</button>
+      <button class="chip" data-m="Email" type="button">Почта</button>
+      <button class="chip" data-m="Telegram" type="button">Telegram</button>
+    </div>
+    <label for="contact" id="contactLabel">Ваш номер WhatsApp</label>
+    <input type="text" id="contact" placeholder="+996 700 123 456">
+    <label for="buyer">Ваше имя</label>
+    <input type="text" id="buyer" placeholder="Айзат">
+    <button class="submit" id="send" type="button">Я оплатил(а) — пришлите логин</button>
+    <div class="ok" id="ok">✓ <strong>Заявка получена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
+    <div class="err" id="err"></div>
+  </div>
+</main>
+
+<script src="catalog.js"></script>
+<script>
+var OWNER_EMAIL = "you@example.com" // TODO: ваша почта (используется, пока не настроен Firebase)
+var state = { products: DEMO_PRODUCTS, payment: DEMO_PAYMENT, method: "WhatsApp", db: null, fsMod: null }
+
+var PLACEHOLDERS = {
+	WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456"],
+	Email: ["Ваша почта", "you@example.com"],
+	Telegram: ["Ваш Telegram", "@username"],
+}
+var METHOD_RU = { WhatsApp: "WhatsApp", Email: "почту", Telegram: "Telegram" }
+
+function currentItem() {
+	var id = new URLSearchParams(location.search).get("item")
+	return productById(state.products, id) || state.products[0]
+}
+
+function renderItem() {
+	var p = currentItem()
+	document.getElementById("iTitle").textContent = p.title
+	document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
+	document.getElementById("iDesc").textContent = p.desc
+	document.getElementById("iPrice").textContent = "$" + Number(p.price)
+}
+
+function renderPayment() {
+	var pane = document.getElementById("paneNum")
+	pane.innerHTML = ""
+	state.payment.numbers.forEach(function (n) {
+		var row = document.createElement("div")
+		row.className = "payrow"
+		row.innerHTML = '<span><span class="lbl"></span><br><span class="val"></span></span><button class="copy" type="button">Копировать</button>'
+		row.querySelector(".lbl").textContent = n.label
+		row.querySelector(".val").textContent = n.value
+		row.querySelector(".copy").addEventListener("click", function () {
+			navigator.clipboard && navigator.clipboard.writeText(n.value)
+			this.textContent = "Скопировано ✓"
+		})
+		pane.appendChild(row)
+	})
+	var qr = document.getElementById("qrList")
+	qr.innerHTML = ""
+	state.payment.qrs.forEach(function (src) {
+		if (isRealLink(src)) {
+			var img = document.createElement("img")
+			img.src = src
+			img.alt = "QR-код для оплаты"
+			qr.appendChild(img)
+		} else {
+			var ph = document.createElement("div")
+			ph.className = "qr-ph"
+			ph.innerHTML = '<span class="big">\u2b1b</span><span>QR-код скоро появится — оплатите по номеру</span>'
+			qr.appendChild(ph)
+		}
+	})
+}
+
+document.getElementById("tabNum").addEventListener("click", function () { setTab(true) })
+document.getElementById("tabQr").addEventListener("click", function () { setTab(false) })
+function setTab(num) {
+	document.getElementById("tabNum").classList.toggle("on", num)
+	document.getElementById("tabQr").classList.toggle("on", !num)
+	document.getElementById("paneNum").classList.toggle("on", num)
+	document.getElementById("paneQr").classList.toggle("on", !num)
+}
+
+document.getElementById("chips").addEventListener("click", function (e) {
+	var btn = e.target.closest(".chip")
+	if (!btn) return
+	state.method = btn.getAttribute("data-m")
+	document.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("on", c === btn) })
+	document.getElementById("contactLabel").textContent = PLACEHOLDERS[state.method][0]
+	document.getElementById("contact").placeholder = PLACEHOLDERS[state.method][1]
+})
+
+document.getElementById("send").addEventListener("click", async function () {
+	var contact = document.getElementById("contact").value.trim()
+	var buyer = document.getElementById("buyer").value.trim()
+	var err = document.getElementById("err")
+	err.style.display = "none"
+	if (!contact) { err.textContent = "Укажите контакт (" + state.method + "), чтобы мы могли прислать логин."; err.style.display = "block"; return }
+	var p = currentItem()
+	if (state.db) {
+		try {
+			await state.fsMod.addDoc(state.fsMod.collection(state.db, "orders"), {
+				itemId: p.id, itemTitle: p.title, price: Number(p.price),
+				method: state.method, contact: contact, buyer: buyer,
+				status: "new", createdAt: new Date().toISOString(),
+			})
+		} catch (e) {
+			err.textContent = "Не удалось отправить заявку: " + (e.message || e)
+			err.style.display = "block"
+			return
+		}
+	} else {
+		var body = "НОВАЯ ЗАЯВКА — " + p.title + " ($" + p.price + ")\nИмя: " + buyer + "\nПрислать логин через " + state.method + ": " + contact
+		location.href = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent("Заявка: " + p.title) + "&body=" + encodeURIComponent(body)
+	}
+	document.getElementById("okMethod").textContent = METHOD_RU[state.method]
+	document.getElementById("ok").style.display = "block"
+	this.disabled = true
+	this.style.opacity = ".6"
+})
+
+renderItem()
+renderPayment()
+</script>
+<script type="module">
+  try {
+    const { firebaseConfig } = await import("./firebase-config.js")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+    const db = fsMod.getFirestore(initializeApp(firebaseConfig))
+    state.db = db; state.fsMod = fsMod
+    const prodSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
+    const products = []
+    prodSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
+    if (products.length) { state.products = products; renderItem() }
+    const paySnap = await fsMod.getDoc(fsMod.doc(db, "settings", "payment"))
+    if (paySnap.exists()) { state.payment = paySnap.data(); renderPayment() }
+  } catch (e) { /* остаются демо-реквизиты */ }
+</script>
+</body>
+</html>
