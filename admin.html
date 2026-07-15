@@ -53,7 +53,11 @@
   .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px}
   .tag.new{background:#FFF3E2;color:#9a5b00;border:1px solid #f0d9b5}
   .tag.done{background:var(--green-soft);color:var(--green);border:1px solid #bcd9c9}
+  .tag.admin{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border)}
   .muted{color:var(--text2);font-size:12.5px}
+  .price-input{width:110px}
+  .tip{background:#F8FAFC;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:14px 16px;font-size:13.5px;color:var(--text2);margin-bottom:20px}
+  .tip strong{color:var(--text)}
   .contact a{font-weight:700}
   .empty{color:var(--text2);font-size:14px;padding:18px 4px}
 
@@ -76,7 +80,7 @@
   .credbox h3{font-size:15px;margin-bottom:8px}
   .credbox pre{background:#fff;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;font-family:Consolas,Menlo,monospace}
   .credbox .row{display:flex;gap:8px;flex-wrap:wrap}
-  @media (max-width:760px){ form.grid{grid-template-columns:1fr} }
+  @media (max-width:760px){ form.grid{grid-template-columns:1fr} .price-input{width:80px} }
 </style>
 </head>
 <body>
@@ -93,7 +97,7 @@
 
   <div id="gate">
     <div class="gatebox">
-      <h1>Только для админов</h1>
+      <h1>Только для ��дминов</h1>
       <p id="gateText">Войдите в аккаунт админа, чтобы открыть панель. Как сделать себя админом — в README.</p>
       <a class="btn" href="login.html">Войти</a>
     </div>
@@ -101,10 +105,12 @@
 
   <div id="panelWrap" style="display:none">
     <h1 class="page">Админ-панель</h1>
-    <p class="lede">Заявки, каталог, способы оплаты и аккаунты покупателей — всё хранится в вашей базе Firebase.</p>
+    <p class="lede">Здесь управляют сайтом. Для каждого раздела — своя вкладка. Не нужно знать программирование.</p>
+    <div class="tip"><strong>С чего начать:</strong> вкладка «Цены» — быстро менять цены, «Каталог» — добавлять новые материалы, «Аккаунты» — создавать логины для покупателей.</div>
 
     <div class="mtabs">
       <button class="mtab on" data-p="orders" type="button">📥 Заявки</button>
+      <button class="mtab" data-p="prices" type="button">💰 Цены</button>
       <button class="mtab" data-p="products" type="button">🎬 Каталог</button>
       <button class="mtab" data-p="payment" type="button">💳 Способы оплаты</button>
       <button class="mtab" data-p="accounts" type="button">👥 Аккаунты</button>
@@ -116,9 +122,18 @@
       <div id="ordersWrap"></div>
     </div>
 
+    <div class="panel" id="p-prices">
+      <h2>Изменить цены</h2>
+      <p class="sub">Здесь можно быстро поменять цену любого материала. Изменения сразу появляются на главной и на странице оплаты.</p>
+      <div class="tip"><strong>Подсказка:</strong> введите новую цену и нажмите «Сохранить цену». Больше ничего перезаписывать не нужно.</div>
+      <div id="pricesWrap"></div>
+      <div class="formfoot"><span class="flash" id="priceFlash"></span></div>
+    </div>
+
     <div class="panel" id="p-products">
       <h2>Добавить вебинар, семинар или курс</h2>
       <p class="sub">Материал сразу появится на главной странице. Ссылки на видео — из Google Диска (формат /preview) или YouTube (embed).</p>
+      <div class="tip"><strong>Для видео:</strong> загрузите файл на Google Диск, откройте доступ по ссылке и вставьте ссылку вида <code>https://drive.google.com/file/d/FILE_ID/preview</code>.</div>
       <form class="grid" id="prodForm">
         <div><label for="fType">Тип</label>
           <select id="fType"><option value="webinar">Вебинар</option><option value="seminar">Семинар</option><option value="course">Курс</option></select></div>
@@ -127,7 +142,7 @@
         <div class="full"><label for="fDesc">Короткое описание</label><input type="text" id="fDesc" placeholder="Что получит покупатель — одним предложением"></div>
         <div class="full"><label for="fPreview">Ссылка на видео-анонс (видят все)</label><input type="text" id="fPreview" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
         <div class="full"><label for="fFull">Полное видео (только покупателям)</label><input type="text" id="fFull" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
-        <div class="full"><label for="fText">Материалы / текст (только покупателям)</label><textarea id="fText" placeholder="Конспект, ссылки, домашнее задание…"></textarea></div>
+        <div class="full"><label for="fText">Материалы / текст (только покупателям)</label><textarea id="fText" placeholder="Конспек��, ссылки, домашнее задание…"></textarea></div>
       </form>
       <div class="formfoot">
         <button class="btn" id="prodSave" type="button">Сохранить</button>
@@ -246,6 +261,20 @@ function renderProducts() {
 	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Название</th><th>Цена</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
 }
 
+function renderPrices() {
+	var w = document.getElementById("pricesWrap")
+	if (!A.products.length) { w.innerHTML = '<p class="empty">Каталог пуст — добавьте материалы во вкладке «Каталог».</p>'; return }
+	var rows = A.products.map(function (p) {
+		return "<tr>" +
+			"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
+			"<td><strong>" + esc(p.title) + "</strong></td>" +
+			'<td><input type="number" class="price-input" min="0" step="1" id="price-' + esc(p.id) + '" value="' + esc(p.price) + '"></td>' +
+			'<td><button class="btn btn-sm" data-save-price="' + esc(p.id) + '">Сохранить цену</button></td>' +
+			"</tr>"
+	}).join("")
+	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Материал</th><th>Цена ($)</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+}
+
 function renderPayment() {
 	var w = document.getElementById("numWrap")
 	var nums = A.payment.numbers || []
@@ -285,15 +314,17 @@ function renderAccounts() {
 			return p ? p.title : id
 		})
 		return "<tr>" +
-			"<td><strong>" + esc(u.email) + "</strong>" + (u.admin ? ' <span class="tag done">админ</span>' : "") + "</td>" +
+			"<td><strong>" + esc(u.email) + "</strong>" + (u.admin ? ' <span class="tag admin">админ</span>' : "") + "</td>" +
 			"<td>" + (names.length ? esc(names.join(", ")) : '<span class="muted">нет покупок</span>') + "</td>" +
-			'<td style="text-align:right"><button class="btn btn-ghost btn-sm" data-accedit="' + esc(u._id) + '">Изменить покупки</button></td>' +
+			'<td style="text-align:right">' +
+			(u.admin ? '' : '<button class="btn btn-ghost btn-sm" data-makeadmin="' + esc(u._id) + '">Сделать админом</button> ') +
+			'<button class="btn btn-ghost btn-sm" data-accedit="' + esc(u._id) + '">Изменить покупки</button></td>' +
 			"</tr>"
 	}).join("")
 	w.innerHTML = "<table><thead><tr><th>Логин</th><th>Покупки</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
 }
 
-function renderAll(email) { showAdminUI(email); renderOrders(); renderProducts(); renderPayment(); renderAccounts() }
+function renderAll(email) { showAdminUI(email); renderOrders(); renderPrices(); renderProducts(); renderPayment(); renderAccounts() }
 function showAdminUI(email) {
 	document.getElementById("gate").style.display = "none"
 	document.getElementById("panelWrap").style.display = "block"
@@ -366,6 +397,19 @@ document.getElementById("aGen").addEventListener("click", function () {
       if (done) { await fsMod.updateDoc(fsMod.doc(db, "orders", done), { status: "done" }) }
       if (del) { if (!confirm("Удалить заявку?")) return; await fsMod.deleteDoc(fsMod.doc(db, "orders", del)) }
       if (done || del) { await reloadAll(); renderOrders() }
+    })
+
+    // ----- Цены -----
+    document.getElementById("pricesWrap").addEventListener("click", async (e) => {
+      const id = e.target.getAttribute("data-save-price")
+      if (!id) return
+      const price = Number(document.getElementById("price-" + id).value)
+      if (!(price >= 0)) { flash("priceFlash", "Цена должна быть числом.", false); return }
+      try {
+        await fsMod.updateDoc(fsMod.doc(db, "products", id), { price })
+        flash("priceFlash", "Цена сохранена — на сайте уже обновилась.", true)
+        await reloadAll(); renderPrices(); renderProducts()
+      } catch (err) { flash("priceFlash", "Ошибка: " + (err.message || err), false) }
     })
 
     // ----- Каталог -----
@@ -481,6 +525,13 @@ document.getElementById("aGen").addEventListener("click", function () {
     })
     document.getElementById("accWrap").addEventListener("click", async (e) => {
       const id = e.target.getAttribute("data-accedit")
+      const makeAdmin = e.target.getAttribute("data-makeadmin")
+      if (makeAdmin) {
+        if (!confirm("Сделать этого пользователя админом? Он сможет управлять всем сайтом.")) return
+        await fsMod.updateDoc(fsMod.doc(db, "users", makeAdmin), { admin: true })
+        await reloadAll(); renderAccounts()
+        flash("aFlash", "Пользователь стал админом.", true)
+      }
       if (!id) return
       const u = A.accounts.find((x) => x._id === id)
       const cur = (u && u.purchases || []).join(", ")
