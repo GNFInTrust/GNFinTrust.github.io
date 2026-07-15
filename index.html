@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support My Work — Webinars & More</title>
+<meta name="description" content="Become a member: support my work and get access to live webinars, recordings, and source code.">
+<style>
+  :root{
+    --text:#2C2C2B; --text2:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
+    --surface2:#F0EFED; --border:#E6E5E3;
+    --blue:#2783DE; --blue-soft:#E5F2FC;
+    --green:#46A171; --green-soft:#E8F1EC;
+    --orange:#D5803B; --orange-soft:#FBEBDE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--canvas);font-size:16px;line-height:1.5}
+  a{color:var(--blue);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);z-index:10}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);font-size:17px}
+  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  nav.links{display:flex;gap:24px;align-items:center}
+  nav.links a{color:var(--text2);font-size:14px}
+  nav.links a:hover{color:var(--text)}
+  nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:#1f6fc0}
+  .btn-outline{border-color:var(--border);color:var(--text);background:#fff}
+  .btn-outline:hover{background:var(--soft)}
+  .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
+
+  /* Hero */
+  .hero{padding:72px 0 64px;text-align:center}
+  .hero .eyebrow{display:inline-block;background:var(--blue-soft);color:#1c5f9e;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;margin-bottom:20px}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:-.02em;max-width:720px;margin:0 auto 16px}
+  .hero p{color:var(--text2);font-size:18px;max-width:600px;margin:0 auto 32px}
+  .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+  section{padding:56px 0}
+  .section-soft{background:var(--soft)}
+  h2{font-size:28px;letter-spacing:-.01em;margin-bottom:8px}
+  .sub{color:var(--text2);margin-bottom:36px;max-width:640px}
+
+  /* Tiers */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+  .tier{background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;display:flex;flex-direction:column}
+  .tier.popular{border-color:var(--blue);box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04)}
+  .tier .tag{align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--blue-soft);color:#1c5f9e;margin-bottom:14px}
+  .tier h3{font-size:18px;margin-bottom:6px}
+  .price{font-size:34px;font-weight:700;letter-spacing:-.02em}
+  .price span{font-size:14px;color:var(--text2);font-weight:400}
+  .tier ul{list-style:none;margin:20px 0 24px;display:grid;gap:10px;flex:1}
+  .tier li{display:flex;gap:10px;font-size:15px;color:var(--text)}
+  .tier li svg{flex:none;margin-top:3px}
+  .tier .btn{width:100%}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .step{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px}
+  .step .num{width:32px;height:32px;border-radius:999px;background:var(--blue);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:15px}
+  .step h3{font-size:16px;margin-bottom:6px}
+  .step p{color:var(--text2);font-size:14px}
+
+  /* Webinars */
+  .webinar{display:flex;align-items:center;gap:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+  .webinar + .webinar{margin-top:12px}
+  .date-chip{flex:none;width:64px;text-align:center;background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:8px 4px}
+  .date-chip .d{font-size:20px;font-weight:700;line-height:1.1}
+  .date-chip .m{font-size:12px;color:var(--text2);text-transform:uppercase}
+  .webinar .info{flex:1;min-width:0}
+  .webinar h3{font-size:16px;margin-bottom:4px}
+  .webinar p{color:var(--text2);font-size:14px}
+  .pill{flex:none;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+  .pill-green{background:var(--green-soft);color:#2f7351}
+  .pill-orange{background:var(--orange-soft);color:#a35d24}
+
+  /* FAQ */
+  .faq details{border:1px solid var(--border);border-radius:8px;background:#fff;padding:16px 20px}
+  .faq details + details{margin-top:12px}
+  .faq summary{font-weight:600;cursor:pointer;font-size:15px}
+  .faq details p{margin-top:10px;color:var(--text2);font-size:15px}
+
+  footer{border-top:1px solid var(--border);padding:32px 0;color:var(--text2);font-size:14px}
+  .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  @media (max-width:760px){
+    .hero{padding:48px 0 40px}
+    .hero h1{font-size:32px}
+    .tiers,.steps{grid-template-columns:1fr}
+    nav.links a.hide-m{display:none}
+    .webinar{flex-wrap:wrap;align-items:flex-start}
+    .webinar .info{flex:1 1 calc(100% - 84px)}
+    .webinar .pill{margin-left:84px}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#"><span class="brand-mark">A</span> Alex Dev <!-- TODO: your name --></a>
+    <nav class="links">
+      <a class="hide-m" href="#tiers">Membership</a>
+      <a class="hide-m" href="#webinars">Webinars</a>
+      <a class="hide-m" href="#faq">FAQ</a>
+      <a href="login.html">Log in</a>
+      <a class="btn btn-primary btn-sm" href="#tiers">Become a member</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero wrap">
+    <span class="eyebrow">Live webinars · Recordings · Source code</span>
+    <h1>Support my work and get access to member‑only webinars</h1>
+    <p>Choose a membership, send your payment, and I'll personally send you access to live webinars, all recordings, and extra materials.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#tiers">Choose a membership</a>
+      <a class="btn btn-outline" href="#how">How it works</a>
+    </div>
+  </div>
+
+  <section class="section-soft" id="tiers">
+    <div class="wrap">
+      <h2>Membership tiers</h2>
+      <p class="sub">Pick the level that fits you. Every tier directly supports new content.</p>
+      <div class="tiers">
+
+        <div class="tier">
+          <h3>Supporter</h3>
+          <div class="price">$5 <span>/ month</span></div>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Access to 1 live webinar per month</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Member updates by email</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>My sincere thanks 🙏</li>
+          </ul>
+          <a class="btn btn-outline" href="checkout.html?tier=supporter">Join for $5</a>
+        </div>
+
+        <div class="tier popular">
+          <span class="tag">Most popular</span>
+          <h3>Member</h3>
+          <div class="price">$15 <span>/ month</span></div>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>All live webinars every month</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Full recordings archive</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Slides & source code downloads</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority Q&A during streams</li>
+          </ul>
+          <a class="btn btn-primary" href="checkout.html?tier=member">Join for $15</a>
+        </div>
+
+        <div class="tier">
+          <h3>Pro</h3>
+          <div class="price">$30 <span>/ month</span></div>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Member</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1‑on‑1 monthly video call (30 min)</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Private chat access</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 5" stroke="#46A171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Vote on upcoming webinar topics</li>
+          </ul>
+          <a class="btn btn-outline" href="checkout.html?tier=pro">Join for $30</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="sub">Access is granted manually within 24 hours — no automated paywall, just a direct exchange.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Choose a tier & pay</h3>
+          <p>Click a membership button and complete the payment with your preferred method (PayPal, card, Ko‑fi, or bank transfer).</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Send me your receipt</h3>
+          <p>Email the payment confirmation and the name you paid with to <a href="mailto:you@example.com">you@example.com</a>. <!-- TODO: your email --></p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Get your access</h3>
+          <p>Within 24 hours you'll receive the webinar links, the recordings archive, and any tier extras by email.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-soft" id="webinars">
+    <div class="wrap">
+      <h2>Upcoming webinars</h2>
+      <p class="sub">Live sessions are held on Zoom. Members get the link by email one day before.</p>
+
+      <div class="webinar">
+        <div class="date-chip"><div class="d">24</div><div class="m">Jul</div></div>
+        <div class="info">
+          <h3>Building a REST API from scratch</h3>
+          <p>Live coding session · 90 minutes · Q&A included</p>
+        </div>
+        <span class="pill pill-green">Open to all tiers</span>
+      </div>
+
+      <div class="webinar">
+        <div class="date-chip"><div class="d">07</div><div class="m">Aug</div></div>
+        <div class="info">
+          <h3>Deploying with GitHub Actions</h3>
+          <p>Workshop · 60 minutes · Templates provided</p>
+        </div>
+        <span class="pill pill-green">Member & Pro</span>
+      </div>
+
+      <div class="webinar">
+        <div class="date-chip"><div class="d">21</div><div class="m">Aug</div></div>
+        <div class="info">
+          <h3>Pro roundtable: career Q&A</h3>
+          <p>Small group discussion · 60 minutes</p>
+        </div>
+        <span class="pill pill-orange">Pro only</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>FAQ</h2>
+      <p class="sub">Quick answers to common questions.</p>
+      <div class="faq">
+        <details>
+          <summary>How fast do I get access after paying?</summary>
+          <p>Usually within a few hours, always within 24 hours. You'll get an email with all links for your tier.</p>
+        </details>
+        <details>
+          <summary>Which payment methods do you accept?</summary>
+          <p>PayPal, card payments, Ko‑fi, and direct bank transfer. If none of these work for you, email me and we'll figure something out.</p>
+        </details>
+        <details>
+          <summary>Can I cancel anytime?</summary>
+          <p>Yes. Memberships are month to month — just stop the payment and your access ends at the close of the paid month.</p>
+        </details>
+        <details>
+          <summary>I missed a live webinar. Can I watch it later?</summary>
+          <p>Member and Pro tiers include the full recordings archive, so you can catch up anytime.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Alex Dev · All rights reserved</span>
+    <span>Questions? <a href="mailto:you@example.com">you@example.com</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

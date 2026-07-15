@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supporter Tracker — Private</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{
+    --text:#2C2C2B; --text2:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
+    --border:#E6E5E3; --blue:#2783DE; --blue-soft:#E5F2FC;
+    --green:#46A171; --green-soft:#E8F1EC;
+    --orange:#D5803B; --orange-soft:#FBEBDE;
+    --red:#E56458; --red-soft:#FCE9E7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--soft);font-size:16px;line-height:1.5}
+  .wrap{max-width:1040px;margin:0 auto;padding:32px 24px 64px}
+  h1{font-size:26px;letter-spacing:-.01em}
+  .lede{color:var(--text2);font-size:14px;margin:6px 0 28px}
+  h2{font-size:17px;margin-bottom:14px}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+  .card .label{font-size:13px;color:var(--text2)}
+  .card .value{font-size:26px;font-weight:700;letter-spacing:-.01em;margin-top:2px}
+
+  .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:28px}
+  form{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .f-name{grid-column:span 2}.f-email{grid-column:span 2}
+  label{font-size:13px;color:var(--text2);font-weight:600}
+  input,select{font:inherit;font-size:14px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);min-height:44px;width:100%}
+  input:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:inherit}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:#1f6fc0}
+  .btn-ghost{background:#fff;border-color:var(--border);color:var(--text)}
+  .btn-ghost:hover{background:var(--soft)}
+  .btn-xs{min-height:34px;padding:4px 12px;font-size:13px}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2)}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .pill-green{background:var(--green-soft);color:#2f7351}
+  .pill-orange{background:var(--orange-soft);color:#a35d24}
+  .pill-blue{background:var(--blue-soft);color:#1c5f9e}
+  .empty{color:var(--text2);text-align:center;padding:28px 12px;font-size:14px}
+  .del{background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600;padding:6px 8px;border-radius:6px;font-family:inherit}
+  .del:hover{background:var(--red-soft)}
+  .note{font-size:13px;color:var(--text2);margin-top:14px}
+
+  @media (max-width:760px){
+    .cards{grid-template-columns:1fr}
+    form{grid-template-columns:1fr 1fr}
+    .f-name,.f-email{grid-column:span 2}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Supporter tracker</h1>
+  <p class="lede">Private accounting page — record payments and track who has webinar access. Data is stored only in this browser (localStorage). Don't link to this page from your public site.</p>
+
+  <div class="cards">
+    <div class="card"><div class="label">Total received</div><div class="value" id="statTotal">$0</div></div>
+    <div class="card"><div class="label">Active supporters</div><div class="value" id="statCount">0</div></div>
+    <div class="card"><div class="label">Waiting for access</div><div class="value" id="statPending">0</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Add a payment</h2>
+    <form id="addForm">
+      <div class="field f-name"><label for="fName">Name</label><input id="fName" required placeholder="Jane Smith"></div>
+      <div class="field f-email"><label for="fEmail">Email</label><input id="fEmail" type="email" required placeholder="jane@email.com"></div>
+      <div class="field"><label for="fTier">Tier</label>
+        <select id="fTier">
+          <option>Supporter</option><option selected>Member</option><option>Pro</option>
+        </select>
+      </div>
+      <div class="field"><label for="fAmount">Amount ($)</label><input id="fAmount" type="number" min="0" step="0.01" required placeholder="15"></div>
+      <div class="field"><label for="fDate">Date</label><input id="fDate" type="date" required></div>
+      <button class="btn btn-primary" type="submit">Add</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <h2 style="margin:0">Payments & access</h2>
+      <button class="btn btn-ghost btn-xs" id="exportBtn" type="button">Export CSV</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Tier</th><th>Amount</th><th>Date</th><th>Access</th><th></th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="emptyMsg">No payments recorded yet. Add the first one above.</div>
+    <p class="note">Tip: when someone pays, add them here, send them the webinar links by email, then click “Grant access” so you always know who's done.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = "supporter-tracker-v1";
+  var rows = [];
+  try { rows = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { rows = []; }
+
+  var tbody = document.getElementById("rows");
+  var emptyMsg = document.getElementById("emptyMsg");
+
+  function save(){ localStorage.setItem(KEY, JSON.stringify(rows)); }
+
+  function fmtMoney(n){ return "$" + Number(n).toFixed(2).replace(/\.00$/, ""); }
+
+  function tierPill(t){
+    var cls = t === "Pro" ? "pill-orange" : (t === "Member" ? "pill-blue" : "pill-green");
+    return '<span class="pill ' + cls + '">' + t + '</span>';
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function render(){
+    tbody.innerHTML = "";
+    emptyMsg.style.display = rows.length ? "none" : "block";
+    rows.forEach(function(r, i){
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(r.name) + "</td>" +
+        "<td>" + esc(r.email) + "</td>" +
+        "<td>" + tierPill(r.tier) + "</td>" +
+        "<td>" + fmtMoney(r.amount) + "</td>" +
+        "<td>" + esc(r.date) + "</td>" +
+        "<td>" + (r.access
+            ? '<span class="pill pill-green">✓ Granted</span>'
+            : '<button class="btn btn-ghost btn-xs" data-grant="' + i + '" type="button">Grant access</button>') +
+        "</td>" +
+        '<td><button class="del" data-del="' + i + '" type="button" aria-label="Delete row">Delete</button></td>';
+      tbody.appendChild(tr);
+    });
+    var total = rows.reduce(function(s, r){ return s + Number(r.amount || 0); }, 0);
+    document.getElementById("statTotal").textContent = fmtMoney(total);
+    document.getElementById("statCount").textContent = rows.length;
+    document.getElementById("statPending").textContent = rows.filter(function(r){ return !r.access; }).length;
+  }
+
+  document.getElementById("addForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    rows.unshift({
+      name: document.getElementById("fName").value.trim(),
+      email: document.getElementById("fEmail").value.trim(),
+      tier: document.getElementById("fTier").value,
+      amount: parseFloat(document.getElementById("fAmount").value) || 0,
+      date: document.getElementById("fDate").value,
+      access: false
+    });
+    save(); render();
+    e.target.reset();
+    document.getElementById("fDate").value = new Date().toISOString().slice(0,10);
+  });
+
+  tbody.addEventListener("click", function(e){
+    var g = e.target.getAttribute("data-grant");
+    var d = e.target.getAttribute("data-del");
+    if (g !== null) { rows[+g].access = true; save(); render(); }
+    if (d !== null && confirm("Delete this row?")) { rows.splice(+d, 1); save(); render(); }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", function(){
+    var head = "Name,Email,Tier,Amount,Date,Access granted\n";
+    var body = rows.map(function(r){
+      return [r.name, r.email, r.tier, r.amount, r.date, r.access ? "yes" : "no"]
+        .map(function(v){ return '"' + String(v).replace(/"/g, '""') + '"'; }).join(",");
+    }).join("\n");
+    var blob = new Blob([head + body], { type: "text/csv" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "supporters.csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById("fDate").value = new Date().toISOString().slice(0,10);
+  render();
+})();
+</script>
+</body>
+</html>

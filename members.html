@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Members area</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{
+    --text:#2C2C2B; --text2:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
+    --border:#E6E5E3; --blue:#2783DE; --blue-soft:#E5F2FC;
+    --green:#46A171; --green-soft:#E8F1EC;
+    --orange:#D5803B; --orange-soft:#FBEBDE;
+    --red:#E56458; --red-soft:#FCE9E7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--soft);font-size:16px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+  a{color:var(--blue);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  header{border-bottom:1px solid var(--border);background:#fff}
+  .nav{max-width:1040px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;width:100%}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);font-size:17px}
+  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .nav-right{display:flex;align-items:center;gap:16px}
+  .who{font-size:13px;color:var(--text2);display:none}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:inherit}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:#1f6fc0}
+  .btn-ghost{background:#fff;border-color:var(--border);color:var(--text)}
+  .btn-ghost:hover{background:var(--soft)}
+  #signOutBtn{display:none}
+
+  main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:40px 24px 64px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:20px}
+  h1{font-size:26px;letter-spacing:-.01em;margin-bottom:6px}
+  .lede{color:var(--text2);font-size:15px}
+  .state{display:none}
+  .state.active{display:block}
+  .center{text-align:center}
+  .center .btn{margin-top:18px}
+
+  .banner{border-radius:8px;padding:14px 16px;font-size:14px;margin-bottom:20px}
+  .banner-orange{background:var(--orange-soft);color:#a35d24;border:1px solid #eed3ba}
+  .banner-green{background:var(--green-soft);color:#2f7351;border:1px solid #bcd9c9}
+
+  ol.steps{margin:16px 0 0 20px;display:grid;gap:8px;font-size:15px}
+  .note{font-size:13px;color:var(--text2);margin-top:16px}
+
+  /* Webinar list */
+  .wlist{display:grid;gap:14px;margin-top:20px}
+  .wcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px;cursor:pointer;font-family:inherit;font-size:inherit;color:inherit}
+  .wcard:hover{background:var(--soft)}
+  .wcard .thumb{flex:none;width:48px;height:48px;border-radius:8px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .wcard .info{flex:1;min-width:0}
+  .wcard h3{font-size:16px;margin-bottom:2px}
+  .wcard p{font-size:13px;color:var(--text2)}
+  .wcard .go{flex:none;color:var(--text2);font-size:18px}
+  .wcard.locked{cursor:default;background:var(--soft)}
+  .wcard.locked:hover{background:var(--soft)}
+  .wcard.locked .thumb{background:var(--surface2,#F0EFED);filter:grayscale(1)}
+  .wcard.locked h3{color:var(--text2)}
+  .pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .pill-green{background:var(--green-soft);color:#2f7351}
+  .pill-blue{background:var(--blue-soft);color:#1c5f9e}
+  .pill-orange{background:var(--orange-soft);color:#a35d24}
+  .pill-gray{background:#F0EFED;color:var(--text2)}
+
+  /* Webinar detail */
+  #backBtn{margin-bottom:16px}
+  .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:24px}
+  .meta-row .date{font-size:14px;color:var(--text2)}
+  .video-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#191919;border-radius:8px;overflow:hidden;margin-bottom:24px}
+  .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.75);font-size:14px;text-align:center;padding:24px;border:2px dashed rgba(255,255,255,.25);border-radius:8px}
+  .video-placeholder .big{font-size:34px}
+  .prose{font-size:16px;color:var(--text);display:grid;gap:14px;margin-bottom:28px;max-width:680px}
+  .photos{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block}
+  .photo-placeholder{width:100%;aspect-ratio:4/3;border-radius:8px;border:2px dashed var(--border);background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text2);font-size:13px}
+  .photo-placeholder .big{font-size:28px}
+  h2.sect{font-size:17px;margin:0 0 14px}
+
+  @media (max-width:600px){
+    .wcard{flex-wrap:wrap}
+    .photos{grid-template-columns:1fr}
+    main{padding:28px 16px 48px}
+    .card{padding:24px 20px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark">A</span> Alex Dev</a>
+    <div class="nav-right">
+      <span class="who" id="who"></span>
+      <button class="btn btn-ghost" id="signOutBtn" type="button">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- State: not signed in (default) -->
+  <section class="state active card center" id="stateSignedOut">
+    <h1>Members area</h1>
+    <p class="lede">This page is for members only. Please log in to see your webinars.</p>
+    <a class="btn btn-primary" href="login.html">Log in / Sign up</a>
+  </section>
+
+  <!-- State: signed in, payment not confirmed yet -->
+  <section class="state" id="statePending">
+    <div class="banner banner-orange">⏳ Your account exists, but membership isn't active yet.</div>
+    <div class="card">
+      <h1>One step left</h1>
+      <p class="lede">To activate your access:</p>
+      <ol class="steps">
+        <li>Pay for your membership on the <a href="checkout.html">checkout page</a>.</li>
+        <li>Send the form there so I can match your payment — use the same email you logged in with.</li>
+        <li>I'll activate your account within 24 hours. Then refresh this page.</li>
+      </ol>
+      <p class="note">Already paid? Sit tight — activation is manual and usually takes just a few hours.</p>
+    </div>
+  </section>
+
+  <!-- State: signed in and access granted — webinar list -->
+  <section class="state" id="stateActive">
+    <div class="banner banner-green" id="activeBanner">✓ Membership active</div>
+    <h1>Your webinars</h1>
+    <p class="lede">Press a webinar to watch the video, browse photos, and read the notes. 🔒 items need a higher tier.</p>
+    <div class="wlist" id="webinarList"></div>
+    <p class="note">Please don't share your account — memberships keep the webinars running. 🙏</p>
+  </section>
+
+  <!-- State: webinar detail -->
+  <section class="state" id="stateDetail">
+    <button class="btn btn-ghost" id="backBtn" type="button">← All webinars</button>
+    <div class="card">
+      <h1 id="dTitle"></h1>
+      <div class="meta-row"><span id="dPill"></span><span class="date" id="dDate"></span></div>
+      <div class="video-wrap" id="dVideo"></div>
+      <div class="prose" id="dText"></div>
+      <h2 class="sect">Photos</h2>
+      <div class="photos" id="dPhotos"></div>
+    </div>
+  </section>
+
+  <!-- State: error -->
+  <section class="state card center" id="stateError">
+    <h1>Something went wrong</h1>
+    <p class="lede" id="errorText">Could not check your membership. Refresh the page to try again.</p>
+  </section>
+
+</main>
+
+<script>
+// =====================================================================
+// YOUR WEBINAR CONTENT — edit this list to add webinars.
+//
+// For each webinar:
+//   minTier: "Supporter", "Member", or "Pro" — the lowest rank that can open it.
+//   video:   PASTE an embed link:
+//            • Google Drive: open the video → Share → Copy link, then change
+//              the ending "/view?usp=..." to "/preview"
+//              e.g. https://drive.google.com/file/d/FILE_ID/preview
+//            • YouTube (unlisted): https://www.youtube.com/embed/VIDEO_ID
+//   photos:  PASTE direct image links (Google Drive image links work too:
+//            https://drive.google.com/thumbnail?id=FILE_ID&sz=w1200 )
+//   text:    paragraphs of notes, separated by a blank line (\n\n).
+// =====================================================================
+var WEBINARS = [
+	{
+		id: "rest-api",
+		title: "Building a REST API from scratch",
+		date: "Jul 24, 2026 · 90 min",
+		minTier: "Supporter",
+		video: "PASTE_VIDEO_EMBED_LINK",
+		photos: ["PASTE_PHOTO_LINK", "PASTE_PHOTO_LINK"],
+		text: "In this session we build a complete REST API from an empty folder: routing, validation, error handling, and a small database.\n\nDownload the source code from the link I send by email after each session. Questions are welcome any time in the chat.",
+	},
+	{
+		id: "github-actions",
+		title: "Deploying with GitHub Actions",
+		date: "Aug 7, 2026 · 60 min",
+		minTier: "Member",
+		video: "PASTE_VIDEO_EMBED_LINK",
+		photos: ["PASTE_PHOTO_LINK", "PASTE_PHOTO_LINK"],
+		text: "A hands-on workshop: automatic deployment of your site on every push, with ready-made workflow templates you can copy.",
+	},
+	{
+		id: "pro-roundtable",
+		title: "Pro roundtable: career Q&A",
+		date: "Aug 21, 2026 · 60 min",
+		minTier: "Pro",
+		video: "PASTE_VIDEO_EMBED_LINK",
+		photos: ["PASTE_PHOTO_LINK"],
+		text: "A small-group discussion for Pro members: portfolios, interviews, and honest career advice.",
+	},
+]
+
+// ---------- rendering (no need to edit below) ----------
+var TIER_RANK = { Supporter: 1, Member: 2, Pro: 3 }
+var TIER_PILL = { Supporter: "pill-green", Member: "pill-blue", Pro: "pill-orange" }
+var STATES = ["stateSignedOut", "statePending", "stateActive", "stateDetail", "stateError"]
+var currentTier = "Supporter"
+
+function showState(id) {
+	for (var i = 0; i < STATES.length; i++) {
+		document.getElementById(STATES[i]).classList.toggle("active", STATES[i] === id)
+	}
+	window.scrollTo(0, 0)
+}
+
+function renderWebinars(tier) {
+	currentTier = TIER_RANK[tier] ? tier : "Supporter"
+	document.getElementById("activeBanner").textContent =
+		"\u2713 Membership active \u2014 your rank: " + currentTier
+	var list = document.getElementById("webinarList")
+	list.innerHTML = ""
+	var myRank = TIER_RANK[currentTier]
+	WEBINARS.forEach(function (w) {
+		var unlocked = myRank >= TIER_RANK[w.minTier]
+		var el = document.createElement(unlocked ? "button" : "div")
+		el.className = "wcard" + (unlocked ? "" : " locked")
+		if (unlocked) el.type = "button"
+		el.innerHTML =
+			'<span class="thumb">' + (unlocked ? "\ud83c\udfa5" : "\ud83d\udd12") + "</span>" +
+			'<span class="info"><h3>' + w.title + "</h3><p>" + w.date + "</p></span>" +
+			'<span class="pill ' + (unlocked ? TIER_PILL[w.minTier] : "pill-gray") + '">' +
+			(unlocked ? w.minTier + "+" : "Needs " + w.minTier) + "</span>" +
+			(unlocked ? '<span class="go">\u203a</span>' : "")
+		if (unlocked) el.addEventListener("click", function () { openWebinar(w.id) })
+		list.appendChild(el)
+	})
+}
+
+function openWebinar(id) {
+	var w = null
+	for (var i = 0; i < WEBINARS.length; i++) if (WEBINARS[i].id === id) w = WEBINARS[i]
+	if (!w) return
+	document.getElementById("dTitle").textContent = w.title
+	document.getElementById("dDate").textContent = w.date
+	var pill = document.getElementById("dPill")
+	pill.className = "pill " + TIER_PILL[w.minTier]
+	pill.textContent = w.minTier + "+"
+
+	var video = document.getElementById("dVideo")
+	if (w.video && w.video.indexOf("PASTE") !== 0) {
+		video.innerHTML = '<iframe src="' + w.video + '" allow="autoplay; fullscreen" allowfullscreen title="Webinar video"></iframe>'
+	} else {
+		video.innerHTML = '<div class="video-placeholder"><span class="big">\ud83c\udfac</span><span>The video will appear here.<br>Site owner: paste your Google Drive or YouTube embed link in members.html.</span></div>'
+	}
+
+	var text = document.getElementById("dText")
+	text.innerHTML = ""
+	w.text.split("\n\n").forEach(function (p) {
+		var el = document.createElement("p")
+		el.textContent = p
+		text.appendChild(el)
+	})
+
+	var photos = document.getElementById("dPhotos")
+	photos.innerHTML = ""
+	;(w.photos || []).forEach(function (src) {
+		if (src && src.indexOf("PASTE") !== 0) {
+			var img = document.createElement("img")
+			img.src = src
+			img.alt = w.title
+			img.loading = "lazy"
+			photos.appendChild(img)
+		} else {
+			var ph = document.createElement("div")
+			ph.className = "photo-placeholder"
+			ph.innerHTML = '<span class="big">\ud83d\udcf7</span><span>Photo coming soon</span>'
+			photos.appendChild(ph)
+		}
+	})
+	showState("stateDetail")
+}
+
+document.getElementById("backBtn").addEventListener("click", function () {
+	showState("stateActive")
+})
+</script>
+
+<script type="module">
+  async function main(){
+    let fb
+    try {
+      const { firebaseConfig } = await import("./firebase-config.js")
+      if (firebaseConfig.apiKey.startsWith("PASTE_")) return // not configured: keep signed-out state
+      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+      const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+      const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+      const app = initializeApp(firebaseConfig)
+      fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), authMod, fsMod }
+    } catch (e) {
+      return // network/setup problem: keep signed-out state with login button
+    }
+
+    fb.authMod.onAuthStateChanged(fb.auth, async (user) => {
+      if (!user) { showState("stateSignedOut"); return }
+      const who = document.getElementById("who")
+      who.textContent = user.email || user.displayName || ""
+      who.style.display = "inline"
+      const signOutBtn = document.getElementById("signOutBtn")
+      signOutBtn.style.display = "inline-flex"
+      signOutBtn.onclick = async () => { await fb.authMod.signOut(fb.auth); location.href = "index.html" }
+      try {
+        const snap = await fb.fsMod.getDoc(fb.fsMod.doc(fb.db, "users", user.uid))
+        const data = snap.exists() ? snap.data() : null
+        if (data && data.access === true) {
+          renderWebinars(data.tier || "Supporter")
+          showState("stateActive")
+        } else {
+          showState("statePending")
+        }
+      } catch (e) {
+        document.getElementById("errorText").textContent = "Could not check your membership: " + ((e && e.message) || e)
+        showState("stateError")
+      }
+    })
+  }
+  main()
+</script>
+</body>
+</html>
