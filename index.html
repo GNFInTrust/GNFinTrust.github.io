@@ -31,14 +31,14 @@
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
   .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)};overflow:hidden;background-size:cover;background-position:center;flex:none
-  nav.links{display:flex;gap:22px;align-items:center}
+  nav.links{display:flex;gap:18px;align-items:center}
   nav.links a{color:var(--text2);font-size:14px}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
-  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:3px;cursor:pointer;background:#fff;user-select:none}
-  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .25s ease}
-  .lang-slider .knob.right{transform:translateX(28px)}
-  .lang-slider .lbl{font-size:11px;font-weight:600;color:var(--text2);padding:0 7px;font-family:var(--body)}
+  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:1px;cursor:pointer;background:#fff;user-select:none;flex:none}
+  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .2s ease;cursor:grab}
+  .lang-slider .knob:active{cursor:grabbing}
+  .lang-slider .lbl{font-size:10px;font-weight:600;color:var(--text2);padding:0 5px;font-family:var(--body);line-height:28px}
   .lang-slider .lbl.on{color:var(--red)}
   .price-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0}
   .price-main{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
@@ -99,7 +99,7 @@
     .hero h1{font-size:31px}
     .hero{padding:44px 0 40px}
     nav.links a.hide-m{display:none}
-    nav.links{gap:12px}
+    nav.links{gap:10px}
     nav.links a{white-space:nowrap}
     .brand{font-size:16px;white-space:nowrap}
   }
@@ -111,9 +111,9 @@
   <div class="wrap nav">
     <a class="brand" href="#"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <nav class="links">
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#how">Как купить</a>
-      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl on">RU</span><span class="knob" id="langKnob"></span><span class="lbl">KG</span></div>
       <a href="login.html" id="navLogin">Вход</a>
       <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
       <a href="#" id="navOut" style="display:none">Выйти</a>

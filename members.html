@@ -30,10 +30,10 @@
   .navr .who{color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
-  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:3px;cursor:pointer;background:#fff;user-select:none}
-  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .25s ease}
-  .lang-slider .knob.right{transform:translateX(28px)}
-  .lang-slider .lbl{font-size:11px;font-weight:600;color:var(--text2);padding:0 7px;font-family:var(--body)}
+  .lang-slider{display:inline-flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:20px;padding:1px;cursor:pointer;background:#fff;user-select:none;flex:none}
+  .lang-slider .knob{width:28px;height:28px;border-radius:50%;background:var(--red);transition:transform .2s ease;cursor:grab}
+  .lang-slider .knob:active{cursor:grabbing}
+  .lang-slider .lbl{font-size:10px;font-weight:600;color:var(--text2);padding:0 5px;font-family:var(--body);line-height:28px}
   .lang-slider .lbl.on{color:var(--red)}
 
   main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:36px 24px 64px}

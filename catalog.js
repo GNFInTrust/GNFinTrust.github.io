@@ -157,12 +157,50 @@ document.addEventListener("DOMContentLoaded", function () {
 			})
 		}).observe(document.body, { childList: true, subtree: true })
 	}
-	// Слайдер языка
+	// Слайдер языка: перетаскивание мышью + клик
 	var slider = document.getElementById("langSlider")
 	var knob = document.getElementById("langKnob")
 	if (slider && knob) {
-		if (GN_LANG === "ky") knob.classList.add("right")
-		slider.addEventListener("click", function () {
+		var maxRight = 30 // ширина дорожки = knob 28px + padding 1px*2 = 30px хода
+		if (GN_LANG === "ky") knob.style.transform = "translateX(" + maxRight + "px)"
+		var dragging = false
+		var startX = 0
+		var startPos = 0
+		function getCurPos() {
+			var m = (knob.style.transform || "").match(/translateX\((\-?\d+)/)
+			return m ? parseInt(m[1]) : 0
+		}
+		function setPos(p) {
+			knob.style.transform = "translateX(" + Math.max(0, Math.min(maxRight, p)) + "px)"
+		}
+		function commit() {
+			var p = getCurPos()
+			var newLang = p > maxRight / 2 ? "ky" : "ru"
+			if (newLang !== GN_LANG) {
+				GN_LANG = newLang
+				try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
+				location.reload()
+			} else {
+				setPos(newLang === "ky" ? maxRight : 0)
+			}
+		}
+		knob.addEventListener("mousedown", function (e) {
+			e.preventDefault()
+			dragging = true
+			startX = e.clientX
+			startPos = getCurPos()
+		})
+		document.addEventListener("mousemove", function (e) {
+			if (!dragging) return
+			setPos(startPos + (e.clientX - startX))
+		})
+		document.addEventListener("mouseup", function () {
+			if (!dragging) return
+			dragging = false
+			commit()
+		})
+		slider.addEventListener("click", function (e) {
+			if (e.target === knob) return
 			GN_LANG = GN_LANG === "ru" ? "ky" : "ru"
 			try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
 			location.reload()
