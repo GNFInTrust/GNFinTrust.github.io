@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Оплата — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -11,7 +14,7 @@
     --text:#211D1D; --text2:#6E6867; --canvas:#FFFFFF; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
     --head:Georgia,"Times New Roman",serif;
-    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
+    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
@@ -20,10 +23,12 @@
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
   .back{font-size:14px;color:var(--text2)}
   .back:hover{color:var(--red)}
+  .switch{border:1px solid var(--border);background:#fff;border-radius:6px;padding:7px 12px;font-family:var(--body);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer}
+  .switch:hover{border-color:var(--red);color:var(--red)}
 
   main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:36px 24px 64px}
   .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:28px;margin-bottom:18px}
@@ -32,21 +37,21 @@
 
   .item{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--border);padding-bottom:14px;margin-bottom:14px}
   .item h2{font-size:19px}
-  .item .kind{font-size:12px;font-weight:700;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;font-family:var(--body)}
-  .item .price{font-family:var(--head);font-size:24px;font-weight:700;color:var(--red);white-space:nowrap}
+  .item .kind{font-size:12px;font-weight:600;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle;font-family:var(--body)}
+  .item .price{font-family:var(--head);font-size:24px;font-weight:600;color:var(--red);white-space:nowrap}
   .item p{font-size:13.5px;color:var(--text2)}
 
   h3.step{font-size:17px;margin:0 0 12px}
   h3.step .n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:13px;font-family:var(--body);margin-right:8px;vertical-align:-3px}
 
   .tabs{display:flex;gap:8px;margin-bottom:16px}
-  .tab{flex:1;padding:11px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--text2)}
+  .tab{flex:1;padding:11px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2)}
   .tab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
   .pane{display:none}
   .pane.on{display:block}
   .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:10px;background:var(--soft)}
   .payrow .lbl{font-size:13px;color:var(--text2)}
-  .payrow .val{font-weight:700;font-size:15px}
+  .payrow .val{font-weight:600;font-size:15px}
   .copy{border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body)}
   .copy:hover{border-color:var(--red);color:var(--red)}
   .qrs{display:flex;gap:14px;flex-wrap:wrap}
@@ -55,13 +60,13 @@
   .qr-ph .big{font-size:30px}
   .hint{font-size:13px;color:var(--text2);margin-top:10px}
 
-  label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+  label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
   input[type=text],input[type=email]{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff}
   input:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip{border:1px solid var(--border);border-radius:999px;padding:10px 18px;background:#fff;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--text2)}
+  .chip{border:1px solid var(--border);border-radius:999px;padding:10px 18px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2)}
   .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .submit{width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:6px;padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer}
+  .submit{width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:6px;padding:15px;font-size:16px;font-weight:600;font-family:var(--body);cursor:pointer}
   .submit:hover{background:var(--red-dark)}
   .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:16px;margin-top:18px;font-size:14.5px}
   .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
@@ -71,7 +76,11 @@
 <header>
   <div class="nav">
     <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
-    <a class="back" href="index.html#catalog">← Назад в каталог</a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="switch" id="curBtn" type="button"></button>
+      <button class="switch" id="langBtn" type="button"></button>
+      <a class="back" href="index.html#catalog">← Назад в каталог</a>
+    </div>
   </div>
 </header>
 
@@ -88,13 +97,17 @@
       <span class="price" id="iPrice"></span>
     </div>
 
-    <h3 class="step"><span class="n">1</span>Оплатите одним из двух способов</h3>
+    <h3 class="step"><span class="n">1</span>Выберите способ оплаты</h3>
     <div class="tabs" role="tablist">
-      <button class="tab on" id="tabNum" type="button">📞 По номеру</button>
-      <button class="tab" id="tabQr" type="button">⬛ QR-код</button>
+      <button class="tab on" id="tabMbank" type="button">🏦 МБанк</button>
+      <button class="tab" id="tabVisa" type="button">💳 Карта Visa</button>
     </div>
-    <div class="pane on" id="paneNum"></div>
-    <div class="pane" id="paneQr"><div class="qrs" id="qrList"></div></div>
+    <div class="pane on" id="paneMbank">
+      <div id="mbankNums"></div>
+      <p class="hint" style="margin:4px 0 10px">Или отсканируйте QR-код:</p>
+      <div class="qrs" id="qrList"></div>
+    </div>
+    <div class="pane" id="paneVisa"><div id="visaNums"></div></div>
     <p class="hint">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек.</p>
   </div>
 
@@ -112,7 +125,7 @@
     <label for="buyer">Ваше имя</label>
     <input type="text" id="buyer" placeholder="Айзат">
     <button class="submit" id="send" type="button">Я оплатил(а) — пришлите логин</button>
-    <div class="ok" id="ok">✓ <strong>Заявка получена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
+    <div class="ok" id="ok">✓ <strong>Заявка пол��чена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
     <div class="err" id="err"></div>
   </div>
 </main>
@@ -139,13 +152,25 @@ function renderItem() {
 	document.getElementById("iTitle").textContent = p.title
 	document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
 	document.getElementById("iDesc").textContent = p.desc
-	document.getElementById("iPrice").textContent = "$" + Number(p.price)
+	document.getElementById("iPrice").textContent = formatPrice(p.price)
 }
 
-function renderPayment() {
-	var pane = document.getElementById("paneNum")
-	pane.innerHTML = ""
-	state.payment.numbers.forEach(function (n) {
+function isVisaNumber(n) {
+	var s = (String(n.label || "") + " " + String(n.value || "")).toLowerCase()
+	if (s.indexOf("visa") >= 0 || s.indexOf("виза") >= 0 || s.indexOf("карта") >= 0 || s.indexOf("card") >= 0) return true
+	return String(n.value || "").replace(/\D/g, "").length === 16
+}
+function payRows(mount, list, emptyText) {
+	mount.innerHTML = ""
+	if (!list.length) {
+		var p = document.createElement("p")
+		p.className = "hint"
+		p.style.margin = "0 0 10px"
+		p.textContent = emptyText
+		mount.appendChild(p)
+		return
+	}
+	list.forEach(function (n) {
 		var row = document.createElement("div")
 		row.className = "payrow"
 		row.innerHTML = '<span><span class="lbl"></span><br><span class="val"></span></span><button class="copy" type="button">Копировать</button>'
@@ -155,8 +180,14 @@ function renderPayment() {
 			navigator.clipboard && navigator.clipboard.writeText(n.value)
 			this.textContent = "Скопировано ✓"
 		})
-		pane.appendChild(row)
+		mount.appendChild(row)
 	})
+}
+function renderPayment() {
+	var mbank = [], visa = []
+	state.payment.numbers.forEach(function (n) { (isVisaNumber(n) ? visa : mbank).push(n) })
+	payRows(document.getElementById("mbankNums"), mbank, "Номера МБанк скоро появятся.")
+	payRows(document.getElementById("visaNums"), visa, "Оплата картой Visa пока недоступна — оплатите через МБанк.")
 	var qr = document.getElementById("qrList")
 	qr.innerHTML = ""
 	state.payment.qrs.forEach(function (src) {
@@ -174,13 +205,13 @@ function renderPayment() {
 	})
 }
 
-document.getElementById("tabNum").addEventListener("click", function () { setTab(true) })
-document.getElementById("tabQr").addEventListener("click", function () { setTab(false) })
-function setTab(num) {
-	document.getElementById("tabNum").classList.toggle("on", num)
-	document.getElementById("tabQr").classList.toggle("on", !num)
-	document.getElementById("paneNum").classList.toggle("on", num)
-	document.getElementById("paneQr").classList.toggle("on", !num)
+document.getElementById("tabMbank").addEventListener("click", function () { setTab(true) })
+document.getElementById("tabVisa").addEventListener("click", function () { setTab(false) })
+function setTab(mb) {
+	document.getElementById("tabMbank").classList.toggle("on", mb)
+	document.getElementById("tabVisa").classList.toggle("on", !mb)
+	document.getElementById("paneMbank").classList.toggle("on", mb)
+	document.getElementById("paneVisa").classList.toggle("on", !mb)
 }
 
 document.getElementById("chips").addEventListener("click", function (e) {
@@ -212,7 +243,7 @@ document.getElementById("send").addEventListener("click", async function () {
 			return
 		}
 	} else {
-		var body = "НОВАЯ ЗАЯВКА — " + p.title + " ($" + p.price + ")\nИмя: " + buyer + "\nПрислать логин через " + state.method + ": " + contact
+		var body = "НОВАЯ ЗАЯВКА — " + p.title + " (" + formatPrice(p.price) + ")\nИмя: " + buyer + "\nПрислать логин через " + state.method + ": " + contact
 		location.href = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent("Заявка: " + p.title) + "&body=" + encodeURIComponent(body)
 	}
 	document.getElementById("okMethod").textContent = METHOD_RU[state.method]

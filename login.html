@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Вход — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -11,7 +14,7 @@
     --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
     --head:Georgia,"Times New Roman",serif;
-    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
+    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
@@ -20,23 +23,25 @@
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
   .back{font-size:14px;color:var(--text2)}
   .back:hover{color:var(--red)}
+  .switch{border:1px solid var(--border);background:#fff;border-radius:6px;padding:7px 12px;font-family:var(--body);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer}
+  .switch:hover{border-color:var(--red);color:var(--red)}
   main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
   .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:36px 32px;width:100%;max-width:420px}
   h1{font-size:25px;text-align:center;margin-bottom:6px}
   .lede{color:var(--text2);font-size:14.5px;text-align:center;margin-bottom:24px}
-  .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--border);background:#fff;border-radius:6px;padding:12px;font-size:15px;font-weight:700;font-family:var(--body);cursor:pointer;min-height:48px}
+  .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--border);background:#fff;border-radius:6px;padding:12px;font-size:15px;font-weight:600;font-family:var(--body);cursor:pointer;min-height:48px}
   .gbtn:hover{background:var(--soft)}
   .div{display:flex;align-items:center;gap:12px;color:var(--text2);font-size:12px;margin:20px 0}
   .div::before,.div::after{content:"";flex:1;height:1px;background:var(--border)}
-  label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+  label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
   input{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body)}
   input:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
   .row{display:flex;gap:10px;margin-top:22px}
-  .btn{flex:1;border-radius:6px;padding:13px;font-size:15px;font-weight:700;font-family:var(--body);cursor:pointer;border:1px solid transparent;min-height:48px}
+  .btn{flex:1;border-radius:6px;padding:13px;font-size:15px;font-weight:600;font-family:var(--body);cursor:pointer;border:1px solid transparent;min-height:48px}
   .btn-primary{background:var(--red);color:#fff;border:0}
   .btn-primary:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
@@ -51,7 +56,10 @@
 <header>
   <div class="nav">
     <a class="brand" href="index.html"><span class="brand-mark">GN</span> GN FinTrust</a>
-    <a class="back" href="index.html">← На сайт</a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="switch" id="langBtn" type="button"></button>
+      <a class="back" href="index.html">← На сайт</a>
+    </div>
   </div>
 </header>
 <main>
@@ -75,6 +83,7 @@
     <p class="note">Купили, но не получили логин? Мы отправляем доступ в WhatsApp, на почту или в Telegram после подтверждения оплаты.</p>
   </div>
 </main>
+<script src="catalog.js"></script>
 <script type="module">
   const msg = document.getElementById("msg")
   function show(text, good) {
@@ -95,6 +104,9 @@
       const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
       const app = initializeApp(firebaseConfig)
       fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), authMod, fsMod }
+      // Запоминаем вход на этом устройстве: даже после закрытия браузера пользователь остаётся в аккаунте,
+      // пока сам не нажмёт «Выйти».
+      await fb.authMod.setPersistence(fb.auth, fb.authMod.browserLocalPersistence)
       // Если вы уже вошли — сразу открываем кабинет (проверяем только при загрузке страницы).
       const stop = fb.authMod.onAuthStateChanged(fb.auth, (user) => {
         stop()

@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>GN FinTrust — вебинары, семинары и курсы</title>
 <meta name="description" content="GN FinTrust: практические финансовые вебинары, семинары и курсы. Смотрите анонс, покупайте в два клика — доступ придёт в WhatsApp, на почту или в Telegram.">
 <style>
@@ -10,13 +13,13 @@
     --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
     --text:#211D1D; --text2:#6E6867; --canvas:#FFFFFF; --soft:#FAF7F6; --border:#E8E2E1;
     --head:Georgia,"Times New Roman",serif;
-    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
-    --cat:Verdana,Geneva,Tahoma,sans-serif;
+    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --cat:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{font-family:var(--body);color:var(--text);background:var(--canvas);font-size:16px;line-height:1.55}
-  h1,h2,h3{font-family:var(--head);font-weight:700}
+  h1,h2,h3{font-family:var(--head);font-weight:600}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
@@ -24,19 +27,21 @@
 
   header{border-bottom:3px solid var(--red);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);z-index:10}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
   nav.links{display:flex;gap:22px;align-items:center}
   nav.links a{color:var(--text2);font-size:14px}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body)}
+  .switch{border:1px solid var(--border);background:#fff;border-radius:6px;padding:7px 12px;font-family:var(--body);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer}
+  .switch:hover{border-color:var(--red);color:var(--red)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body)}
   .btn-primary{background:var(--red);color:#fff}
   .btn-primary:hover{background:var(--red-dark)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
   .hero{padding:64px 0 56px;text-align:center;background:linear-gradient(180deg,var(--red-soft) 0%,#fff 100%)}
-  .hero .eyebrow{display:inline-block;background:#fff;border:1px solid var(--red-border);color:var(--red);font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;margin-bottom:20px}
+  .hero .eyebrow{display:inline-block;background:#fff;border:1px solid var(--red-border);color:var(--red);font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;margin-bottom:20px}
   .hero h1{font-size:42px;line-height:1.15;max-width:800px;margin:0 auto 16px}
   .hero h1 em{color:var(--red);font-style:italic}
   .hero p{color:var(--text2);font-size:18px;max-width:640px;margin:0 auto 30px}
@@ -50,7 +55,7 @@
   .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:start;font-family:var(--cat)}
   .box{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:22px}
   .box>h3{font-family:var(--cat);font-size:22px;letter-spacing:-.01em;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;gap:10px}
-  .box>h3 .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:3px 12px;border-radius:999px}
+  .box>h3 .cnt{margin-left:auto;font-size:13px;font-weight:600;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:3px 12px;border-radius:999px}
   .pcard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px}
   .pcard:last-child{margin-bottom:0}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
@@ -61,7 +66,7 @@
   .pbody h4{font-family:var(--cat);font-size:19px;line-height:1.3;margin-bottom:8px}
   .pbody p{font-size:14.5px;color:var(--text2);margin-bottom:16px}
   .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .price{font-family:var(--cat);font-size:24px;font-weight:700;color:var(--red)}
+  .price{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red)}
   .buy{flex:none;padding:12px 26px;font-size:16px;font-family:var(--cat)}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -94,7 +99,10 @@
     <nav class="links">
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#how">Как купить</a>
-      <a class="btn btn-primary btn-sm" href="login.html" id="navAuth">Войти</a>
+      <button class="switch" id="curBtn" type="button"></button>
+      <button class="switch" id="langBtn" type="button"></button>
+      <a href="login.html" id="navLogin">Вход</a>
+      <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
       <a href="#" id="navOut" style="display:none">Выйти</a>
     </nav>
   </div>
@@ -172,7 +180,7 @@ function renderCatalog(products) {
 			card.innerHTML =
 				'<div class="pvideo">' + video + "</div>" +
 				'<div class="pbody"><h4></h4><p></p>' +
-				'<div class="prow"><span class="price">$' + Number(p.price) + '</span>' +
+				'<div class="prow"><span class="price">' + formatPrice(p.price) + '</span>' +
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купить</a></div></div>'
 			card.querySelector("h4").textContent = p.title
 			card.querySelector("p").textContent = p.desc
@@ -194,16 +202,19 @@ renderCatalog(DEMO_PRODUCTS)
 
     // Если пользователь вошёл — в шапке «Мой кабинет» и «Выйти» вместо «Войти».
     const auth = authMod.getAuth(app)
-    const navAuth = document.getElementById("navAuth")
+    const navLogin = document.getElementById("navLogin")
+    const navSignup = document.getElementById("navSignup")
     const navOut = document.getElementById("navOut")
     authMod.onAuthStateChanged(auth, (user) => {
       if (user) {
-        navAuth.textContent = "Мой кабинет"
-        navAuth.href = "members.html"
+        navLogin.textContent = "Мой кабинет"
+        navLogin.href = "members.html"
+        navSignup.style.display = "none"
         navOut.style.display = "inline"
       } else {
-        navAuth.textContent = "Войти"
-        navAuth.href = "login.html"
+        navLogin.textContent = "Вход"
+        navLogin.href = "login.html"
+        navSignup.style.display = ""
         navOut.style.display = "none"
       }
     })

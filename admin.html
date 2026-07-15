@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Админ — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -11,7 +14,7 @@
     --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
     --head:Georgia,"Times New Roman",serif;
-    --body:"Trebuchet MS",Verdana,-apple-system,"Segoe UI",sans-serif;
+    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
@@ -20,8 +23,8 @@
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:700;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--body)}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
@@ -30,7 +33,7 @@
   .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px}
   .btn:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
@@ -39,7 +42,7 @@
   h1.page{font-size:26px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:14px;margin-bottom:22px}
   .mtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-  .mtab{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:700;color:var(--text2);cursor:pointer}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer}
   .mtab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
   .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:26px}
   .panel.on{display:block}
@@ -47,10 +50,10 @@
   .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:18px;max-width:760px}
 
   table{width:100%;border-collapse:collapse;font-size:14px}
-  th{text-align:left;color:var(--text2);font-weight:700;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
+  th{text-align:left;color:var(--text2);font-weight:600;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
   td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:top}
   tr:last-child td{border-bottom:0}
-  .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 10px}
   .tag.new{background:#FFF3E2;color:#9a5b00;border:1px solid #f0d9b5}
   .tag.done{background:var(--green-soft);color:var(--green);border:1px solid #bcd9c9}
   .tag.admin{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border)}
@@ -58,12 +61,12 @@
   .price-input{width:110px}
   .tip{background:#F8FAFC;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:14px 16px;font-size:13.5px;color:var(--text2);margin-bottom:20px}
   .tip strong{color:var(--text)}
-  .contact a{font-weight:700}
+  .contact a{font-weight:600}
   .empty{color:var(--text2);font-size:14px;padding:18px 4px}
 
   form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
   form.grid .full{grid-column:1/-1}
-  label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--text2)}
+  label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)}
   input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff}
   textarea{min-height:70px;resize:vertical}
   input:focus,select:focus,textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
@@ -137,12 +140,12 @@
       <form class="grid" id="prodForm">
         <div><label for="fType">Тип</label>
           <select id="fType"><option value="webinar">Вебинар</option><option value="seminar">Семинар</option><option value="course">Курс</option></select></div>
-        <div><label for="fPrice">Цена ($)</label><input type="number" id="fPrice" min="0" step="1" placeholder="40"></div>
+        <div><label for="fPrice">Цена (сом)</label><input type="number" id="fPrice" min="0" step="1" placeholder="3500"></div>
         <div><label for="fTitle">Название</label><input type="text" id="fTitle" placeholder="Финансовое планирование"></div>
         <div class="full"><label for="fDesc">Короткое описание</label><input type="text" id="fDesc" placeholder="Что получит покупатель — одним предложением"></div>
         <div class="full"><label for="fPreview">Ссылка на видео-анонс (видят все)</label><input type="text" id="fPreview" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
         <div class="full"><label for="fFull">Полное видео (только покупателям)</label><input type="text" id="fFull" placeholder="https://drive.google.com/file/d/FILE_ID/preview"></div>
-        <div class="full"><label for="fText">Материалы / текст (только покупателям)</label><textarea id="fText" placeholder="Конспек��, ссылки, домашнее задание…"></textarea></div>
+        <div class="full"><label for="fText">Материалы / те��ст (только покупателям)</label><textarea id="fText" placeholder="Конспек��, ссылки, домашнее задание…"></textarea></div>
       </form>
       <div class="formfoot">
         <button class="btn" id="prodSave" type="button">Сохранить</button>
@@ -154,7 +157,7 @@
 
     <div class="panel" id="p-payment">
       <h2>Номера для оплаты</h2>
-      <p class="sub">Эти номера покупатели видят на странице оплаты. Добавляйте и удаляйте в любой момент.</p>
+      <p class="sub">Эти номера покупатели видят на странице оплаты. Добавляйте и удаляйте в любой момент. Если в названии есть слово «Visa» или «Карта» (или номер из 16 цифр) — реквизит попадёт во вкладку «Карта Visa» на странице оплаты, остальные — во вкладку «МБанк».</p>
       <div id="numWrap"></div>
       <div class="inline">
         <div><label for="numLabel">Название</label><input type="text" id="numLabel" placeholder="Перевод MBank"></div>
@@ -236,7 +239,7 @@ function renderOrders() {
 	var rows = A.orders.map(function (o) {
 		return "<tr>" +
 			'<td class="muted">' + esc(String(o.createdAt || "").slice(0, 16).replace("T", " ")) + "</td>" +
-			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>$" + esc(o.price) + "</span></td>" +
+			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>" + esc(o.price) + " сом</span></td>" +
 			"<td>" + esc(o.buyer || "—") + "</td>" +
 			'<td class="contact">' + esc(o.method) + '<br><a href="' + contactLink(o.method, o.contact) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
 			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : "новая") + "</span></td>" +
@@ -254,7 +257,7 @@ function renderProducts() {
 		return "<tr>" +
 			"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
 			"<td><strong>" + esc(p.title) + "</strong><br><span class='muted'>" + esc(p.desc) + "</span></td>" +
-			"<td>$" + esc(p.price) + "</td>" +
+			"<td>" + esc(p.price) + " сом</td>" +
 			'<td><button class="btn btn-ghost btn-sm" data-edit="' + esc(p.id) + '">Изменить</button> <button class="btn btn-ghost btn-sm" data-del="' + esc(p.id) + '">Удалить</button></td>' +
 			"</tr>"
 	}).join("")
@@ -272,7 +275,7 @@ function renderPrices() {
 			'<td><button class="btn btn-sm" data-save-price="' + esc(p.id) + '">Сохранить цену</button></td>' +
 			"</tr>"
 	}).join("")
-	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Материал</th><th>Цена ($)</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Материал</th><th>Цена (сом)</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
 }
 
 function renderPayment() {
