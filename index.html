@@ -94,7 +94,8 @@
     <nav class="links">
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#how">Как купить</a>
-      <a href="login.html">Войти</a>
+      <a href="login.html" id="navAuth">Войти</a>
+      <a href="#" id="navOut" style="display:none">Выйти</a>
       <a class="btn btn-primary btn-sm" href="#catalog">Смотреть каталог</a>
     </nav>
   </div>
@@ -183,13 +184,36 @@ function renderCatalog(products) {
 renderCatalog(DEMO_PRODUCTS)
 </script>
 <script type="module">
-  // Когда Firebase настроен, показываем живой каталог из admin.html.
+  // Когда Firebase настроен: живой каталог + статус входа в шапке.
   try {
     const { firebaseConfig } = await import("./firebase-config.js")
     if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
     const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
-    const db = fsMod.getFirestore(initializeApp(firebaseConfig))
+    const app = initializeApp(firebaseConfig)
+
+    // Если пользователь вошёл — в шапке «Мой кабинет» и «Выйти» вместо «Войти».
+    const auth = authMod.getAuth(app)
+    const navAuth = document.getElementById("navAuth")
+    const navOut = document.getElementById("navOut")
+    authMod.onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navAuth.textContent = "Мой кабинет"
+        navAuth.href = "members.html"
+        navOut.style.display = "inline"
+      } else {
+        navAuth.textContent = "Войти"
+        navAuth.href = "login.html"
+        navOut.style.display = "none"
+      }
+    })
+    navOut.addEventListener("click", async (e) => {
+      e.preventDefault()
+      await authMod.signOut(auth)
+    })
+
+    const db = fsMod.getFirestore(app)
     const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
     snap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))

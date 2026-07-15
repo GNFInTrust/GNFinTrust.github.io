@@ -68,8 +68,8 @@
     <label for="pass">Пароль</label>
     <input type="password" id="pass" placeholder="Не менее 6 символов" autocomplete="current-password">
     <div class="row">
-      <button class="btn btn-primary" id="loginBtn" type="button">Войти</button>
-      <button class="btn btn-ghost" id="signupBtn" type="button">Регистрация</button>
+      <button class="btn btn-primary" id="signupBtn" type="button">Регистрация</button>
+      <button class="btn btn-ghost" id="loginBtn" type="button">Войти</button>
     </div>
     <div class="msg" id="msg"></div>
     <p class="note">Купили, но не получили логин? Мы отправляем доступ в WhatsApp, на почту или в Telegram после подтверждения оплаты.</p>
@@ -95,6 +95,14 @@
       const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
       const app = initializeApp(firebaseConfig)
       fb = { auth: authMod.getAuth(app), db: fsMod.getFirestore(app), authMod, fsMod }
+      // Если вы уже вошли — сразу открываем кабинет (проверяем только при загрузке страницы).
+      const stop = fb.authMod.onAuthStateChanged(fb.auth, (user) => {
+        stop()
+        if (user) {
+          show("Вы уже вошли — открываем кабинет…", true)
+          location.href = "members.html"
+        }
+      })
     } catch (e) {
       show("Не удалось загрузить систему входа: " + (e.message || e), false)
     }

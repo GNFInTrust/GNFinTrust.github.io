@@ -4,10 +4,10 @@
 // Project settings → General → Your apps → Web app → Config
 // ============================================================
 export const firebaseConfig = {
-	apiKey: "AIzaSyDTEUSA6SJaY2zLJ7hRqjGIXdahkYPacRY",
-	authDomain: "fintrust-af741.firebaseapp.com",
-	projectId: "fintrust-af741",
+	apiKey: "PASTE_YOUR_API_KEY",
+	authDomain: "your-project.firebaseapp.com",
+	projectId: "your-project",
 	storageBucket: "your-project.appspot.com",
-	messagingSenderId: "6229180051",
-	appId: "1:6229180051:web:cb40d2642f72c876905766",
+	messagingSenderId: "000000000000",
+	appId: "1:000000000000:web:0000000000000000",
 }
