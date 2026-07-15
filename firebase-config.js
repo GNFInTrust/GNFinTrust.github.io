@@ -1,13 +1,10 @@
-// ============================================================
-// TODO: PASTE YOUR FIREBASE CONFIG HERE (see README.md, section
-// "Login & members area"). Get it free at https://console.firebase.google.com
-// Project settings → General → Your apps → Web app → Config
-// ============================================================
+// Ключи Firebase проекта GN FinTrust (fintrust-af741)
 export const firebaseConfig = {
-	apiKey: "PASTE_YOUR_API_KEY",
-	authDomain: "your-project.firebaseapp.com",
-	projectId: "your-project",
-	storageBucket: "your-project.appspot.com",
-	messagingSenderId: "000000000000",
-	appId: "1:000000000000:web:0000000000000000",
+	apiKey: "AIzaSyDTEUSA6SJaY2zLJ7hRqjGIXdahkYPacRY",
+	authDomain: "fintrust-af741.firebaseapp.com",
+	projectId: "fintrust-af741",
+	storageBucket: "fintrust-af741.firebasestorage.app",
+	messagingSenderId: "6229180051",
+	appId: "1:6229180051:web:cb40d2642f72c876905766",
+	measurementId: "G-BSDSDRBTN4",
 }
