@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#C8102E">
@@ -85,6 +85,15 @@
   .submit:active{transform:translateY(0)}
   .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:16px;margin-top:18px;font-size:14.5px}
   .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
+  html{-webkit-text-size-adjust:100%}
+  html,body{overflow-x:clip}
+  img,iframe,video{max-width:100%}
+  @media (max-width:640px){
+    .wrap{padding:0 16px}
+    .card{padding:22px 18px}
+    .qrs img,.qr-ph{width:146px;height:146px}
+    input[type=text],input[type=email]{font-size:16px}
+  }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">

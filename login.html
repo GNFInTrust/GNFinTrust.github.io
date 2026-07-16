@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#C8102E">
@@ -60,6 +60,12 @@
   .msg.err{background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f}
   .msg.good{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green)}
   .note{font-size:12.5px;color:var(--text2);text-align:center;margin-top:18px}
+  html{-webkit-text-size-adjust:100%}
+  html,body{overflow-x:clip}
+  @media (max-width:480px){
+    .card{padding:30px 20px}
+    input{font-size:16px}
+  }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">

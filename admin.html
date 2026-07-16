@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#C8102E">
@@ -90,6 +90,16 @@
   .credbox pre{background:#fff;border:1px solid var(--border);border-radius:6px;padding:12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;font-family:Consolas,Menlo,monospace}
   .credbox .row{display:flex;gap:8px;flex-wrap:wrap}
   @media (max-width:760px){ form.grid{grid-template-columns:1fr} .price-input{width:80px} }
+  html{-webkit-text-size-adjust:100%}
+  html,body{overflow-x:clip}
+  img,iframe{max-width:100%}
+  @media (max-width:640px){
+    .wrap{padding:0 16px}
+    .panel{padding:20px 14px}
+    .mtabs{gap:6px}
+    table{display:block;overflow-x:auto}
+    input,select,textarea{font-size:16px}
+  }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
