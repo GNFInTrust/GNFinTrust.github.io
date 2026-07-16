@@ -32,6 +32,15 @@ function isRealLink(v) {
 	return v && typeof v === "string" && v.indexOf("http") === 0
 }
 
+// Заголовок и описание материала с учётом выбранного языка (RU / KY).
+// Если кыргызская версия не заполнена — показывается русская.
+function locTitle(p) {
+	return GN_LANG === "ky" && p.titleKy ? p.titleKy : p.title
+}
+function locDesc(p) {
+	return GN_LANG === "ky" && p.descKy ? p.descKy : (p.desc || "")
+}
+
 // ============================================================
 // Валюта: основная — сомы, под ней мелко — рубли.
 // Нажатие на рубли меняет их местами: рубли становятся основными.

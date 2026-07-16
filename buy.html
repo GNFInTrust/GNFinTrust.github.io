@@ -18,7 +18,7 @@
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.65;min-height:100vh;display:flex;flex-direction:column}
   h1,h2,h3{font-family:var(--head)}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
@@ -29,9 +29,9 @@
   .back{font-size:14px;color:var(--text2)}
   .back:hover{color:var(--red)}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
-  .lang-slider .knob{position:absolute;top:1px;left:1px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
   .lang-slider .knob.dragging{transition:none;cursor:grabbing}
-  .lang-slider .lbl{position:absolute;top:0;width:32px;line-height:30px;text-align:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
+  .lang-slider .lbl{position:absolute;top:0;bottom:0;width:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
   .lang-slider .lbl.l{left:0}
   .lang-slider .lbl.r{right:0}
   .price-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0}
@@ -39,8 +39,8 @@
   .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
   .price-sub:hover{color:var(--red)}
 
-  main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:36px 24px 64px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:28px;margin-bottom:18px}
+  main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:56px 24px 96px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:32px;margin-bottom:32px}
   h1{font-size:26px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:15px}
 
@@ -80,12 +80,17 @@
   .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:16px;margin-top:18px;font-size:14.5px}
   .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
 </style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
+<link rel="prefetch" href="index.html">
+<link rel="prefetch" href="login.html">
 </head>
 <body>
 <header>
   <div class="nav">
     <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:18px">
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <a class="back" href="index.html#catalog">← Назад в каталог</a>
     </div>
@@ -133,7 +138,7 @@
     <label for="buyer">Ваше имя</label>
     <input type="text" id="buyer" placeholder="Айзат">
     <button class="submit" id="send" type="button">Я оплатил(а) — пришлите логин</button>
-    <div class="ok" id="ok"><strong>Заявка пол��чена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
+    <div class="ok" id="ok"><strong>Заявка получена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
     <div class="err" id="err"></div>
   </div>
 </main>
@@ -157,9 +162,9 @@ function currentItem() {
 
 function renderItem() {
 	var p = currentItem()
-	document.getElementById("iTitle").textContent = p.title
+	document.getElementById("iTitle").textContent = locTitle(p)
 	document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
-	document.getElementById("iDesc").textContent = p.desc
+	document.getElementById("iDesc").textContent = locDesc(p)
 	document.getElementById("iPrice").textContent = formatPrice(p.price)
 	document.getElementById("iPriceSub").textContent = formatPriceSub(p.price)
 }

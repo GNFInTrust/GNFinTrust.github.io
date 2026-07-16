@@ -18,7 +18,7 @@
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.65;min-height:100vh;display:flex;flex-direction:column}
   h1,h2,h3{font-family:var(--head)}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
@@ -31,25 +31,25 @@
   .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
-  .lang-slider .knob{position:absolute;top:1px;left:1px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
   .lang-slider .knob.dragging{transition:none;cursor:grabbing}
-  .lang-slider .lbl{position:absolute;top:0;width:32px;line-height:30px;text-align:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
+  .lang-slider .lbl{position:absolute;top:0;bottom:0;width:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
   .lang-slider .lbl.l{left:0}
   .lang-slider .lbl.r{right:0}
 
-  main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:36px 24px 64px}
+  main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:56px 24px 96px}
   .state{display:none}
   .state.on{display:block}
-  .center{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
+  .center{max-width:460px;margin:90px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
   .center h1{font-size:24px;margin-bottom:10px}
   .center p{color:var(--text2);font-size:15px;margin-bottom:24px}
   .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:12px 24px;font-size:15px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:44px}
   .btn:hover{background:var(--red-dark)}
 
-  .banner{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:13px 16px;font-size:14.5px;margin-bottom:26px}
+  .banner{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:13px 16px;font-size:14.5px;margin-bottom:36px}
   h1.page{font-size:27px;margin-bottom:6px}
-  .sub{color:var(--text2);margin-bottom:24px;font-size:15px}
-  .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:14px;cursor:pointer;font-family:var(--body)}
+  .sub{color:var(--text2);margin-bottom:36px;font-size:15px}
+  .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:20px;cursor:pointer;font-family:var(--body)}
   .pcard:hover{border-color:var(--red)}
   .pcard .ico{flex:none;width:52px;height:52px;border-radius:10px;background:var(--red-soft);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:24px;min-width:52px}
   .pcard h3{font-size:17px;margin-bottom:3px;font-family:var(--head)}
@@ -69,7 +69,22 @@
   .dtext{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px}
   .dtext p{margin-bottom:12px;font-size:15px}
   .dtext p:last-child{margin-bottom:0}
+  .admin-modal{position:fixed;inset:0;background:rgba(33,29,29,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;opacity:0;transition:opacity .25s ease}
+  .admin-modal.on{display:flex}
+  .admin-modal.show{opacity:1}
+  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:10px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .admin-modal.show .admin-sheet{transform:translateY(0) scale(1)}
+  .admin-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:3px solid var(--red);font-family:var(--head);font-size:17px}
+  .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .admin-bar button:hover{border-color:var(--red);color:var(--red)}
+  .admin-sheet iframe{flex:1;width:100%;border:0;background:var(--canvas)}
 </style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
+<link rel="prefetch" href="index.html">
+<link rel="prefetch" href="buy.html">
+<link rel="prefetch" href="admin.html">
 </head>
 <body>
 <header>
@@ -78,6 +93,7 @@
     <div class="navr">
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <span class="who" id="who"></span>
+      <button id="adminBtn" style="display:none" type="button">Админ</button>
       <button id="outBtn" style="display:none" type="button">Выйти</button>
     </div>
   </div>
@@ -126,6 +142,13 @@
 
 </main>
 
+<div class="admin-modal" id="adminModal">
+  <div class="admin-sheet">
+    <div class="admin-bar"><strong>Панель админа</strong><button id="adminClose" type="button">Закрыть</button></div>
+    <iframe id="adminFrame" title="Панель админа"></iframe>
+  </div>
+</div>
+
 <script src="catalog.js"></script>
 <script>
 var TYPE_ICON = { webinar: "", seminar: "", course: "" }
@@ -145,8 +168,8 @@ function renderList() {
 		b.className = "pcard"
 		b.type = "button"
 		b.innerHTML = '<span class="ico"></span><span><h3></h3><p></p></span><span class="kind"></span><span class="arrow">›</span>'
-		b.querySelector("h3").textContent = p.title
-		b.querySelector("p").textContent = p.desc
+		b.querySelector("h3").textContent = locTitle(p)
+		b.querySelector("p").textContent = locDesc(p)
 		b.querySelector(".kind").textContent = TYPE_LABEL[p.type] || p.type
 		b.addEventListener("click", function () { openItem(p.id) })
 		list.appendChild(b)
@@ -157,8 +180,8 @@ function renderList() {
 function openItem(id) {
 	var p = productById(M.products, id)
 	if (!p) return
-	document.getElementById("dTitle").textContent = p.title
-	document.getElementById("dKind").textContent = (TYPE_LABEL[p.type] || p.type) + " · " + p.desc
+	document.getElementById("dTitle").textContent = locTitle(p)
+	document.getElementById("dKind").textContent = (TYPE_LABEL[p.type] || p.type) + " · " + locDesc(p)
 	var c = M.content[id] || {}
 	var v = document.getElementById("dVideo")
 	if (isRealLink(c.video)) {
@@ -194,6 +217,24 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
     const auth = authMod.getAuth(app)
     const db = fsMod.getFirestore(app)
 
+    // Админка открывается поверх кабинета, без перехода на отдельную страницу
+    const adminBtn = document.getElementById("adminBtn")
+    const adminModal = document.getElementById("adminModal")
+    const adminFrame = document.getElementById("adminFrame")
+    adminBtn.addEventListener("click", () => {
+      if (!adminFrame.src) adminFrame.src = "admin.html"
+      adminModal.classList.add("on")
+      requestAnimationFrame(() => adminModal.classList.add("show"))
+      document.body.style.overflow = "hidden"
+    })
+    function closeAdmin() {
+      adminModal.classList.remove("show")
+      document.body.style.overflow = ""
+      setTimeout(() => adminModal.classList.remove("on"), 250)
+    }
+    document.getElementById("adminClose").addEventListener("click", closeAdmin)
+    adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
+
     authMod.onAuthStateChanged(auth, async (user) => {
       if (!user) { showState("stateSignedOut"); return }
       document.getElementById("who").textContent = user.email || ""
@@ -203,6 +244,7 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
       try {
         const uSnap = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
         M.owned = (uSnap.exists() && uSnap.data().purchases) || []
+        if (uSnap.exists() && uSnap.data().admin === true) adminBtn.style.display = "inline-block"
         const pSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
         const products = []
         pSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))

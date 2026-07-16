@@ -19,7 +19,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:var(--body);color:var(--text);background:var(--canvas);font-size:16px;line-height:1.55}
+  body{font-family:var(--body);color:var(--text);background:var(--canvas);font-size:16px;line-height:1.65}
   h1,h2,h3{font-family:var(--head);font-weight:600}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
@@ -31,45 +31,45 @@
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
   .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body)};overflow:hidden;background-size:cover;background-position:center;flex:none
-  nav.links{display:flex;gap:18px;align-items:center}
-  nav.links a{color:var(--text2);font-size:14px}
+  nav.links{display:flex;gap:32px;align-items:center}
+  nav.links a{color:var(--text2);font-size:14px;letter-spacing:.02em}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
-  .lang-slider .knob{position:absolute;top:1px;left:1px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
   .lang-slider .knob.dragging{transition:none;cursor:grabbing}
-  .lang-slider .lbl{position:absolute;top:0;width:32px;line-height:30px;text-align:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
+  .lang-slider .lbl{position:absolute;top:0;bottom:0;width:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
   .lang-slider .lbl.l{left:0}
   .lang-slider .lbl.r{right:0}
   .price-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0}
   .price-main{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
   .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
   .price-sub:hover{color:var(--red)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body);transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease}
   .btn-primary{background:var(--red);color:#fff}
   .btn-primary:hover{background:var(--red-dark)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
-  .hero{padding:64px 0 56px;text-align:center;background:linear-gradient(180deg,var(--red-soft) 0%,#fff 100%)}
+  .hero{padding:90px 0 80px;text-align:center;background:linear-gradient(180deg,var(--red-soft) 0%,#fff 100%)}
   .hero .eyebrow{display:inline-block;background:#fff;border:1px solid var(--red-border);color:var(--red);font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;margin-bottom:20px}
   .hero h1{font-size:42px;line-height:1.15;max-width:800px;margin:0 auto 16px}
   .hero h1 em{color:var(--red);font-style:italic}
   .hero p{color:var(--text2);font-size:18px;max-width:640px;margin:0 auto 30px}
 
-  section{padding:64px 0}
-  section#how{padding:120px 0 64px}
-  h2{font-size:30px;margin-bottom:8px}
-  .sub{color:var(--text2);margin-bottom:32px;max-width:680px}
+  section{padding:100px 0}
+  section#how{padding:120px 0 100px}
+  h2{font-size:30px;margin-bottom:14px}
+  .sub{color:var(--text2);margin-bottom:48px;max-width:680px}
 
   /* Каталог — шире, крупнее, со своим шрифтом */
   #catalog h2{font-size:34px}
-  .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:start;font-family:var(--cat)}
-  .box{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:22px;opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,box-shadow .2s ease}
+  .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;align-items:start;font-family:var(--cat)}
+  .box{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:22px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
   .box.show{opacity:1;transform:translateY(0)}
   .box:hover{box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-3px)}
   .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
-  .pcard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px}
+  .pcard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:28px}
   .pcard:last-child{margin-bottom:0}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -82,8 +82,8 @@
   .price{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red)}
   .buy{flex:none;padding:12px 26px;font-size:16px;font-family:var(--cat)}
 
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .step{background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:8px;padding:22px;opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s ease,box-shadow .2s ease}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .step{background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:8px;padding:22px;opacity:0;transform:translateY(14px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
   .step.show{opacity:1;transform:translateY(0)}
   .step:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
   .step .num{font-family:var(--head);font-size:30px;color:var(--red);margin-bottom:8px}
@@ -91,20 +91,36 @@
   .step p{color:var(--text2);font-size:14px}
 
   .section-soft{background:var(--soft)}
-  footer{border-top:3px solid var(--red);padding:30px 0;color:var(--text2);font-size:14px}
+  footer{border-top:3px solid var(--red);padding:48px 0;color:var(--text2);font-size:14px}
   .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .admin-modal{position:fixed;inset:0;background:rgba(33,29,29,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;opacity:0;transition:opacity .25s ease}
+  .admin-modal.on{display:flex}
+  .admin-modal.show{opacity:1}
+  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:10px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .admin-modal.show .admin-sheet{transform:translateY(0) scale(1)}
+  .admin-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:3px solid var(--red);font-family:var(--head);font-size:17px}
+  .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .admin-bar button:hover{border-color:var(--red);color:var(--red)}
+  .admin-sheet iframe{flex:1;width:100%;border:0;background:var(--canvas)}
 
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
     .steps{grid-template-columns:1fr}
     .hero h1{font-size:31px}
-    .hero{padding:44px 0 40px}
+    .hero{padding:60px 0 52px}
     nav.links a.hide-m{display:none}
-    nav.links{gap:10px}
+    nav.links{gap:16px}
     nav.links a{white-space:nowrap}
     .brand{font-size:16px;white-space:nowrap}
   }
 </style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
+<link rel="prefetch" href="buy.html">
+<link rel="prefetch" href="login.html">
+<link rel="prefetch" href="members.html">
+<link rel="prefetch" href="admin.html">
 </head>
 <body>
 
@@ -115,6 +131,7 @@
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#how">Как купить</a>
+      <a href="#" id="navAdmin" style="display:none">Админ</a>
       <a href="login.html" id="navLogin">Вход</a>
       <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
       <a href="#" id="navOut" style="display:none">Выйти</a>
@@ -125,7 +142,7 @@
 <main>
   <div class="hero">
     <div class="wrap">
-      <span class="eyebrow">��ебинары · Семинары · Курсы</span>
+      <span class="eyebrow">Вебинары · Семинары · Курсы</span>
       <h1>Финансовые навыки, которые <em>окупаются</em></h1>
       <p>Смотрите бесплатный анонс каждого вебинара, семинара и курса. Оплата переводом по номеру или по QR-коду — логин и доступ придут в WhatsApp, на почту или в Telegram.</p>
       <a class="btn btn-primary" href="#catalog">Что внутри</a>
@@ -176,6 +193,13 @@
   </div>
 </footer>
 
+<div class="admin-modal" id="adminModal">
+  <div class="admin-sheet">
+    <div class="admin-bar"><strong>Панель админа</strong><button id="adminClose" type="button">Закрыть</button></div>
+    <iframe id="adminFrame" title="Панель админа"></iframe>
+  </div>
+</div>
+
 <script src="catalog.js"></script>
 <script>
 function renderCatalog(products) {
@@ -196,8 +220,8 @@ function renderCatalog(products) {
 				'<div class="pbody"><h4></h4><p></p>' +
 				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
-			card.querySelector("h4").textContent = p.title
-			card.querySelector("p").textContent = p.desc
+			card.querySelector("h4").textContent = locTitle(p)
+			card.querySelector("p").textContent = locDesc(p)
 			box.appendChild(card)
 		})
 	})
@@ -218,7 +242,7 @@ document.addEventListener("click", function(e){
 	var observer = new IntersectionObserver(function(entries){
 		entries.forEach(function(entry){
 			if(entry.isIntersecting){
-				var delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 90
+				var delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 70
 				setTimeout(function(){ entry.target.classList.add("show") }, delay)
 				observer.unobserve(entry.target)
 			}
@@ -244,20 +268,28 @@ document.addEventListener("click", function(e){
 
     // Если пользователь вошёл — в шапке «Мой кабинет» и «Выйти» вместо «Войти».
     const auth = authMod.getAuth(app)
+    const db = fsMod.getFirestore(app)
+    const navAdmin = document.getElementById("navAdmin")
     const navLogin = document.getElementById("navLogin")
     const navSignup = document.getElementById("navSignup")
     const navOut = document.getElementById("navOut")
-    authMod.onAuthStateChanged(auth, (user) => {
+    authMod.onAuthStateChanged(auth, async (user) => {
       if (user) {
         navLogin.textContent = "Мой кабинет"
         navLogin.href = "members.html"
         navSignup.style.display = "none"
         navOut.style.display = "inline"
+        // Кнопка «Админ» — только для аккаунтов с admin: true
+        try {
+          const u = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
+          navAdmin.style.display = (u.exists() && u.data().admin === true) ? "" : "none"
+        } catch (x) { navAdmin.style.display = "none" }
       } else {
         navLogin.textContent = "Вход"
         navLogin.href = "login.html"
         navSignup.style.display = ""
         navOut.style.display = "none"
+        navAdmin.style.display = "none"
       }
     })
     navOut.addEventListener("click", async (e) => {
@@ -265,7 +297,24 @@ document.addEventListener("click", function(e){
       await authMod.signOut(auth)
     })
 
-    const db = fsMod.getFirestore(app)
+    // Админка открывается поверх сайта, без перехода на отдельную страницу
+    const adminModal = document.getElementById("adminModal")
+    const adminFrame = document.getElementById("adminFrame")
+    navAdmin.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (!adminFrame.src) adminFrame.src = "admin.html"
+      adminModal.classList.add("on")
+      requestAnimationFrame(() => adminModal.classList.add("show"))
+      document.body.style.overflow = "hidden"
+    })
+    function closeAdmin() {
+      adminModal.classList.remove("show")
+      document.body.style.overflow = ""
+      setTimeout(() => adminModal.classList.remove("on"), 250)
+    }
+    document.getElementById("adminClose").addEventListener("click", closeAdmin)
+    adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
+
     const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
     snap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
