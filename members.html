@@ -86,11 +86,12 @@
   html{-webkit-text-size-adjust:100%}
   html,body{overflow-x:clip}
   img,iframe,video{max-width:100%}
-  @media (max-width:640px){
+  @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .wrap{padding:0 16px}
     .center{margin:40px auto;padding:28px 20px}
     .pcard{padding:16px;gap:12px}
     .admin-sheet{width:100vw;height:100dvh;max-width:none;max-height:none;border-radius:0}
+    button,.btn{min-height:44px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">

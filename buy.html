@@ -88,11 +88,12 @@
   html{-webkit-text-size-adjust:100%}
   html,body{overflow-x:clip}
   img,iframe,video{max-width:100%}
-  @media (max-width:640px){
+  @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .wrap{padding:0 16px}
     .card{padding:22px 18px}
     .qrs img,.qr-ph{width:146px;height:146px}
     input[type=text],input[type=email]{font-size:16px}
+    button,.btn{min-height:44px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">

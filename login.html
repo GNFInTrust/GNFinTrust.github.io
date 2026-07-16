@@ -62,9 +62,10 @@
   .note{font-size:12.5px;color:var(--text2);text-align:center;margin-top:18px}
   html{-webkit-text-size-adjust:100%}
   html,body{overflow-x:clip}
-  @media (max-width:480px){
-    .card{padding:30px 20px}
+  @media (max-width:480px), (max-height:560px) and (orientation:landscape){
+    .card{padding:30px 20px;margin:24px auto}
     input{font-size:16px}
+    button{min-height:44px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">

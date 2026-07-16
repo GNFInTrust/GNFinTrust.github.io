@@ -93,12 +93,13 @@
   html{-webkit-text-size-adjust:100%}
   html,body{overflow-x:clip}
   img,iframe{max-width:100%}
-  @media (max-width:640px){
+  @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .wrap{padding:0 16px}
     .panel{padding:20px 14px}
     .mtabs{gap:6px}
     table{display:block;overflow-x:auto}
     input,select,textarea{font-size:16px}
+    button{min-height:42px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
