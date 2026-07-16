@@ -33,8 +33,8 @@
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .wrap-wide{max-width:1320px;margin:0 auto;padding:0 24px}
 
-  header{border-bottom:1px solid transparent;position:sticky;top:0;background:var(--soft);backdrop-filter:blur(8px);z-index:10;box-shadow:0 1px 0 0 var(--soft);transition:box-shadow .18s ease,transform .35s cubic-bezier(.22,.61,.36,1),background-color .18s ease,border-color .18s ease}
-  header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06);background:rgba(255,255,255,.98);border-color:var(--border)}
+  header{border-bottom:1px solid transparent;position:sticky;top:0;background:var(--soft);z-index:10;transition:box-shadow .18s ease,transform .25s ease,border-color .18s ease}
+  header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06);border-color:var(--border)}
   header.hide{transform:translateY(-100%)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
@@ -479,12 +479,30 @@ document.addEventListener("click", function(e){
 	window.addEventListener("resize", function(){ heroShrink(window.scrollY) }, { passive: true })
 	window.addEventListener("scroll", function(){
 		var y = window.scrollY
-		header.classList.toggle("scrolled", y > 12)
 		heroShrink(y)
-		// Шапка скрывается вместе с героем; от каталога и ниже — появляется при прокрутке вверх
+		// Порог: 75% высоты героя. Пока не пролистано 75% — хедер виден и бежевый (цвет героя).
+		var heroH = hero ? hero.offsetHeight : window.innerHeight
+		var threshold = Math.max(1, heroH * 0.75)
+		var pastHero = y >= threshold
+// Белый хедер — после 75% героя; тень/рамка — тоже.
+		// Цвет фона хедера плавно переливается от бежевого (var(--soft)) к белому (#fff)
+		// в зоне 60%–75% высоты героя, чтобы при возврате к герою хедер аккуратно стал бежевым.
+		header.classList.toggle("scrolled", pastHero)
+		var softR=250,softG=247,softB=246, whiteR=255,whiteG=255,whiteB=255
+		var blendStart = heroH * 0.60, blendEnd = heroH * 0.75
+		var blend = Math.max(0, Math.min(1, (y - blendStart) / Math.max(1, blendEnd - blendStart)))
+		var r = Math.round(softR + (whiteR - softR) * blend)
+		var g = Math.round(softG + (whiteG - softG) * blend)
+		var b = Math.round(softB + (whiteB - softB) * blend)
+		header.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')'
+		// Пока на герое (до 75%) — хедер всегда виден.
+		// После 75% — скрывается при скролле вниз, появляется при скролле вверх.
 		var up = y < lastY
-		var low = catalogSec ? catalogSec.getBoundingClientRect().top < window.innerHeight * 0.6 : true
-		header.classList.toggle("hide", !(y <= 60 || (up && low)))
+		if (!pastHero) {
+			header.classList.remove("hide")
+		} else {
+			header.classList.toggle("hide", !up)
+		}
 		lastY = y
 	}, { passive: true })
 
