@@ -46,7 +46,7 @@
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
-  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
+  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .3s cubic-bezier(.22,.61,.36,1)}
   .lang-slider .knob.dragging{transition:none;cursor:grabbing}
   .lang-slider .lbl{position:absolute;top:0;bottom:0;width:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
   .lang-slider .lbl.l{left:0}
@@ -467,11 +467,10 @@ document.addEventListener("click", function(e){
 		}
 		var full = window.innerHeight - 66
 		var min = 460
-		var range = Math.max(1, Math.min(420, full - min))
+		var range = Math.max(1, full - min)
 		var p = Math.min(1, y / range)
-		var pe = p * p * (3 - 2 * p)
-		hero.style.minHeight = Math.round(full - (full - min) * pe) + "px"
-		var inset = Math.round(pe * 120)
+		hero.style.minHeight = Math.round(full - (full - min) * p) + "px"
+		var inset = Math.round(p * 120)
 		hero.style.marginLeft = inset + "px"
 		hero.style.marginRight = inset + "px"
 	}
@@ -489,8 +488,9 @@ document.addEventListener("click", function(e){
 		// в зоне 60%–75% высоты героя, чтобы при возврате к герою хедер аккуратно стал бежевым.
 		header.classList.toggle("scrolled", pastHero)
 		var softR=250,softG=247,softB=246, whiteR=255,whiteG=255,whiteB=255
-		var blendStart = heroH * 0.60, blendEnd = heroH * 0.75
-		var blend = Math.max(0, Math.min(1, (y - blendStart) / Math.max(1, blendEnd - blendStart)))
+		var blendStart = heroH * 0.40, blendEnd = heroH * 0.75
+		var rawBlend = Math.max(0, Math.min(1, (y - blendStart) / Math.max(1, blendEnd - blendStart)))
+		var blend = rawBlend * rawBlend * (3 - 2 * rawBlend)
 		var r = Math.round(softR + (whiteR - softR) * blend)
 		var g = Math.round(softG + (whiteG - softG) * blend)
 		var b = Math.round(softB + (whiteB - softB) * blend)

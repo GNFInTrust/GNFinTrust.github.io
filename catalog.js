@@ -207,9 +207,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			knob.style.transform = "translateX(" + Math.max(0, Math.min(maxRight, p)) + "px)"
 		}
 		function toggleLang() {
-			GN_LANG = GN_LANG === "ru" ? "ky" : "ru"
+			var newLang = GN_LANG === "ru" ? "ky" : "ru"
+			GN_LANG = newLang
 			try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
-			location.reload()
+			knob.textContent = newLang === "ky" ? "KG" : "RU"
+			setPos(newLang === "ky" ? maxRight : 0)
+			setTimeout(function(){ location.reload() }, 300)
 		}
 		function commit() {
 			var p = getCurPos()
@@ -217,7 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (newLang !== GN_LANG) {
 				GN_LANG = newLang
 				try { localStorage.setItem("gn_lang", GN_LANG) } catch (e) {}
-				location.reload()
+				knob.textContent = newLang === "ky" ? "KG" : "RU"
+				setPos(newLang === "ky" ? maxRight : 0)
+				setTimeout(function(){ location.reload() }, 300)
 			} else {
 				setPos(newLang === "ky" ? maxRight : 0)
 			}
