@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Мой кабинет — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -14,7 +18,7 @@
     --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
     --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
-    --head:Georgia,"Times New Roman",serif;
+    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,13 +26,14 @@
   h1,h2,h3{font-family:var(--head)}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  ::selection{background:var(--red);color:#fff}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
   .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
   .navr{display:flex;align-items:center;gap:14px;font-size:14px}
   .navr .who{color:var(--text2)}
-  .navr button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
+  .navr button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 16px;font-size:13px;font-family:var(--body);cursor:pointer;transition:border-color .18s ease,color .18s ease}
   .navr button:hover{border-color:var(--red);color:var(--red)}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
   .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .15s ease}
@@ -40,17 +45,17 @@
   main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:56px 24px 96px}
   .state{display:none}
   .state.on{display:block}
-  .center{max-width:460px;margin:90px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
+  .center{max-width:460px;margin:90px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px;box-shadow:0 1px 2px rgba(33,29,29,.05),0 12px 34px rgba(33,29,29,.07)}
   .center h1{font-size:24px;margin-bottom:10px}
   .center p{color:var(--text2);font-size:15px;margin-bottom:24px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:12px 24px;font-size:15px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:44px}
-  .btn:hover{background:var(--red-dark)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:12px 26px;font-size:15px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:44px;box-shadow:0 2px 8px rgba(200,16,46,.25);transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .btn:hover{background:var(--red-dark);box-shadow:0 6px 18px rgba(200,16,46,.3);transform:translateY(-1px)}
 
   .banner{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:13px 16px;font-size:14.5px;margin-bottom:36px}
   h1.page{font-size:27px;margin-bottom:6px}
   .sub{color:var(--text2);margin-bottom:36px;font-size:15px}
-  .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:20px;cursor:pointer;font-family:var(--body)}
-  .pcard:hover{border-color:var(--red)}
+  .pcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:2px;padding:20px 22px;margin-bottom:20px;cursor:pointer;font-family:var(--body);box-shadow:0 1px 2px rgba(33,29,29,.05);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+  .pcard:hover{border-color:var(--red-border);box-shadow:0 8px 24px rgba(33,29,29,.08);transform:translateY(-2px)}
   .pcard .ico{flex:none;width:52px;height:52px;border-radius:10px;background:var(--red-soft);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:24px;min-width:52px}
   .pcard h3{font-size:17px;margin-bottom:3px;font-family:var(--head)}
   .pcard p{font-size:13.5px;color:var(--text2)}
@@ -72,12 +77,12 @@
   .admin-modal{position:fixed;inset:0;background:rgba(33,29,29,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;opacity:0;transition:opacity .25s ease}
   .admin-modal.on{display:flex}
   .admin-modal.show{opacity:1}
-  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:10px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:2px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
   .admin-modal.show .admin-sheet{transform:translateY(0) scale(1)}
   .admin-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:3px solid var(--red);font-family:var(--head);font-size:17px}
   .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
   .admin-bar button:hover{border-color:var(--red);color:var(--red)}
-  .admin-sheet iframe{flex:1;width:100%;border:0;background:var(--canvas)}
+  .admin-sheet iframe{flex:1;width:100%;border:0;background:#fff}
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
@@ -195,7 +200,7 @@ function openItem(id) {
 	var c = M.content[id] || {}
 	var v = document.getElementById("dVideo")
 	if (isRealLink(c.video)) {
-		v.innerHTML = '<iframe src="' + c.video + '" loading="lazy" allow="autoplay; fullscreen" allowfullscreen title="Видео"></iframe>'
+		safeEmbed(v, c.video, "Видео")
 	} else {
 		v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
 	}

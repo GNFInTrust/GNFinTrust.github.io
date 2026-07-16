@@ -3,36 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>GN FinTrust — вебинары, семинары и курсы</title>
 <meta name="description" content="GN FinTrust: практические финансовые вебинары, семинары и курсы. Смотрите анонс, покупайте в два клика — доступ придёт в WhatsApp, на почту или в Telegram.">
 <style>
   :root{
     --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
     --text:#211D1D; --text2:#6E6867; --canvas:#FFFFFF; --soft:#FAF7F6; --border:#E8E2E1;
-    --head:Georgia,"Times New Roman",serif;
+    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     --cat:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --shadow-sm:0 1px 2px rgba(33,29,29,.06);
+    --shadow-md:0 10px 30px rgba(33,29,29,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{font-family:var(--body);color:var(--text);background:var(--canvas);font-size:16px;line-height:1.65}
-  h1,h2,h3{font-family:var(--head);font-weight:600}
+  h1,h2,h3{font-family:var(--head);font-weight:700;letter-spacing:-.02em}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  ::selection{background:var(--red);color:#fff}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .wrap-wide{max-width:1320px;margin:0 auto;padding:0 24px}
 
-  header{border-bottom:3px solid var(--red);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);z-index:10;transition:box-shadow .2s ease}
+  header{border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);z-index:10;transition:box-shadow .2s ease,transform .35s cubic-bezier(.22,.61,.36,1)}
   header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  header.hide{transform:translateY(-100%)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
   .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
   nav.links{display:flex;gap:32px;align-items:center}
-  nav.links a{color:var(--text2);font-size:14px;letter-spacing:.02em}
+  nav.links a{color:var(--text);font-size:13px;letter-spacing:.02em;position:relative;transition:color .18s ease}
+  nav.links a:not(.btn-primary)::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .22s ease}
+  nav.links a:not(.btn-primary):hover::after{transform:scaleX(1)}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
   .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
@@ -45,31 +55,45 @@
   .price-main{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
   .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
   .price-sub:hover{color:var(--red)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body);transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease}
-  .btn-primary{background:var(--red);color:#fff}
-  .btn-primary:hover{background:var(--red-dark)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 26px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body);transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .btn-primary{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(200,16,46,.25)}
+  .btn-primary:hover{background:var(--red-dark);box-shadow:0 6px 18px rgba(200,16,46,.3);transform:translateY(-1px)}
+  .btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px rgba(200,16,46,.25)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
-  .hero{padding:90px 0 80px;text-align:center;background:linear-gradient(180deg,var(--red-soft) 0%,#fff 100%)}
-  .hero .eyebrow{display:inline-block;background:#fff;border:1px solid var(--red-border);color:var(--red);font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;margin-bottom:20px}
-  .hero h1{font-size:42px;line-height:1.15;max-width:800px;margin:0 auto 16px}
-  .hero h1 em{color:var(--red);font-style:italic}
-  .hero p{color:var(--text2);font-size:18px;max-width:640px;margin:0 auto 30px}
+  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft);transition:min-height .6s cubic-bezier(.22,.61,.36,1)}
+  .hero.small{min-height:460px}
+  .hero>.wrap{width:100%}
+  .hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:center;text-align:left}
+  .hero-visual{display:flex;align-items:center;justify-content:center}
+  .hero-poster{width:min(300px,90%);aspect-ratio:3/4.3;background:#fff;box-shadow:0 24px 60px rgba(33,29,29,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+  .hero-poster .mark{width:88px;height:88px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;font-family:var(--head)}
+  .hero-poster .cap{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--text2)}
+  .hero .eyebrow{display:inline-block;color:var(--red);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+  .hero h1{font-size:clamp(34px,4.6vw,52px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin:0 0 16px}
+  .hero h1 em{color:var(--red);font-style:normal}
+  .hero p{color:var(--text2);font-size:18px;max-width:520px;margin:0 0 30px}
+
+  /* Плавающая кнопка WhatsApp */
+  .fab-wa{position:fixed;right:26px;bottom:26px;width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;z-index:70;transition:transform .18s ease,box-shadow .18s ease}
+  .fab-wa:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.22)}
+  .fab-wa svg{width:32px;height:32px;display:block}
 
   section{padding:100px 0}
   section#how{padding:120px 0 100px}
-  h2{font-size:30px;margin-bottom:14px}
-  .sub{color:var(--text2);margin-bottom:48px;max-width:680px}
+  h2{font-size:clamp(28px,3.5vw,40px);margin-bottom:14px;letter-spacing:-.02em;text-align:center}
+  .sub{color:var(--text2);margin:0 auto 48px;max-width:680px;text-align:center}
 
   /* Каталог — шире, крупнее, со своим шрифтом */
-  #catalog h2{font-size:34px}
+  #catalog h2{font-size:clamp(30px,4vw,44px)}
   .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;align-items:start;font-family:var(--cat)}
-  .box{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:22px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
+  .box{background:var(--soft);border:1px solid transparent;border-radius:2px;padding:24px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease;box-shadow:var(--shadow-sm)}
   .box.show{opacity:1;transform:translateY(0)}
-  .box:hover{box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-3px)}
+  .box:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
   .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
-  .pcard{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:28px}
+  .pcard{background:#fff;border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:28px;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
+  .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--red-border)}
   .pcard:last-child{margin-bottom:0}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -83,31 +107,59 @@
   .buy{flex:none;padding:12px 26px;font-size:16px;font-family:var(--cat)}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-  .step{background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:8px;padding:22px;opacity:0;transform:translateY(14px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
+  .step{background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:2px;padding:24px;opacity:0;transform:translateY(14px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
   .step.show{opacity:1;transform:translateY(0)}
   .step:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
-  .step .num{font-family:var(--head);font-size:30px;color:var(--red);margin-bottom:8px}
+  .step .num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--red-soft);border:1px solid var(--red-border);font-family:var(--head);font-size:21px;color:var(--red);margin-bottom:14px}
   .step h3{font-size:17px;margin-bottom:6px}
   .step p{color:var(--text2);font-size:14px}
 
-  .section-soft{background:var(--soft)}
-  footer{border-top:3px solid var(--red);padding:48px 0;color:var(--text2);font-size:14px}
+  /* Команда: карточки с фото — при наведении светлеют, поднимаются и показывают описание */
+  .team-sec{padding:84px 0 90px}
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .tcard{background:var(--soft);border-radius:2px;overflow:hidden;cursor:pointer;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .35s ease,background-color .35s ease}
+  .tcard.show{opacity:1;transform:translateY(0)}
+  .tcard:hover{transform:translateY(-10px);background:#fff;box-shadow:0 18px 44px rgba(33,29,29,.14)}
+  .tphoto{position:relative;aspect-ratio:3/4;background:linear-gradient(160deg,#EFE8E7,#FAF7F6);overflow:hidden}
+  .tphoto .tph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text2);font-size:13px}
+  .tphoto .tph .big{font-size:40px;font-weight:800;color:#D9CFCE;font-family:var(--head)}
+  .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.9);transition:filter .35s ease,transform .5s ease}
+  .tcard:hover .tphoto img{filter:brightness(1.06);transform:scale(1.04)}
+  .tinfo{padding:22px 24px 26px}
+  .tinfo h3{font-size:19px;margin-bottom:2px}
+  .tinfo .trole{display:block;font-size:13px;font-weight:600;color:var(--red)}
+  .tinfo p{font-size:14px;color:var(--text2);max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .45s ease,opacity .35s ease,margin-top .35s ease}
+  .tcard:hover .tinfo p{max-height:220px;opacity:1;margin-top:10px}
+
+  .section-soft{background:var(--soft);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  footer{border-top:3px solid var(--red);background:var(--soft);padding:48px 0;color:var(--text2);font-size:14px}
   .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .admin-modal{position:fixed;inset:0;background:rgba(33,29,29,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;opacity:0;transition:opacity .25s ease}
   .admin-modal.on{display:flex}
   .admin-modal.show{opacity:1}
-  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:10px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:2px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
   .admin-modal.show .admin-sheet{transform:translateY(0) scale(1)}
   .admin-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:3px solid var(--red);font-family:var(--head);font-size:17px}
   .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
   .admin-bar button:hover{border-color:var(--red);color:var(--red)}
   .admin-sheet iframe{flex:1;width:100%;border:0;background:var(--canvas)}
 
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+    .box,.step,.tcard{opacity:1;transform:none}
+    .tinfo p{max-height:none;opacity:1;margin-top:10px}
+  }
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
     .steps{grid-template-columns:1fr}
+    .team{grid-template-columns:1fr}
+    .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .hero h1{font-size:31px}
-    .hero{padding:60px 0 52px}
+    .hero{padding:64px 0;min-height:0}
+    .hero.small{min-height:0}
+    .hero .wrap{grid-template-columns:1fr;gap:36px}
+    .hero-poster{width:min(240px,70%)}
     nav.links a.hide-m{display:none}
     nav.links{gap:16px}
     nav.links a{white-space:nowrap}
@@ -157,12 +209,59 @@
 <main>
   <div class="hero">
     <div class="wrap">
-      <span class="eyebrow">Вебинары · Семинары · Курсы</span>
-      <h1>Финансовые навыки, которые <em>окупаются</em></h1>
-      <p>Смотрите бесплатный анонс каждого вебинара, семинара и курса. Оплата переводом по номеру или по QR-коду — логин и доступ придут в WhatsApp, на почту или в Telegram.</p>
-      <a class="btn btn-primary" href="#catalog">Что внутри</a>
+      <div class="hero-visual">
+        <div class="hero-poster"><div class="mark">GN</div><div class="cap">FinTrust</div></div>
+      </div>
+      <div class="hero-copy">
+        <span class="eyebrow">Вебинары · Семинары · Курсы</span>
+        <h1>Финансовые навыки, которые <em>окупаются</em></h1>
+        <p>Смотрите бесплатный анонс каждого вебинара, семинара и курса. Оплата переводом по номеру или по QR-коду — логин и доступ придут в WhatsApp, на почту или в Telegram.</p>
+        <a class="btn btn-primary" href="#catalog">Что внутри</a>
+      </div>
     </div>
   </div>
+
+  <section id="team" class="team-sec">
+    <div class="wrap">
+      <h2>Наша команда</h2>
+      <p class="sub">Люди, которые ведут вебинары, семинары и курсы.</p>
+      <div class="team">
+        <article class="tcard">
+          <div class="tphoto">
+            <div class="tph"><span class="big">GN</span><span>Фото: team-1.jpg</span></div>
+            <img src="team-1.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+          </div>
+          <div class="tinfo">
+            <h3>Имя Фамилия</h3>
+            <span class="trole">Основатель, финансовый консультант</span>
+            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+          </div>
+        </article>
+        <article class="tcard">
+          <div class="tphoto">
+            <div class="tph"><span class="big">GN</span><span>Фото: team-2.jpg</span></div>
+            <img src="team-2.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+          </div>
+          <div class="tinfo">
+            <h3>Имя Фамилия</h3>
+            <span class="trole">Ведущий вебинаров</span>
+            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+          </div>
+        </article>
+        <article class="tcard">
+          <div class="tphoto">
+            <div class="tph"><span class="big">GN</span><span>Фото: team-3.jpg</span></div>
+            <img src="team-3.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+          </div>
+          <div class="tinfo">
+            <h3>Имя Фамилия</h3>
+            <span class="trole">Куратор курсов</span>
+            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 
   <section id="catalog">
     <div class="wrap-wide">
@@ -179,7 +278,7 @@
   <section class="section-soft" id="how">
     <div class="wrap">
       <h2>Как купить</h2>
-      <p class="sub">Без карт на ��айте и без подписок — одна оплата, доступ навсегда.</p>
+      <p class="sub">Без карт на сайте и без подписок — одна оплата, доступ навсегда.</p>
       <div class="steps">
         <div class="step">
           <div class="num">1</div>
@@ -200,6 +299,10 @@
     </div>
   </section>
 </main>
+
+<a class="fab-wa" href="https://wa.me/996000000000" target="_blank" rel="noopener" aria-label="WhatsApp" title="Написать в WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#25D366" d="M16 2.7C8.7 2.7 2.7 8.7 2.7 16c0 2.4.6 4.6 1.8 6.6L2.7 29.3l6.9-1.8c1.9 1.1 4.1 1.6 6.4 1.6 7.3 0 13.3-6 13.3-13.3S23.3 2.7 16 2.7z"/><path fill="#fff" d="M12.1 9.6c-.3-.6-.6-.6-.8-.6h-.7c-.2 0-.6.1-1 .5-.3.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.8c.2.3 2.6 4.1 6.3 5.6 3.1 1.2 3.7 1 4.4.9.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.6.2-1.7-.1-.1-.3-.2-.7-.4-.4-.2-2.1-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.8-1.1-1-1.8-2.1-2-2.5-.2-.4 0-.6.2-.7.2-.2.4-.4.5-.7.2-.2.2-.4.3-.7.1-.3.1-.5 0-.7-.1-.2-.8-1.9-1.2-2.9z"/></svg>
+</a>
 
 <footer>
   <div class="wrap foot">
@@ -227,16 +330,14 @@ function renderCatalog(products) {
 		items.forEach(function (p) {
 			var card = document.createElement("div")
 			card.className = "pcard"
-			var video = isRealLink(p.preview)
-				? '<iframe src="' + p.preview + '" loading="lazy" allow="autoplay; fullscreen" allowfullscreen title="Анонс"></iframe>'
-				: '<div class="ph"><span class="big">Видео</span><span>Видео-анонс</span></div>'
 			card.innerHTML =
-				'<div class="pvideo">' + video + "</div>" +
+				'<div class="pvideo"><div class="ph"><span class="big">Видео</span><span>Видео-анонс</span></div></div>' +
 				'<div class="pbody"><h4></h4><p></p>' +
 				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
 			card.querySelector("h4").textContent = locTitle(p)
 			card.querySelector("p").textContent = locDesc(p)
+			if (isRealLink(p.preview)) safeEmbed(card.querySelector(".pvideo"), p.preview, "Анонс")
 			box.appendChild(card)
 		})
 	})
@@ -253,7 +354,7 @@ document.addEventListener("click", function(e){
 
 // Плавная анимация появления блоков при прокрутке + тень шапки при скролле
 ;(function(){
-	var boxes = document.querySelectorAll(".box, .step")
+	var boxes = document.querySelectorAll(".box, .step, .tcard")
 	var observer = new IntersectionObserver(function(entries){
 		entries.forEach(function(entry){
 			if(entry.isIntersecting){
@@ -266,9 +367,20 @@ document.addEventListener("click", function(e){
 	boxes.forEach(function(b){ observer.observe(b) })
 
 	var header = document.querySelector("header")
+	var hero = document.querySelector(".hero")
+	var team = document.getElementById("team")
+	var lastY = window.scrollY
 	window.addEventListener("scroll", function(){
-		header.classList.toggle("scrolled", window.scrollY > 12)
-	})
+		var y = window.scrollY
+		header.classList.toggle("scrolled", y > 12)
+		// Герой занимает весь экран и плавно уменьшается при прокрутке вниз
+		if (hero) hero.classList.toggle("small", y > 60)
+		// Шапка скрывается вместе с героем; ниже секции сотрудников — появляется при прокрутке вверх
+		var up = y < lastY
+		var pastTeam = team ? team.getBoundingClientRect().bottom < 0 : true
+		header.classList.toggle("hide", !(y <= 60 || (up && pastTeam)))
+		lastY = y
+	}, { passive: true })
 })()
 </script>
 <script type="module">

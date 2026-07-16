@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Админ — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -14,7 +18,7 @@
     --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
     --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
-    --head:Georgia,"Times New Roman",serif;
+    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,6 +26,7 @@
   h1,h2,h3{font-family:var(--head)}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  ::selection{background:var(--red);color:#fff}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
@@ -31,10 +36,10 @@
   .navr button:hover{border-color:var(--red);color:var(--red)}
 
   main{flex:1;width:100%;max-width:1160px;margin:0 auto;padding:48px 24px 96px}
-  .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px 32px}
+  .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 22px;font-size:14px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
   .btn:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
@@ -43,9 +48,9 @@
   h1.page{font-size:26px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:14px;margin-bottom:22px}
   .mtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-  .mtab{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:999px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;transition:border-color .18s ease,color .18s ease,background-color .18s ease}
   .mtab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:34px}
+  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:2px;padding:34px;box-shadow:0 1px 2px rgba(33,29,29,.05)}
   .panel.on{display:block}
   .panel h2{font-size:20px;margin-bottom:6px}
   .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:26px;max-width:760px}
@@ -68,7 +73,7 @@
   form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
   form.grid .full{grid-column:1/-1}
   label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)}
-  input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff}
+  input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
   textarea{min-height:70px;resize:vertical}
   input:focus,select:focus,textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
   .formfoot{display:flex;align-items:center;gap:14px;margin:14px 0 26px}
@@ -260,7 +265,7 @@ function renderOrders() {
 			'<td class="muted">' + esc(String(o.createdAt || "").slice(0, 16).replace("T", " ")) + "</td>" +
 			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>" + esc(o.price) + " сом</span></td>" +
 			"<td>" + esc(o.buyer || "—") + "</td>" +
-			'<td class="contact">' + esc(o.method) + '<br><a href="' + contactLink(o.method, o.contact) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
+			'<td class="contact">' + esc(o.method) + '<br><a href="' + esc(contactLink(o.method, o.contact)) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
 			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : "новая") + "</span></td>" +
 			"<td>" + (o.status === "done" ? "" : '<button class="btn btn-ghost btn-sm" data-done="' + esc(o._id) + '">Выполнено</button> ') +
 			'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></td>' +

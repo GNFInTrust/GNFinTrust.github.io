@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Оплата — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -14,7 +18,7 @@
     --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
     --text:#211D1D; --text2:#6E6867; --canvas:#FFFFFF; --soft:#FAF7F6; --border:#E8E2E1;
     --green:#2F7351; --green-soft:#E8F1EC;
-    --head:Georgia,"Times New Roman",serif;
+    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -22,6 +26,7 @@
   h1,h2,h3{font-family:var(--head)}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  ::selection{background:var(--red);color:#fff}
   header{border-bottom:3px solid var(--red);background:#fff}
   .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
@@ -40,7 +45,7 @@
   .price-sub:hover{color:var(--red)}
 
   main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:56px 24px 96px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:32px;margin-bottom:32px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:2px;padding:32px;margin-bottom:32px;box-shadow:0 1px 2px rgba(33,29,29,.05),0 10px 30px rgba(33,29,29,.05)}
   h1{font-size:26px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:15px}
 
@@ -54,29 +59,30 @@
   h3.step .n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:13px;font-family:var(--body);margin-right:8px;vertical-align:-3px}
 
   .tabs{display:flex;gap:8px;margin-bottom:16px}
-  .tab{flex:1;padding:11px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2)}
+  .tab{flex:1;padding:11px;border:1px solid var(--border);border-radius:999px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2);transition:border-color .18s ease,color .18s ease,background-color .18s ease}
   .tab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
   .pane{display:none}
   .pane.on{display:block}
   .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:10px;background:var(--soft)}
   .payrow .lbl{font-size:13px;color:var(--text2)}
   .payrow .val{font-weight:600;font-size:15px}
-  .copy{border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .copy{border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body);transition:border-color .18s ease,color .18s ease}
   .copy:hover{border-color:var(--red);color:var(--red)}
   .qrs{display:flex;gap:14px;flex-wrap:wrap}
-  .qrs img{width:180px;height:180px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:#fff}
+  .qrs img{width:180px;height:180px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(33,29,29,.06)}
   .qr-ph{width:180px;height:180px;border:2px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text2);font-size:12px;text-align:center;padding:10px}
   .qr-ph .big{font-size:30px}
   .hint{font-size:13px;color:var(--text2);margin-top:10px}
 
   label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
-  input[type=text],input[type=email]{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff}
+  input[type=text],input[type=email]{width:100%;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
   input:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip{border:1px solid var(--border);border-radius:999px;padding:10px 18px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2)}
+  .chip{border:1px solid var(--border);border-radius:999px;padding:10px 18px;background:#fff;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;color:var(--text2);transition:border-color .18s ease,color .18s ease,background-color .18s ease}
   .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .submit{width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:6px;padding:15px;font-size:16px;font-weight:600;font-family:var(--body);cursor:pointer}
-  .submit:hover{background:var(--red-dark)}
+  .submit{width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:999px;padding:15px;font-size:16px;font-weight:600;font-family:var(--body);cursor:pointer;box-shadow:0 2px 8px rgba(200,16,46,.25);transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .submit:hover{background:var(--red-dark);box-shadow:0 6px 18px rgba(200,16,46,.3);transform:translateY(-1px)}
+  .submit:active{transform:translateY(0)}
   .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:8px;padding:16px;margin-top:18px;font-size:14.5px}
   .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:8px;padding:12px 14px;margin-top:18px;font-size:14px}
 </style>
@@ -173,7 +179,7 @@ document.addEventListener("click", function(e){
 		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
 		location.reload()
 	}
-}
+})
 
 function isVisaNumber(n) {
 	var s = (String(n.label || "") + " " + String(n.value || "")).toLowerCase()
@@ -214,6 +220,8 @@ function renderPayment() {
 		if (isRealLink(src)) {
 			var img = document.createElement("img")
 			img.src = src
+			img.loading = "lazy"
+			img.decoding = "async"
 			img.alt = "QR-код для оплаты"
 			qr.appendChild(img)
 		} else {
