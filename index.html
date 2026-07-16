@@ -33,8 +33,8 @@
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .wrap-wide{max-width:1320px;margin:0 auto;padding:0 24px}
 
-  header{border-bottom:1px solid transparent;position:sticky;top:0;background:var(--soft);backdrop-filter:blur(8px);z-index:10;transition:box-shadow .2s ease,transform .35s cubic-bezier(.22,.61,.36,1),background-color .3s ease,border-color .3s ease}
-  header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06);background:rgba(255,255,255,.95);border-color:var(--border)}
+  header{border-bottom:1px solid transparent;position:sticky;top:0;background:var(--soft);backdrop-filter:blur(8px);z-index:10;box-shadow:0 1px 0 0 var(--soft);transition:box-shadow .18s ease,transform .35s cubic-bezier(.22,.61,.36,1),background-color .18s ease,border-color .18s ease}
+  header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06);background:rgba(255,255,255,.98);border-color:var(--border)}
   header.hide{transform:translateY(-100%)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
@@ -61,7 +61,7 @@
   .btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px rgba(200,16,46,.25)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
-  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft)}
+  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft);transition:min-height .25s ease-out,margin .25s ease-out}
   @supports (min-height:100svh){.hero{min-height:calc(100svh - 66px)}}
   .hero>.wrap{width:100%}
   .hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:center;text-align:left}
@@ -89,16 +89,16 @@
   .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;align-items:start;font-family:var(--cat)}
   .box{background:var(--soft);border:1px solid transparent;border-radius:2px;padding:24px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease;box-shadow:var(--shadow-sm)}
   .box.show{opacity:1;transform:translateY(0)}
-  .box:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
   .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
-  .pcard{background:#fff;border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:28px;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
+  .pcard{background:#fff;border:1px solid var(--border);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:28px;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
   .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--red-border)}
   .pcard:last-child{margin-bottom:0}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:rgba(255,255,255,.8);font-size:14px}
   .pvideo .ph .big{font-size:34px}
+  .pvideo .ph .play{width:54px;height:54px;border-radius:999px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;padding-left:4px}
   .pbody{padding:20px}
   .pbody h4{font-family:var(--cat);font-size:19px;line-height:1.3;margin-bottom:8px}
   .pbody p{font-size:14.5px;color:var(--text2);margin-bottom:16px}
@@ -150,10 +150,35 @@
     .box,.step,.tcard{opacity:1;transform:none}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
   }
+  /* Просмотр видео как на YouTube */
+  .watch-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(33,29,29,.62);z-index:80;padding:20px;opacity:0;transition:opacity .25s ease}
+  .watch-modal.on{display:flex}
+  .watch-modal.show{opacity:1}
+  .watch-sheet{position:relative;background:#fff;width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;border-radius:2px;transform:translateY(14px);transition:transform .25s ease;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+  .watch-modal.show .watch-sheet{transform:translateY(0)}
+  .watch-close{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .watch-close:hover{border-color:var(--red);color:var(--red)}
+  .wvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
+  .wvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .wvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:rgba(255,255,255,.8);font-size:14px}
+  .wvideo .ph .big{font-size:34px}
+  .wbody{padding:24px 26px 28px}
+  .wbody h3{font-family:var(--cat);font-size:24px;margin-bottom:10px}
+  .wbody p{color:var(--text2);font-size:15.5px;margin-bottom:20px}
+  @media (max-width:640px){
+    .watch-modal{padding:0}
+    .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
+  }
+  .team-nav{display:none}
+  .tn-btn{width:44px;height:44px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
+  .tn-btn:active{border-color:var(--red);color:var(--red)}
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
     .steps{grid-template-columns:1fr}
-    .team{grid-template-columns:1fr}
+    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+    .team::-webkit-scrollbar{display:none}
+    .tcard{flex:0 0 86%;scroll-snap-align:center}
+    .team-nav{display:flex;gap:10px;justify-content:center;margin-top:16px}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .hero h1{font-size:31px}
     .hero{padding:64px 0;min-height:0}
@@ -273,6 +298,10 @@
           </div>
         </article>
       </div>
+      <div class="team-nav">
+        <button class="tn-btn" id="teamPrev" type="button" aria-label="Назад">&lt;</button>
+        <button class="tn-btn" id="teamNext" type="button" aria-label="Вперёд">&gt;</button>
+      </div>
     </div>
   </section>
 
@@ -331,6 +360,21 @@
   </div>
 </div>
 
+<div class="watch-modal" id="watchModal">
+  <div class="watch-sheet">
+    <button class="watch-close" id="watchClose" type="button" aria-label="Закрыть">✕</button>
+    <div class="wvideo" id="wVideo"></div>
+    <div class="wbody">
+      <h3 id="wTitle"></h3>
+      <p id="wDesc"></p>
+      <div class="prow">
+        <div class="price-wrap"><span class="price-main" id="wPrice"></span><span class="price-sub" id="wPriceSub"></span></div>
+        <a class="btn btn-primary buy" id="wBuy" href="buy.html">Купите</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="catalog.js"></script>
 <script>
 function renderCatalog(products) {
@@ -344,17 +388,46 @@ function renderCatalog(products) {
 			var card = document.createElement("div")
 			card.className = "pcard"
 			card.innerHTML =
-				'<div class="pvideo"><div class="ph"><span class="big">Видео</span><span>Видео-анонс</span></div></div>' +
+				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
 				'<div class="pbody"><h4></h4><p></p>' +
 				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
 			card.querySelector("h4").textContent = locTitle(p)
 			card.querySelector("p").textContent = locDesc(p)
-			if (isRealLink(p.preview)) safeEmbed(card.querySelector(".pvideo"), p.preview, "Анонс")
+			card.addEventListener("click", function (ev) {
+				if (ev.target.closest("a")) return
+				openWatch(p)
+			})
 			box.appendChild(card)
 		})
 	})
 }
+
+// Просмотр как на YouTube: клик по карточке открывает большое видео с описанием и кнопкой «Купите»
+function openWatch(p) {
+	var m = document.getElementById("watchModal")
+	var v = document.getElementById("wVideo")
+	v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео-анонс появится позже</span></div>'
+	if (isRealLink(p.preview)) { v.innerHTML = ""; safeEmbed(v, p.preview, "Анонс") }
+	document.getElementById("wTitle").textContent = locTitle(p)
+	document.getElementById("wDesc").textContent = locDesc(p)
+	document.getElementById("wPrice").textContent = formatPrice(p.price)
+	document.getElementById("wPriceSub").textContent = formatPriceSub(p.price)
+	document.getElementById("wBuy").href = "buy.html?item=" + encodeURIComponent(p.id)
+	m.classList.add("on")
+	requestAnimationFrame(function () { m.classList.add("show") })
+	document.body.style.overflow = "hidden"
+}
+function closeWatch() {
+	var m = document.getElementById("watchModal")
+	if (!m.classList.contains("on")) return
+	m.classList.remove("show")
+	document.body.style.overflow = ""
+	setTimeout(function () { m.classList.remove("on"); document.getElementById("wVideo").innerHTML = "" }, 250)
+}
+document.getElementById("watchClose").addEventListener("click", closeWatch)
+document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
 renderCatalog(DEMO_PRODUCTS)
 
 // Переключение основной/дополнительной валюты по клику на мелкую надпись
@@ -381,9 +454,9 @@ document.addEventListener("click", function(e){
 
 	var header = document.querySelector("header")
 	var hero = document.querySelector(".hero")
-	var team = document.getElementById("team")
+	var catalogSec = document.getElementById("catalog")
 	var lastY = window.scrollY
-	// Герой уменьшается постепенно вместе с прокруткой; на компе края срезаются, на телефоне остаются
+	// Герой уменьшается плавно (smoothstep); на компе края срезаются глубже, на телефоне остаются
 	function heroShrink(y){
 		if (!hero) return
 		if (window.innerWidth <= 900) {
@@ -394,9 +467,11 @@ document.addEventListener("click", function(e){
 		}
 		var full = window.innerHeight - 66
 		var min = 460
-		hero.style.minHeight = Math.max(min, full - y) + "px"
-		var p = Math.min(1, y / Math.max(1, full - min))
-		var inset = Math.round(p * 56)
+		var range = Math.max(1, Math.min(420, full - min))
+		var p = Math.min(1, y / range)
+		var pe = p * p * (3 - 2 * p)
+		hero.style.minHeight = Math.round(full - (full - min) * pe) + "px"
+		var inset = Math.round(pe * 120)
 		hero.style.marginLeft = inset + "px"
 		hero.style.marginRight = inset + "px"
 	}
@@ -406,12 +481,22 @@ document.addEventListener("click", function(e){
 		var y = window.scrollY
 		header.classList.toggle("scrolled", y > 12)
 		heroShrink(y)
-		// Шапка скрывается вместе с героем; ниже секции сотрудников — появляется при прокрутке вверх
+		// Шапка скрывается вместе с героем; от каталога и ниже — появляется при прокрутке вверх
 		var up = y < lastY
-		var pastTeam = team ? team.getBoundingClientRect().bottom < 0 : true
-		header.classList.toggle("hide", !(y <= 60 || (up && pastTeam)))
+		var low = catalogSec ? catalogSec.getBoundingClientRect().top < window.innerHeight * 0.6 : true
+		header.classList.toggle("hide", !(y <= 60 || (up && low)))
 		lastY = y
 	}, { passive: true })
+
+	// Кнопки < > для карусели сотрудников на телефоне
+	var teamRow = document.querySelector(".team")
+	var tPrev = document.getElementById("teamPrev")
+	var tNext = document.getElementById("teamNext")
+	if (teamRow && tPrev && tNext) {
+		var teamStep = function(dir){ teamRow.scrollBy({ left: dir * Math.round(teamRow.clientWidth * 0.88), behavior: "smooth" }) }
+		tPrev.addEventListener("click", function(){ teamStep(-1) })
+		tNext.addEventListener("click", function(){ teamStep(1) })
+	}
 })()
 </script>
 <script type="module">
