@@ -138,6 +138,21 @@
     </nav>
   </div>
 </header>
+<script>
+// Мгновенно показываем шапку по сохранённому статусу входа (без ожидания Firebase)
+(function(){try{
+  var a = localStorage.getItem("gn_auth") === "1"
+  var m = localStorage.getItem("gn_admin") === "1"
+  var l = document.getElementById("navLogin"), s = document.getElementById("navSignup")
+  var o = document.getElementById("navOut"), d = document.getElementById("navAdmin")
+  if (a) {
+    if (l) { l.textContent = "Мой кабинет"; l.href = "members.html" }
+    if (s) s.style.display = "none"
+    if (o) o.style.display = "inline"
+    if (m && d) d.style.display = ""
+  }
+}catch(e){}})()
+</script>
 
 <main>
   <div class="hero">
@@ -164,7 +179,7 @@
   <section class="section-soft" id="how">
     <div class="wrap">
       <h2>Как купить</h2>
-      <p class="sub">Без карт на сайте и без подписок — одна оплата, доступ навсегда.</p>
+      <p class="sub">Без карт на ��айте и без подписок — одна оплата, доступ навсегда.</p>
       <div class="steps">
         <div class="step">
           <div class="num">1</div>
@@ -279,21 +294,31 @@ document.addEventListener("click", function(e){
         navLogin.href = "members.html"
         navSignup.style.display = "none"
         navOut.style.display = "inline"
+        localStorage.setItem("gn_auth", "1")
+        localStorage.setItem("gn_email", user.email || "")
         // Кнопка «Админ» — только для аккаунтов с admin: true
         try {
           const u = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
-          navAdmin.style.display = (u.exists() && u.data().admin === true) ? "" : "none"
-        } catch (x) { navAdmin.style.display = "none" }
+          const isAdmin = u.exists() && u.data().admin === true
+          navAdmin.style.display = isAdmin ? "" : "none"
+          localStorage.setItem("gn_admin", isAdmin ? "1" : "0")
+        } catch (x) { navAdmin.style.display = "none"; localStorage.setItem("gn_admin", "0") }
       } else {
         navLogin.textContent = "Вход"
         navLogin.href = "login.html"
         navSignup.style.display = ""
         navOut.style.display = "none"
         navAdmin.style.display = "none"
+        localStorage.setItem("gn_auth", "0")
+        localStorage.setItem("gn_admin", "0")
+        localStorage.removeItem("gn_email")
       }
     })
     navOut.addEventListener("click", async (e) => {
       e.preventDefault()
+      localStorage.setItem("gn_auth", "0")
+      localStorage.setItem("gn_admin", "0")
+      localStorage.removeItem("gn_email")
       await authMod.signOut(auth)
     })
 

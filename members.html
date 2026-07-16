@@ -98,6 +98,16 @@
     </div>
   </div>
 </header>
+<script>
+// Мгновенно показываем шапку по сохранённому статусу входа (без ожидания Firebase)
+(function(){try{
+  if (localStorage.getItem("gn_auth") === "1") {
+    document.getElementById("who").textContent = localStorage.getItem("gn_email") || ""
+    document.getElementById("outBtn").style.display = "inline-block"
+    if (localStorage.getItem("gn_admin") === "1") document.getElementById("adminBtn").style.display = "inline-block"
+  }
+}catch(e){}})()
+</script>
 <main>
 
   <div class="state on" id="stateSignedOut">
@@ -236,15 +246,33 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
     adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
 
     authMod.onAuthStateChanged(auth, async (user) => {
-      if (!user) { showState("stateSignedOut"); return }
+      if (!user) {
+        localStorage.setItem("gn_auth", "0")
+        localStorage.setItem("gn_admin", "0")
+        localStorage.removeItem("gn_email")
+        document.getElementById("adminBtn").style.display = "none"
+        document.getElementById("outBtn").style.display = "none"
+        showState("stateSignedOut")
+        return
+      }
+      localStorage.setItem("gn_auth", "1")
+      localStorage.setItem("gn_email", user.email || "")
       document.getElementById("who").textContent = user.email || ""
       const outBtn = document.getElementById("outBtn")
       outBtn.style.display = "inline-block"
-      outBtn.addEventListener("click", async () => { await authMod.signOut(auth); location.href = "index.html" })
+      outBtn.addEventListener("click", async () => {
+        localStorage.setItem("gn_auth", "0")
+        localStorage.setItem("gn_admin", "0")
+        localStorage.removeItem("gn_email")
+        await authMod.signOut(auth)
+        location.href = "index.html"
+      })
       try {
         const uSnap = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
         M.owned = (uSnap.exists() && uSnap.data().purchases) || []
-        if (uSnap.exists() && uSnap.data().admin === true) adminBtn.style.display = "inline-block"
+        const isAdmin = uSnap.exists() && uSnap.data().admin === true
+        adminBtn.style.display = isAdmin ? "inline-block" : "none"
+        localStorage.setItem("gn_admin", isAdmin ? "1" : "0")
         const pSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
         const products = []
         pSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))

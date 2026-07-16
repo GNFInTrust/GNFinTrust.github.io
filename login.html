@@ -122,6 +122,7 @@
         stop()
         if (user) {
           show("Вы уже вошли — открываем кабинет…", true)
+          try { localStorage.setItem("gn_auth", "1"); localStorage.setItem("gn_email", user.email || "") } catch (x) {}
           location.href = "members.html"
         }
       })
@@ -134,6 +135,7 @@
   async function ensureUserDoc(user) {
     const ref = fb.fsMod.doc(fb.db, "users", user.uid)
     const snap = await fb.fsMod.getDoc(ref)
+    try { localStorage.setItem("gn_admin", snap.exists() && snap.data().admin === true ? "1" : "0") } catch (x) {}
     if (!snap.exists()) {
       await fb.fsMod.setDoc(ref, {
         name: user.displayName || "",
@@ -146,6 +148,7 @@
   }
   async function finish(user) {
     await ensureUserDoc(user)
+    try { localStorage.setItem("gn_auth", "1"); localStorage.setItem("gn_email", user.email || "") } catch (x) {}
     show("Добро пожаловать! Переходим…", true)
     location.href = "members.html"
   }
