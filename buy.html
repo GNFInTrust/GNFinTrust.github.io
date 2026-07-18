@@ -128,19 +128,34 @@
 
     <h3 class="step"><span class="n">1</span>Выберите способ оплаты</h3>
     <div class="tabs" role="tablist">
-      <button class="tab on" id="tabMbank" type="button">МБанк</button>
+      <button class="tab on" id="tabQr" type="button">QR-код — доступ сразу</button>
+      <button class="tab" id="tabMbank" type="button">МБанк</button>
       <button class="tab" id="tabVisa" type="button">Карта Visa</button>
     </div>
-    <div class="pane on" id="paneMbank">
-      <div id="mbankNums"></div>
-      <p class="hint" style="margin:4px 0 10px">Или отсканируйте QR-код:</p>
+    <div class="pane on" id="paneQr">
       <div class="qrs" id="qrList"></div>
+      <p class="hint" style="margin-top:10px">Отсканируйте QR в приложении банка и переведите ровно ту сумму, что указана выше — доступ откроется сразу.</p>
     </div>
+    <div class="pane" id="paneMbank"><div id="mbankNums"></div></div>
     <div class="pane" id="paneVisa"><div id="visaNums"></div></div>
-    <p class="hint">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек.</p>
+    <p class="hint" id="manualHint" style="display:none">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек — мы сами напишем вам и пришлём доступ.</p>
   </div>
 
-  <div class="card">
+  <div class="card" id="stepQr">
+    <h3 class="step"><span class="n">2</span>Получите доступ сразу</h3>
+    <p class="lede">Оплатили по QR? Нажмите кнопку — покупка сразу появится в вашем кабинете. Мы сверяем оплаты с поступлениями в банке: если перевода не будет, доступ закроем.</p>
+    <div id="qrSignedIn" style="display:none">
+      <button class="submit" id="qrClaim" type="button">Я оплатил(а) по QR — открыть доступ</button>
+      <div class="ok" id="qrOk"><strong>Доступ открыт!</strong> Покупка уже в вашем кабинете. <a href="members.html">Открыть кабинет →</a></div>
+      <div class="err" id="qrErr"></div>
+    </div>
+    <div id="qrSignedOut">
+      <p class="hint" style="margin-bottom:12px">Чтобы доступ открылся автоматически, войдите или зарегистрируйтесь — покупка привяжется к вашему аккаунту.</p>
+      <a class="submit" href="login.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Войти / Регистрация</a>
+    </div>
+  </div>
+
+  <div class="card" id="stepManual" style="display:none">
     <h3 class="step"><span class="n">2</span>Куда прислать ваш логин?</h3>
     <p class="lede">Когда мы подтвердим оплату, пришлём личный логин, пароль и вашу покупку.</p>
     <label>Способ связи</label>
@@ -162,7 +177,7 @@
 <script src="catalog.js"></script>
 <script>
 var OWNER_EMAIL = "you@example.com" // TODO: ваша почта (используется, пока не настроен Firebase)
-var state = { products: DEMO_PRODUCTS, payment: DEMO_PAYMENT, method: "WhatsApp", db: null, fsMod: null }
+var state = { products: DEMO_PRODUCTS, payment: DEMO_PAYMENT, method: "WhatsApp", pay: "qr", user: null, db: null, fsMod: null }
 
 var PLACEHOLDERS = {
 	WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456"],
@@ -243,13 +258,20 @@ function renderPayment() {
 	})
 }
 
-document.getElementById("tabMbank").addEventListener("click", function () { setTab(true) })
-document.getElementById("tabVisa").addEventListener("click", function () { setTab(false) })
-function setTab(mb) {
-	document.getElementById("tabMbank").classList.toggle("on", mb)
-	document.getElementById("tabVisa").classList.toggle("on", !mb)
-	document.getElementById("paneMbank").classList.toggle("on", mb)
-	document.getElementById("paneVisa").classList.toggle("on", !mb)
+document.getElementById("tabQr").addEventListener("click", function () { setTab("qr") })
+document.getElementById("tabMbank").addEventListener("click", function () { setTab("mbank") })
+document.getElementById("tabVisa").addEventListener("click", function () { setTab("visa") })
+function setTab(mode) {
+	state.pay = mode
+	document.getElementById("tabQr").classList.toggle("on", mode === "qr")
+	document.getElementById("tabMbank").classList.toggle("on", mode === "mbank")
+	document.getElementById("tabVisa").classList.toggle("on", mode === "visa")
+	document.getElementById("paneQr").classList.toggle("on", mode === "qr")
+	document.getElementById("paneMbank").classList.toggle("on", mode === "mbank")
+	document.getElementById("paneVisa").classList.toggle("on", mode === "visa")
+	document.getElementById("manualHint").style.display = mode === "qr" ? "none" : "block"
+	document.getElementById("stepQr").style.display = mode === "qr" ? "block" : "none"
+	document.getElementById("stepManual").style.display = mode === "qr" ? "none" : "block"
 }
 
 document.getElementById("chips").addEventListener("click", function (e) {
@@ -299,8 +321,36 @@ renderPayment()
     if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
     const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
-    const db = fsMod.getFirestore(initializeApp(firebaseConfig))
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+    const app = initializeApp(firebaseConfig)
+    const db = fsMod.getFirestore(app)
+    const auth = authMod.getAuth(app)
     state.db = db; state.fsMod = fsMod
+    authMod.onAuthStateChanged(auth, (user) => {
+      state.user = user || null
+      document.getElementById("qrSignedIn").style.display = user ? "block" : "none"
+      document.getElementById("qrSignedOut").style.display = user ? "none" : "block"
+    })
+    document.getElementById("qrClaim").addEventListener("click", async function () {
+      const qErr = document.getElementById("qrErr")
+      qErr.style.display = "none"
+      if (!state.user) { location.href = "login.html"; return }
+      const p = currentItem()
+      try {
+        await fsMod.setDoc(fsMod.doc(db, "users", state.user.uid), { purchases: fsMod.arrayUnion(p.id) }, { merge: true })
+        await fsMod.addDoc(fsMod.collection(db, "orders"), {
+          itemId: p.id, itemTitle: p.title, price: Number(p.price),
+          method: "QR", contact: state.user.email || "", buyer: state.user.email || "",
+          status: "qr-auto", createdAt: new Date().toISOString(),
+        })
+        document.getElementById("qrOk").style.display = "block"
+        this.disabled = true
+        this.style.opacity = ".6"
+      } catch (e) {
+        qErr.textContent = "Не удалось открыть доступ: " + (e.message || e)
+        qErr.style.display = "block"
+      }
+    })
     const prodSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
     prodSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))

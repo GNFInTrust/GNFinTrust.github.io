@@ -45,6 +45,12 @@
   main{flex:1;width:100%;max-width:900px;margin:0 auto;padding:56px 24px 96px}
   .state{display:none}
   .state.on{display:block}
+  .promo-card{background:#fff;border:1px solid var(--red-border);border-left:3px solid var(--red);border-radius:2px;padding:24px;margin:24px 0;box-shadow:0 1px 2px rgba(33,29,29,.05)}
+  .promo-card h2{font-size:19px;margin-bottom:8px}
+  .promo-card p{color:var(--text2);font-size:14.5px;margin-bottom:14px}
+  .promo-form{display:flex;gap:10px;flex-wrap:wrap}
+  .promo-form input{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--border);border-radius:2px;font:inherit;font-size:14px}
+  .promo-status{font-size:14px;color:var(--green);background:var(--green-soft);border-radius:2px;padding:10px 12px;margin-top:4px}
   .center{max-width:460px;margin:90px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px;box-shadow:0 1px 2px rgba(33,29,29,.05),0 12px 34px rgba(33,29,29,.07)}
   .center h1{font-size:24px;margin-bottom:10px}
   .center p{color:var(--text2);font-size:15px;margin-bottom:24px}
@@ -131,6 +137,16 @@
       <p>Войдите с логином и паролем, которые мы прислали после покупки.</p>
       <a class="btn" href="login.html">Войти</a>
     </div>
+  </div>
+
+  <div class="promo-card" id="promoCard" style="display:none">
+    <h2>Бесплатное видео за подписку</h2>
+    <p>Подпишитесь на <a id="promoInsta" href="https://instagram.com/" target="_blank" rel="noopener">наш Instagram</a> и привяжите свой ник — после проверки подписки мы добавим одно видео в ваш кабинет бесплатно.</p>
+    <div class="promo-form" id="promoForm">
+      <input type="text" id="promoUser" placeholder="Ваш ник в Instagram, например @user">
+      <button class="btn" id="promoSend" type="button">Привязать и получить</button>
+    </div>
+    <p class="promo-status" id="promoStatus" style="display:none"></p>
   </div>
 
   <div class="state" id="stateEmpty">
@@ -300,6 +316,34 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
           } catch (e) { /* нет доступа — пропускаем */ }
         }
         renderList()
+        // Акция: бесплатное видео за подписку на Instagram
+        try {
+          const uData = uSnap.exists() ? uSnap.data() : {}
+          if (uData.promoStatus !== "granted") {
+            try {
+              const promoSet = await fsMod.getDoc(fsMod.doc(db, "settings", "promo"))
+              if (promoSet.exists() && promoSet.data().instagram) {
+                document.getElementById("promoInsta").href = "https://instagram.com/" + String(promoSet.data().instagram).replace(/^@/, "")
+              }
+            } catch (e2) { /* ник не настроен — оставляем общую ссылку */ }
+            const promoSt = document.getElementById("promoStatus")
+            if (uData.promoStatus === "pending") {
+              document.getElementById("promoForm").style.display = "none"
+              promoSt.style.display = "block"
+              promoSt.textContent = "Аккаунт @" + (uData.instagram || "") + " привязан — проверяем подписку и добавим видео в ваш кабинет."
+            }
+            document.getElementById("promoCard").style.display = "block"
+            document.getElementById("promoSend").addEventListener("click", async () => {
+              const v = document.getElementById("promoUser").value.trim().replace(/^@/, "")
+              if (!v) { document.getElementById("promoUser").focus(); return }
+              await fsMod.setDoc(fsMod.doc(db, "users", user.uid), { instagram: v, promoStatus: "pending", promoAt: new Date().toISOString() }, { merge: true })
+              document.getElementById("promoForm").style.display = "none"
+              promoSt.style.display = "block"
+              promoSt.textContent = "Заявка отправлена — проверим подписку и добавим видео в ваш кабинет."
+            })
+            if (location.hash === "#promo") document.getElementById("promoCard").scrollIntoView({ behavior: "smooth" })
+          }
+        } catch (e3) { /* акция недоступна — не мешаем кабинету */ }
       } catch (e) {
         document.getElementById("errText").textContent = "Ошибка: " + (e.message || e)
         showState("stateError")

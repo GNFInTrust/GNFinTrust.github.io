@@ -196,6 +196,14 @@
         <button class="btn btn-sm" id="qrAdd" type="button">Добавить</button>
       </div>
       <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
+      <h2>Календарь семинаров</h2>
+      <p class="sub">Вставьте ссылку встраивания Google Календаря — она показывается на странице «Семинары». В Google Календаре: Настройки календаря → «Интеграция календаря» → скопируйте значение src из «Встроить код». Календарь должен быть общедоступным.</p>
+      <div class="inline">
+        <div><label for="calUrl">Ссылка календаря</label><input type="text" id="calUrl" placeholder="https://calendar.google.com/calendar/embed?src=…"></div>
+        <button class="btn btn-sm" id="calSave" type="button">Сохранить</button>
+      </div>
+      <div class="formfoot" style="margin-top:18px"><span class="flash" id="calFlash"></span></div>
     </div>
 
     <div class="panel" id="p-logo">
@@ -211,6 +219,15 @@
     </div>
 
     <div class="panel" id="p-accounts">
+      <h2>Заявки «видео за подписку на Instagram»</h2>
+      <p class="sub">Укажите ник вашего Instagram — он показывается в акции на сайте. Когда человек привязывает свой ник, заявка появляется ниже: откройте профиль, проверьте подписку и выдайте видео.</p>
+      <div class="inline">
+        <div><label for="promoHandle">Наш Instagram (ник)</label><input type="text" id="promoHandle" placeholder="gnfintrust"></div>
+        <button class="btn btn-sm" id="promoHandleSave" type="button">Сохранить</button>
+      </div>
+      <div id="promoWrap" style="margin-top:14px"></div>
+      <div class="formfoot" style="margin-top:14px"><span class="flash" id="promoFlash"></span></div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
       <h2>Создать аккаунт покупателю</h2>
       <p class="sub">После проверки оплаты создайте аккаунт, отметьте покупку и отправьте человеку готовое сообщение с логином и паролем.</p>
       <div class="inline">
@@ -277,7 +294,7 @@ function renderOrders() {
 			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>" + esc(o.price) + " сом</span></td>" +
 			"<td>" + esc(o.buyer || "—") + "</td>" +
 			'<td class="contact">' + esc(o.method) + '<br><a href="' + esc(contactLink(o.method, o.contact)) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
-			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : "новая") + "</span></td>" +
+			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : (o.status === "qr-auto" ? "QR — доступ выдан, сверьте оплату" : "новая")) + "</span></td>" +
 			"<td>" + (o.status === "done" ? "" : '<button class="btn btn-ghost btn-sm" data-done="' + esc(o._id) + '">Выполнено</button> ') +
 			'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></td>' +
 			"</tr>"
@@ -343,7 +360,24 @@ function renderChecks() {
 	if (!A.products.length) box.innerHTML = '<span class="muted">Сначала добавьте материалы во вкладке «Каталог».</span>'
 }
 
+function renderPromo() {
+	var w = document.getElementById("promoWrap")
+	var reqs = A.accounts.filter(function (u) { return u.promoStatus === "pending" })
+	if (!reqs.length) { w.innerHTML = '<p class="empty">Новых заявок нет.</p>'; return }
+	var opts = A.products.map(function (p) { return '<option value="' + esc(p.id) + '">' + esc(TYPE_LABEL[p.type] || p.type) + " · " + esc(p.title) + "</option>" }).join("")
+	var rows = reqs.map(function (u) {
+		return "<tr>" +
+			"<td><strong>" + esc(u.email) + "</strong></td>" +
+			'<td><a href="https://instagram.com/' + esc(u.instagram || "") + '" target="_blank" rel="noopener">@' + esc(u.instagram || "") + "</a></td>" +
+			'<td><select data-promosel="' + esc(u._id) + '">' + opts + "</select></td>" +
+			'<td style="text-align:right"><button class="btn btn-sm" data-grant="' + esc(u._id) + '">Выдать видео</button> <button class="btn btn-ghost btn-sm" data-reject="' + esc(u._id) + '">Отклонить</button></td>' +
+			"</tr>"
+	}).join("")
+	w.innerHTML = "<table><thead><tr><th>Логин</th><th>Instagram</th><th>Какое видео</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+}
+
 function renderAccounts() {
+	renderPromo()
 	var w = document.getElementById("accWrap")
 	if (!A.accounts.length) { w.innerHTML = '<p class="empty">Аккаунтов пока нет.</p>'; return }
 	var rows = A.accounts.map(function (u) {
@@ -556,6 +590,46 @@ document.getElementById("aGen").addEventListener("click", function () {
       if (i == null) return
       A.payment.qrs.splice(Number(i), 1)
       await savePayment()
+    })
+
+    // ----- Календарь семинаров -----
+    fsMod.getDoc(fsMod.doc(db, "settings", "calendar")).then((s) => {
+      if (s.exists() && s.data().embed) document.getElementById("calUrl").value = s.data().embed
+    }).catch(() => {})
+    document.getElementById("calSave").addEventListener("click", async () => {
+      const v = document.getElementById("calUrl").value.trim()
+      if (v && v.indexOf("https://calendar.google.com/") !== 0) { flash("calFlash", "Ссылка должна начинаться с https://calendar.google.com/", false); return }
+      await fsMod.setDoc(fsMod.doc(db, "settings", "calendar"), { embed: v })
+      flash("calFlash", v ? "Сохранено — календарь показан на странице «Семинары»." : "Сохранено — календарь скрыт.", true)
+    })
+
+    // ----- Видео за подписку на Instagram -----
+    fsMod.getDoc(fsMod.doc(db, "settings", "promo")).then((s) => {
+      if (s.exists() && s.data().instagram) document.getElementById("promoHandle").value = s.data().instagram
+    }).catch(() => {})
+    document.getElementById("promoHandleSave").addEventListener("click", async () => {
+      const v = document.getElementById("promoHandle").value.trim().replace(/^@/, "")
+      await fsMod.setDoc(fsMod.doc(db, "settings", "promo"), { instagram: v })
+      flash("promoFlash", v ? "Сохранено — ник показывается в акции на сайте." : "Сохранено.", true)
+    })
+    document.getElementById("promoWrap").addEventListener("click", async (e) => {
+      const grant = e.target.getAttribute("data-grant"), reject = e.target.getAttribute("data-reject")
+      if (grant) {
+        const sel = document.querySelector('select[data-promosel="' + grant + '"]')
+        const pid = sel ? sel.value : ""
+        if (!pid) { flash("promoFlash", "Сначала добавьте материалы во вкладке «Каталог».", false); return }
+        const u = A.accounts.find((x) => x._id === grant)
+        const purchases = ((u && u.purchases) || []).slice()
+        if (purchases.indexOf(pid) === -1) purchases.push(pid)
+        await fsMod.updateDoc(fsMod.doc(db, "users", grant), { purchases, promoStatus: "granted", promoVideo: pid })
+        await reloadAll(); renderAccounts()
+        flash("promoFlash", "Видео выдано — оно уже в кабинете пользователя.", true)
+      }
+      if (reject) {
+        await fsMod.updateDoc(fsMod.doc(db, "users", reject), { promoStatus: "rejected" })
+        await reloadAll(); renderAccounts()
+        flash("promoFlash", "Заявка отклонена.", true)
+      }
     })
 
     // ----- Аккаунты -----

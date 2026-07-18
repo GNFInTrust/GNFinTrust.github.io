@@ -33,6 +33,15 @@
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .wrap-wide{max-width:1320px;margin:0 auto;padding:0 24px}
 
+  .promo-bar{background:var(--red);color:#fff;font-size:14px}
+  .promo-in{display:flex;align-items:center;gap:14px;padding-top:9px;padding-bottom:9px}
+  .promo-txt{color:#fff;flex:1;min-width:0;line-height:1.4}
+  .promo-txt:hover{color:#fff;text-decoration:underline}
+  .promo-btn{flex:none;color:var(--red);background:#fff;border-radius:999px;padding:5px 16px;font-weight:600;font-size:13px}
+  .promo-btn:hover{background:var(--red-soft);color:var(--red-dark)}
+  .promo-x{flex:none;background:none;border:0;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:4px 6px;opacity:.8}
+  .promo-x:hover{opacity:1}
+  .promo-bar.off{display:none}
   header{border-bottom:1px solid transparent;position:sticky;top:0;background:var(--soft);z-index:10;transition:box-shadow .18s ease,transform .25s ease,border-color .18s ease}
   header.scrolled{box-shadow:0 2px 10px rgba(0,0,0,.06);border-color:var(--border)}
   header.hide{transform:translateY(-100%)}
@@ -61,7 +70,11 @@
   .btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px rgba(200,16,46,.25)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
-  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft);transition:min-height .25s ease-out,margin .25s ease-out}
+  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft)}
+  .hero .wrap{transform-origin:50% 50%}
+  @media (min-width:901px) and (min-height:561px){
+    .hero{position:sticky;top:66px}
+  }
   @supports (min-height:100svh){.hero{min-height:calc(100svh - 66px)}}
   .hero>.wrap{width:100%}
   .hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:center;text-align:left}
@@ -88,6 +101,9 @@
   #catalog h2{font-size:clamp(30px,4vw,44px)}
   .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;align-items:start;font-family:var(--cat)}
   .box{background:var(--soft);border:1px solid transparent;border-radius:2px;padding:24px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease;box-shadow:var(--shadow-sm)}
+  a.box-link{display:block;color:var(--text)}
+  a.box-link p{color:var(--red);font-weight:600;font-size:14px;margin-top:6px}
+  a.box-link:hover{box-shadow:var(--shadow-md);border-color:var(--red-border)}
   .box.show{opacity:1;transform:translateY(0)}
   .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
@@ -170,16 +186,19 @@
     .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
     .wvideo{position:sticky;top:0;z-index:1}
   }
+  .team-wrap{position:relative}
   .team-nav{display:none}
-  .tn-btn{width:44px;height:44px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
-  .tn-btn:active{border-color:var(--red);color:var(--red)}
+  .tn-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.94);color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--body);box-shadow:0 4px 14px rgba(33,29,29,.16)}
+  .tn-btn:active{border-color:var(--red);color:var(--red);transform:translateY(-50%) scale(.94)}
+  #teamPrev{left:6px}
+  #teamNext{right:6px}
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
     .steps{grid-template-columns:1fr}
-    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 10%}
     .team::-webkit-scrollbar{display:none}
-    .tcard{flex:0 0 86%;scroll-snap-align:center}
-    .team-nav{display:flex;gap:10px;justify-content:center;margin-top:16px}
+    .tcard{flex:0 0 80%;scroll-snap-align:center}
+    .team-nav{display:block}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .hero h1{font-size:31px}
     .hero{padding:64px 0;min-height:0}
@@ -210,6 +229,8 @@
     .prow .buy{flex:1 1 auto;justify-content:center}
     .hero .btn{width:100%;max-width:340px}
     .foot{flex-direction:column;text-align:center;gap:8px}
+    .promo-bar{font-size:13px}
+    .promo-in{gap:10px}
     .wbody{padding:20px 16px 24px}
     .wbody h3{font-size:20px}
     section{padding:64px 0}
@@ -228,12 +249,12 @@
     section{padding:48px 0}
     section#how{padding:56px 0 48px}
     .team-sec{padding:48px 0 52px}
-    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 8%}
     .team::-webkit-scrollbar{display:none}
     .tcard{flex:0 0 44%;scroll-snap-align:center}
     .tphoto{aspect-ratio:4/3}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
-    .team-nav{display:flex;gap:10px;justify-content:center;margin-top:14px}
+    .team-nav{display:block}
     .boxes{grid-template-columns:repeat(3,1fr);gap:18px}
     .steps{grid-template-columns:repeat(3,1fr);gap:18px}
     .watch-modal{padding:0}
@@ -261,12 +282,29 @@
 </head>
 <body>
 
+<div class="promo-bar" id="promoBar">
+  <div class="wrap promo-in">
+    <a class="promo-txt" href="members.html#promo">Зарегистрируйтесь и подпишитесь на наш Instagram — получите одно видео бесплатно.</a>
+    <a class="promo-btn" href="members.html#promo">Получить</a>
+    <button class="promo-x" id="promoClose" type="button" aria-label="Закрыть">×</button>
+  </div>
+</div>
+<script>
+(function () {
+	try { if (localStorage.getItem("gn_promo_hide") === "1") document.getElementById("promoBar").classList.add("off") } catch (e) {}
+	document.getElementById("promoClose").addEventListener("click", function () {
+		document.getElementById("promoBar").classList.add("off")
+		try { localStorage.setItem("gn_promo_hide", "1") } catch (e) {}
+	})
+})()
+</script>
 <header>
   <div class="wrap nav">
     <a class="brand" href="#"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
     <nav class="links">
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <a class="hide-m" href="#catalog">Каталог</a>
+      <a class="hide-m" href="seminars.html">Семинары</a>
       <a class="hide-m" href="#how">Как купить</a>
       <a href="#" id="navAdmin" style="display:none">Админ</a>
       <a href="login.html" id="navLogin">Вход</a>
@@ -292,6 +330,7 @@
 </script>
 
 <main>
+  <div class="hero-track" id="heroTrack">
   <div class="hero">
     <div class="wrap">
       <div class="hero-visual">
@@ -305,11 +344,13 @@
       </div>
     </div>
   </div>
+  </div>
 
   <section id="team" class="team-sec">
     <div class="wrap">
       <h2>Наша команда</h2>
       <p class="sub">Люди, которые ведут вебинары, семинары и курсы.</p>
+      <div class="team-wrap">
       <div class="team">
         <article class="tcard">
           <div class="tphoto">
@@ -349,6 +390,7 @@
         <button class="tn-btn" id="teamPrev" type="button" aria-label="Назад">&lt;</button>
         <button class="tn-btn" id="teamNext" type="button" aria-label="Вперёд">&gt;</button>
       </div>
+      </div>
     </div>
   </section>
 
@@ -358,7 +400,7 @@
       <p class="sub">У каждого материала есть короткий видео-анонс. Купите то, что подходит вам.</p>
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
-        <div class="box" id="box-seminar"><h3>Семинары <span class="cnt" id="cnt-seminar"></span></h3></div>
+        <a class="box box-link" id="box-seminar" href="seminars.html"><h3>Семинары</h3><p>Расписание и запись — в календаре →</p></a>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
       </div>
     </div>
@@ -425,7 +467,7 @@
 <script src="catalog.js"></script>
 <script>
 function renderCatalog(products) {
-	var types = ["webinar", "seminar", "course"]
+	var types = ["webinar", "course"]
 	types.forEach(function (t) {
 		var box = document.getElementById("box-" + t)
 		box.querySelectorAll(".pcard").forEach(function (n) { n.remove() })
@@ -503,39 +545,70 @@ document.addEventListener("click", function(e){
 	var hero = document.querySelector(".hero")
 	var catalogSec = document.getElementById("catalog")
 	var lastY = window.scrollY
-	// Герой уменьшается плавно (smoothstep); на компе края срезаются глубже, на телефоне остаются
+	// Samsung-стиль: герой закреплён и сжимается на месте, пока команда подъезжает снизу.
+	// Финал (~5 прокруток): герой = 30% экрана и шириной как блок «Наша команда», команда = 70%.
+	var heroTrack = document.getElementById("heroTrack")
 	function heroShrink(y){
 		if (!hero) return
 		if (window.innerWidth <= 900 || window.innerHeight <= 560) {
+			hero.style.height = ""
 			hero.style.minHeight = ""
 			hero.style.marginLeft = ""
 			hero.style.marginRight = ""
+			hero.style.paddingTop = ""
+			hero.style.paddingBottom = ""
+			var w0 = hero.querySelector(".wrap")
+			if (w0) w0.style.transform = ""
+			if (heroTrack) heroTrack.style.height = ""
 			return
 		}
-		var full = window.innerHeight - 66
-		var min = Math.min(460, Math.round(full * 0.85))
-		var range = Math.max(1, full - min)
+		var vh = window.innerHeight
+		var full = vh - 66
+		var minH = Math.round(vh * 0.30)
+		var range = Math.max(1, full - minH)
+		if (heroTrack) heroTrack.style.height = full + "px"
 		var p = Math.min(1, y / range)
-		hero.style.minHeight = Math.round(full - (full - min) * p) + "px"
-		var inset = Math.round(p * 120)
+		var h = Math.round(full - (full - minH) * p)
+		hero.style.height = h + "px"
+		hero.style.minHeight = h + "px"
+		var pad = Math.round(60 - 44 * p)
+		hero.style.paddingTop = pad + "px"
+		hero.style.paddingBottom = pad + "px"
+		// Ширина в финале — ровно как у блока с 3 сотрудниками
+		var teamWrap = document.querySelector("#team .wrap")
+		var maxInset = teamWrap ? Math.max(0, Math.round((window.innerWidth - teamWrap.clientWidth) / 2)) : 120
+		var inset = Math.round(p * maxInset)
 		hero.style.marginLeft = inset + "px"
 		hero.style.marginRight = inset + "px"
+		// Содержимое героя плавно уменьшается, чтобы влезать в сжатый герой
+		var w = hero.querySelector(".wrap")
+		if (w) w.style.transform = p > 0 ? "scale(" + (1 - 0.3 * p).toFixed(3) + ")" : ""
 	}
 	heroShrink(window.scrollY)
 	window.addEventListener("resize", function(){ heroShrink(window.scrollY) }, { passive: true })
 	window.addEventListener("scroll", function(){
 		var y = window.scrollY
 		heroShrink(y)
-		// Порог: 75% высоты героя. Пока не пролистано 75% — хедер виден и бежевый (цвет героя).
+		// Пока герой закреплён — хедер бежевый; когда герой уезжает вверх — переливается в белый.
 		var heroH = hero ? hero.offsetHeight : window.innerHeight
-		var threshold = Math.max(1, heroH * 0.75)
+		var blendStart, blendEnd
+		if (window.innerWidth <= 900 || window.innerHeight <= 560) {
+			blendStart = heroH * 0.40
+			blendEnd = Math.max(1, heroH * 0.75)
+		} else {
+			var vhH = window.innerHeight
+			var minHH = Math.round(vhH * 0.30)
+			var rangeH = Math.max(1, (vhH - 66) - minHH)
+			blendStart = rangeH
+			blendEnd = rangeH + minHH * 0.75
+		}
+		var threshold = blendEnd
 		var pastHero = y >= threshold
 // Белый хедер — после 75% героя; тень/рамка — тоже.
 		// Цвет фона хедера плавно переливается от бежевого (var(--soft)) к белому (#fff)
 		// в зоне 60%–75% высоты героя, чтобы при возврате к герою хедер аккуратно стал бежевым.
 		header.classList.toggle("scrolled", pastHero)
 		var softR=250,softG=247,softB=246, whiteR=255,whiteG=255,whiteB=255
-		var blendStart = heroH * 0.40, blendEnd = heroH * 0.75
 		var rawBlend = Math.max(0, Math.min(1, (y - blendStart) / Math.max(1, blendEnd - blendStart)))
 		var blend = rawBlend * rawBlend * (3 - 2 * rawBlend)
 		var r = Math.round(softR + (whiteR - softR) * blend)
@@ -558,9 +631,20 @@ document.addEventListener("click", function(e){
 	var tPrev = document.getElementById("teamPrev")
 	var tNext = document.getElementById("teamNext")
 	if (teamRow && tPrev && tNext) {
-		var teamStep = function(dir){ teamRow.scrollBy({ left: dir * Math.round(teamRow.clientWidth * 0.88), behavior: "smooth" }) }
+		var teamStep = function(dir){ teamRow.scrollBy({ left: dir * Math.round(teamRow.clientWidth * 0.8), behavior: "smooth" }) }
 		tPrev.addEventListener("click", function(){ teamStep(-1) })
 		tNext.addEventListener("click", function(){ teamStep(1) })
+		// Старт с центральной карточки — листать можно влево и вправо
+		var teamCenter = function(){
+			if (teamRow.scrollWidth > teamRow.clientWidth + 20) {
+				teamRow.scrollLeft = Math.round((teamRow.scrollWidth - teamRow.clientWidth) / 2)
+			}
+		}
+		teamCenter()
+		var teamLastW = window.innerWidth
+		window.addEventListener("resize", function(){
+			if (window.innerWidth !== teamLastW) { teamLastW = window.innerWidth; teamCenter() }
+		})
 	}
 })()
 </script>
