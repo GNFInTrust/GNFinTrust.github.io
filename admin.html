@@ -198,7 +198,7 @@
       <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
       <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
       <h2>Календарь семинаров</h2>
-      <p class="sub">Вставьте ссылку встраивания Google Календаря — она показывается на странице «Семинары». В Google Календаре: Настройки календаря → «Интеграция календаря» → скопируйте значение src из «Встроить код». Календарь должен быть общедоступным.</p>
+      <p class="sub">Вставьте ссылку встраивания Google Календаря — она показывается в разделе «Семинары» на главной странице. В Google Календаре: Настройки календаря → «Интеграция календаря» → скопируйте значение src из «Встроить код». Календарь должен быть общедоступным.</p>
       <div class="inline">
         <div><label for="calUrl">Ссылка календаря</label><input type="text" id="calUrl" placeholder="https://calendar.google.com/calendar/embed?src=…"></div>
         <button class="btn btn-sm" id="calSave" type="button">Сохранить</button>
@@ -600,7 +600,7 @@ document.getElementById("aGen").addEventListener("click", function () {
       const v = document.getElementById("calUrl").value.trim()
       if (v && v.indexOf("https://calendar.google.com/") !== 0) { flash("calFlash", "Ссылка должна начинаться с https://calendar.google.com/", false); return }
       await fsMod.setDoc(fsMod.doc(db, "settings", "calendar"), { embed: v })
-      flash("calFlash", v ? "Сохранено — календарь показан на странице «Семинары»." : "Сохранено — календарь скрыт.", true)
+      flash("calFlash", v ? "Сохранено — календарь показан в разделе «Семинары» на главной." : "Сохранено — календарь скрыт.", true)
     })
 
     // ----- Видео за подписку на Instagram -----
