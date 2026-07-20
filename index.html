@@ -37,7 +37,7 @@
   .promo-in{display:flex;align-items:center;gap:14px;padding-top:9px;padding-bottom:9px}
   .promo-txt{color:#fff;flex:1;min-width:0;line-height:1.4}
   .promo-txt:hover{color:#fff;text-decoration:underline}
-  .promo-btn{flex:none;color:var(--red);background:#fff;border-radius:999px;padding:5px 16px;font-weight:600;font-size:13px}
+  .promo-btn{flex:none;color:var(--red);background:#fff;border-radius:3px;padding:5px 16px;font-weight:600;font-size:13px}
   .promo-btn:hover{background:var(--red-soft);color:var(--red-dark)}
   .promo-x{flex:none;background:none;border:0;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:4px 6px;opacity:.8}
   .promo-x:hover{opacity:1}
@@ -47,15 +47,15 @@
   header.hide{transform:translateY(-100%)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:6px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
+  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
   nav.links{display:flex;gap:32px;align-items:center}
   nav.links a{color:var(--text);font-size:13px;letter-spacing:.02em;position:relative;transition:color .18s ease}
   nav.links a:not(.btn-primary)::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .22s ease}
   nav.links a:not(.btn-primary):hover::after{transform:scaleX(1)}
   nav.links a:hover{color:var(--red)}
   nav.links a.btn-primary,nav.links a.btn-primary:hover{color:#fff}
-  .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:20px;background:#fff;cursor:pointer;user-select:none;flex:none}
-  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .lang-slider{position:relative;width:66px;height:30px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;user-select:none;flex:none}
+  .lang-slider .knob{position:absolute;top:50%;left:1px;margin-top:-14px;width:28px;height:28px;border-radius:4px;background:var(--red);color:#fff;font-size:10px;font-weight:600;line-height:28px;text-align:center;font-family:var(--body);cursor:grab;transition:transform .3s cubic-bezier(.22,.61,.36,1)}
   .lang-slider .knob.dragging{transition:none;cursor:grabbing}
   .lang-slider .lbl{position:absolute;top:0;bottom:0;width:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text2);font-family:var(--body)}
   .lang-slider .lbl.l{left:0}
@@ -64,17 +64,13 @@
   .price-main{font-family:var(--cat);font-size:24px;font-weight:600;color:var(--red);line-height:1.1}
   .price-sub{font-size:12px;color:var(--text2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;line-height:1.2}
   .price-sub:hover{color:var(--red)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 26px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body);transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:3px;padding:12px 26px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;min-height:44px;font-family:var(--body);transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease}
   .btn-primary{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(200,16,46,.25)}
   .btn-primary:hover{background:var(--red-dark);box-shadow:0 6px 18px rgba(200,16,46,.3);transform:translateY(-1px)}
   .btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px rgba(200,16,46,.25)}
   .btn-sm{padding:8px 14px;min-height:40px;font-size:14px}
 
-  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft)}
-  .hero .wrap{transform-origin:50% 50%}
-  @media (min-width:901px) and (min-height:561px){
-    .hero{position:sticky;top:66px}
-  }
+  .hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:calc(100vh - 66px);padding:60px 0;background:var(--soft);transition:min-height .25s ease-out,margin .25s ease-out}
   @supports (min-height:100svh){.hero{min-height:calc(100svh - 66px)}}
   .hero>.wrap{width:100%}
   .hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:center;text-align:left}
@@ -88,7 +84,7 @@
   .hero p{color:var(--text2);font-size:18px;max-width:520px;margin:0 0 30px}
 
   /* Плавающая кнопка WhatsApp */
-  .fab-wa{position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;z-index:70;transition:transform .18s ease,box-shadow .18s ease}
+  .fab-wa{position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:4px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;z-index:70;transition:transform .18s ease,box-shadow .18s ease}
   .fab-wa:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.22)}
   .fab-wa svg{width:32px;height:32px;display:block}
 
@@ -99,14 +95,14 @@
 
   /* Каталог — шире, крупнее, со своим шрифтом */
   #catalog h2{font-size:clamp(30px,4vw,44px)}
-  .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;align-items:start;font-family:var(--cat)}
+  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:36px;align-items:start;font-family:var(--cat)}
   .box{background:var(--soft);border:1px solid transparent;border-radius:2px;padding:24px;opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease;box-shadow:var(--shadow-sm)}
   a.box-link{display:block;color:var(--text)}
   a.box-link p{color:var(--red);font-weight:600;font-size:14px;margin-top:6px}
   a.box-link:hover{box-shadow:var(--shadow-md);border-color:var(--red-border)}
   .box.show{opacity:1;transform:translateY(0)}
   .box>h3{font-family:var(--cat);font-weight:400;font-size:22px;letter-spacing:0;line-height:1.2;padding:6px 6px 16px;border-bottom:3px solid var(--red);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:999px}
+  .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 12px;border-radius:3px}
   .pcard{background:#fff;border:1px solid var(--border);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:28px;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
   .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--red-border)}
   .pcard:last-child{margin-bottom:0}
@@ -114,7 +110,7 @@
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:rgba(255,255,255,.8);font-size:14px}
   .pvideo .ph .big{font-size:34px}
-  .pvideo .ph .play{width:54px;height:54px;border-radius:999px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;padding-left:4px}
+  .pvideo .ph .play{width:54px;height:54px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;padding-left:4px}
   .pbody{padding:20px}
   .pbody h4{font-family:var(--cat);font-size:19px;line-height:1.3;margin-bottom:8px}
   .pbody p{font-size:14.5px;color:var(--text2);margin-bottom:16px}
@@ -126,7 +122,7 @@
   .step{background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:2px;padding:24px;opacity:0;transform:translateY(14px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease}
   .step.show{opacity:1;transform:translateY(0)}
   .step:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
-  .step .num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--red-soft);border:1px solid var(--red-border);font-family:var(--head);font-size:21px;color:var(--red);margin-bottom:14px}
+  .step .num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:4px;background:var(--red-soft);border:1px solid var(--red-border);font-family:var(--head);font-size:21px;color:var(--red);margin-bottom:14px}
   .step h3{font-size:17px;margin-bottom:6px}
   .step p{color:var(--text2);font-size:14px}
 
@@ -156,7 +152,7 @@
   .admin-sheet{background:#fff;border:1px solid var(--border);border-radius:2px;width:100%;max-width:1200px;height:calc(100vh - 56px);display:flex;flex-direction:column;overflow:hidden;transform:translateY(16px) scale(.985);transition:transform .3s cubic-bezier(.22,.61,.36,1)}
   .admin-modal.show .admin-sheet{transform:translateY(0) scale(1)}
   .admin-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:3px solid var(--red);font-family:var(--head);font-size:17px}
-  .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .admin-bar button{border:1px solid var(--border);background:#fff;border-radius:3px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:var(--body)}
   .admin-bar button:hover{border-color:var(--red);color:var(--red)}
   .admin-sheet iframe{flex:1;width:100%;border:0;background:var(--canvas)}
 
@@ -172,7 +168,7 @@
   .watch-modal.show{opacity:1}
   .watch-sheet{position:relative;background:#fff;width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;border-radius:2px;transform:translateY(14px);transition:transform .25s ease;box-shadow:0 24px 70px rgba(0,0,0,.3)}
   .watch-modal.show .watch-sheet{transform:translateY(0)}
-  .watch-close{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .watch-close{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:3px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
   .watch-close:hover{border-color:var(--red);color:var(--red)}
   .wvideo{position:relative;width:100%;aspect-ratio:16/9;background:#211D1D}
   .wvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -188,7 +184,7 @@
   }
   .team-wrap{position:relative}
   .team-nav{display:none}
-  .tn-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.94);color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--body);box-shadow:0 4px 14px rgba(33,29,29,.16)}
+  .tn-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;border-radius:3px;border:1px solid var(--border);background:rgba(255,255,255,.94);color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--body);box-shadow:0 4px 14px rgba(33,29,29,.16)}
   .tn-btn:active{border-color:var(--red);color:var(--red);transform:translateY(-50%) scale(.94)}
   #teamPrev{left:6px}
   #teamNext{right:6px}
@@ -255,7 +251,7 @@
     .tphoto{aspect-ratio:4/3}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .team-nav{display:block}
-    .boxes{grid-template-columns:repeat(3,1fr);gap:18px}
+    .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
     .steps{grid-template-columns:repeat(3,1fr);gap:18px}
     .watch-modal{padding:0}
     .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
@@ -330,7 +326,6 @@
 </script>
 
 <main>
-  <div class="hero-track" id="heroTrack">
   <div class="hero">
     <div class="wrap">
       <div class="hero-visual">
@@ -343,7 +338,6 @@
         <a class="btn btn-primary" href="#catalog">Что внутри</a>
       </div>
     </div>
-  </div>
   </div>
 
   <section id="team" class="team-sec">
@@ -400,7 +394,6 @@
       <p class="sub">У каждого материала есть короткий видео-анонс. Купите то, что подходит вам.</p>
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
-        <a class="box box-link" id="box-seminar" href="seminars.html"><h3>Семинары</h3><p>Расписание и запись — в календаре →</p></a>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
       </div>
     </div>
@@ -545,70 +538,39 @@ document.addEventListener("click", function(e){
 	var hero = document.querySelector(".hero")
 	var catalogSec = document.getElementById("catalog")
 	var lastY = window.scrollY
-	// Samsung-стиль: герой закреплён и сжимается на месте, пока команда подъезжает снизу.
-	// Финал (~5 прокруток): герой = 30% экрана и шириной как блок «Наша команда», команда = 70%.
-	var heroTrack = document.getElementById("heroTrack")
+	// Герой уменьшается плавно (smoothstep); на компе края срезаются глубже, на телефоне остаются
 	function heroShrink(y){
 		if (!hero) return
 		if (window.innerWidth <= 900 || window.innerHeight <= 560) {
-			hero.style.height = ""
 			hero.style.minHeight = ""
 			hero.style.marginLeft = ""
 			hero.style.marginRight = ""
-			hero.style.paddingTop = ""
-			hero.style.paddingBottom = ""
-			var w0 = hero.querySelector(".wrap")
-			if (w0) w0.style.transform = ""
-			if (heroTrack) heroTrack.style.height = ""
 			return
 		}
-		var vh = window.innerHeight
-		var full = vh - 66
-		var minH = Math.round(vh * 0.30)
-		var range = Math.max(1, full - minH)
-		if (heroTrack) heroTrack.style.height = full + "px"
+		var full = window.innerHeight - 66
+		var min = Math.min(460, Math.round(full * 0.85))
+		var range = Math.max(1, full - min)
 		var p = Math.min(1, y / range)
-		var h = Math.round(full - (full - minH) * p)
-		hero.style.height = h + "px"
-		hero.style.minHeight = h + "px"
-		var pad = Math.round(60 - 44 * p)
-		hero.style.paddingTop = pad + "px"
-		hero.style.paddingBottom = pad + "px"
-		// Ширина в финале — ровно как у блока с 3 сотрудниками
-		var teamWrap = document.querySelector("#team .wrap")
-		var maxInset = teamWrap ? Math.max(0, Math.round((window.innerWidth - teamWrap.clientWidth) / 2)) : 120
-		var inset = Math.round(p * maxInset)
+		hero.style.minHeight = Math.round(full - (full - min) * p) + "px"
+		var inset = Math.round(p * 120)
 		hero.style.marginLeft = inset + "px"
 		hero.style.marginRight = inset + "px"
-		// Содержимое героя плавно уменьшается, чтобы влезать в сжатый герой
-		var w = hero.querySelector(".wrap")
-		if (w) w.style.transform = p > 0 ? "scale(" + (1 - 0.3 * p).toFixed(3) + ")" : ""
 	}
 	heroShrink(window.scrollY)
 	window.addEventListener("resize", function(){ heroShrink(window.scrollY) }, { passive: true })
 	window.addEventListener("scroll", function(){
 		var y = window.scrollY
 		heroShrink(y)
-		// Пока герой закреплён — хедер бежевый; когда герой уезжает вверх — переливается в белый.
+		// Порог: 75% высоты героя. Пока не пролистано 75% — хедер виден и бежевый (цвет героя).
 		var heroH = hero ? hero.offsetHeight : window.innerHeight
-		var blendStart, blendEnd
-		if (window.innerWidth <= 900 || window.innerHeight <= 560) {
-			blendStart = heroH * 0.40
-			blendEnd = Math.max(1, heroH * 0.75)
-		} else {
-			var vhH = window.innerHeight
-			var minHH = Math.round(vhH * 0.30)
-			var rangeH = Math.max(1, (vhH - 66) - minHH)
-			blendStart = rangeH
-			blendEnd = rangeH + minHH * 0.75
-		}
-		var threshold = blendEnd
+		var threshold = Math.max(1, heroH * 0.75)
 		var pastHero = y >= threshold
 // Белый хедер — после 75% героя; тень/рамка — тоже.
 		// Цвет фона хедера плавно переливается от бежевого (var(--soft)) к белому (#fff)
 		// в зоне 60%–75% высоты героя, чтобы при возврате к герою хедер аккуратно стал бежевым.
 		header.classList.toggle("scrolled", pastHero)
 		var softR=250,softG=247,softB=246, whiteR=255,whiteG=255,whiteB=255
+		var blendStart = heroH * 0.40, blendEnd = heroH * 0.75
 		var rawBlend = Math.max(0, Math.min(1, (y - blendStart) / Math.max(1, blendEnd - blendStart)))
 		var blend = rawBlend * rawBlend * (3 - 2 * rawBlend)
 		var r = Math.round(softR + (whiteR - softR) * blend)
