@@ -323,7 +323,7 @@
         <h3>Аккаунт готов — отправьте данные:</h3>
         <pre id="credText"></pre>
         <div class="row">
-          <button class="btn btn-ghost btn-sm" id="credCopy" type="button">Скопироват�� сообщение</button>
+          <button class="btn btn-ghost btn-sm" id="credCopy" type="button">Скопировать сообщение</button>
           <a class="btn btn-sm" id="credWa" target="_blank" rel="noopener">Отправить в WhatsApp</a>
           <a class="btn btn-sm" id="credMail" target="_blank" rel="noopener">Отправить на почту</a>
         </div>
@@ -817,7 +817,7 @@ document.getElementById("aGen").addEventListener("click", function () {
       if (done || del) { await reloadAll(); renderGnTools() }
     })
 
-    // ----- ��ккаунты -----
+    // ----- Аккаунты -----
     document.getElementById("aCreate").addEventListener("click", async () => {
       const email = document.getElementById("aEmail").value.trim()
       const pass = document.getElementById("aPass").value.trim()
@@ -835,7 +835,7 @@ document.getElementById("aGen").addEventListener("click", function () {
         const msg = "GN FinTrust — ваш доступ готов!\nСайт: " + location.origin + location.pathname.replace("admin.html", "login.html") +
           "\nЛогин: " + email + "\nПароль: " + pass +
           "\nВаша покупка: " + (names.join(", ") || "—") +
-          "\nВойдите в «М��й кабинет» — всё уже там."
+          "\nВойдите в «Мой кабинет» — всё уже там."
         document.getElementById("credText").textContent = msg
         document.getElementById("credWa").href = "https://wa.me/?text=" + encodeURIComponent(msg)
         document.getElementById("credMail").href = "mailto:" + encodeURIComponent(email) + "?subject=" + encodeURIComponent("Ваш доступ — GN FinTrust") + "&body=" + encodeURIComponent(msg)

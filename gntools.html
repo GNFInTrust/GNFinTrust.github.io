@@ -93,8 +93,8 @@
   <div class="card" style="border-left:4px solid var(--green);background:var(--green-soft)">
     <h2 style="color:var(--green);font-size:18px">Скачать программу</h2>
     <p style="font-size:15px;color:var(--text);margin-bottom:14px">Один архив — внутри и бот WhatsApp → Excel, и документы на отгрузку. Установка не нужна: распаковали и запустили.</p>
-    <a class="submit" id="dl" href="#" style="background:var(--green);box-shadow:0 2px 8px rgba(47,115,81,.25)">Скачать GN Tools для Windows</a>
-    <p class="hint">Ссылка появится после того, как админ добавит архив в панель управления. Пока программа в бета-тесте.</p>
+    <a class="submit" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools-client.zip" style="background:var(--green);box-shadow:0 2px 8px rgba(47,115,81,.25)">Скачать GN Tools для Windows</a>
+    <p class="hint">Файл: GNTools-client.zip. Распакуйте и запустите GNTools.exe. Если ссылка не работает — напишите нам, мы пришлём архивом в WhatsApp.</p>
   </div>
 
   <div class="card">
@@ -187,9 +187,14 @@
   <div class="card">
     <h2>Доступ и цены</h2>
     <p>Новый аккаунт получает бесплатные пробные использования. 1 использование = 1 обработанный чат WhatsApp или 1 открытие документов. Подписка — безлимит.</p>
+    <h3>Выберите пакет использований</h3>
     <div class="chips" id="opts">
-      <button class="chip on" id="optTokens" type="button"><span class="t" id="optTokensT">Пакет: 100 использований</span><span class="p" id="optTokensP">500 сом</span></button>
-      <button class="chip" id="optSub" type="button"><span class="t" id="optSubT">Подписка: 30 дней безлимита</span><span class="p" id="optSubP">1500 сом</span></button>
+      <button class="chip" data-pack="10" data-price="100" type="button"><span class="t">10 использований</span><span class="p">100 сом</span></button>
+      <button class="chip" data-pack="20" data-price="200" type="button"><span class="t">20 использований</span><span class="p">200 сом</span></button>
+      <button class="chip on" data-pack="50" data-price="500" type="button"><span class="t">50 использований</span><span class="p">500 сом</span></button>
+      <button class="chip" data-pack="100" data-price="1000" type="button"><span class="t">100 использований</span><span class="p">1000 сом</span></button>
+      <button class="chip" data-pack="200" data-price="2000" type="button"><span class="t">200 использований</span><span class="p">2000 сом</span></button>
+      <button class="chip" id="optSub" data-pack="sub" data-price="1500" type="button"><span class="t" id="optSubT">Подписка: 30 дней безлимита</span><span class="p" id="optSubP">1500 сом</span></button>
     </div>
     <h3>Оплатите удобным способом</h3>
     <div id="payNums"></div>
@@ -209,19 +214,26 @@
 
 <script src="catalog.js"></script>
 <script>
-var G = { url: "", tokensAmount: 100, tokensPrice: 500, subDays: 30, subPrice: 1500 }
+var G = { url: "", tokensAmount: 50, tokensPrice: 500, subDays: 30, subPrice: 1500 }
 var PAY = (typeof DEMO_PAYMENT !== "undefined") ? DEMO_PAYMENT : { numbers: [], qrs: [] }
-var KIND = "tokens"
+var PACK = { tokens: 50, price: 500, isSub: false }
 var USER = null
 
 function renderG() {
-	document.getElementById("optTokensT").textContent = "Пакет: " + G.tokensAmount + " использований"
-	document.getElementById("optTokensP").textContent = G.tokensPrice + " сом"
 	document.getElementById("optSubT").textContent = "Подписка: " + G.subDays + " дней безлимита"
 	document.getElementById("optSubP").textContent = G.subPrice + " сом"
 	var dl = document.getElementById("dl")
 	if (G.url) { dl.href = G.url; dl.onclick = null }
-	else { dl.href = "#"; dl.onclick = function (e) { e.preventDefault(); alert("Ссылка на скачивание появится совсем скоро — идёт бета-тест.") } }
+	else { dl.href = "https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools-client.zip"; dl.onclick = null }
+}
+function selectPack(el) {
+  Array.from(document.querySelectorAll("#opts .chip")).forEach(function (c) { c.classList.remove("on") })
+  el.classList.add("on")
+  if (el.getAttribute("data-pack") === "sub") {
+    PACK = { tokens: 0, price: Number(el.getAttribute("data-price")), isSub: true }
+  } else {
+    PACK = { tokens: Number(el.getAttribute("data-pack")), price: Number(el.getAttribute("data-price")), isSub: false }
+  }
 }
 function renderPay() {
 	var w = document.getElementById("payNums")
@@ -249,13 +261,9 @@ function renderPay() {
 		q.appendChild(img)
 	})
 }
-function setKind(k) {
-	KIND = k
-	document.getElementById("optTokens").classList.toggle("on", k === "tokens")
-	document.getElementById("optSub").classList.toggle("on", k === "sub")
-}
-document.getElementById("optTokens").addEventListener("click", function () { setKind("tokens") })
-document.getElementById("optSub").addEventListener("click", function () { setKind("sub") })
+document.querySelectorAll("#opts .chip").forEach(function (chip) {
+  chip.addEventListener("click", function () { selectPack(this) })
+})
 renderG()
 renderPay()
 </script>
@@ -280,13 +288,13 @@ renderPay()
       const err = document.getElementById("err")
       err.style.display = "none"
       if (!USER) { location.href = "login.html"; return }
-      const isSub = KIND === "sub"
+      const isSub = PACK.isSub
       try {
         await fsMod.addDoc(fsMod.collection(db, "orders"), {
           type: "gntools",
-          kind: KIND,
-          itemTitle: isSub ? ("GN Tools: подписка " + G.subDays + " дн.") : ("GN Tools: " + G.tokensAmount + " использований"),
-          price: Number(isSub ? G.subPrice : G.tokensPrice),
+          kind: isSub ? "sub" : "tokens",
+          itemTitle: isSub ? ("GN Tools: подписка " + G.subDays + " дн.") : ("GN Tools: " + PACK.tokens + " использований"),
+          price: Number(PACK.price),
           method: "GN Tools",
           contact: USER.email || "",
           buyer: USER.email || "",
