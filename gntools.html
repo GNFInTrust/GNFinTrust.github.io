@@ -228,8 +228,9 @@ function renderG() {
 	document.getElementById("optSubT").textContent = "Подписка: " + G.subDays + " дней безлимита"
 	document.getElementById("optSubP").textContent = G.subPrice + " сом"
 	var dl = document.getElementById("dl")
-	if (G.url) { dl.href = G.url; dl.onclick = null }
-	else { dl.href = "https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools-client.zip"; dl.onclick = null }
+	var EXE = "https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe"
+	if (G.url && G.url.indexOf(".exe") !== -1) { dl.href = G.url; dl.onclick = null }
+	else { dl.href = EXE; dl.onclick = null }
 }
 function selectPack(el) {
   Array.from(document.querySelectorAll("#opts .chip")).forEach(function (c) { c.classList.remove("on") })
