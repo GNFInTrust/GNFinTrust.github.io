@@ -7,8 +7,6 @@
 var DEMO_PRODUCTS = [
 	{ id: "web-tax-basics", type: "webinar", title: "Налоги для предпринимателей", desc: "90-минутный вебинар: какие налоги платить, когда сдавать отчёты и как избежать штрафов.", price: 1300, preview: "PASTE_VIDEO_EMBED_LINK" },
 	{ id: "web-cashflow", type: "webinar", title: "Контроль денежного потока", desc: "Как отслеживать приход и расход, чтобы бизнес не остался без денег.", price: 1300, preview: "PASTE_VIDEO_EMBED_LINK" },
-	{ id: "sem-fin-planning", type: "seminar", title: "Финансовое планирование", desc: "Семинар на полдня: финансовый план вашего бизнеса на 12 месяцев.", price: 3500, preview: "PASTE_VIDEO_EMBED_LINK" },
-	{ id: "sem-credit", type: "seminar", title: "Кредиты без ошибок", desc: "Когда брать кредит, как сравнивать предложения и договариваться об условиях.", price: 3500, preview: "PASTE_VIDEO_EMBED_LINK" },
 	{ id: "course-accounting", type: "course", title: "Бухгалтер с нуля", desc: "Полный курс: учёт, план счетов КР и отчётность по единому налогу — шаг за шагом.", price: 10500, preview: "PASTE_VIDEO_EMBED_LINK" },
 	{ id: "course-fin-lit", type: "course", title: "Личные финансы", desc: "8 уроков: бюджет, накопления и первые инвестиции для начинающих.", price: 8000, preview: "PASTE_VIDEO_EMBED_LINK" },
 ]

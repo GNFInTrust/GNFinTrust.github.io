@@ -10,7 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://identitytoolkit.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>GN FinTrust — вебинары, семинары и курсы</title>
 <meta name="description" content="GN FinTrust: практические финансовые вебинары, семинары и курсы. Смотрите анонс, покупайте в два клика — доступ придёт в WhatsApp, на почту или в Telegram.">
 <style>
@@ -203,9 +206,9 @@
     .team-nav{display:block}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .hero h1{font-size:31px}
-    .hero{padding:64px 0;min-height:0}
-    .hero .wrap{grid-template-columns:1fr;gap:36px}
-    .hero-poster{width:min(240px,70%)}
+    .hero{padding:44px 0}
+    .hero .wrap{grid-template-columns:1fr;gap:32px}
+    .hero-poster{width:min(240px,70%,26vh);width:min(240px,70%,26svh)}
     nav.links a.hide-m{display:none}
     nav.links{gap:16px}
     nav.links a{white-space:nowrap}
@@ -220,7 +223,7 @@
     .hero h1{font-size:27px}
     .hero p{font-size:16px}
     .hero .wrap{gap:26px}
-    .hero-poster{width:min(190px,62%)}
+    .hero-poster{width:min(190px,62%,24vh);width:min(190px,62%,24svh)}
     .boxes,.steps,.team{gap:16px}
     .fab-wa{width:52px;height:52px}
     .fab-wa svg{width:29px;height:29px}
@@ -311,6 +314,7 @@
       <a class="hide-m" href="#catalog">Каталог</a>
       <a class="hide-m" href="#seminars">Семинары</a>
       <a class="hide-m" href="#how">Как купить</a>
+      <a href="gntools.html">GN Tools <span style="font-size:9px;font-weight:700;color:var(--red);vertical-align:super;letter-spacing:.04em">БЕТА</span></a>
       <a href="#" id="navAdmin" style="display:none">Админ</a>
       <a href="login.html" id="navLogin">Вход</a>
       <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
@@ -534,7 +538,10 @@ function closeWatch() {
 document.getElementById("watchClose").addEventListener("click", closeWatch)
 document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
-renderCatalog(DEMO_PRODUCTS)
+// Сначала показываем каталог из кеша прошлого визита (мгновенно), иначе — демо
+var cachedProducts = null
+try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
+renderCatalog(cachedProducts && cachedProducts.length ? cachedProducts : DEMO_PRODUCTS)
 
 // Переключение основной/дополнительной валюты по клику на мелкую надпись
 document.addEventListener("click", function(e){
@@ -562,21 +569,22 @@ document.addEventListener("click", function(e){
 	var hero = document.querySelector(".hero")
 	var catalogSec = document.getElementById("catalog")
 	var lastY = window.scrollY
-	// Герой уменьшается плавно (smoothstep); на компе края срезаются глубже, на телефоне остаются
+	// Герой уменьшается плавно (smoothstep); на компе края срезаются глубже, на телефоне — слегка
 	function heroShrink(y){
 		if (!hero) return
-		if (window.innerWidth <= 900 || window.innerHeight <= 560) {
+		if (window.innerHeight <= 560) {
 			hero.style.minHeight = ""
 			hero.style.marginLeft = ""
 			hero.style.marginRight = ""
 			return
 		}
+		var mobile = window.innerWidth <= 900
 		var full = window.innerHeight - 66
-		var min = Math.min(460, Math.round(full * 0.85))
+		var min = mobile ? Math.round(full * 0.72) : Math.min(460, Math.round(full * 0.85))
 		var range = Math.max(1, full - min)
 		var p = Math.min(1, y / range)
 		hero.style.minHeight = Math.round(full - (full - min) * p) + "px"
-		var inset = Math.round(p * 120)
+		var inset = Math.round(p * (mobile ? 14 : 120))
 		hero.style.marginLeft = inset + "px"
 		hero.style.marginRight = inset + "px"
 	}
@@ -706,7 +714,11 @@ document.addEventListener("click", function(e){
     const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
     snap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
-    if (products.length) renderCatalog(products)
+    if (products.length) {
+      renderCatalog(products)
+      // Запоминаем для мгновенного показа при следующем визите
+      try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
+    }
   } catch (e) { /* остаётся демо-каталог */ }
 </script>
 <script type="module">
@@ -730,7 +742,10 @@ document.addEventListener("click", function(e){
     box.appendChild(f)
     return true
   }
-  showCalendar(FALLBACK_CAL)
+  // Мгновенно показываем календарь из кеша прошлого визита, потом сверяем с базой
+  var cachedCal = null
+  try { cachedCal = localStorage.getItem("gn_cal_cache") } catch (e) {}
+  if (!showCalendar(cachedCal)) showCalendar(FALLBACK_CAL)
   // Ссылка, которую админ сохранил в панели, имеет приоритет
   try {
     var mod = await import("./firebase-config.js")
@@ -740,7 +755,12 @@ document.addEventListener("click", function(e){
       var app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(mod.firebaseConfig)
       var db = fsMod.getFirestore(app)
       var snap = await fsMod.getDoc(fsMod.doc(db, "settings", "calendar"))
-      if (snap.exists() && snap.data().embed) showCalendar(snap.data().embed)
+      if (snap.exists() && snap.data().embed) {
+        if (snap.data().embed !== cachedCal) showCalendar(snap.data().embed)
+        try { localStorage.setItem("gn_cal_cache", snap.data().embed) } catch (e) {}
+      } else {
+        try { localStorage.removeItem("gn_cal_cache") } catch (e) {}
+      }
     }
   } catch (e) { /* календарь просто останется как есть */ }
 })()

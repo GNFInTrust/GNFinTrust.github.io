@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#C8102E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://identitytoolkit.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<title>GN Tools — GN FinTrust</title>
+<style>
+  :root{
+    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
+    --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
+    --green:#2F7351; --green-soft:#E8F1EC;
+    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:16px;line-height:1.65;min-height:100vh;display:flex;flex-direction:column}
+  h1,h2,h3{font-family:var(--head)}
+  a{color:var(--red);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  ::selection{background:var(--red);color:#fff}
+  header{border-bottom:3px solid var(--red);background:#fff}
+  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
+  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
+  .back{font-size:14px;color:var(--text2)}
+  .back:hover{color:var(--red)}
+
+  main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:56px 24px 96px}
+  h1{font-size:30px;margin-bottom:4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .beta{font-size:11px;font-weight:700;color:#9a5b00;background:#FFF3E2;border:1px solid #f0d9b5;border-radius:3px;padding:3px 10px;letter-spacing:.06em;vertical-align:middle}
+  .lede{color:var(--text2);font-size:15px;margin-bottom:26px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:2px;padding:32px;margin-bottom:28px;box-shadow:0 1px 2px rgba(33,29,29,.05),0 10px 30px rgba(33,29,29,.05)}
+  .card h2{font-size:20px;margin-bottom:10px}
+  .card h3{font-size:16px;margin:18px 0 8px}
+  .card p,.card li{font-size:14.5px;color:var(--text)}
+  .card ol,.card ul{padding-left:22px;margin:8px 0}
+  .hint{font-size:13px;color:var(--text2);margin-top:10px}
+  .tip{background:#F8FAFC;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 3px 3px 0;padding:12px 16px;font-size:13.5px;color:var(--text2);margin:14px 0}
+  .submit{display:flex;align-items:center;justify-content:center;width:100%;margin-top:18px;background:var(--red);color:#fff;border:0;border-radius:3px;padding:15px;font-size:16px;font-weight:600;font-family:var(--body);cursor:pointer;text-decoration:none;box-shadow:0 2px 8px rgba(200,16,46,.25);transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .submit:hover{background:var(--red-dark);box-shadow:0 6px 18px rgba(200,16,46,.3);transform:translateY(-1px)}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+  .chip{flex:1;min-width:230px;text-align:left;border:1px solid var(--border);border-radius:3px;padding:14px 16px;background:#fff;font-family:var(--body);cursor:pointer;transition:border-color .18s ease,background-color .18s ease}
+  .chip .t{font-size:15px;font-weight:600;display:block}
+  .chip .p{font-size:14px;color:var(--red);font-weight:600}
+  .chip.on{border-color:var(--red);background:var(--red-soft)}
+  .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);border-radius:3px;padding:12px 14px;margin-bottom:10px;background:var(--soft)}
+  .payrow .lbl{font-size:13px;color:var(--text2)}
+  .payrow .val{font-weight:600;font-size:15px}
+  .copy{border:1px solid var(--border);background:#fff;border-radius:3px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body)}
+  .copy:hover{border-color:var(--red);color:var(--red)}
+  .qrs{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+  .qrs img{width:170px;height:170px;object-fit:contain;border:1px solid var(--border);border-radius:3px;background:#fff}
+  .ok{display:none;background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green);border-radius:3px;padding:16px;margin-top:16px;font-size:14.5px}
+  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:16px;font-size:14px}
+  html{-webkit-text-size-adjust:100%}
+  html,body{overflow-x:clip}
+  img,iframe{max-width:100%}
+  @media (max-width:640px), (max-height:560px) and (orientation:landscape){
+    .card{padding:22px 18px}
+    h1{font-size:24px}
+    button,.submit{min-height:44px}
+  }
+</style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
+<link rel="prefetch" href="index.html">
+<link rel="prefetch" href="login.html">
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
+    <a class="back" href="index.html">← На сайт</a>
+  </div>
+</header>
+
+<main>
+  <h1>GN Tools <span class="beta">БЕТА-ТЕСТ</span></h1>
+  <p class="lede">Одна программа для Windows — два инструмента: бот WhatsApp → Excel и документы на отгрузку. Аккаунт общий с этим сайтом: те же почта и пароль.</p>
+
+  <div class="card">
+    <h2>Скачать и запустить</h2>
+    <ol>
+      <li>Скачайте архив и распакуйте его в любую папку.</li>
+      <li>Запустите <strong>GNTools.exe</strong> — окно откроется в браузере. Если Windows предупреждает про неизвестного издателя — «Подробнее» → «Выполнить в любом случае».</li>
+      <li>Войдите с аккаунтом сайта или создайте новый — <strong>пробные использования начислятся автоматически</strong>.</li>
+    </ol>
+    <a class="submit" id="dl" href="#">Скачать для Windows (бета)</a>
+    <p class="hint">Программа в бета-тесте: если что-то не работает — напишите нам, использования вернём.</p>
+  </div>
+
+  <div class="card">
+    <h2>Подробная инструкция</h2>
+
+    <div style="background:#FAEBDD;border:1px solid #f0d9b5;border-radius:3px;padding:13px 15px;margin-bottom:18px">
+      <strong style="font-size:13.5px;color:#7A4500">Что такое «использования»?</strong>
+      <p style="margin:6px 0 0;font-size:13px">Каждый запуск бота (обработка чата WhatsApp) или открытие раздела «Документы» списывает <strong>1 использование</strong>. Подписка — безлимит до даты окончания. Баланс виден в программе после входа.</p>
+    </div>
+
+    <h3 style="margin-top:0">① Установка и первый запуск</h3>
+    <ol>
+      <li>Скачайте архив по кнопке выше и распакуйте в любую папку.</li>
+      <li>Запустите <strong>GNTools.exe</strong>. Если Windows предупреждает об неизвестном издателе — нажмите <strong>«Подробнее» → «Выполнить в любом случае»</strong>.</li>
+      <li>В программе войдите с почтой и паролем от этого сайта или создайте новый аккаунт. <strong>Пробные использования начислятся автоматически.</strong></li>
+    </ol>
+
+    <h3>② Бот WhatsApp → Excel</h3>
+    <div style="display:grid;gap:8px;margin-bottom:12px">
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#C8102E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
+        <div style="font-size:14px"><strong>Выберите браузер</strong> (Chrome или Brave) и файл Excel в настройках. Файл найдётся сам, если лежит рядом с GNTools.exe.</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#C8102E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+        <div style="font-size:14px">Нажмите <strong>«Запустить бота»</strong> — откроется браузер с QR-кодом. На телефоне: <strong>WhatsApp → Настройки → Связанные устройства</strong> → поднести к экрану.</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#C8102E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+        <div style="font-size:14px">Бот читает чаты и заполняет Excel: имя, телефон, компания, язык, интерес, статус. Понимает русский и кыргызский. Всё автоматически.</div>
+      </div>
+    </div>
+    <div class="tip"><strong>Кнопки:</strong> «Стоп» — пауза; «Пересканировать всё» — заново пройти все чаты; «Дочитать пустые строки» — дозаполнить, где ИИ не распознал данные с первого раза.</div>
+
+    <h3>③ Документы на отгрузку</h3>
+    <div style="display:grid;gap:8px;margin-bottom:12px">
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#2F7351;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
+        <div style="font-size:14px">В программе откройте вкладку <strong>«Документы»</strong> и нажмите <strong>«Открыть документы»</strong>. Спишется 1 использование (при подписке — 0).</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#2F7351;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+        <div style="font-size:14px">Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальные вкладки заполнятся автоматически.</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
+        <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#2F7351;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+        <div style="font-size:14px">Откройте нужную вкладку: <strong>Упаковочный лист</strong>, <strong>ТТН (1-Т)</strong>, <strong>ТН (ТОРГ-12)</strong> или <strong>CMR</strong> — нажмите <strong>Ctrl+P</strong>.</div>
+      </div>
+    </div>
+    <div class="tip">⏳ Документы открыты — работайте сколько угодно, печатайте сколько надо. Использование спишется один раз при открытии.</div>
+
+    <h3 style="margin-top:18px">Частые вопросы</h3>
+    <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
+      <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">Windows предупреждает при запуске</summary>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Нормально — программа не подписана цифровым сертификатом. Нажмите <strong>«Подробнее» → «Выполнить в любом случае»</strong>.</div>
+    </details>
+    <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
+      <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">QR-код не появляется</summary>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Подождите 20–30 секунд — браузер загружается. Если дольше нет — запустите Chrome или Brave вручную и убедитесь, что они открываются.</div>
+    </details>
+    <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
+      <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">Баланс не обновился после оплаты</summary>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Доступ включает админ вручную после проверки оплаты. Перезапустите программу или выйдите/войдите снова — баланс подгрузится.</div>
+    </details>
+    <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:0">
+      <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">Пишет «Нет доступа»</summary>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Закончились использования. Выберите тариф ниже, оплатите и нажмите «Я оплатил(а)» — админ проверит и начислит доступ.</div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>Доступ и цены</h2>
+    <p>Новый аккаунт получает бесплатные пробные использования. 1 использование = 1 обработанный чат WhatsApp или 1 открытие документов. Подписка — безлимит.</p>
+    <div class="chips" id="opts">
+      <button class="chip on" id="optTokens" type="button"><span class="t" id="optTokensT">Пакет: 100 использований</span><span class="p" id="optTokensP">500 сом</span></button>
+      <button class="chip" id="optSub" type="button"><span class="t" id="optSubT">Подписка: 30 дней безлимита</span><span class="p" id="optSubP">1500 сом</span></button>
+    </div>
+    <h3>Оплатите удобным способом</h3>
+    <div id="payNums"></div>
+    <div class="qrs" id="payQrs"></div>
+    <p class="hint">Переведите ровно ту сумму, что указана выше.</p>
+    <div id="buyIn" style="display:none">
+      <button class="submit" id="claim" type="button">Я оплатил(а) — включите доступ</button>
+      <div class="ok" id="ok"><strong>Заявка получена!</strong> Мы проверим оплату и включим доступ на ваш аккаунт <span id="okEmail"></span>. Перезапустите программу или войдите заново, когда мы подтвердим.</div>
+      <div class="err" id="err"></div>
+    </div>
+    <div id="buyOut">
+      <p class="hint" style="margin:14px 0 0">Чтобы мы знали, кому включить доступ — войдите в аккаунт.</p>
+      <a class="submit" href="login.html">Войти / Регистрация</a>
+    </div>
+  </div>
+</main>
+
+<script src="catalog.js"></script>
+<script>
+var G = { url: "", tokensAmount: 100, tokensPrice: 500, subDays: 30, subPrice: 1500 }
+var PAY = (typeof DEMO_PAYMENT !== "undefined") ? DEMO_PAYMENT : { numbers: [], qrs: [] }
+var KIND = "tokens"
+var USER = null
+
+function renderG() {
+	document.getElementById("optTokensT").textContent = "Пакет: " + G.tokensAmount + " использований"
+	document.getElementById("optTokensP").textContent = G.tokensPrice + " сом"
+	document.getElementById("optSubT").textContent = "Подписка: " + G.subDays + " дней безлимита"
+	document.getElementById("optSubP").textContent = G.subPrice + " сом"
+	var dl = document.getElementById("dl")
+	if (G.url) { dl.href = G.url; dl.onclick = null }
+	else { dl.href = "#"; dl.onclick = function (e) { e.preventDefault(); alert("Ссылка на скачивание появится совсем скоро — идёт бета-тест.") } }
+}
+function renderPay() {
+	var w = document.getElementById("payNums")
+	w.innerHTML = ""
+	;(PAY.numbers || []).forEach(function (n) {
+		var row = document.createElement("div")
+		row.className = "payrow"
+		row.innerHTML = '<span><span class="lbl"></span><br><span class="val"></span></span><button class="copy" type="button">Копировать</button>'
+		row.querySelector(".lbl").textContent = n.label
+		row.querySelector(".val").textContent = n.value
+		row.querySelector(".copy").addEventListener("click", function () {
+			navigator.clipboard && navigator.clipboard.writeText(n.value)
+			this.textContent = "Скопировано"
+		})
+		w.appendChild(row)
+	})
+	var q = document.getElementById("payQrs")
+	q.innerHTML = ""
+	;(PAY.qrs || []).forEach(function (src) {
+		if (typeof isRealLink === "function" && !isRealLink(src)) return
+		var img = document.createElement("img")
+		img.src = src
+		img.loading = "lazy"
+		img.alt = "QR-код для оплаты"
+		q.appendChild(img)
+	})
+}
+function setKind(k) {
+	KIND = k
+	document.getElementById("optTokens").classList.toggle("on", k === "tokens")
+	document.getElementById("optSub").classList.toggle("on", k === "sub")
+}
+document.getElementById("optTokens").addEventListener("click", function () { setKind("tokens") })
+document.getElementById("optSub").addEventListener("click", function () { setKind("sub") })
+renderG()
+renderPay()
+</script>
+<script type="module">
+  try {
+    const { firebaseConfig } = await import("./firebase-config.js")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+    const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+    const app = initializeApp(firebaseConfig)
+    const auth = authMod.getAuth(app)
+    const db = fsMod.getFirestore(app)
+
+    authMod.onAuthStateChanged(auth, (user) => {
+      USER = user || null
+      document.getElementById("buyIn").style.display = USER ? "block" : "none"
+      document.getElementById("buyOut").style.display = USER ? "none" : "block"
+    })
+
+    document.getElementById("claim").addEventListener("click", async function () {
+      const err = document.getElementById("err")
+      err.style.display = "none"
+      if (!USER) { location.href = "login.html"; return }
+      const isSub = KIND === "sub"
+      try {
+        await fsMod.addDoc(fsMod.collection(db, "orders"), {
+          type: "gntools",
+          kind: KIND,
+          itemTitle: isSub ? ("GN Tools: подписка " + G.subDays + " дн.") : ("GN Tools: " + G.tokensAmount + " использований"),
+          price: Number(isSub ? G.subPrice : G.tokensPrice),
+          method: "GN Tools",
+          contact: USER.email || "",
+          buyer: USER.email || "",
+          uid: USER.uid,
+          status: "new",
+          createdAt: new Date().toISOString(),
+        })
+        document.getElementById("okEmail").textContent = USER.email || ""
+        document.getElementById("ok").style.display = "block"
+        this.disabled = true
+        this.style.opacity = ".6"
+      } catch (e) {
+        err.textContent = "Не удалось отправить заявку: " + (e.message || e)
+        err.style.display = "block"
+      }
+    })
+
+    const gSnap = await fsMod.getDoc(fsMod.doc(db, "settings", "gntools"))
+    if (gSnap.exists()) { Object.assign(G, gSnap.data()); renderG() }
+    const paySnap = await fsMod.getDoc(fsMod.doc(db, "settings", "payment"))
+    if (paySnap.exists()) { PAY = paySnap.data(); renderPay() }
+  } catch (e) { /* остаются значения по умолчанию */ }
+</script>
+</body>
+</html>
