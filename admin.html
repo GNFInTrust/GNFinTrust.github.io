@@ -231,21 +231,21 @@
         <div style="margin-top:14px;display:grid;gap:10px">
           <div style="background:#F8FAFC;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 3px 3px 0;padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Что такое пользователь видит в приложении</strong>
-            <p style="font-size:13px;color:var(--text2);margin:0">При входе он видит свой баланс: сколько использований осталось. Каждый запуск анализа WhatsApp-чата или открытия документов = 1 использование. Подписка — безлимитные запуски на срок.</p>
+            <p style="font-size:13px;color:var(--text2);margin:0">При входе он видит свой баланс токенов. Токены списываются за действия: анализ чатов WhatsApp/Instagram/Telegram, создание папки документов, ИИ-правки. Цены настраиваются ниже в этой вкладке.</p>
           </div>
           <div style="background:#F8FAFC;border:1px solid var(--border);border-left:4px solid #2383E2;border-radius:0 3px 3px 0;padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Как работает покупка</strong>
             <ol style="font-size:13px;color:var(--text2);margin:0;padding-left:18px">
-              <li>Клиент заходит на <strong>gnfintrust.github.io/gntools.html</strong>, выбирает пакет или подписку.</li>
+              <li>Клиент заходит на <strong>gnfintrust.github.io/gntools.html</strong>, выбирает пакет токенов.</li>
               <li>Оплачивает по номеру / QR-коду, нажимает «Я оплатил(а)».</li>
               <li>Заявка появляется здесь в «Заявки на GN Tools» с почтой клиента.</li>
-              <li>Вы проверяете поступление денег и начисляете использования (или подписку) ниже → «Выполнено».</li>
+              <li>Вы проверяете поступление денег и начисляете использования ниже → «Выполнено».</li>
               <li>Пользователь перезапускает программу — новый баланс подгрузился.</li>
             </ol>
           </div>
           <div style="background:#F8FAFC;border:1px solid var(--border);border-left:4px solid var(--green);border-radius:0 3px 3px 0;padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Админ и сотрудники</strong>
-            <p style="font-size:13px;color:var(--text2);margin:0">Сделайте себя или коллегу «админом» во вкладке «Аккаунты» — в приложении появится бейдж «Админ — безлимит», десяткаеть и проверяет внутренние функции. Использования не тратятся. Аккаунт = логин и пароль от сайта.</p>
+            <p style="font-size:13px;color:var(--text2);margin:0">Сделайте себя или коллегу «админом» во вкладке «Аккаунты» — в приложении появится бейдж «Админ — безлимит», токены не тратятся — удобно тестировать и проверять внутренние функции. Аккаунт = логин и пароль от сайта.</p>
           </div>
           <div style="background:#F8FAFC;border:1px solid var(--border);border-left:4px solid #f0a500;border-radius:0 3px 3px 0;padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Как обновить ссылку на скачивание</strong>
@@ -261,8 +261,17 @@
         <div style="flex-basis:100%"><label for="gtUrl">Ссылка на скачивание (zip с программой)</label><input type="text" id="gtUrl" placeholder="https://github.com/…/GNTools-client.zip"></div>
         <div><label for="gtTokensAmount">Использований в пакете</label><input type="number" id="gtTokensAmount" value="100"></div>
         <div><label for="gtTokensPrice">Цена пакета (сом)</label><input type="number" id="gtTokensPrice" value="500"></div>
-        <div><label for="gtSubDays">Подписка (дней)</label><input type="number" id="gtSubDays" value="30"></div>
-        <div><label for="gtSubPrice">Цена подписки (сом)</label><input type="number" id="gtSubPrice" value="1500"></div>
+        <div style="flex-basis:100%;margin-top:8px"><strong style="font-size:13px">Цены в токенах (приложение GN Tools подхватит автоматически)</strong></div>
+        <div><label for="cWaOpus46">WhatsApp: Opus 4.6 (ток./чат)</label><input type="number" id="cWaOpus46" min="0" value="1"></div>
+        <div><label for="cWaOpus48">WhatsApp: Opus 4.8</label><input type="number" id="cWaOpus48" min="0" value="3"></div>
+        <div><label for="cWaDefault">WhatsApp: другие модели</label><input type="number" id="cWaDefault" min="0" value="2"></div>
+        <div><label for="cInstagram">Instagram (ток./сообщ.)</label><input type="number" id="cInstagram" min="0" value="2"></div>
+        <div><label for="cTelegram">Telegram (ток./чат)</label><input type="number" id="cTelegram" min="0" value="1"></div>
+        <div><label for="cDokBasic">Документы: базовое</label><input type="number" id="cDokBasic" min="0" value="1"></div>
+        <div><label for="cDokHaiku">Документы: Haiku</label><input type="number" id="cDokHaiku" min="0" value="2"></div>
+        <div><label for="cDokOpus">Документы: Opus</label><input type="number" id="cDokOpus" min="0" value="3"></div>
+        <div><label for="cDokFolder">Документы: создание папки</label><input type="number" id="cDokFolder" min="0" value="3"></div>
+        <div><label for="cDokAiEdit">Документы: изменение с ИИ</label><input type="number" id="cDokAiEdit" min="0" value="1"></div>
         <button class="btn btn-sm" id="gtSave" type="button">Сохранить</button>
       </div>
       <div class="formfoot"><span class="flash" id="gtFlash"></span></div>
@@ -276,7 +285,7 @@
       <p class="sub" id="calcNote" style="margin-top:4px"></p>
       <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
       <h2>Выдать доступ</h2>
-      <p class="sub">Найдите аккаунт по почте и начислите использования или подписку. Свои аккаунты можно сделать админом во вкладке «Аккаунты» — админ получает безлимит в приложении.</p>
+      <p class="sub">Найдите аккаунт по почте и начислите использования. Свои аккаунты можно сделать админом во вкладке «Аккаунты» — админ получает безлимит в приложении.</p>
       <div class="inline">
         <div><label for="gtEmail">Почта пользователя</label><input type="email" id="gtEmail" placeholder="client@mail.com"></div>
         <button class="btn btn-sm" id="gtFind" type="button">Найти</button>
@@ -286,8 +295,6 @@
         <div class="inline">
           <div><label for="gtAddTokens">Добавить использований</label><input type="number" id="gtAddTokens" value="100"></div>
           <button class="btn btn-sm" id="gtGrantTokens" type="button">Начислить</button>
-          <div><label for="gtSubUntil">Подписка до (ГГГГ-ММ-ДД)</label><input type="text" id="gtSubUntil" placeholder="2026-12-31"></div>
-          <button class="btn btn-sm" id="gtGrantSub" type="button">Выдать подписку</button>
         </div>
       </div>
       <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
@@ -734,30 +741,31 @@ document.getElementById("aGen").addEventListener("click", function () {
       const paid = Number(document.getElementById("calcPaid").value) || 0
       const amt = Number(document.getElementById("gtTokensAmount").value) || 100
       const price = Number(document.getElementById("gtTokensPrice").value) || 500
-      const subDays = Number(document.getElementById("gtSubDays").value) || 30
-      const subPrice = Number(document.getElementById("gtSubPrice").value) || 1500
       const res = document.getElementById("calcResult")
       const note = document.getElementById("calcNote")
       if (!paid || !price) { res.textContent = "—"; note.textContent = ""; return }
-      if (paid >= subPrice) {
-        const subs = Math.floor(paid / subPrice)
-        res.textContent = subs + " подп. × " + subDays + " дн. = безлимит на " + (subs * subDays) + " дн."
-        note.textContent = "Выдайте подписку вместо токенов. Остаток: " + (paid - subs * subPrice) + " сом."
-      } else {
-        const tokens = Math.round((paid / price) * amt)
-        res.textContent = tokens + " использований"
-        note.textContent = "Нажмите «Найти аккаунт», введите " + tokens + " в поле «Добавить использований» и нажмите «Начислить»."
-      }
+      const tokens = Math.round((paid / price) * amt)
+      res.textContent = tokens + " использований"
+      note.textContent = "Нажмите «Найти аккаунт», введите " + tokens + " в поле «Добавить использований» и нажмите «Начислить»."
     }
 
     // ----- GN Tools -----
     fsMod.getDoc(fsMod.doc(db, "settings", "gntools")).then((s) => {
-      const g = Object.assign({ url: "", tokensAmount: 100, tokensPrice: 500, subDays: 30, subPrice: 1500 }, s.exists() ? s.data() : {})
+      const g = Object.assign({ url: "", tokensAmount: 100, tokensPrice: 500 }, s.exists() ? s.data() : {})
       document.getElementById("gtUrl").value = g.url || ""
       document.getElementById("gtTokensAmount").value = g.tokensAmount
       document.getElementById("gtTokensPrice").value = g.tokensPrice
-      document.getElementById("gtSubDays").value = g.subDays
-      document.getElementById("gtSubPrice").value = g.subPrice
+      const c = Object.assign({ waOpus46: 1, waOpus48: 3, waDefault: 2, instagram: 2, telegram: 1, dokBasic: 1, dokHaiku: 2, dokOpus: 3 }, g.costs || {})
+      document.getElementById("cWaOpus46").value = c.waOpus46
+      document.getElementById("cWaOpus48").value = c.waOpus48
+      document.getElementById("cWaDefault").value = c.waDefault
+      document.getElementById("cInstagram").value = c.instagram
+      document.getElementById("cTelegram").value = c.telegram
+      document.getElementById("cDokBasic").value = c.dokBasic
+      document.getElementById("cDokHaiku").value = c.dokHaiku
+      document.getElementById("cDokOpus").value = c.dokOpus
+      document.getElementById("cDokFolder").value = c.dokFolder ?? 3
+      document.getElementById("cDokAiEdit").value = c.dokAiEdit ?? 1
     }).catch(() => {})
     document.getElementById("gtSave").addEventListener("click", async () => {
       try {
@@ -765,18 +773,27 @@ document.getElementById("aGen").addEventListener("click", function () {
           url: document.getElementById("gtUrl").value.trim(),
           tokensAmount: Number(document.getElementById("gtTokensAmount").value) || 100,
           tokensPrice: Number(document.getElementById("gtTokensPrice").value) || 0,
-          subDays: Number(document.getElementById("gtSubDays").value) || 30,
-          subPrice: Number(document.getElementById("gtSubPrice").value) || 0,
+          costs: {
+            waOpus46: Math.max(0, Number(document.getElementById("cWaOpus46").value) || 0),
+            waOpus48: Math.max(0, Number(document.getElementById("cWaOpus48").value) || 0),
+            waDefault: Math.max(0, Number(document.getElementById("cWaDefault").value) || 0),
+            instagram: Math.max(0, Number(document.getElementById("cInstagram").value) || 0),
+            telegram: Math.max(0, Number(document.getElementById("cTelegram").value) || 0),
+            dokBasic: Math.max(0, Number(document.getElementById("cDokBasic").value) || 0),
+            dokHaiku: Math.max(0, Number(document.getElementById("cDokHaiku").value) || 0),
+            dokOpus: Math.max(0, Number(document.getElementById("cDokOpus").value) || 0),
+            dokFolder: Math.max(0, Number(document.getElementById("cDokFolder").value) || 0),
+            dokAiEdit: Math.max(0, Number(document.getElementById("cDokAiEdit").value) || 0),
+          },
         })
-        flash("gtFlash", "Сохранено — страница «GN Tools» на сайте обновилась.", true)
+        flash("gtFlash", "Сохранено — сайт обновился сразу, приложение подхватит цены в течение 10 минут.", true)
       } catch (err) { flash("gtFlash", "Ошибка: " + (err.message || err), false) }
     })
     let gtUser = null
     function gtShowUser() {
       if (!gtUser) return
       document.getElementById("gtUserBox").style.display = "block"
-      const sub = gtUser.subUntil ? "подписка до " + gtUser.subUntil : "подписки нет"
-      document.getElementById("gtUserInfo").textContent = gtUser.email + " — использований: " + (Number(gtUser.tokens) || 0) + ", " + sub + (gtUser.admin ? ", админ (безлимит)" : "")
+      document.getElementById("gtUserInfo").textContent = gtUser.email + " — использований: " + (Number(gtUser.tokens) || 0) + (gtUser.admin ? ", админ (безлимит)" : "")
     }
     function gtFind() {
       const email = document.getElementById("gtEmail").value.trim().toLowerCase()
@@ -797,16 +814,6 @@ document.getElementById("aGen").addEventListener("click", function () {
         await fsMod.updateDoc(fsMod.doc(db, "users", gtUser._id), { tokens: (Number(gtUser.tokens) || 0) + n, plan: "paid" })
         await reloadAll(); gtUser = A.accounts.find((u) => u._id === gtUser._id) || gtUser; gtShowUser(); renderGnTools()
         flash("gtFlash", "Начислено. Пользователь увидит их после перезапуска программы или повторного входа.", true)
-      } catch (err) { flash("gtFlash", "Ошибка: " + (err.message || err), false) }
-    })
-    document.getElementById("gtGrantSub").addEventListener("click", async () => {
-      if (!gtUser) return
-      const v = document.getElementById("gtSubUntil").value.trim()
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { flash("gtFlash", "Дата в формате ГГГГ-ММ-ДД, например 2026-12-31.", false); return }
-      try {
-        await fsMod.updateDoc(fsMod.doc(db, "users", gtUser._id), { subUntil: v })
-        await reloadAll(); gtUser = A.accounts.find((u) => u._id === gtUser._id) || gtUser; gtShowUser(); renderGnTools()
-        flash("gtFlash", "Подписка выдана до " + v + ".", true)
       } catch (err) { flash("gtFlash", "Ошибка: " + (err.message || err), false) }
     })
     document.getElementById("gtOrdersWrap").addEventListener("click", async (e) => {
