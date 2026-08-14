@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GN Tools</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-serif;background:#F7F8FA;color:#15202B;font-size:14px;line-height:1.5}
+.app{display:flex;min-height:100vh}
+.side{width:244px;flex:none;background:#15202B;color:#E8ECF0;border-right:0;display:flex;flex-direction:column;padding:14px 10px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.side-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:6px 10px 14px;margin-bottom:6px;letter-spacing:-.02em}
+.logo{width:22px;height:22px;border-radius:3px;background:#C8102E;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+.nav-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;border-radius:3px;padding:8px 10px;font-size:13.5px;color:#D5DBE2;cursor:pointer;font-family:inherit}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.on{background:#C8102E;color:#fff;font-weight:600}
+.side-foot{margin-top:auto;padding:10px 4px 2px;border-top:1px solid rgba(255,255,255,.08)}
+#acct{display:none;flex-direction:column;gap:8px;padding:4px 6px 8px}
+#acct .em{font-size:12.5px;font-weight:600;word-break:break-all;color:#fff}
+#acct button{align-self:flex-start;border:1px solid rgba(255,255,255,.16);background:transparent;border-radius:3px;padding:4px 10px;font-size:12px;cursor:pointer;color:#E8ECF0;font-family:inherit}
+#acct button:hover{background:rgba(255,255,255,.08)}
+.lang{display:flex;gap:4px;padding:6px}
+.lang button{border:1px solid rgba(255,255,255,.16);background:transparent;border-radius:3px;padding:4px 10px;cursor:pointer;font-size:12px;color:#9AA3AD;font-family:inherit}
+.lang button.on{background:#fff;color:#15202B;border-color:#fff}
+.main{flex:1;min-width:0;padding:40px 44px 80px;max-width:920px}
+h1.pg{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.pg-sub{color:#5A6570;font-size:14px;margin-bottom:24px}
+.view{display:none}
+.view.on{display:block}
+.card{border:1px solid #D5DBE2;border-radius:3px;padding:20px;margin-bottom:16px;background:#fff}
+.card h2{font-size:15px;font-weight:600;margin-bottom:10px}
+.card h3{font-size:13.5px;font-weight:600;margin:16px 0 8px;color:#5A6570}
+.muted{color:#5A6570;font-size:12.5px}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #D5DBE2;border-radius:3px;margin:6px 0;cursor:pointer;font-size:13.5px;background:#fff}
+.opt:hover{background:#F7F8FA}
+.opt.sel{border-color:#C8102E;background:#F8E6E9;box-shadow:0 0 0 1px #C8102E inset}
+.opt input{margin:0}
+.opt .cost{font-size:12px;color:#5A6570;margin-left:auto}
+.opt.sel .cost{color:#C8102E}
+input[type=text],input[type=password],select,textarea{width:100%;padding:8px 10px;border:1px solid #D5DBE2;border-radius:3px;font-size:13.5px;margin-top:6px;font-family:inherit;background:#fff;color:#15202B}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(200,16,46,.28);border-color:#C8102E}
+textarea{min-height:100px;resize:vertical}
+.btn{display:block;width:100%;padding:10px;border:0;border-radius:3px;background:#C8102E;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit}
+.btn:hover{background:#9E0C24}
+.btn.green{background:#2A6B4E}
+.btn.green:hover{background:#21553E}
+.btn2{display:inline-block;padding:8px 14px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;color:#15202B;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px;font-family:inherit}
+.btn2:hover{background:#EEF1F4}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btns button{flex:1;min-width:130px;padding:8px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;font-size:12.5px;cursor:pointer;font-family:inherit;color:#15202B}
+.btns button:hover{background:#EEF1F4}
+.btns button.danger{border-color:#EAB8B8;color:#C4554D}
+.badge{display:inline-block;padding:3px 9px;border-radius:3px;font-size:12px;font-weight:600;background:#EEF1F4;color:#5A6570}
+.badge.green{background:#E4F0EA;color:#2A6B4E}
+.badge.blue{background:#F8E6E9;color:#C8102E}
+.badge.orange{background:#F4EBD8;color:#7A4500}
+.badge.red{background:#FBE4E4;color:#C4554D}
+#qrbox{display:none;text-align:center;padding:12px}
+#qrbox .q{display:inline-block;padding:12px;background:#fff;border:1px solid #D5DBE2;border-radius:3px}
+#log{background:#0E161E;color:#9fe8a9;font:12px/1.55 Consolas,monospace;border-radius:3px;padding:12px;height:270px;overflow-y:auto;white-space:pre-wrap;margin-top:12px}
+.err{color:#C4554D;font-size:13px;margin-top:8px;display:none}
+#dokFrame{display:none;width:100%;height:calc(100vh - 240px);min-height:480px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;margin-top:14px}
+.guide h2{font-size:17px;font-weight:600;margin:26px 0 8px}
+.guide h2:first-child{margin-top:0}
+.guide p,.guide li{font-size:14px;color:#15202B;margin-bottom:6px}
+.guide ol,.guide ul{padding-left:22px;margin-bottom:8px}
+.guide .callout{background:#EEF1F4;border:1px solid #D5DBE2;border-radius:3px;padding:12px 14px;font-size:13.5px;margin:10px 0}
+.guide a{color:#C8102E;text-decoration:none}
+#auth{max-width:400px}
+.pricing-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.pricing-table th{background:#EEF1F4;text-align:left;padding:8px 10px;border-bottom:1px solid #D5DBE2;font-weight:600}
+.pricing-table td{padding:8px 10px;border-bottom:1px solid #D5DBE2}
+.source-tabs{display:flex;gap:6px;margin-bottom:16px}
+.source-tab{flex:1;padding:10px 14px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;text-align:center;font-family:inherit;color:#15202B}
+.source-tab:hover{background:#F7F8FA}
+.source-tab.sel{border-color:#C8102E;background:#F8E6E9;color:#C8102E;font-weight:600}
+.cost-note{font-size:11px;color:#787670;margin-top:2px}
+/* Конвертер */
+.conv-drop{border:2px dashed #C3CBD4;border-radius:3px;padding:42px 20px;text-align:center;cursor:pointer;background:#F7F8FA;transition:border-color .18s ease,background-color .18s ease;margin-bottom:16px}
+.conv-drop:hover,.conv-drop.over{border-color:#C8102E;background:#F8E6E9}
+.conv-drop .big{font-size:15px;font-weight:600;color:#37352F}
+.conv-drop .sub{font-size:12.5px;color:#787670;margin-top:6px}
+.conv-drop .ic{font-size:34px;margin-bottom:8px}
+.conv-formats{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.conv-fmt{font-size:11.5px;font-weight:600;color:#5A6570;background:#fff;border:1px solid #D5DBE2;border-radius:3px;padding:4px 12px}
+.conv-file{display:flex;align-items:center;gap:12px;border:1px solid #D5DBE2;border-radius:3px;padding:14px 16px;background:#F7F8FA;margin-bottom:16px}
+.conv-file .fi{width:38px;height:38px;border-radius:3px;background:#F8E6E9;color:#C8102E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none}
+.conv-file .fi.xls{background:#FAEBDD;color:#B35900}
+.conv-file .fi.csv{background:#DEEEDE;color:#2F6F3F}
+.conv-file .fn{font-size:13.5px;font-weight:600;word-break:break-all}
+.conv-file .fs{font-size:12px;color:#787670;margin-top:2px}
+.conv-file .x{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border:0;border-radius:6px;background:transparent;color:#787670;font-size:16px;cursor:pointer;margin-left:auto;flex:none;font-family:inherit}
+.conv-file .x:hover{background:#F1F1EF;color:#C4554D}
+.conv-targets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 2px}
+.conv-target{border:1px solid #D5DBE2;border-radius:3px;padding:16px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;transition:border-color .18s ease,box-shadow .18s ease}
+.conv-target:hover{border-color:#E8B4BC}
+.conv-target.sel{border-color:#C8102E;background:#F8E6E9;box-shadow:0 0 0 1px #C8102E inset}
+.conv-target .tt{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.conv-target .ts{font-size:12px;color:#787670;margin-top:4px}
+.conv-target .ts em{font-style:normal;color:#C8102E;font-weight:600}
+.conv-target.disabled{opacity:.45;cursor:not-allowed}
+.conv-result{display:none;background:#E4F0EA;border:1px solid #B7D4C4;border-radius:3px;padding:16px;margin-top:16px}
+.conv-result .rt{font-size:14px;font-weight:600;color:#2F6F3F}
+.conv-result .rs{font-size:12.5px;color:#2F6F3F;margin-top:4px}
+.conv-err{display:none;background:#FBE4E4;border:1px solid #F0C9C9;border-radius:8px;padding:12px14px;margin-top:16px;font-size:13px;color:#C4554D}
+.conv-note{font-size:12px;color:#787670;margin-top:14px;display:flex;align-items:center;gap:6px}
+.conv-note b{color:#57564F}
+@media(max-width:560px){.conv-targets{grid-template-columns:1fr}}
+@media(max-width:760px){
+ .app{flex-direction:column}
+ .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px;padding:10px 12px}
+ .side nav{display:flex;gap:4px;flex-wrap:wrap}
+ .nav-item{width:auto}
+ .side-foot{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center;gap:6px}
+ #acct{padding:0;flex-direction:row;align-items:center}
+ .main{padding:22px 16px 60px}
+ h1.pg{font-size:22px}
+ #dokFrame{height:72vh}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="side-title"><span class="logo">GN</span> GN Tools</div>
+  <nav>
+    <button class="nav-item on" id="nav-bot" onclick="setView('bot')">WhatsApp / Insta / TG → Excel</button>
+    <button class="nav-item" id="nav-conv" onclick="setView('conv')">🔄 Конвертер</button>
+    <button class="nav-item" id="nav-dok" onclick="setView('dok')">Документы</button>
+    <button class="nav-item" id="nav-guide" onclick="setView('guide')">Инструкция</button>
+  </nav>
+  <div class="side-foot">
+    <div id="acct">
+      <span class="em" id="acctEmail"></span>
+      <span class="badge" id="lic">—</span>
+      <button onclick="logout()">Выйти</button>
+    </div>
+    <div class="lang"><button id="lru" class="on" onclick="setLang('ru')">RU</button><button id="len" onclick="setLang('en')">EN</button></div>
+  </div>
+</aside>
+<main class="main">
+
+<div class="card" id="auth" style="display:none">
+  <h2>Вход в аккаунт</h2>
+  <div class="muted" id="trialNote" style="margin:4px 0 8px"></div>
+  <div class="muted">Email</div>
+  <input type="text" id="aEmail" placeholder="email@example.com">
+  <div class="muted" style="margin-top:10px">Пароль</div>
+  <input type="password" id="aPass" placeholder="••••••••">
+  <div class="err" id="aErr"></div>
+  <button class="btn" onclick="login()">Войти</button>
+  <button class="btn2" onclick="register()">Создать аккаунт</button>
+</div>
+
+<div class="view on" id="v-bot">
+  <h1 class="pg">WhatsApp / Instagram / Telegram → Excel</h1>
+  <div class="pg-sub" id="costDisplay">WhatsApp: Opus 4.6 = 1 ток./чат, Opus 4.8 = 3 ток./чат</div>
+
+  <div class="card" id="setup" style="display:none">
+    <h2>Источник</h2>
+    <div class="source-tabs">
+      <button class="source-tab sel" id="s-whatsapp" onclick="selSource('whatsapp')">WhatsApp</button>
+      <button class="source-tab" id="s-instagram" onclick="selSource('instagram')">Instagram (2 ток.)</button>
+      <button class="source-tab" id="s-telegram" onclick="selSource('telegram')">Telegram (1 ток.)</button>
+    </div>
+
+    <div id="waSettings">
+      <div class="muted">Браузер</div>
+      <label class="opt sel" id="o-chrome"><input type="radio" name="br" value="chrome" checked><span>Google Chrome</span> <span class="muted" id="chromeInfo"></span></label>
+      <label class="opt" id="o-brave"><input type="radio" name="br" value="brave"><span>Brave</span> <span class="muted" id="braveInfo"></span></label>
+      <label class="opt" id="o-custom"><input type="radio" name="br" value="custom"><span>Другой (указать путь)</span></label>
+      <input type="text" id="customPath" style="display:none" placeholder="C:/.../chrome.exe">
+
+      <div class="muted" style="margin-top:14px">Модель ИИ и цена за чат</div>
+      <label class="opt sel" id="mo-46"><input type="radio" name="mdl" value="claude-opus-4-6" checked><span>Opus 4.6</span><span class="cost">⭐ 1 ток./чат</span></label>
+      <label class="opt" id="mo-48"><input type="radio" name="mdl" value="claude-opus-4-8"><span>Opus 4.8</span><span class="cost">🧠 3 ток./чат</span></label>
+      <label class="opt" id="mo-h45"><input type="radio" name="mdl" value="claude-haiku-4-5"><span>Haiku 4.5</span><span class="cost">⚡ 2 ток./чат</span></label>
+      <label class="opt" id="mo-s46"><input type="radio" name="mdl" value="claude-sonnet-4-6"><span>Sonnet 4.6</span><span class="cost">2 ток./чат</span></label>
+      <label class="opt" id="mo-gpt55"><input type="radio" name="mdl" value="gpt-5.5"><span>GPT-5.5</span><span class="cost">2 ток./чат</span></label>
+    </div>
+
+    <div id="tgSettings" style="display:none">
+      <div class="callout" style="background:#E1EEF9;border:1px solid #B8D4F0;border-radius:6px;padding:12px 14px;font-size:13px;margin:0 0 12px">
+        Создайте бота в <a href="https://t.me/BotFather" target="_blank">@BotFather</a>, скопируйте токен.
+      </div>
+      <div class="muted">Токен Telegram бота</div>
+      <input type="text" id="tgToken" placeholder="123456:ABC-DEF1234ghikl...">
+    </div>
+
+    <div id="instaSettings" style="display:none">
+      <div class="callout" style="background:#FAEBDD;border:1px solid #F0D9B5;border-radius:6px;padding:12px 14px;font-size:13px;margin:0 0 12px">
+        Скопируйте переписку из Instagram Direct и вставьте ниже. ИИ разберёт имя, телефон и интерес.
+      </div>
+      <div class="muted">Вставьте сообщения</div>
+      <textarea id="instaText" placeholder="Имя: текст сообщения&#10;Имя2: текст сообщения"></textarea>
+      <button class="btn green" onclick="processInsta()">Обработать (2 ток./сооб.)</button>
+      <div class="err" id="instaErr"></div>
+    </div>
+
+    <div class="muted" style="margin-top:14px">Режим запуска</div>
+    <label class="opt sel" id="o-all"><input type="radio" name="md" value="all" checked><span>Все чаты → слушать новые</span></label>
+    <label class="opt" id="o-new"><input type="radio" name="md" value="new"><span>Только новые сообщения</span></label>
+
+    <div class="muted" style="margin-top:14px">Файл Excel</div>
+    <input type="text" id="excel" placeholder="C:/.../база ватсап ии.xlsx">
+    <div class="muted" id="excelHint"></div>
+    <div class="err" id="err"></div>
+    <button class="btn" onclick="start()">▶ Запустить</button>
+  </div>
+
+  <div class="card" id="panel" style="display:none">
+    <h2>Статус: <span class="badge" id="status">—</span> <span class="badge" id="sourceBadge">—</span></h2>
+    <div id="qrbox"><div style="margin-bottom:8px">WhatsApp → Связанные устройства</div><div class="q"><div id="qr"></div></div></div>
+    <div class="btns">
+      <button class="danger" onclick="cmd('stop')">⏹ Стоп</button>
+      <button onclick="cmd('rewind')">🔁 Пересканировать</button>
+      <button onclick="cmd('refresh')">♻️ Дочитать пустые</button>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+
+<div class="view" id="v-dok">
+  <h1 class="pg">Документы на отгрузку</h1>
+  <div class="pg-sub">Упаковочный лист, ТТН, ТН (ТОРГ-12) и CMR.</div>
+
+  <div class="card" id="tools" style="display:none">
+    <h2>Способ заполнения</h2>
+    <div class="source-tabs" style="margin-bottom:14px">
+      <button class="source-tab sel" id="dm-basic" onclick="selDokMode('basic')">📝 Базовое (1 токен)</button>
+      <button class="source-tab" id="dm-haiku" onclick="selDokMode('haiku')">🤖 Haiku 4.5 (2 токена)</button>
+      <button class="source-tab" id="dm-opus" onclick="selDokMode('opus')">🧠 Opus 4.6 (3 токена)</button>
+    </div>
+
+    <div id="basicFill" style="font-size:13px;color:#787670">Без ИИ: данные из таблицы подставляются в шаблоны. Быстро, дёшево, без ошибок.</div>
+    <div id="aiFill" style="display:none;font-size:13px;color:#787670">ИИ заполняет поля: понимает контекст, форматирует названия и адреса.</div>
+
+    <button class="btn green" id="dokOpenBtn" style="max-width:320px" onclick="openDok()">Открыть документы</button>
+    <iframe id="dokFrame" title="Документы"></iframe>
+  </div>
+</div>
+
+<div class="view" id="v-conv">
+ <h1 class="pg">🔄 Конвертер файлов</h1>
+ <div class="pg-sub">XLSX ↔ XLS ↔ CSV в обе стороны. Преобразование происходит локально на вашем компьютере — быстро, безопасно и без списания токенов.</div>
+
+ <div class="card">
+ <div class="conv-drop" id="convDrop">
+ <input type="file" id="convFile" accept=".xlsx,.xls,.csv" hidden>
+ <div class="ic">📄</div>
+ <div class="big">Перетащите файл сюда</div>
+ <div class="sub">или нажмите, чтобы выбрать. Поддерживаются таблицы до50 МБ.</div>
+ <div class="conv-formats">
+ <span class="conv-fmt">XLSX</span>
+ <span class="conv-fmt">XLS (97-2003)</span>
+ <span class="conv-fmt">CSV</span>
+ </div>
+ </div>
+
+ <div id="convFileCard" style="display:none">
+ <div class="conv-file">
+ <div class="fi" id="convFi">XLSX</div>
+ <div>
+ <div class="fn" id="convFn"></div>
+ <div class="fs" id="convFs"></div>
+ </div>
+ <button class="x" type="button" onclick="convReset()" title="Убрать файл">✕</button>
+ </div>
+
+ <div class="muted" style="margin-bottom:6px">Конвертировать в:</div>
+ <div class="conv-targets" id="convTargets"></div>
+
+ <button class="btn" id="convBtn" onclick="convGo()">🔄 Конвертировать</button>
+ <div class="err" id="convErr"></div>
+
+ <div class="conv-result" id="convResult">
+ <div class="rt">✅ Готово!</div>
+ <div class="rs" id="convRs"></div>
+ <div class="btns" style="margin-top:12px">
+ <button onclick="convDownload()" style="background:#46A171;color:#fff;border-color:#46A171">⬇ Скачать файл</button>
+ <button onclick="convReset()">🔄 Конвертировать ещё</button>
+ </div>
+ </div>
+
+ <div class="conv-note">⚡ <span><b>Все6 направлений:</b> XLSX→XLS · XLS→XLSX · CSV→XLSX · XLSX→CSV · CSV→XLS · XLS→CSV</span></div>
+ </div>
+ </div>
+</div>
+
+<div class="view" id="v-guide">
+  <h1 class="pg">Инструкция</h1>
+  <div class="guide">
+    <h2>Цены (токены)</h2>
+    <table class="pricing-table">
+      <thead><tr><th>Услуга</th><th>Токенов</th></tr></thead>
+      <tbody>
+        <tr><td>WhatsApp: Opus 4.6 (1 чат)</td><td><strong>1</strong> ⭐</td></tr>
+        <tr><td>WhatsApp: Opus 4.8 (1 чат)</td><td><strong>3</strong> 🧠</td></tr>
+        <tr><td>WhatsApp: Haiku/Sonnet/GPT (1 чат)</td><td><strong>2</strong></td></tr>
+        <tr><td>Instagram DM (1 сообщение)</td><td><strong>2</strong></td></tr>
+        <tr><td>Telegram (1 сообщение)</td><td><strong>1</strong></td></tr>
+        <tr><td>Документы: Базовое (1 файл)</td><td><strong>1</strong></td></tr>
+        <tr><td>Документы: AI Haiku 4.5 (1 файл)</td><td><strong>2</strong></td></tr>
+        <tr><td>Документы: AI Opus 4.6 (1 файл)</td><td><strong>3</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">Купить токены: <a href="https://gnfintrust.github.io/gntools.html" target="_blank">gnfintrust.github.io/gntools.html</a></div>
+
+    <h2>WhatsApp / Instagram / Telegram</h2>
+    <ol>
+      <li>Выберите источник и модель ИИ (цена зависит от модели).</li>
+      <li><strong>WhatsApp:</strong> браузер + Excel → QR-код.</li>
+      <li><strong>Telegram:</strong> токен бота из @BotFather → запустить.</li>
+      <li><strong>Instagram:</strong> скопировать переписку → вставить → обработать.</li>
+    </ol>
+
+    <h2>Документы</h2>
+    <ol>
+      <li>Выберите Базовое (1 токен) или AI (Haiku 2 / Opus 3 токена).</li>
+      <li>Открыть → заполнить Данные → печать Ctrl+P.</li>
+    </ol>
+  </div>
+</div>
+
+</main>
+</div>
+<script>
+var lang='ru', LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic';
+
+function setLang(l){lang=l;document.getElementById('lru').className=l==='ru'?'on':'';document.getElementById('len').className=l==='en'?'on':''}
+
+function showLoggedIn(){
+  if(!LIC){document.getElementById('acct').style.display='none';document.getElementById('auth').style.display='block';document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='none';document.getElementById('tools').style.display='none';return}
+  document.getElementById('acct').style.display='flex';document.getElementById('auth').style.display='none';document.getElementById('setup').style.display='block';document.getElementById('tools').style.display='block';document.getElementById('acctEmail').textContent=LIC.email||'';updateLic()
+}
+
+function updateLic(){
+  if(!CONFIGURED)return;
+  var b=document.getElementById('lic');
+  if(!LIC){b.textContent='Нет токенов';b.className='badge red';return}
+  if(LIC.admin){b.textContent='Админ';b.className='badge green';return}
+  b.textContent='Токенов: '+(LIC.tokens||0);b.className=(LIC.tokens>0)?'badge green':'badge orange';
+}
+
+function selSource(s){
+  ACTIVE_SOURCE=s;
+  ['whatsapp','instagram','telegram'].forEach(function(x){document.getElementById('s-'+x).classList.toggle('sel',s===x)});
+  document.getElementById('waSettings').style.display=(s==='whatsapp')?'block':'none';
+  document.getElementById('tgSettings').style.display=(s==='telegram')?'block':'none';
+  document.getElementById('instaSettings').style.display=(s==='instagram')?'block':'none';
+}
+
+function selDokMode(m){
+  DOK_MODE=m;
+  ['basic','haiku','opus'].forEach(function(x){document.getElementById('dm-'+x).classList.toggle('sel',m===x)});
+  document.getElementById('basicFill').style.display=(m==='basic')?'block':'none';
+  document.getElementById('aiFill').style.display=(m!=='basic')?'block':'none';
+}
+
+function selOpt(name,ids){
+  var v=document.querySelector('input[name='+name+']:checked');if(!v)return'';v=v.value;
+  for(var k in ids){document.getElementById(ids[k]).className='opt'+(k===v?' sel':'')}
+  return v
+}
+
+function onBr(){var v=selOpt('br',{chrome:'o-chrome',brave:'o-brave',custom:'o-custom'});document.getElementById('customPath').style.display=v==='custom'?'block':'none'}
+function onMd(){selOpt('md',{all:'o-all','new':'o-new'})}
+function onModel(){selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45','claude-sonnet-4-6':'mo-s46','gpt-5.5':'mo-gpt55'})}
+
+var rads=document.querySelectorAll('input[name=br]');for(var i=0;i<rads.length;i++)rads[i].addEventListener('change',onBr);
+rads=document.querySelectorAll('input[name=md]');for(i=0;i<rads.length;i++)rads[i].addEventListener('change',onMd);
+rads=document.querySelectorAll('input[name=mdl]');for(i=0;i<rads.length;i++)rads[i].addEventListener('change',onModel);
+
+function login(){
+  var e=document.getElementById('aEmail').value.trim(),p=document.getElementById('aPass').value;
+  fetch('/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})})
+    .then(r=>r.json()).then(function(d){if(!d.ok)throw new Error(d.error||'auth_error');LIC=d.lic;showLoggedIn();setView('bot')})
+    .catch(function(e){document.getElementById('aErr').textContent=e.message;document.getElementById('aErr').style.display='block'})
+}
+
+function register(){
+  var e=document.getElementById('aEmail').value.trim(),p=document.getElementById('aPass').value;
+  if(e.length<6||p.length<6){document.getElementById('aErr').textContent='Пароль минимум 6 символов';document.getElementById('aErr').style.display='block';return}
+  fetch('/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,password:p})})
+    .then(r=>r.json()).then(function(d){if(!d.ok)throw new Error(d.error||'auth_error');LIC=d.lic;showLoggedIn();setView('bot')})
+    .catch(function(e){document.getElementById('aErr').textContent=e.message;document.getElementById('aErr').style.display='block'})
+}
+
+function logout(){fetch('/auth/logout',{method:'POST'}).then(function(){LIC=null;showLoggedIn();setView('bot')})}
+
+function start(){
+  if(ACTIVE_SOURCE==='instagram'){processInsta();return}
+  var excel=document.getElementById('excel').value.trim();
+  var browser=selOpt('br',{chrome:'o-chrome',brave:'o-brave',custom:'o-custom'});
+  var customPath=document.getElementById('customPath').value.trim();
+  var model=selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45','claude-sonnet-4-6':'mo-s46','gpt-5.5':'mo-gpt55'});
+  var mode=selOpt('md',{all:'o-all','new':'o-new'});
+  var tgToken=document.getElementById('tgToken').value.trim();
+  document.getElementById('err').style.display='none';
+
+  fetch('/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    excel,browser,customPath,model,mode,lang,source:ACTIVE_SOURCE,tgToken
+  })}).then(r=>r.json()).then(function(d){
+    if(d.error){document.getElementById('err').textContent=d.error||'Ошибка';document.getElementById('err').style.display='block';return}
+    document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='block';
+    if(d.source==='whatsapp')document.getElementById('qrbox').style.display='block';
+    document.getElementById('sourceBadge').textContent=d.source||ACTIVE_SOURCE;
+  }).catch(function(e){document.getElementById('err').textContent=e.message;document.getElementById('err').style.display='block'})
+}
+
+function processInsta(){
+  var text=document.getElementById('instaText').value.trim();
+  if(!text){document.getElementById('instaErr').textContent='Вставьте сообщения';document.getElementById('instaErr').style.display='block';return}
+  var lines=text.split('\n').filter(function(l){return l.trim()});
+  var msgs=[];
+  for(var i=0;i<lines.length;i++){
+    var m=lines[i].match(/^(.+?):\s*(.+)$/);
+    if(m)msgs.push({username:m[1].trim(),text:m[2].trim(),timestamp:Math.floor(Date.now()/1000)+i,id:'ig-'+Date.now()+'-'+i});
+  }
+  if(msgs.length===0)msgs=lines.map(function(l,i){return{username:'Instagram User',text:l,timestamp:Math.floor(Date.now()/1000)+i,id:'ig-'+Date.now()+'-'+i}});
+  document.getElementById('instaErr').style.display='none';
+  fetch('/insta/process',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})})
+    .then(r=>r.json()).then(function(d){
+      if(d.error){document.getElementById('instaErr').textContent=d.error;document.getElementById('instaErr').style.display='block';return}
+      document.getElementById('instaErr').textContent='Обработано '+msgs.length+' сообщений';document.getElementById('instaErr').style.color='#2F6F3F';document.getElementById('instaErr').style.display='block';
+      document.getElementById('instaText').value='';
+    }).catch(function(e){document.getElementById('instaErr').textContent=e.message;document.getElementById('instaErr').style.display='block'})
+}
+
+function cmd(c){fetch('/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd:c})})}
+var ST={idle:'Ожидание',qr:'QR-код',starting:'Запуск',connected:'Подключено',scanning:'Сканирование',listening:'Слушаю новые',stopped:'Стоп',error:'Ошибка'}
+function updateStatus(s){document.getElementById('status').textContent=ST[s]||s}
+function updateQR(qr){var q=document.getElementById('qr');q.innerHTML='';if(qr)new QRCode(q,qr)}
+
+function openDok(){
+  fetch('/dokumenty').then(function(r){if(r.status===403){alert('Нет токенов. Пополните на сайте.');return}return r.text()})
+    .then(function(html){if(!html)return;var f=document.getElementById('dokFrame');f.srcdoc=html;f.style.display='block';document.getElementById('dokOpenBtn').style.display='none'})
+    .catch(function(e){alert('Нет токенов.')})
+}
+
+function setView(v){
+ ['bot','conv','dok','guide'].forEach(function(x){document.getElementById('v-'+x).classList.toggle('on',v===x);document.getElementById('nav-'+x).classList.toggle('on',v===x)});
+ if(v==='dok'&&LIC)document.getElementById('tools').style.display='block';
+}
+
+// ---------- Конвертер (XLSX ↔ XLS ↔ CSV) ----------
+var CONV={name:'',from:'',data:null,size:0,to:null,result:null};
+var CONV_META={
+ xlsx:{label:'Excel .xlsx',mime:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
+ xls:{label:'Excel97-2003 .xls',mime:'application/vnd.ms-excel'},
+ csv:{label:'CSV .csv',mime:'text/csv'}
+};
+function convFmtOf(name){
+ var m=String(name||'').toLowerCase().match(/\.(xlsx|xls|csv)$/);
+ return m?m[1]:null;
+}
+function convSize(n){
+ n=n||0;
+ if(n>1048576)return (n/1048576).toFixed(2)+' МБ';
+ if(n>1024)return (n/1024).toFixed(1)+' КБ';
+ return n+' Б';
+}
+function convReset(){
+ CONV={name:'',from:'',data:null,size:0,to:null,result:null};
+ var inp=document.getElementById('convFile');if(inp)inp.value='';
+ document.getElementById('convFileCard').style.display='none';
+ document.getElementById('convDrop').style.display='block';
+ document.getElementById('convResult').style.display='none';
+ document.getElementById('convErr').style.display='none';
+}
+function convFileSelected(file){
+ if(!file)return;
+ var err=document.getElementById('convErr');
+ var from=convFmtOf(file.name);
+ if(!from){err.textContent='Поддерживаются только файлы .xlsx, .xls и .csv';err.style.display='block';return}
+ err.style.display='none';
+ CONV.name=file.name;CONV.from=from;CONV.size=file.size;CONV.to=null;CONV.result=null;
+ document.getElementById('convResult').style.display='none';
+ document.getElementById('convFi').textContent=from.toUpperCase();
+ document.getElementById('convFi').className='fi '+from;
+ document.getElementById('convFn').textContent=file.name;
+ document.getElementById('convFs').textContent=convSize(file.size)+' · '+CONV_META[from].label;
+ convRenderTargets();
+ document.getElementById('convDrop').style.display='none';
+ document.getElementById('convFileCard').style.display='block';
+ var rd=new FileReader();
+ rd.onload=function(){CONV.data=String(rd.result).split(',')[1]||''};
+ rd.readAsDataURL(file);
+}
+function convRenderTargets(){
+ var box=document.getElementById('convTargets');box.innerHTML='';
+ Object.keys(CONV_META).forEach(function(f){
+ if(f===CONV.from)return;
+ var b=document.createElement('button');
+ b.type='button';b.className='conv-target'+(CONV.to===f?' sel':'');b.setAttribute('data-f',f);
+ b.innerHTML='<div class="tt">'+(f==='xlsx'?'📗':f==='xls'?'📘':'📄')+' '+CONV_META[f].label+'</div><div class="ts">из <em>'+CONV.from.toUpperCase()+'</em></div>';
+ b.onclick=function(){
+ CONV.to=f;
+ Array.prototype.forEach.call(box.children,function(c){c.classList.toggle('sel',c.getAttribute('data-f')===f)});
+ };
+ box.appendChild(b);
+ });
+}
+function convGo(){
+ var err=document.getElementById('convErr');err.style.display='none';
+ if(!CONV.data){err.textContent='Файл ещё не загружен — подождите пару секунд.';err.style.display='block';return}
+ if(!CONV.to){err.textContent='Выберите формат для конвертации.';err.style.display='block';return}
+ var btn=document.getElementById('convBtn');btn.disabled=true;btn.style.opacity='.6';btn.textContent='⏳ Конвертируем…';
+ fetch('/convert',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:CONV.name,data:CONV.data,to:CONV.to})})
+ .then(function(r){return r.json()})
+ .then(function(d){
+ btn.disabled=false;btn.style.opacity='1';btn.textContent='🔄 Конвертировать';
+ if(d.error){err.textContent=d.message?('Ошибка: '+d.message):('Ошибка: '+d.error);err.style.display='block';return}
+ CONV.result=d;
+ document.getElementById('convRs').textContent='Файл «'+d.name+'» готов ('+convSize(d.size)+'). Нажмите «Скачать», чтобы сохранить.';
+ document.getElementById('convResult').style.display='block';
+ })
+ .catch(function(e){btn.disabled=false;btn.style.opacity='1';btn.textContent='🔄 Конвертировать';err.textContent='Ошибка соединения: '+e.message;err.style.display='block'});
+}
+function convDownload(){
+ if(!CONV.result)return;
+ try{
+ var bin=atob(CONV.result.data),len=bin.length,bytes=new Uint8Array(len);
+ for(var i=0;i<len;i++)bytes[i]=bin.charCodeAt(i);
+ var blob=new Blob([bytes],{type:(CONV_META[CONV.result.to]||{}).mime||'application/octet-stream'});
+ var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=CONV.result.name;
+ document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},4000);
+ }catch(e){document.getElementById('convErr').textContent='Не удалось скачать: '+e.message;document.getElementById('convErr').style.display='block'}
+}
+(function(){
+ var drop=document.getElementById('convDrop'),input=document.getElementById('convFile');
+ if(!drop||!input)return;
+ drop.addEventListener('click',function(){input.click()});
+ input.addEventListener('change',function(){convFileSelected(input.files&&input.files[0])});
+ ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();drop.classList.add('over')})});
+ ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();e.stopPropagation();drop.classList.remove('over')})});
+ drop.addEventListener('drop',function(e){
+ var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+ if(f)convFileSelected(f);
+ });
+})();
+
+(function init(){
+  fetch('/auth/session').then(r=>r.json()).then(function(d){
+    CONFIGURED=d.configured;LIC=d.lic||null;showLoggedIn();
+    if(d.trialTokens&&LIC&&LIC.tokens<=0)
+      document.getElementById('trialNote').textContent='Новый аккаунт получает '+d.trialTokens+' бесплатных токенов.';
+  });
+  fetch('/config').then(function(r){return r.json()}).then(function(c){
+    var excel=document.getElementById('excel');
+    if(c.excel&&excel&&!excel.value)excel.value=c.excel;
+    var ch=document.getElementById('chromeInfo');
+    var br=document.getElementById('braveInfo');
+    if(ch)ch.textContent=c.chrome?'найден':'не найден';
+    if(br)br.textContent=c.brave?'найден':'не найден';
+    if(c.status)updateStatus(c.status);
+  }).catch(function(){});
+  var es=new EventSource('/events');
+  es.addEventListener('message',function(e){
+    var m=JSON.parse(e.data);
+    if(m.type==='log'){
+      var l=document.getElementById('log');
+      if(l.textContent.length>80000)l.textContent=l.textContent.slice(-40000);
+      l.textContent+=m.line+'\n';l.scrollTop=l.scrollHeight
+    }
+    if(m.type==='status')updateStatus(m.status);
+    if(m.type==='qr')updateQR(m.qr);
+    if(m.type==='license'){LIC=m.lic;updateLic()}
+  });
+  setInterval(function(){
+    if(document.hidden)return;
+    fetch('/auth/session').then(r=>r.json()).then(function(d){LIC=d.lic||null;showLoggedIn();updateLic()})
+  },90000);
+})();
+</script>
+</body>
+</html>
