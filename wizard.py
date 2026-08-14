@@ -473,10 +473,8 @@ class GNWizard:
             self.update_progress(28, "Скачивание файлов приложения...")
             try:
                 self._download(APP_FILES_URL, app_zip, "Скачивание GN Tools")
-            except Exception:
-                self.update_progress(40, "Использую встроенные файлы...")
-                self._extract_bundled(install_dir)
-                app_zip = ""
+            except Exception as e:
+                raise RuntimeError("Не удалось скачать файлы GN Tools.\n" + str(e))
 
             if app_zip and os.path.isfile(app_zip):
                 self.update_progress(55, "Распаковка..." if not updating else "Обновляю файлы программы...")
@@ -521,7 +519,10 @@ class GNWizard:
                 }, f, ensure_ascii=False, indent=2)
 
             self.update_progress(100, "Обновление завершено!" if updating else "Установка завершена!", "GN Tools готов к работе")
-            self.root.after(400, lambda: self.show_step(3))
+            if self.auto_launch.get():
+                self.root.after(500, self.launch_app)
+            else:
+                self.root.after(400, lambda: self.show_step(3))
         except Exception as e:
             self.root.after(0, lambda: messagebox.showerror("Ошибка", "Не удалось скачать:\n" + str(e) + "\n\nПроверьте интернет-соединение.\n\n"))
             self.update_progress(self.progress_var.get(), "Ошибка: " + str(e), "")

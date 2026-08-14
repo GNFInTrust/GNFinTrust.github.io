@@ -3,9 +3,9 @@
 
 const wweb = require('whatsapp-web.js');
 const { Client, LocalAuth } = wweb;
-const qrcodeTerminal = require('qrcode-terminal');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const http = require('http');
 const { exec } = require('child_process');
 const ExcelJS = require('exceljs');
@@ -47,9 +47,8 @@ const EXCEL_CANDIDATES = [
   process.env.EXCEL_PATH || '',
   path.join(process.cwd(), 'база ватсап ии.xlsx'),
   path.join(BASE_DIR, 'база ватсап ии.xlsx'),
-  'C:/Users/Unit/Desktop/база ватсап ии.xlsx',
-  'C:/Users/Unit/Desktop/whatsapp_excel_sync/база ватсап ии.xlsx',
-  'C:/Users/tipil/Downloads/база ватсап ии.xlsx'
+  path.join(os.homedir(), 'Desktop', 'база ватсап ии.xlsx'),
+  path.join(os.homedir(), 'Downloads', 'база ватсап ии.xlsx')
 ];
 let EXCEL_PATH = '';
 function findExcel() {
@@ -73,13 +72,12 @@ const MESSAGES = {
     processedChat: (name, cost) => `  ✅ Обработан: ${name} (-${cost} ток.)`,
     errorChat: (name) => `  ❌ Ошибка в чате ${name}:`,
     doneScan: (total) => `📥 Готово! Добавлено ${total} строк.`,
-    chatTimeout: 'таймаут (10 мин)',
+    chatTimeout: 'таймаут (90 сек)',
     newMessage: (name) => `  📩 Новое от ${name}`,
     errorScan: 'Ошибка сканирования:',
     errorMsg: 'Ошибка:',
     stopping: 'Остановка...',
     rewinding: 'Пересканирование...',
-    saveInfo: 'Данные сохраняются в Excel.',
     waitSync: '⏳ Жду синхронизацию WhatsApp...',
     retryScan: (i, n) => `🔁 Повтор через 20 сек (${i}/${n})...`,
     scanFailed: '⚠️ Сканирование не удалось',
@@ -94,50 +92,14 @@ const MESSAGES = {
     tgReady: '✅ Telegram бот запущен',
     tgMsg: (name) => `  📩 Telegram от ${name}`,
     instaMsg: (name) => `  📩 Instagram от ${name}`,
-    sourceLabel: (s) => `📱 Источник: ${s}`,
     waCost: (model, cost) => `💰 Модель: ${model} → ${cost} ток./чат`
-  },
-  en: {
-    qrScan: 'Scan QR code with WhatsApp',
-    ready: '✅ WhatsApp connected',
-    scanning: '📥 Scanning chats...',
-    knownContacts: (n) => `📖 ${n} contacts in Excel — skipped`,
-    excelReadFail: '⚠️ Cannot read Excel:',
-    foundChats: (n) => `💬 Chats: ${n}`,
-    chatOf: (i, n, name) => `💬 ${i}/${n}: ${name}`,
-    skipped: '  ⏭️ Skipped',
-    processedChat: (name, cost) => `  ✅ Processed: ${name} (-${cost} tok.)`,
-    errorChat: (name) => `  ❌ Error: ${name}:`,
-    doneScan: (total) => `📥 Done! ${total} rows.`,
-    chatTimeout: 'timeout (10 min)',
-    newMessage: (name) => `  📩 New from ${name}`,
-    errorScan: 'Scan error:',
-    errorMsg: 'Error:',
-    stopping: 'Stopping...',
-    rewinding: 'Rescanning...',
-    saveInfo: 'Data saved.',
-    waitSync: '⏳ Syncing WhatsApp...',
-    retryScan: (i, n) => `🔁 Retry in 20s (${i}/${n})...`,
-    scanFailed: '⚠️ Scan failed',
-    refreshStart: '🔄 Looking for empty fields...',
-    refreshFound: (n) => `🔄 Contacts: ${n}`,
-    refreshDone: (n) => `✅ Updated: ${n}`,
-    usingBrowser: (p) => `🌐 Browser: ${p}`,
-    usingExcel: (x) => `📊 Excel: ${x}`,
-    notRunning: 'Bot not running',
-    noAccess: '⛔ No tokens. Top up on site.',
-    licTokens: (n) => `🎟 Tokens: ${n}`,
-    tgReady: '✅ Telegram bot online',
-    tgMsg: (name) => `  📩 Telegram from ${name}`,
-    instaMsg: (name) => `  📩 Instagram from ${name}`,
-    sourceLabel: (s) => `📱 Source: ${s}`,
-    waCost: (model, cost) => `💰 Model: ${model} → ${cost} tok/chat`
   }
 };
 let T = MESSAGES.ru;
 
 // Current model for WhatsApp (set when starting)
 let WA_MODEL = 'claude-opus-4-6';
+let DOK_MODE = 'basic';
 
 // License — tokens only, no subscription
 let LIC = null;
@@ -229,10 +191,14 @@ async function loadKnownPhones() {
 
 async function processChat(chat, force = false, source = 'whatsapp') {
   if (chat.isGroup) return false;
+  const chatKey = chat.id._serialized;
+  if (!force && cache[chatKey]) {
+    const recent = await chat.fetchMessages({ limit: 1 });
+    if (!recent.length || cache[chatKey] >= recent[recent.length - 1].timestamp) return 'skip';
+  }
   const messages = await chat.fetchMessages({ limit: 80 });
   if (messages.length === 0) return false;
 
-  const chatKey = chat.id._serialized;
   const lastTs = messages[messages.length - 1].timestamp;
   if (cache[chatKey] && cache[chatKey] >= lastTs) return 'skip';
 
@@ -263,12 +229,10 @@ async function processChat(chat, force = false, source = 'whatsapp') {
     return 'skip';
   }
 
-  // Cost depends on model for WhatsApp
-  let cost = source === 'telegram' ? TOKEN_COST.telegram : source === 'instagram' ? TOKEN_COST.instagram : waCostForModel(WA_MODEL);
-  if (!(await licenseGate(cost))) { log(T.noAccess); return 'blocked'; }
-
   const transcript = `WhatsApp Profile: ${contactName}\n\n` + messages.slice(-40).map(m => `[${new Date(m.timestamp * 1000).toLocaleString()}] ${m.fromMe ? 'Manager' : 'Client'}: ${m.body}`).join('\n');
   const parsed = await parseMessage(transcript);
+  const cost = waCostForModel(WA_MODEL);
+  if (!(await licenseGate(cost))) { log(T.noAccess); return 'blocked'; }
 
   const isCompany = contactName && (contactName.toLowerCase().includes('осоо') || contactName.toLowerCase().includes('llc') || contactName.toLowerCase().includes('ип '));
   const finalCompany = parsed.company || (isCompany ? contactName : '');
@@ -287,7 +251,7 @@ async function processChat(chat, force = false, source = 'whatsapp') {
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const CHAT_TIMEOUT_MS = 10 * 60 * 1000;
+const CHAT_TIMEOUT_MS = 90 * 1000;
 function withTimeout(p, ms, msg) {
   let t;
   const timeout = new Promise((_, rej) => { t = setTimeout(() => rej(new Error(msg)), ms); });
@@ -377,7 +341,6 @@ function startWhatsApp(execPath) {
 
   client.on('qr', qr => {
     setStatus('qr'); broadcast({ type: 'qr', qr });
-    qrcodeTerminal.generate(qr, { small: true });
     log(T.qrScan);
   });
 
@@ -456,11 +419,10 @@ function startTelegram(token) {
       const ts = msg.date;
       if (cache[key] && cache[key] >= ts) return;
 
-      if (!(await licenseGate(TOKEN_COST.telegram))) { log(T.noAccess); return; }
-      log(T.tgMsg(name));
-
       const transcript = `Telegram User: ${name} (@${username})\nMessage: ${msg.text}`;
       const parsed = await parseMessage(transcript);
+      if (!(await licenseGate(TOKEN_COST.telegram))) { log(T.noAccess); return; }
+      log(T.tgMsg(name));
       const date = new Date(ts * 1000);
       const colB = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
 
@@ -486,11 +448,10 @@ async function processInstaMessages(messages) {
     const key = 'ig-' + (m.id || m.timestamp);
     const ts = m.timestamp || Math.floor(Date.now() / 1000);
     if (cache[key] && cache[key] >= ts) continue;
-    if (!(await licenseGate(TOKEN_COST.instagram))) { log(T.noAccess); return; }
-    log(T.instaMsg(m.username || 'unknown'));
-
     const transcript = `Instagram User: ${m.username || 'unknown'}\nMessage: ${m.text || ''}`;
     const parsed = await parseMessage(transcript);
+    if (!(await licenseGate(TOKEN_COST.instagram))) { log(T.noAccess); return; }
+    log(T.instaMsg(m.username || 'unknown'));
     const date = new Date(ts * 1000);
     const colB = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
 
@@ -570,6 +531,11 @@ const server = http.createServer(async (req, res) => {
     if (serveFile(res, url.slice(1))) return;
     res.writeHead(404); res.end();
   } else if (req.method === 'GET' && url === '/dokumenty') {
+    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 403, { error: 'no_license' }); return; }
+    const mode = params.get('mode') || DOK_MODE;
+    if (mode === 'opus' || mode === 'haiku' || mode === 'basic') DOK_MODE = mode;
+    const cost = DOK_MODE === 'opus' ? TOKEN_COST.dokOpus : DOK_MODE === 'haiku' ? TOKEN_COST.dokHaiku : TOKEN_COST.dokBasic;
+    if (!(await licenseGate(cost))) { sendJson(res, 403, { error: 'no_tokens' }); return; }
     if (serveFile(res, 'dokumenty.html')) return;
     res.writeHead(500); res.end('dokumenty.html not found');
   } else if (req.method === 'GET' && url === '/config') {
@@ -625,8 +591,6 @@ const server = http.createServer(async (req, res) => {
       LIC = await license.getLicense();
       if (LIC && LIC.noProfile && license.trialTokens() > 0) {
         try { await license.createProfile(); LIC = await license.getLicense(); } catch {}
-      } else if (LIC && license.trialTokens() > 0) {
-        try { await license.grantTrial(license.trialTokens()); LIC = await license.getLicense(); } catch {}
       }
       sendJson(res, 200, { ok: true, lic: LIC, trialTokens: license.trialTokens(), tokenCosts: TOKEN_COST });
     } catch (e) { sendJson(res, 400, { error: e.message }); }
@@ -655,7 +619,7 @@ const server = http.createServer(async (req, res) => {
       setModel(String(b.model));
       WA_MODEL = String(b.model);
     }
-    T = b.lang === 'en' ? MESSAGES.en : MESSAGES.ru;
+    if (b.dokMode === 'opus' || b.dokMode === 'haiku' || b.dokMode === 'basic') DOK_MODE = b.dokMode;
     SCAN_ON_START = b.mode !== 'new';
     const excel = String(b.excel || '').trim().replace(/^"|"$/g, '').replace(/\\/g, '/');
     if (!excel || !fs.existsSync(excel)) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
@@ -702,14 +666,14 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, 200, { ok: true });
       if (!RUNNING) { log(T.notRunning); return; }
       await refreshSparse();
-    } else if (cmd === 'save') {
-      sendJson(res, 200, { ok: true }); log(T.saveInfo);
     } else { sendJson(res, 400, { error: 'unknown_cmd' }); }
 
   } else if (req.method === 'POST' && url === '/insta/process') {
     const b = await readBody(req);
     if (!b.messages || !Array.isArray(b.messages)) { sendJson(res, 400, { error: 'messages_required' }); return; }
     if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 400, { error: 'no_license' }); return; }
+    if (!EXCEL_PATH && !findExcel()) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
+    if (!EXCEL_PATH) EXCEL_PATH = findExcel();
     processInstaMessages(b.messages);
     sendJson(res, 200, { ok: true, count: b.messages.length });
 
@@ -745,19 +709,6 @@ const server = http.createServer(async (req, res) => {
  sendJson(res,400, { error: 'convert_failed', message: (e && e.message) || String(e) });
  }
 
- } else if (req.method === 'POST' && url === '/dok/basic') {
-    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 400, { error: 'no_license' }); return; }
-    if (!(await licenseGate(TOKEN_COST.dokBasic))) { sendJson(res, 400, { error: 'no_tokens' }); return; }
-    sendJson(res, 200, { ok: true });
-
-  } else if (req.method === 'POST' && url === '/dok/ai') {
-    const b = await readBody(req);
-    const model = String(b.model || 'claude-haiku-4-5').trim();
-    const cost = model.includes('opus') ? TOKEN_COST.dokOpus : TOKEN_COST.dokHaiku;
-    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 400, { error: 'no_license' }); return; }
-    if (!(await licenseGate(cost))) { sendJson(res, 400, { error: 'no_tokens' }); return; }
-    sendJson(res, 200, { ok: true, model, cost });
-
   } else {
     res.writeHead(404); res.end('Not found');
   }
@@ -772,8 +723,8 @@ const server = http.createServer(async (req, res) => {
   }
 })();
 
-server.listen(PORT, () => {
-  const url = 'http://localhost:' + PORT;
+server.listen(PORT, '127.0.0.1', () => {
+  const url = 'http://127.0.0.1:' + PORT;
   console.log('\n  ▶ Open: ' + url + '\n');
   if (process.platform === 'win32') exec('start "" ' + url);
 });

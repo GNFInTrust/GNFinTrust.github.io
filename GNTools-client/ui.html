@@ -23,9 +23,6 @@ body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-ser
 #acct .em{font-size:12.5px;font-weight:600;word-break:break-all;color:#fff}
 #acct button{align-self:flex-start;border:1px solid rgba(255,255,255,.16);background:transparent;border-radius:3px;padding:4px 10px;font-size:12px;cursor:pointer;color:#E8ECF0;font-family:inherit}
 #acct button:hover{background:rgba(255,255,255,.08)}
-.lang{display:flex;gap:4px;padding:6px}
-.lang button{border:1px solid rgba(255,255,255,.16);background:transparent;border-radius:3px;padding:4px 10px;cursor:pointer;font-size:12px;color:#9AA3AD;font-family:inherit}
-.lang button.on{background:#fff;color:#15202B;border-color:#fff}
 .main{flex:1;min-width:0;min-height:0;padding:28px 32px 48px;max-width:none;overflow:auto}
 h1.pg{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .pg-sub{color:#5A6570;font-size:14px;margin-bottom:24px}
@@ -150,7 +147,6 @@ textarea{min-height:100px;resize:vertical}
       <span class="badge" id="lic">—</span>
       <button onclick="logout()">Выйти</button>
     </div>
-    <div class="lang"><button id="lru" class="on" onclick="setLang('ru')">RU</button><button id="len" onclick="setLang('en')">EN</button></div>
   </div>
 </aside>
 <main class="main">
@@ -218,7 +214,6 @@ textarea{min-height:100px;resize:vertical}
 
     <div class="muted" style="margin-top:14px">Файл Excel</div>
     <input type="text" id="excel" placeholder="C:/.../база ватсап ии.xlsx">
-    <div class="muted" id="excelHint"></div>
     <div class="err" id="err"></div>
     <button class="btn" onclick="start()">▶ Запустить</button>
   </div>
@@ -272,6 +267,7 @@ textarea{min-height:100px;resize:vertical}
     <div id="basicFill" style="font-size:13px;color:#787670">Без ИИ: данные из таблицы подставляются в шаблоны. Быстро, дёшево, без ошибок.</div>
     <div id="aiFill" style="display:none;font-size:13px;color:#787670">ИИ заполняет поля: понимает контекст, форматирует названия и адреса.</div>
 
+    <div class="err" id="dokErr"></div>
     <button class="btn green" id="dokOpenBtn" style="max-width:320px" onclick="openDok()">Открыть документы</button>
     <iframe id="dokFrame" title="Документы"></iframe>
   </div>
@@ -368,9 +364,7 @@ textarea{min-height:100px;resize:vertical}
 </main>
 </div>
 <script>
-var lang='ru', LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic';
-
-function setLang(l){lang=l;document.getElementById('lru').className=l==='ru'?'on':'';document.getElementById('len').className=l==='en'?'on':''}
+var LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic';
 
 function showLoggedIn(){
   if(!LIC){document.getElementById('acct').style.display='none';document.getElementById('auth').style.display='block';document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='none';document.getElementById('tools').style.display='none';return}
@@ -442,7 +436,7 @@ function start(){
   document.getElementById('err').style.display='none';
 
   fetch('/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-    excel,browser,customPath,model,mode,lang,source:ACTIVE_SOURCE,tgToken
+    excel,browser,customPath,model,mode,source:ACTIVE_SOURCE,tgToken
   })}).then(r=>r.json()).then(function(d){
     if(d.error){document.getElementById('err').textContent=d.error||'Ошибка';document.getElementById('err').style.display='block';return}
     document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='block';
@@ -476,9 +470,20 @@ function updateStatus(s){document.getElementById('status').textContent=ST[s]||s}
 function updateQR(qr){var q=document.getElementById('qr');q.innerHTML='';if(qr)new QRCode(q,qr)}
 
 function openDok(){
-  fetch('/dokumenty').then(function(r){if(r.status===403){alert('Нет токенов. Пополните на сайте.');return}return r.text()})
-    .then(function(html){if(!html)return;var f=document.getElementById('dokFrame');f.srcdoc=html;f.style.display='block';document.getElementById('dokOpenBtn').style.display='none'})
-    .catch(function(e){alert('Нет токенов.')})
+  var err=document.getElementById('dokErr');
+  if(err){err.style.display='none';err.textContent=''}
+  fetch('/dokumenty?mode='+encodeURIComponent(DOK_MODE)).then(function(r){
+    if(r.status===403)throw new Error('Нет токенов. Пополните на сайте.');
+    return r.text();
+  }).then(function(html){
+    if(!html)return;
+    var f=document.getElementById('dokFrame');
+    f.srcdoc=html;f.style.display='block';
+    document.getElementById('dokOpenBtn').style.display='none';
+  }).catch(function(e){
+    if(err){err.textContent=e.message||'Нет токенов.';err.style.display='block'}
+    else alert(e.message||'Нет токенов.');
+  })
 }
 
 function setView(v){

@@ -237,8 +237,6 @@ async function fetchWithTimeout(url, options, timeoutMs) {
   }
 }
 
-// Встроенный API-ключ (codex-free.com) — работает из коробки; config.txt и переменные окружения могут переопределить
-const BUILTIN_API_KEY = 'sk-fp-70704066-QQKPLcnBVmaxPqBjmL0hCi1BuBVCJpkbknmE6oat41JrD1Hz';
 let MODEL_OVERRIDE = '';
 let CACHED_CONFIG = null;
 function setModel(m) {
@@ -266,8 +264,8 @@ function readConfigFile() {
   const config = {
     PROVIDER: 'claude',
     GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY || BUILTIN_API_KEY,
-    CLAUDE_API_KEY: process.env.CLAUDE_API_KEY || BUILTIN_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+    CLAUDE_API_KEY: process.env.CLAUDE_API_KEY || '',
     OPENAI_ENDPOINT: process.env.OPENAI_ENDPOINT || 'https://codex-free.com/v1/chat/completions',
     OPENAI_MODEL: process.env.OPENAI_MODEL || 'gpt-5.5',
     CLAUDE_MODEL: process.env.CLAUDE_MODEL || 'claude-opus-4-8',
