@@ -1,0 +1,8 @@
+_wizard_extract/
+_extract_wizard.py
+_dump_wizard.py
+_dump_wizard2.py
+build/
+dist/
+GNTools.spec
+__pycache__/
