@@ -5,24 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#C8102E">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Ctext x='16' y='22' font-family='Georgia, serif' font-size='14' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#15202B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23C8102E'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23D4B56A' stroke-width='1.4'/%3E%3Ctext x='16' y='21' font-family='Georgia, serif' font-size='11' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EGN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>Админ — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
   :root{
-    --red:#C8102E; --red-dark:#A00E24; --red-soft:#FBE9EC; --red-border:#F2C6CE;
-    --text:#211D1D; --text2:#6E6867; --soft:#FAF7F6; --border:#E8E2E1;
-    --green:#2F7351; --green-soft:#E8F1EC;
-    --head:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-    --body:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --red:#C8102E; --red-dark:#9E0C24; --red-soft:#F8E6E9; --red-border:#E8B4BC;
+    --text:#15202B; --text2:#5A6570; --soft:#EEF1F4; --border:#D5DBE2;
+    --green:#2A6B4E; --green-soft:#E4F0EA;
+    --head:"Unbounded","Manrope",-apple-system,"Segoe UI",sans-serif;
+    --body:"Manrope",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
@@ -30,10 +30,10 @@
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   ::selection{background:var(--red);color:#fff}
-  header{border-bottom:3px solid var(--red);background:#fff}
+  header{border-bottom:1px solid var(--border);background:#fff}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:19px}
-  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--body);overflow:hidden;background-size:cover;background-position:center;flex:none}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em}
+  .brand-mark{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;box-shadow:0 0 0 3px #F4EBD8,0 0 0 4px #D4B56A}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:3px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
@@ -42,7 +42,7 @@
   .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:3px;padding:11px 22px;font-size:14px;font-weight:600;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
   .btn:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
