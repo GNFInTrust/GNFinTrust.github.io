@@ -104,4 +104,74 @@ async function closeWorkbook() {
   cache.dirty = false;
 }
 
-module.exports = { appendRow, flush: flushNow, closeWorkbook };
+function cellText(v) {
+  if (v == null) return '';
+  if (typeof v === 'object') {
+    if (v.text) return String(v.text);
+    if (v.result != null) return String(v.result);
+    if (v.richText) return v.richText.map((p) => p.text || '').join('');
+  }
+  return String(v).trim();
+}
+
+async function ensureWorkbook(filePath) {
+  const fs = require('fs');
+  const path = require('path');
+  if (fs.existsSync(filePath)) return filePath;
+  const dir = path.dirname(filePath);
+  if (dir && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet('База');
+  ws.getRow(1).values = ['GN Tools', 'Контакты из WhatsApp / Instagram / Telegram'];
+  ws.getRow(2).values = ['№', 'Дата', 'Имя', 'Телефон', 'Компания', 'Деятельность', 'Источник', 'Язык', 'Интерес', 'Статус', '', '', 'Не отвечает'];
+  ws.getRow(2).font = { bold: true };
+  ws.columns = [
+    { width: 6 }, { width: 14 }, { width: 22 }, { width: 18 },
+    { width: 22 }, { width: 18 }, { width: 12 }, { width: 16 },
+    { width: 22 }, { width: 12 }, { width: 10 }, { width: 10 }, { width: 14 }
+  ];
+  await wb.xlsx.writeFile(filePath);
+  cache.path = '';
+  cache.wb = null;
+  return filePath;
+}
+
+async function listRows(filePath, q, limit) {
+  await flushNow();
+  const wb = await loadWorkbook(filePath);
+  const ws = wb.worksheets[0];
+  if (!ws) return { path: filePath, total: 0, rows: [], sources: {} };
+  const needle = String(q || '').trim().toLowerCase();
+  const max = Math.min(300, Number(limit) || 80);
+  const rows = [];
+  const sources = {};
+  let total = 0;
+  ws.eachRow((row, rn) => {
+    if (rn < 3) return;
+    const rec = {
+      n: cellText(row.getCell('A').value),
+      date: cellText(row.getCell('B').value),
+      name: cellText(row.getCell('C').value),
+      phone: cellText(row.getCell('D').value),
+      company: cellText(row.getCell('E').value),
+      activity: cellText(row.getCell('F').value),
+      source: cellText(row.getCell('G').value),
+      language: cellText(row.getCell('H').value),
+      interest: cellText(row.getCell('I').value),
+      status: cellText(row.getCell('J').value),
+      unanswered: cellText(row.getCell('M').value)
+    };
+    if (!rec.name && !rec.phone && !rec.company) return;
+    total += 1;
+    const src = rec.source || '—';
+    sources[src] = (sources[src] || 0) + 1;
+    if (needle) {
+      const hay = (rec.name + ' ' + rec.phone + ' ' + rec.company + ' ' + rec.interest + ' ' + rec.source).toLowerCase();
+      if (hay.indexOf(needle) === -1) return;
+    }
+    if (rows.length < max) rows.push(rec);
+  });
+  return { path: filePath, total, shown: rows.length, rows, sources };
+}
+
+module.exports = { appendRow, flush: flushNow, closeWorkbook, listRows, ensureWorkbook };

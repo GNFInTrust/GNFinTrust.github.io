@@ -10,7 +10,7 @@ const http = require('http');
 const { exec } = require('child_process');
 const ExcelJS = require('exceljs');
 const { parseMessage, setModel } = require('./parser.js');
-const { appendRow, flush: flushExcel, closeWorkbook } = require('./excel_helper.js');
+const { appendRow, flush: flushExcel, closeWorkbook, listRows, ensureWorkbook } = require('./excel_helper.js');
 const converter = require('./converter.js');
 const license = require('./license.js');
 
@@ -558,7 +558,10 @@ function serveFile(res, filename, code = 200) {
 
 const server = http.createServer(async (req, res) => {
   try {
-  const url = req.url.split('?')[0];
+  const rawUrl = req.url || '/';
+  const url = rawUrl.split('?')[0];
+  const qs = rawUrl.includes('?') ? rawUrl.slice(rawUrl.indexOf('?') + 1) : '';
+  const params = new URLSearchParams(qs);
 
   if (req.method === 'GET' && (url === '/' || url === '/index.html')) {
     if (serveFile(res, 'ui.html')) return;
@@ -575,6 +578,40 @@ const server = http.createServer(async (req, res) => {
       excel: EXCEL_PATH || findExcel(), status: STATUS, running: RUNNING,
       source: ACTIVE_SOURCE, tokenCosts: TOKEN_COST
     });
+  } else if (req.method === 'GET' && url === '/base') {
+    const q = params.get('q') || '';
+    const file = EXCEL_PATH || findExcel();
+    if (!file || !fs.existsSync(file)) {
+      sendJson(res, 200, { ok: true, path: file || '', total: 0, rows: [], sources: {}, missing: true });
+    } else {
+      try {
+        const data = await listRows(file, q, 80);
+        sendJson(res, 200, Object.assign({ ok: true, missing: false }, data));
+      } catch (e) {
+        sendJson(res, 400, { error: (e && e.message) || 'excel_read_failed' });
+      }
+    }
+  } else if (req.method === 'POST' && url === '/base/create') {
+    const b = await readBody(req);
+    const suggested = String(b.path || '').trim() || path.join(BASE_DIR, 'база ватсап ии.xlsx');
+    try {
+      const created = await ensureWorkbook(suggested);
+      EXCEL_PATH = created;
+      sendJson(res, 200, { ok: true, path: created });
+    } catch (e) {
+      sendJson(res, 400, { error: (e && e.message) || 'create_failed' });
+    }
+  } else if (req.method === 'POST' && url === '/base/open') {
+    const file = EXCEL_PATH || findExcel();
+    if (!file || !fs.existsSync(file)) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
+    try { await flushExcel(); } catch {}
+    try {
+      if (process.platform === 'win32') exec('start "" "' + file.replace(/"/g, '') + '"');
+      else exec('xdg-open "' + file.replace(/"/g, '') + '"');
+      sendJson(res, 200, { ok: true, path: file });
+    } catch (e) {
+      sendJson(res, 400, { error: (e && e.message) || 'open_failed' });
+    }
   } else if (req.method === 'GET' && url === '/events') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
     res.write('data: ' + JSON.stringify({ type: 'status', status: STATUS }) + '\n\n');
