@@ -29,12 +29,7 @@
     transition:min-height .25s ease-out,margin .25s ease-out
   }
   @supports (min-height:100svh){.hero{min-height:calc(100svh - var(--header-h))}}
-  .hero::before{
-    content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
-    background-image:
-      linear-gradient(90deg,transparent 0,transparent 47%,rgba(184,137,58,.18) 47%,rgba(184,137,58,.18) 48.2%,transparent 48.2%),
-      repeating-linear-gradient(90deg,rgba(21,32,43,.035) 0 1px,transparent 1px 28px);
-  }
+  .hero::before{display:none}
   .hero>.wrap{width:100%;position:relative;z-index:1}
   .hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:64px;align-items:center}
   .hero-copy .eyebrow{
