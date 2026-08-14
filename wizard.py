@@ -110,15 +110,18 @@ class GNWizard:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("GN Tools Wizard v" + VERSION)
-        self.root.geometry("600x520")
-        self.root.resizable(False, False)
+        self.root.minsize(640, 620)
+        self.root.resizable(True, True)
         self.root.configure(bg=BG)
+        self._set_icon()
         self.root.update_idletasks()
         sw = self.root.winfo_screenwidth()
         sh = self.root.winfo_screenheight()
-        x = max(0, (sw - 600) // 2)
-        y = max(0, (sh - 520) // 2)
-        self.root.geometry("600x520+" + str(x) + "+" + str(y))
+        w = min(760, max(680, sw - 80))
+        h = min(780, max(660, sh - 80))
+        x = max(0, (sw - w) // 2)
+        y = max(0, (sh - h) // 2)
+        self.root.geometry("%dx%d+%d+%d" % (w, h, x, y))
 
         found, found_ver = find_existing_install()
         self.existing_dir = found
@@ -134,6 +137,30 @@ class GNWizard:
         self.build_ui()
         self.show_step(0)
 
+    def _set_icon(self):
+        bases = [
+            getattr(sys, "_MEIPASS", ""),
+            os.path.dirname(os.path.abspath(__file__)),
+            os.path.dirname(sys.executable),
+            os.getcwd(),
+        ]
+        names = ("favicon.ico", os.path.join("GNTools-client", "favicon.ico"))
+        for base in bases:
+            if not base:
+                continue
+            for name in names:
+                path = os.path.join(base, name)
+                if os.path.isfile(path):
+                    try:
+                        self.root.iconbitmap(path)
+                        return
+                    except Exception:
+                        pass
+        try:
+            self.root.iconname("GN Tools")
+        except Exception:
+            pass
+
     def build_ui(self):
         header = tk.Frame(self.root, bg=RED, height=64)
         header.pack(fill=tk.X)
@@ -147,8 +174,19 @@ class GNWizard:
         ver = tk.Label(header, text="v" + VERSION, font=("Segoe UI", 10), fg="#F2C6CE", bg=RED)
         ver.pack(side=tk.RIGHT, padx=18)
 
-        self.content = tk.Frame(self.root, bg=BG)
-        self.content.pack(fill=tk.BOTH, expand=True, padx=24, pady=12)
+        wrap = tk.Frame(self.root, bg=BG)
+        wrap.pack(fill=tk.BOTH, expand=True)
+        self.canvas = tk.Canvas(wrap, bg=BG, highlightthickness=0, bd=0)
+        self.scroll = ttk.Scrollbar(wrap, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.scroll.set)
+        self.scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.content = tk.Frame(self.canvas, bg=BG)
+        self._win = self.canvas.create_window((0, 0), window=self.content, anchor="nw")
+        self.content.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfigure(self._win, width=e.width))
+        self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1 * (e.delta / 120)), "units"))
+        self.content.configure(padx=28, pady=16)
 
         indicator = tk.Frame(self.root, bg=BG)
         indicator.pack(fill=tk.X, padx=24)
@@ -182,7 +220,7 @@ class GNWizard:
         )
         self.progress = ttk.Progressbar(self.progress_frame, variable=self.progress_var, maximum=100, style="red.Horizontal.TProgressbar")
         self.progress.pack(fill=tk.X)
-        self.log_label = tk.Label(self.progress_frame, textvariable=self.log_text, font=("Segoe UI", 9), fg=TEXT2, bg=BG, anchor="w")
+        self.log_label = tk.Label(self.progress_frame, textvariable=self.log_text, font=("Segoe UI", 9), fg=TEXT2, bg=BG, anchor="w", wraplength=700, justify="left")
         self.log_label.pack(fill=tk.X, pady=(4, 0))
 
         nav = tk.Frame(self.root, bg=BG)
@@ -254,7 +292,7 @@ class GNWizard:
                 "Обновление заменит только файлы программы.\n"
                 "Node.js, вход, WhatsApp-сессия и Excel не удаляются."
             )
-            tk.Label(f, text=desc, font=("Segoe UI", 11), fg=TEXT2, bg=BG, justify="left").pack(fill=tk.X, pady=(0, 14))
+            tk.Label(f, text=desc, font=("Segoe UI", 11), fg=TEXT2, bg=BG, justify="left", wraplength=680).pack(fill=tk.X, pady=(0, 14))
             box = tk.LabelFrame(f, text="Что сделать", fg=TEXT2, bg=BG)
             box.pack(fill=tk.X)
             tk.Radiobutton(
@@ -273,7 +311,7 @@ class GNWizard:
         tk.Label(
             f,
             text="WhatsApp, Instagram и Telegram → Excel.\nДокументы на отгрузку: упаковочный лист, ТТН, ТН, CMR.\n\nЭтот мастер установит всё автоматически:",
-            font=("Segoe UI", 11), fg=TEXT2, bg=BG, justify="left"
+            font=("Segoe UI", 11), fg=TEXT2, bg=BG, justify="left", wraplength=680
         ).pack(fill=tk.X, pady=(0, 14))
         features = (
             ("📱", "Бот WhatsApp → Excel (Opus 4.6 = 1 ток./чат)"),
@@ -310,7 +348,7 @@ class GNWizard:
             tk.Label(
                 opts,
                 text="Будут заменены только файлы программы (index.js, интерфейс, конвертер).\nСохранятся: вход, токены, WhatsApp-сессия, config.txt, Excel и Node.js.",
-                font=("Segoe UI", 9), fg=TEXT2, bg=BG, justify="left"
+                font=("Segoe UI", 9), fg=TEXT2, bg=BG, justify="left", wraplength=640
             ).pack(anchor="w", padx=8, pady=8)
         tk.Checkbutton(opts, text="Создать ярлык на рабочем столе", variable=self.desk_shortcut, bg=BG, fg=TEXT, selectcolor=WHITE, activebackground=BG).pack(anchor="w", padx=8, pady=2)
         tk.Checkbutton(opts, text="Запустить после установки", variable=self.auto_launch, bg=BG, fg=TEXT, selectcolor=WHITE, activebackground=BG).pack(anchor="w", padx=8, pady=(0, 8))
@@ -499,7 +537,7 @@ class GNWizard:
         tk.Label(
             info_frame,
             text=("GN Tools обновлён в:\n" if updating else "GN Tools установлен в:\n") + self.install_path.get(),
-            font=("Segoe UI", 10), fg=RED_DARK, bg=RED_SOFT, justify="left"
+            font=("Segoe UI", 10), fg=RED_DARK, bg=RED_SOFT, justify="left", wraplength=640
         ).pack(anchor="w", padx=12)
         tips = (
             "Дважды кликните по GN Tools.bat на рабочем столе",

@@ -4,15 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GN Tools</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="256x256">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-serif;background:#F7F8FA;color:#15202B;font-size:14px;line-height:1.5}
-.app{display:flex;min-height:100vh}
-.side{width:244px;flex:none;background:#15202B;color:#E8ECF0;border-right:0;display:flex;flex-direction:column;padding:14px 10px;position:sticky;top:0;height:100vh;overflow-y:auto}
+html,body{height:100%}
+body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-serif;background:#F7F8FA;color:#15202B;font-size:14px;line-height:1.5;overflow:hidden}
+.app{display:flex;height:100vh;min-height:0}
+.side{width:244px;flex:none;background:#15202B;color:#E8ECF0;border-right:0;display:flex;flex-direction:column;padding:14px 10px;height:100vh;overflow-y:auto;min-width:0}
 .side-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:6px 10px 14px;margin-bottom:6px;letter-spacing:-.02em}
 .logo{width:22px;height:22px;border-radius:3px;background:#C8102E;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
-.nav-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;border-radius:3px;padding:8px 10px;font-size:13.5px;color:#D5DBE2;cursor:pointer;font-family:inherit}
+.nav-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;border-radius:3px;padding:8px 10px;font-size:13.5px;color:#D5DBE2;cursor:pointer;font-family:inherit;white-space:normal;line-height:1.3}
 .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-item.on{background:#C8102E;color:#fff;font-weight:600}
 .side-foot{margin-top:auto;padding:10px 4px 2px;border-top:1px solid rgba(255,255,255,.08)}
@@ -23,7 +26,7 @@ body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-ser
 .lang{display:flex;gap:4px;padding:6px}
 .lang button{border:1px solid rgba(255,255,255,.16);background:transparent;border-radius:3px;padding:4px 10px;cursor:pointer;font-size:12px;color:#9AA3AD;font-family:inherit}
 .lang button.on{background:#fff;color:#15202B;border-color:#fff}
-.main{flex:1;min-width:0;padding:40px 44px 80px;max-width:920px}
+.main{flex:1;min-width:0;min-height:0;padding:28px 32px 48px;max-width:none;overflow:auto}
 h1.pg{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .pg-sub{color:#5A6570;font-size:14px;margin-bottom:24px}
 .view{display:none}
@@ -32,7 +35,7 @@ h1.pg{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .card h2{font-size:15px;font-weight:600;margin-bottom:10px}
 .card h3{font-size:13.5px;font-weight:600;margin:16px 0 8px;color:#5A6570}
 .muted{color:#5A6570;font-size:12.5px}
-.opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #D5DBE2;border-radius:3px;margin:6px 0;cursor:pointer;font-size:13.5px;background:#fff}
+.opt{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;padding:9px 12px;border:1px solid #D5DBE2;border-radius:3px;margin:6px 0;cursor:pointer;font-size:13.5px;background:#fff}
 .opt:hover{background:#F7F8FA}
 .opt.sel{border-color:#C8102E;background:#F8E6E9;box-shadow:0 0 0 1px #C8102E inset}
 .opt input{margin:0}
@@ -71,8 +74,8 @@ textarea{min-height:100px;resize:vertical}
 .pricing-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
 .pricing-table th{background:#EEF1F4;text-align:left;padding:8px 10px;border-bottom:1px solid #D5DBE2;font-weight:600}
 .pricing-table td{padding:8px 10px;border-bottom:1px solid #D5DBE2}
-.source-tabs{display:flex;gap:6px;margin-bottom:16px}
-.source-tab{flex:1;padding:10px 14px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;text-align:center;font-family:inherit;color:#15202B}
+.source-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.source-tab{flex:1 1 140px;padding:10px 14px;border:1px solid #D5DBE2;border-radius:3px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;text-align:center;font-family:inherit;color:#15202B}
 .source-tab:hover{background:#F7F8FA}
 .source-tab.sel{border-color:#C8102E;background:#F8E6E9;color:#C8102E;font-weight:600}
 .cost-note{font-size:11px;color:#787670;margin-top:2px}
@@ -107,16 +110,24 @@ textarea{min-height:100px;resize:vertical}
 .conv-note{font-size:12px;color:#787670;margin-top:14px;display:flex;align-items:center;gap:6px}
 .conv-note b{color:#57564F}
 @media(max-width:560px){.conv-targets{grid-template-columns:1fr}}
-@media(max-width:760px){
- .app{flex-direction:column}
- .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px;padding:10px 12px}
- .side nav{display:flex;gap:4px;flex-wrap:wrap}
- .nav-item{width:auto}
- .side-foot{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center;gap:6px}
+@media(max-width:900px),(max-height:700px){
+ .app{flex-direction:column;height:100vh}
+ .side{width:100%;height:auto;max-height:42vh;position:static;flex-direction:row;align-items:flex-start;flex-wrap:wrap;gap:4px;padding:10px 12px}
+ .side-title{padding:4px 8px 8px;margin:0 8px 0 0}
+ .side nav{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+ .nav-item{width:auto;min-height:36px}
+ .side-foot{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
  #acct{padding:0;flex-direction:row;align-items:center}
- .main{padding:22px 16px 60px}
+ .main{padding:18px 16px 36px}
  h1.pg{font-size:22px}
- #dokFrame{height:72vh}
+ #dokFrame{height:62vh;min-height:280px}
+ #log{height:180px}
+ #auth{max-width:none}
+}
+@media(max-height:560px){
+ .side{max-height:34vh}
+ .main{padding:12px 14px 24px}
+ .card{padding:14px}
 }
 </style>
 </head>

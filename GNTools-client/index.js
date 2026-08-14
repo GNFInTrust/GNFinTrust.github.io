@@ -531,14 +531,24 @@ function sendJson(res, code, obj) {
   res.end(JSON.stringify(obj));
 }
 
+function contentType(filename) {
+  if (filename.endsWith('.html')) return 'text/html; charset=utf-8';
+  if (filename.endsWith('.ico')) return 'image/x-icon';
+  if (filename.endsWith('.png')) return 'image/png';
+  if (filename.endsWith('.svg')) return 'image/svg+xml';
+  if (filename.endsWith('.js')) return 'text/javascript; charset=utf-8';
+  if (filename.endsWith('.css')) return 'text/css; charset=utf-8';
+  return 'application/octet-stream';
+}
+
 function serveFile(res, filename, code = 200) {
+  const binary = /\.(ico|png|jpg|jpeg|gif|woff2?)$/i.test(filename);
   for (const dir of [__dirname, BASE_DIR]) {
     try {
       const p = path.join(dir, filename);
       if (fs.existsSync(p)) {
-        const ct = filename.endsWith('.html') ? 'text/html; charset=utf-8' : 'text/plain';
-        res.writeHead(code, { 'Content-Type': ct, 'Cache-Control': 'no-store' });
-        res.end(fs.readFileSync(p, 'utf8'));
+        res.writeHead(code, { 'Content-Type': contentType(filename), 'Cache-Control': 'no-store' });
+        res.end(fs.readFileSync(p, binary ? null : 'utf8'));
         return true;
       }
     } catch {}
@@ -553,6 +563,9 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && (url === '/' || url === '/index.html')) {
     if (serveFile(res, 'ui.html')) return;
     res.writeHead(500); res.end('ui.html not found');
+  } else if (req.method === 'GET' && (url === '/favicon.ico' || url === '/favicon.png')) {
+    if (serveFile(res, url.slice(1))) return;
+    res.writeHead(404); res.end();
   } else if (req.method === 'GET' && url === '/dokumenty') {
     if (serveFile(res, 'dokumenty.html')) return;
     res.writeHead(500); res.end('dokumenty.html not found');

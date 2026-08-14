@@ -2,6 +2,7 @@ _wizard_extract/
 _extract_wizard.py
 _dump_wizard.py
 _dump_wizard2.py
+_make_favicon.py
 build/
 dist/
 GNTools.spec
