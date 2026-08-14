@@ -105,7 +105,7 @@ textarea{min-height:100px;resize:vertical}
 .conv-result{display:none;background:#E4F0EA;border:1px solid #B7D4C4;border-radius:3px;padding:16px;margin-top:16px}
 .conv-result .rt{font-size:14px;font-weight:600;color:#2F6F3F}
 .conv-result .rs{font-size:12.5px;color:#2F6F3F;margin-top:4px}
-.conv-err{display:none;background:#FBE4E4;border:1px solid #F0C9C9;border-radius:8px;padding:12px14px;margin-top:16px;font-size:13px;color:#C4554D}
+.conv-err{display:none;background:#FBE4E4;border:1px solid #F0C9C9;border-radius:3px;padding:12px 14px;margin-top:16px;font-size:13px;color:#C4554D}
 .conv-note{font-size:12px;color:#787670;margin-top:14px;display:flex;align-items:center;gap:6px}
 .conv-note b{color:#57564F}
 @media(max-width:560px){.conv-targets{grid-template-columns:1fr}}
@@ -135,11 +135,10 @@ textarea{min-height:100px;resize:vertical}
 <aside class="side">
   <div class="side-title"><span class="logo">GN</span> GN Tools</div>
   <nav>
-    <button class="nav-item on" id="nav-bot" onclick="setView('bot')">WhatsApp / Insta / TG → Excel</button>
-    <button class="nav-item" id="nav-base" onclick="setView('base')">База</button>
-    <button class="nav-item" id="nav-conv" onclick="setView('conv')">🔄 Конвертер</button>
+    <button class="nav-item on" id="nav-bot" onclick="setView('bot')">Диалоги → Excel</button>
+    <button class="nav-item" id="nav-conv" onclick="setView('conv')">Конвертер таблиц</button>
     <button class="nav-item" id="nav-dok" onclick="setView('dok')">Документы</button>
-    <button class="nav-item" id="nav-guide" onclick="setView('guide')">Инструкция</button>
+    <button class="nav-item" id="nav-guide" onclick="setView('guide')">Помощь</button>
   </nav>
   <div class="side-foot">
     <div id="acct">
@@ -164,89 +163,83 @@ textarea{min-height:100px;resize:vertical}
 </div>
 
 <div class="view on" id="v-bot">
-  <h1 class="pg">WhatsApp / Instagram / Telegram → Excel</h1>
-  <div class="pg-sub" id="costDisplay">WhatsApp: Opus 4.6 = 1 ток./чат, Opus 4.8 = 3 ток./чат</div>
+  <h1 class="pg">Диалоги → Excel</h1>
+  <div class="pg-sub" id="costDisplay">Подключите WhatsApp, Instagram или Telegram. GN Tools найдёт контактные данные и сохранит их в одну базу.</div>
 
   <div class="card" id="setup" style="display:none">
-    <h2>Источник</h2>
-    <div class="source-tabs">
-      <button class="source-tab sel" id="s-whatsapp" onclick="selSource('whatsapp')">WhatsApp</button>
-      <button class="source-tab" id="s-instagram" onclick="selSource('instagram')">Instagram (2 ток.)</button>
-      <button class="source-tab" id="s-telegram" onclick="selSource('telegram')">Telegram (1 ток.)</button>
+    <h2>1. Выберите сервис</h2>
+ <div class="source-tabs">
+ <button class="source-tab sel" id="s-whatsapp" onclick="selSource('whatsapp')">WhatsApp</button>
+ <button class="source-tab" id="s-instagram" onclick="selSource('instagram')">Instagram</button>
+ <button class="source-tab" id="s-telegram" onclick="selSource('telegram')">Telegram</button>
+ </div>
+
+ <div id="waSettings">
+ <div class="callout" id="sourceHint" style="background:#EEF1F4;border:1px solid #D5DBE2;border-radius:3px;padding:12px 14px;font-size:13px;margin:0 0 12px">
+ После запуска откроется отдельное окно Chrome. Войдите в выбранный сервис — GN Tools прочитает ваши диалоги и запишет их в Excel.
+ </div>
+ <div class="muted">Браузер</div>
+ <label class="opt sel" id="o-chrome"><input type="radio" name="br" value="chrome" checked><span>Google Chrome</span> <span class="muted" id="chromeInfo"></span></label>
+ <label class="opt" id="o-brave"><input type="radio" name="br" value="brave"><span>Brave</span> <span class="muted" id="braveInfo"></span></label>
+ <label class="opt" id="o-custom"><input type="radio" name="br" value="custom"><span>Другой браузер</span></label>
+ <input type="text" id="customPath" style="display:none" placeholder="Путь к chrome.exe">
+
+ <div class="muted" style="margin-top:14px">2. Как анализировать диалоги</div>
+      <label class="opt sel" id="mo-46"><input type="radio" name="mdl" value="claude-opus-4-6" checked><span><strong>Экономно</strong> — подходит для обычных диалогов</span><span class="cost">1 токен</span></label>
+      <label class="opt" id="mo-h45"><input type="radio" name="mdl" value="claude-haiku-4-5"><span><strong>Быстро</strong> — меньше ожидания</span><span class="cost">2 токена</span></label>
+      <label class="opt" id="mo-48"><input type="radio" name="mdl" value="claude-opus-4-8"><span><strong>Точно</strong> — для сложных диалогов</span><span class="cost">3 токена</span></label>
     </div>
 
-    <div id="waSettings">
-      <div class="muted">Браузер</div>
-      <label class="opt sel" id="o-chrome"><input type="radio" name="br" value="chrome" checked><span>Google Chrome</span> <span class="muted" id="chromeInfo"></span></label>
-      <label class="opt" id="o-brave"><input type="radio" name="br" value="brave"><span>Brave</span> <span class="muted" id="braveInfo"></span></label>
-      <label class="opt" id="o-custom"><input type="radio" name="br" value="custom"><span>Другой (указать путь)</span></label>
-      <input type="text" id="customPath" style="display:none" placeholder="C:/.../chrome.exe">
+ <div id="tgSettings" style="display:none">
+ <div class="callout" style="background:#EEF1F4;border:1px solid #D5DBE2;border-radius:3px;padding:12px 14px;font-size:13px;margin:0 0 12px">
+ Нажмите «Открыть сервис», войдите в Telegram Web. Бот прочитает доступные вам диалоги и сохранит контакты в Excel.
+ </div>
+ </div>
 
-      <div class="muted" style="margin-top:14px">Модель ИИ и цена за чат</div>
-      <label class="opt sel" id="mo-46"><input type="radio" name="mdl" value="claude-opus-4-6" checked><span>Opus 4.6</span><span class="cost">⭐ 1 ток./чат</span></label>
-      <label class="opt" id="mo-48"><input type="radio" name="mdl" value="claude-opus-4-8"><span>Opus 4.8</span><span class="cost">🧠 3 ток./чат</span></label>
-      <label class="opt" id="mo-h45"><input type="radio" name="mdl" value="claude-haiku-4-5"><span>Haiku 4.5</span><span class="cost">⚡ 2 ток./чат</span></label>
-      <label class="opt" id="mo-s46"><input type="radio" name="mdl" value="claude-sonnet-4-6"><span>Sonnet 4.6</span><span class="cost">2 ток./чат</span></label>
-      <label class="opt" id="mo-gpt55"><input type="radio" name="mdl" value="gpt-5.5"><span>GPT-5.5</span><span class="cost">2 ток./чат</span></label>
-    </div>
+ <div id="instaSettings" style="display:none">
+ <div class="callout" style="background:#EEF1F4;border:1px solid #D5DBE2;border-radius:3px;padding:12px 14px;font-size:13px;margin:0 0 12px">
+ Нажмите «Открыть сервис», войдите в Instagram. Бот прочитает доступные вам Direct-диалоги и сохранит контакты в Excel.
+ </div>
+ </div>
 
-    <div id="tgSettings" style="display:none">
-      <div class="callout" style="background:#E1EEF9;border:1px solid #B8D4F0;border-radius:6px;padding:12px 14px;font-size:13px;margin:0 0 12px">
-        Создайте бота в <a href="https://t.me/BotFather" target="_blank">@BotFather</a>, скопируйте токен.
-      </div>
-      <div class="muted">Токен Telegram бота</div>
-      <input type="text" id="tgToken" placeholder="123456:ABC-DEF1234ghikl...">
-    </div>
+ <div id="modeSettings">
+ <div class="muted" style="margin-top:14px">3. Что читать</div>
+ <label class="opt sel" id="o-all"><input type="radio" name="md" value="all" checked><span>Существующие и новые диалоги</span></label>
+ <label class="opt" id="o-new"><input type="radio" name="md" value="new"><span>Только новые сообщения</span></label>
+ </div>
 
-    <div id="instaSettings" style="display:none">
-      <div class="callout" style="background:#FAEBDD;border:1px solid #F0D9B5;border-radius:6px;padding:12px 14px;font-size:13px;margin:0 0 12px">
-        Скопируйте переписку из Instagram Direct и вставьте ниже. ИИ разберёт имя, телефон и интерес.
-      </div>
-      <div class="muted">Вставьте сообщения</div>
-      <textarea id="instaText" placeholder="Имя: текст сообщения&#10;Имя2: текст сообщения"></textarea>
-      <button class="btn green" onclick="processInsta()">Обработать (2 ток./сооб.)</button>
-      <div class="err" id="instaErr"></div>
-    </div>
-
-    <div class="muted" style="margin-top:14px">Режим запуска</div>
-    <label class="opt sel" id="o-all"><input type="radio" name="md" value="all" checked><span>Все чаты → слушать новые</span></label>
-    <label class="opt" id="o-new"><input type="radio" name="md" value="new"><span>Только новые сообщения</span></label>
-
-    <div class="muted" style="margin-top:14px">Файл Excel</div>
-    <input type="text" id="excel" placeholder="C:/.../база ватсап ии.xlsx">
+    <div class="muted" style="margin-top:14px">4. Куда сохранять</div>
+    <input type="text" id="excel" placeholder="Путь к файлу Excel">
     <div class="err" id="err"></div>
-    <button class="btn" onclick="start()">▶ Запустить</button>
+    <button class="btn" id="startButton" onclick="start()">Запустить WhatsApp</button>
   </div>
 
   <div class="card" id="panel" style="display:none">
-    <h2>Статус: <span class="badge" id="status">—</span> <span class="badge" id="sourceBadge">—</span></h2>
-    <div id="qrbox"><div style="margin-bottom:8px">WhatsApp → Связанные устройства</div><div class="q"><div id="qr"></div></div></div>
+    <h2><span class="badge" id="status">Ожидание</span> <span class="badge" id="sourceBadge">WhatsApp</span></h2>
+    <div id="qrbox"><div style="margin-bottom:8px">На телефоне: WhatsApp → Связанные устройства → Привязать устройство</div><div class="q"><div id="qr"></div></div></div>
     <div class="btns">
-      <button class="danger" onclick="cmd('stop')">⏹ Стоп</button>
-      <button onclick="cmd('rewind')">🔁 Пересканировать</button>
-      <button onclick="cmd('refresh')">♻️ Дочитать пустые</button>
+      <button class="danger" onclick="cmd('stop')">Остановить</button>
+      <button id="rewindBtn" onclick="cmd('rewind')">Прочитать всё заново</button>
+      <button id="refreshBtn" onclick="cmd('refresh')">Заполнить пустые поля</button>
     </div>
     <div id="log"></div>
   </div>
-</div>
 
-<div class="view" id="v-base">
-  <h1 class="pg">База контактов</h1>
-  <div class="pg-sub" id="baseSub">Контакты, которые бот записал в Excel. Поиск без токенов.</div>
-  <div class="card">
+  <div class="card" id="baseCard">
+    <h2>Контакты в Excel</h2>
     <div class="muted" id="basePath">Файл ещё не выбран</div>
     <div class="base-stats" id="baseStats"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 10px">
-      <input type="text" id="baseQ" placeholder="Имя, телефон, компания или интерес" style="flex:1;min-width:200px;margin:0">
+      <input type="text" id="baseQ" placeholder="Найти по имени, телефону, компании или интересу" style="flex:1;min-width:200px;margin:0">
       <button class="btn2" type="button" onclick="loadBase()" style="margin:0">Найти</button>
-      <button class="btn2" type="button" onclick="openBase()" style="margin:0">Открыть в Excel</button>
-      <button class="btn2" type="button" onclick="createBase()" style="margin:0">Создать файл</button>
+      <button class="btn2" type="button" onclick="openBase()" style="margin:0">Открыть Excel</button>
+      <button class="btn2" type="button" onclick="createBase()" style="margin:0">Создать базу</button>
     </div>
     <div class="err" id="baseErr"></div>
-    <div style="overflow:auto">
+    <div style="overflow:auto;max-height:360px">
       <table class="pricing-table" id="baseTable">
         <thead><tr><th>Имя</th><th>Телефон</th><th>Компания</th><th>Источник</th><th>Интерес</th><th>Статус</th></tr></thead>
-        <tbody id="baseBody"><tr><td colspan="6" class="muted">Откройте вкладку — загрузим контакты.</td></tr></tbody>
+        <tbody id="baseBody"><tr><td colspan="6" class="muted">Запустите сервис или создайте базу.</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -275,14 +268,14 @@ textarea{min-height:100px;resize:vertical}
 
 <div class="view" id="v-conv">
  <h1 class="pg">🔄 Конвертер файлов</h1>
- <div class="pg-sub">XLSX ↔ XLS ↔ CSV в обе стороны. Преобразование происходит локально на вашем компьютере — быстро, безопасно и без списания токенов.</div>
+ <div class="pg-sub">Преобразуйте XLSX, XLS и CSV локально — без загрузки в интернет и без токенов.</div>
 
  <div class="card">
  <div class="conv-drop" id="convDrop">
  <input type="file" id="convFile" accept=".xlsx,.xls,.csv" hidden>
  <div class="ic">📄</div>
  <div class="big">Перетащите файл сюда</div>
- <div class="sub">или нажмите, чтобы выбрать. Поддерживаются таблицы до50 МБ.</div>
+ <div class="sub">или нажмите, чтобы выбрать. Поддерживаются таблицы до 50 МБ.</div>
  <div class="conv-formats">
  <span class="conv-fmt">XLSX</span>
  <span class="conv-fmt">XLS (97-2003)</span>
@@ -315,48 +308,42 @@ textarea{min-height:100px;resize:vertical}
  </div>
  </div>
 
- <div class="conv-note">⚡ <span><b>Все6 направлений:</b> XLSX→XLS · XLS→XLSX · CSV→XLSX · XLSX→CSV · CSV→XLS · XLS→CSV</span></div>
+ <div class="conv-note">⚡ <span><b>6 направлений:</b> XLSX↔XLS · XLSX↔CSV · XLS↔CSV</span></div>
  </div>
  </div>
 </div>
 
 <div class="view" id="v-guide">
-  <h1 class="pg">Инструкция</h1>
+  <h1 class="pg">Помощь</h1>
   <div class="guide">
     <h2>Цены (токены)</h2>
     <table class="pricing-table">
       <thead><tr><th>Услуга</th><th>Токенов</th></tr></thead>
       <tbody>
-        <tr><td>WhatsApp: Opus 4.6 (1 чат)</td><td><strong>1</strong> ⭐</td></tr>
-        <tr><td>WhatsApp: Opus 4.8 (1 чат)</td><td><strong>3</strong> 🧠</td></tr>
-        <tr><td>WhatsApp: Haiku/Sonnet/GPT (1 чат)</td><td><strong>2</strong></td></tr>
-        <tr><td>Instagram DM (1 сообщение)</td><td><strong>2</strong></td></tr>
-        <tr><td>Telegram (1 сообщение)</td><td><strong>1</strong></td></tr>
-        <tr><td>Документы: Базовое (1 файл)</td><td><strong>1</strong></td></tr>
-        <tr><td>Документы: AI Haiku 4.5 (1 файл)</td><td><strong>2</strong></td></tr>
-        <tr><td>Документы: AI Opus 4.6 (1 файл)</td><td><strong>3</strong></td></tr>
+        <tr><td>WhatsApp: экономно (1 чат)</td><td><strong>1</strong></td></tr>
+        <tr><td>WhatsApp: быстро (1 чат)</td><td><strong>2</strong></td></tr>
+        <tr><td>WhatsApp: точно (1 чат)</td><td><strong>3</strong></td></tr>
+        <tr><td>Instagram (1 диалог)</td><td><strong>2</strong></td></tr>
+        <tr><td>Telegram (1 диалог)</td><td><strong>1</strong></td></tr>
+        <tr><td>Документы: без ИИ</td><td><strong>1</strong></td></tr>
+        <tr><td>Документы: быстро</td><td><strong>2</strong></td></tr>
+        <tr><td>Документы: точно</td><td><strong>3</strong></td></tr>
       </tbody>
     </table>
     <div class="callout">Купить токены: <a href="https://gnfintrust.github.io/gntools.html" target="_blank">gnfintrust.github.io/gntools.html</a></div>
 
-    <h2>WhatsApp / Instagram / Telegram</h2>
+    <h2>Как подключить сервис</h2>
     <ol>
-      <li>Выберите источник и модель ИИ (цена зависит от модели).</li>
-      <li><strong>WhatsApp:</strong> браузер + Excel → QR-код.</li>
-      <li><strong>Telegram:</strong> токен бота из @BotFather → запустить.</li>
-      <li><strong>Instagram:</strong> скопировать переписку → вставить → обработать.</li>
-    </ol>
-
-    <h2>База</h2>
-    <ol>
-      <li>После сканирования откройте вкладку «База» — там все записанные контакты.</li>
-      <li>Ищите по имени, телефону или компании. «Открыть в Excel» запускает файл на компьютере.</li>
+      <li>Выберите WhatsApp, Instagram или Telegram и файл Excel.</li>
+      <li><strong>WhatsApp:</strong> нажмите «Запустить», отсканируйте QR в телефоне.</li>
+      <li><strong>Instagram / Telegram:</strong> нажмите «Открыть», войдите в своём аккаунте. Копировать переписку не нужно.</li>
+      <li>Контакты появятся в таблице на этой же странице и в Excel.</li>
     </ol>
 
     <h2>Документы</h2>
     <ol>
-      <li>Выберите Базовое (1 токен) или AI (Haiku 2 / Opus 3 токена).</li>
-      <li>Открыть → заполнить Данные → печать Ctrl+P.</li>
+      <li>Выберите «без ИИ», «быстро» или «точно».</li>
+      <li>Откройте документы → заполните «Данные» → печать Ctrl+P.</li>
     </ol>
   </div>
 </div>
@@ -364,11 +351,25 @@ textarea{min-height:100px;resize:vertical}
 </main>
 </div>
 <script>
-var LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic';
+var LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic', RUNNING=false;
 
 function showLoggedIn(){
-  if(!LIC){document.getElementById('acct').style.display='none';document.getElementById('auth').style.display='block';document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='none';document.getElementById('tools').style.display='none';return}
-  document.getElementById('acct').style.display='flex';document.getElementById('auth').style.display='none';document.getElementById('setup').style.display='block';document.getElementById('tools').style.display='block';document.getElementById('acctEmail').textContent=LIC.email||'';updateLic()
+  if(!LIC){
+    RUNNING=false;
+    document.getElementById('acct').style.display='none';
+    document.getElementById('auth').style.display='block';
+    document.getElementById('setup').style.display='none';
+    document.getElementById('panel').style.display='none';
+    document.getElementById('tools').style.display='none';
+    return;
+  }
+  document.getElementById('acct').style.display='flex';
+  document.getElementById('auth').style.display='none';
+  document.getElementById('tools').style.display='block';
+  document.getElementById('acctEmail').textContent=LIC.email||'';
+  document.getElementById('setup').style.display=RUNNING?'none':'block';
+  document.getElementById('panel').style.display=RUNNING?'block':'none';
+  updateLic();
 }
 
 function updateLic(){
@@ -382,9 +383,21 @@ function updateLic(){
 function selSource(s){
   ACTIVE_SOURCE=s;
   ['whatsapp','instagram','telegram'].forEach(function(x){document.getElementById('s-'+x).classList.toggle('sel',s===x)});
-  document.getElementById('waSettings').style.display=(s==='whatsapp')?'block':'none';
+  document.getElementById('waSettings').style.display='block';
   document.getElementById('tgSettings').style.display=(s==='telegram')?'block':'none';
   document.getElementById('instaSettings').style.display=(s==='instagram')?'block':'none';
+  var hint=document.getElementById('sourceHint');
+  var startButton=document.getElementById('startButton');
+  var modeSettings=document.getElementById('modeSettings');
+  var rewind=document.getElementById('rewindBtn');
+  var refresh=document.getElementById('refreshBtn');
+  if(hint)hint.textContent=s==='whatsapp'
+    ? 'Откроется WhatsApp Web. Отсканируйте QR в телефоне — новые диалоги попадут в Excel.'
+    : 'Откроется '+(s==='instagram'?'Instagram Direct':'Telegram Web')+'. Войдите в свой аккаунт — доступные диалоги попадут в Excel.';
+  if(startButton)startButton.textContent=s==='whatsapp'?'Запустить WhatsApp':'Открыть '+(s==='instagram'?'Instagram':'Telegram');
+  if(modeSettings)modeSettings.style.display=s==='whatsapp'?'block':'none';
+  if(rewind)rewind.style.display=s==='whatsapp'?'':'none';
+  if(refresh)refresh.style.display=s==='whatsapp'?'':'none';
 }
 
 function selDokMode(m){
@@ -402,7 +415,7 @@ function selOpt(name,ids){
 
 function onBr(){var v=selOpt('br',{chrome:'o-chrome',brave:'o-brave',custom:'o-custom'});document.getElementById('customPath').style.display=v==='custom'?'block':'none'}
 function onMd(){selOpt('md',{all:'o-all','new':'o-new'})}
-function onModel(){selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45','claude-sonnet-4-6':'mo-s46','gpt-5.5':'mo-gpt55'})}
+function onModel(){selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45'})}
 
 var rads=document.querySelectorAll('input[name=br]');for(var i=0;i<rads.length;i++)rads[i].addEventListener('change',onBr);
 rads=document.querySelectorAll('input[name=md]');for(i=0;i<rads.length;i++)rads[i].addEventListener('change',onMd);
@@ -426,47 +439,51 @@ function register(){
 function logout(){fetch('/auth/logout',{method:'POST'}).then(function(){LIC=null;showLoggedIn();setView('bot')})}
 
 function start(){
-  if(ACTIVE_SOURCE==='instagram'){processInsta();return}
   var excel=document.getElementById('excel').value.trim();
   var browser=selOpt('br',{chrome:'o-chrome',brave:'o-brave',custom:'o-custom'});
   var customPath=document.getElementById('customPath').value.trim();
-  var model=selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45','claude-sonnet-4-6':'mo-s46','gpt-5.5':'mo-gpt55'});
+  var model=selOpt('mdl',{'claude-opus-4-6':'mo-46','claude-opus-4-8':'mo-48','claude-haiku-4-5':'mo-h45'});
   var mode=selOpt('md',{all:'o-all','new':'o-new'});
-  var tgToken=document.getElementById('tgToken').value.trim();
   document.getElementById('err').style.display='none';
 
   fetch('/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-    excel,browser,customPath,model,mode,source:ACTIVE_SOURCE,tgToken
+    excel,browser,customPath,model,mode,source:ACTIVE_SOURCE
   })}).then(r=>r.json()).then(function(d){
-    if(d.error){document.getElementById('err').textContent=d.error||'Ошибка';document.getElementById('err').style.display='block';return}
+    if(d.error){
+      var messages={excel_not_found:'Не найден файл Excel.',browser_not_found:'Не найден выбранный браузер.',no_license:'Нет доступных токенов.',already_running:'Сервис уже запущен.'};
+      document.getElementById('err').textContent=messages[d.error]||d.error||'Ошибка';
+      document.getElementById('err').style.display='block';return
+    }
+    RUNNING=true;
     document.getElementById('setup').style.display='none';document.getElementById('panel').style.display='block';
     if(d.source==='whatsapp')document.getElementById('qrbox').style.display='block';
-    document.getElementById('sourceBadge').textContent=d.source||ACTIVE_SOURCE;
+    else document.getElementById('qrbox').style.display='none';
+    document.getElementById('sourceBadge').textContent=d.source==='instagram'?'Instagram':d.source==='telegram'?'Telegram':'WhatsApp';
   }).catch(function(e){document.getElementById('err').textContent=e.message;document.getElementById('err').style.display='block'})
 }
 
-function processInsta(){
-  var text=document.getElementById('instaText').value.trim();
-  if(!text){document.getElementById('instaErr').textContent='Вставьте сообщения';document.getElementById('instaErr').style.display='block';return}
-  var lines=text.split('\n').filter(function(l){return l.trim()});
-  var msgs=[];
-  for(var i=0;i<lines.length;i++){
-    var m=lines[i].match(/^(.+?):\s*(.+)$/);
-    if(m)msgs.push({username:m[1].trim(),text:m[2].trim(),timestamp:Math.floor(Date.now()/1000)+i,id:'ig-'+Date.now()+'-'+i});
-  }
-  if(msgs.length===0)msgs=lines.map(function(l,i){return{username:'Instagram User',text:l,timestamp:Math.floor(Date.now()/1000)+i,id:'ig-'+Date.now()+'-'+i}});
-  document.getElementById('instaErr').style.display='none';
-  fetch('/insta/process',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})})
-    .then(r=>r.json()).then(function(d){
-      if(d.error){document.getElementById('instaErr').textContent=d.error;document.getElementById('instaErr').style.display='block';return}
-      document.getElementById('instaErr').textContent='Обработано '+msgs.length+' сообщений';document.getElementById('instaErr').style.color='#2F6F3F';document.getElementById('instaErr').style.display='block';
-      document.getElementById('instaText').value='';
-    }).catch(function(e){document.getElementById('instaErr').textContent=e.message;document.getElementById('instaErr').style.display='block'})
-}
 
-function cmd(c){fetch('/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd:c})})}
-var ST={idle:'Ожидание',qr:'QR-код',starting:'Запуск',connected:'Подключено',scanning:'Сканирование',listening:'Слушаю новые',stopped:'Стоп',error:'Ошибка'}
-function updateStatus(s){document.getElementById('status').textContent=ST[s]||s}
+function cmd(c){
+  fetch('/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd:c})}).then(function(){
+    if(c==='stop'){
+      RUNNING=false;
+      document.getElementById('setup').style.display='block';
+      document.getElementById('panel').style.display='none';
+      document.getElementById('qrbox').style.display='none';
+    }
+  })
+}
+var ST={idle:'Ожидание',qr:'QR-код',starting:'Запуск',connected:'Подключено',scanning:'Читаю диалоги',listening:'Слежу за новыми',stopped:'Остановлено',error:'Ошибка'}
+function updateStatus(s){
+  document.getElementById('status').textContent=ST[s]||s;
+  if(s==='stopped'||s==='error'||s==='idle'){
+    RUNNING=false;
+    if(LIC){
+      document.getElementById('setup').style.display='block';
+      document.getElementById('panel').style.display='none';
+    }
+  }
+}
 function updateQR(qr){var q=document.getElementById('qr');q.innerHTML='';if(qr)new QRCode(q,qr)}
 
 function openDok(){
@@ -487,9 +504,9 @@ function openDok(){
 }
 
 function setView(v){
- ['bot','base','conv','dok','guide'].forEach(function(x){document.getElementById('v-'+x).classList.toggle('on',v===x);document.getElementById('nav-'+x).classList.toggle('on',v===x)});
+ ['bot','conv','dok','guide'].forEach(function(x){document.getElementById('v-'+x).classList.toggle('on',v===x);document.getElementById('nav-'+x).classList.toggle('on',v===x)});
  if(v==='dok'&&LIC)document.getElementById('tools').style.display='block';
- if(v==='base')loadBase();
+ if(v==='bot')loadBase();
 }
 
 function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])})}
@@ -506,7 +523,7 @@ function loadBase(){
     });
     var body=document.getElementById('baseBody');
     if(!d.rows||!d.rows.length){
-      body.innerHTML='<tr><td colspan="6" class="muted">'+(d.missing?'База пустая. Создайте файл или запустите бота.':'Ничего не найдено.')+'</td></tr>';
+      body.innerHTML='<tr><td colspan="6" class="muted">'+(d.missing?'База пустая. Создайте файл или подключите сервис.':'Ничего не найдено.')+'</td></tr>';
       return;
     }
     body.innerHTML=d.rows.map(function(r){
@@ -629,7 +646,7 @@ function convDownload(){
 (function init(){
   fetch('/auth/session').then(r=>r.json()).then(function(d){
     CONFIGURED=d.configured;LIC=d.lic||null;showLoggedIn();
-    if(d.trialTokens&&LIC&&LIC.tokens<=0)
+    if(d.trialTokens&&!LIC)
       document.getElementById('trialNote').textContent='Новый аккаунт получает '+d.trialTokens+' бесплатных токенов.';
   });
   var baseQ=document.getElementById('baseQ');
@@ -642,6 +659,14 @@ function convDownload(){
     if(ch)ch.textContent=c.chrome?'найден':'не найден';
     if(br)br.textContent=c.brave?'найден':'не найден';
     if(c.status)updateStatus(c.status);
+    if(c.running){
+      RUNNING=true;
+      document.getElementById('setup').style.display='none';
+      document.getElementById('panel').style.display='block';
+      document.getElementById('sourceBadge').textContent=c.source==='instagram'?'Instagram':c.source==='telegram'?'Telegram':'WhatsApp';
+      document.getElementById('qrbox').style.display=c.source==='whatsapp'&&c.status==='qr'?'block':'none';
+    }
+    loadBase();
   }).catch(function(){});
   var es=new EventSource('/events');
   es.addEventListener('message',function(e){
@@ -654,6 +679,7 @@ function convDownload(){
     if(m.type==='status')updateStatus(m.status);
     if(m.type==='qr')updateQR(m.qr);
     if(m.type==='license'){LIC=m.lic;updateLic()}
+    if(m.type==='base-refresh')loadBase();
   });
   setInterval(function(){
     if(document.hidden)return;

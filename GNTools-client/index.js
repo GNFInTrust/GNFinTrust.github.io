@@ -7,12 +7,14 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const http = require('http');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const ExcelJS = require('exceljs');
 const { parseMessage, setModel } = require('./parser.js');
 const { appendRow, flush: flushExcel, closeWorkbook, listRows, ensureWorkbook } = require('./excel_helper.js');
 const converter = require('./converter.js');
 const license = require('./license.js');
+const crypto = require('crypto');
+const { openSource } = require('./web_scrape.js');
 
 const PORT = 3390;
 
@@ -61,9 +63,9 @@ function findExcel() {
 // Languages
 const MESSAGES = {
   ru: {
-    qrScan: 'Отсканируйте QR-код через WhatsApp',
-    ready: '✅ WhatsApp подключен',
-    scanning: '📥 Сканирую чаты...',
+    qrScan: 'Отсканируйте QR-код в WhatsApp на телефоне',
+    ready: '✅ WhatsApp подключён',
+    scanning: '📥 Читаю чаты…',
     knownContacts: (n) => `📖 В Excel уже есть ${n} контактов — пропущены`,
     excelReadFail: '⚠️ Не удалось прочитать Excel:',
     foundChats: (n) => `💬 Найдено чатов: ${n}`,
@@ -89,10 +91,10 @@ const MESSAGES = {
     notRunning: 'Бот не запущен',
     noAccess: '⛔ Нет токенов. Пополните на сайте.',
     licTokens: (n) => `🎟 Токенов: ${n}`,
-    tgReady: '✅ Telegram бот запущен',
-    tgMsg: (name) => `  📩 Telegram от ${name}`,
-    instaMsg: (name) => `  📩 Instagram от ${name}`,
-    waCost: (model, cost) => `💰 Модель: ${model} → ${cost} ток./чат`
+    tgReady: '✅ Telegram открыт в Chrome — войдите, если нужно',
+    instaReady: '✅ Instagram открыт в Chrome — войдите, если нужно',
+    webDone: (n, src) => `Готово: ${n} диалогов из ${src} записаны в базу`,
+    waCost: (model, cost) => `Модель: ${model} · ${cost} ток. за чат`
   }
 };
 let T = MESSAGES.ru;
@@ -104,6 +106,11 @@ let DOK_MODE = 'basic';
 // License — tokens only, no subscription
 let LIC = null;
 let lastTokenLog = -1;
+
+function canSpend(cost) {
+  if (!license.configured()) return true;
+  return !!(LIC && (LIC.admin || LIC.tokens >= cost));
+}
 
 async function licenseGate(costOverride) {
   const cost = costOverride || TOKEN_COST.waDefault;
@@ -229,9 +236,10 @@ async function processChat(chat, force = false, source = 'whatsapp') {
     return 'skip';
   }
 
+  const cost = waCostForModel(WA_MODEL);
+  if (!canSpend(cost)) { log(T.noAccess); return 'blocked'; }
   const transcript = `WhatsApp Profile: ${contactName}\n\n` + messages.slice(-40).map(m => `[${new Date(m.timestamp * 1000).toLocaleString()}] ${m.fromMe ? 'Manager' : 'Client'}: ${m.body}`).join('\n');
   const parsed = await parseMessage(transcript);
-  const cost = waCostForModel(WA_MODEL);
   if (!(await licenseGate(cost))) { log(T.noAccess); return 'blocked'; }
 
   const isCompany = contactName && (contactName.toLowerCase().includes('осоо') || contactName.toLowerCase().includes('llc') || contactName.toLowerCase().includes('ип '));
@@ -260,10 +268,87 @@ function withTimeout(p, ms, msg) {
 
 // WhatsApp client
 let client = null;
+let webBrowser = null;
+let webScanTimer = null;
 let RUNNING = false;
 let SCAN_ON_START = true;
 let ACTIVE_SOURCE = 'whatsapp';
 const pendingChats = new Map();
+
+async function stopAllBots() {
+  if (webScanTimer) { clearTimeout(webScanTimer); webScanTimer = null; }
+  try { if (client) await client.destroy(); } catch {}
+  client = null;
+  try { if (webBrowser) await webBrowser.close(); } catch {}
+  webBrowser = null;
+}
+
+async function saveWebChat(chat, source) {
+  const id = String(chat.id || chat.name || '').toLowerCase();
+  const digest = crypto.createHash('sha256').update(chat.transcript || '').digest('hex');
+  const key = source + ':' + id;
+  if (cache[key] === digest) return 'skip';
+  const cost = source === 'instagram' ? TOKEN_COST.instagram : TOKEN_COST.telegram;
+  if (!canSpend(cost)) { log(T.noAccess); return 'blocked'; }
+  const parsed = await parseMessage(chat.transcript || '');
+  if (!(await licenseGate(cost))) { log(T.noAccess); return 'blocked'; }
+  const now = new Date();
+  const colB = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+  await appendRow(EXCEL_PATH, {
+    B: colB,
+    C: parsed.name || chat.name || '',
+    D: chat.phone || '',
+    E: parsed.company || '',
+    F: parsed.activity || '',
+    G: source === 'instagram' ? 'инстаграм' : 'телеграм',
+    H: parsed.language || '',
+    I: parsed.interest || '',
+    J: parsed.status || '',
+    M: parsed.unanswered || ''
+  });
+  cache[key] = digest;
+  saveCache();
+  return true;
+}
+
+async function startWebMessenger(source, execPath) {
+  ACTIVE_SOURCE = source;
+  setStatus('starting');
+  const dir = path.join(BASE_DIR, '.web_' + source);
+  const session = await openSource({ source, execPath, userDataDir: dir, log });
+  webBrowser = session.browser;
+
+  async function scanOnce() {
+    if (!RUNNING || ACTIVE_SOURCE !== source || !webBrowser) return;
+    setStatus('scanning');
+    const chats = await session.scan();
+    let total = 0;
+    for (const chat of chats) {
+      const r = await saveWebChat(chat, source);
+      if (r === 'blocked') break;
+      if (r && r !== 'skip') {
+        total++;
+        log(T.processedChat(chat.name, source === 'instagram' ? TOKEN_COST.instagram : TOKEN_COST.telegram));
+      }
+    }
+    await flushExcel().catch(() => {});
+    flushCache();
+    log(T.webDone(total, source === 'instagram' ? 'Instagram' : 'Telegram'));
+    setStatus('listening');
+    broadcast({ type: 'base-refresh' });
+    if (RUNNING && ACTIVE_SOURCE === source && webBrowser) {
+      webScanTimer = setTimeout(() => scanOnce().catch(handleWebScanError), 60000);
+    }
+  }
+
+  function handleWebScanError(e) {
+    log(T.errorMsg, e);
+    setStatus('error');
+    RUNNING = false;
+  }
+
+  await scanOnce();
+}
 
 async function scanChats() {
   const chats = await client.getChats();
@@ -372,96 +457,6 @@ function startWhatsApp(execPath) {
   });
 
   client.initialize().catch(e => { log(T.errorMsg, e); setStatus('error'); RUNNING = false; });
-}
-
-// Telegram
-let tgRunning = false;
-
-function startTelegram(token) {
-  ACTIVE_SOURCE = 'telegram'; tgRunning = true;
-  try {
-    const https = require('https');
-    let tgOffset = 0;
-
-    async function tgPoll() {
-      if (!tgRunning) return;
-      try {
-        await new Promise((resolve, reject) => {
-          https.get({ hostname: 'api.telegram.org', path: `/bot${token}/getUpdates?offset=${tgOffset}&timeout=30` }, res => {
-            let d = '';
-            res.on('data', c => d += c);
-            res.on('end', () => {
-              try {
-                const j = JSON.parse(d);
-                if (j.ok && j.result) {
-                  for (const upd of j.result) {
-                    tgOffset = upd.update_id + 1;
-                    const msg = upd.message;
-                    if (!msg || !msg.text) continue;
-                    handleTgMessage(msg, token);
-                  }
-                }
-                resolve();
-              } catch (e) { reject(e); }
-            });
-          }).on('error', reject);
-        });
-      } catch (e) {}
-      if (tgRunning) setTimeout(tgPoll, 2000);
-    }
-
-    async function handleTgMessage(msg, token) {
-      if (!EXCEL_PATH) return;
-      const name = msg.from ? (msg.from.first_name || '') + (msg.from.last_name ? ' ' + msg.from.last_name : '') : 'User';
-      const username = msg.from ? msg.from.username || '' : '';
-      const phone = username || 'tg-' + (msg.from ? msg.from.id : 'unknown');
-      const key = 'tg-' + (msg.from ? msg.from.id : msg.message_id);
-      const ts = msg.date;
-      if (cache[key] && cache[key] >= ts) return;
-
-      const transcript = `Telegram User: ${name} (@${username})\nMessage: ${msg.text}`;
-      const parsed = await parseMessage(transcript);
-      if (!(await licenseGate(TOKEN_COST.telegram))) { log(T.noAccess); return; }
-      log(T.tgMsg(name));
-      const date = new Date(ts * 1000);
-      const colB = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-
-      await appendRow(EXCEL_PATH, {
-        B: colB, C: parsed.name || name, D: phone,
-        E: parsed.company || '', F: parsed.activity || '',
-        G: 'телеграм', H: parsed.language || '',
-        I: parsed.interest || '', J: parsed.status || '', M: parsed.unanswered || ''
-      });
-      cache[key] = ts; saveCache();
-    }
-
-    log(T.tgReady);
-    tgPoll();
-  } catch (e) { log('Telegram error:', e.message); tgRunning = false; }
-}
-
-function stopTelegram() { tgRunning = false; }
-
-// Instagram processing
-async function processInstaMessages(messages) {
-  for (const m of messages) {
-    const key = 'ig-' + (m.id || m.timestamp);
-    const ts = m.timestamp || Math.floor(Date.now() / 1000);
-    if (cache[key] && cache[key] >= ts) continue;
-    const transcript = `Instagram User: ${m.username || 'unknown'}\nMessage: ${m.text || ''}`;
-    const parsed = await parseMessage(transcript);
-    if (!(await licenseGate(TOKEN_COST.instagram))) { log(T.noAccess); return; }
-    log(T.instaMsg(m.username || 'unknown'));
-    const date = new Date(ts * 1000);
-    const colB = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-
-    await appendRow(EXCEL_PATH, {
-      B: colB, C: parsed.name || m.username || '', D: m.username || '',
-      E: '', F: '', G: 'инстаграм', H: parsed.language || '',
-      I: parsed.interest || '', J: parsed.status || '', M: parsed.unanswered || ''
-    });
-    cache[key] = ts; saveCache();
-  }
 }
 
 // HTTP Server
@@ -626,15 +621,6 @@ const server = http.createServer(async (req, res) => {
     EXCEL_PATH = excel;
 
     const source = b.source || 'whatsapp';
-    if (source === 'telegram') {
-      const tgToken = String(b.tgToken || '').trim();
-      if (!tgToken) { sendJson(res, 400, { error: 'tg_token_required' }); return; }
-      RUNNING = true; setStatus('connected');
-      startTelegram(tgToken);
-      sendJson(res, 200, { ok: true, source: 'telegram', model: WA_MODEL, waCost: waCostForModel(WA_MODEL) });
-      return;
-    }
-
     let execPath = '';
     if (b.browser === 'brave') execPath = findBrowser(BRAVE_PATHS);
     else if (b.browser === 'custom') execPath = String(b.customPath || '').trim().replace(/^"|"$/g, '');
@@ -643,6 +629,15 @@ const server = http.createServer(async (req, res) => {
     RUNNING = true; setStatus('starting');
     log(T.usingBrowser(execPath)); log(T.usingExcel(EXCEL_PATH));
     log(T.waCost(WA_MODEL, waCostForModel(WA_MODEL)));
+    if (source === 'instagram' || source === 'telegram') {
+      sendJson(res, 200, { ok: true, source, model: WA_MODEL, waCost: waCostForModel(WA_MODEL) });
+      startWebMessenger(source, execPath).catch((e) => {
+        log(T.errorMsg, e);
+        setStatus('error');
+        RUNNING = false;
+      });
+      return;
+    }
     startWhatsApp(execPath);
     sendJson(res, 200, { ok: true, source: 'whatsapp', model: WA_MODEL, waCost: waCostForModel(WA_MODEL) });
 
@@ -652,8 +647,7 @@ const server = http.createServer(async (req, res) => {
     if (cmd === 'stop') {
       sendJson(res, 200, { ok: true });
       log(T.stopping); setStatus('stopped');
-      if (ACTIVE_SOURCE === 'telegram') stopTelegram();
-      else try { if (client) await client.destroy(); } catch {}
+      await stopAllBots();
       try { await flushExcel(); await closeWorkbook(); } catch {}
       flushCache();
       RUNNING = false;
@@ -665,17 +659,9 @@ const server = http.createServer(async (req, res) => {
     } else if (cmd === 'refresh') {
       sendJson(res, 200, { ok: true });
       if (!RUNNING) { log(T.notRunning); return; }
-      await refreshSparse();
+      if (ACTIVE_SOURCE === 'whatsapp') await refreshSparse();
+      else log('Дочитать пустые доступно только для WhatsApp');
     } else { sendJson(res, 400, { error: 'unknown_cmd' }); }
-
-  } else if (req.method === 'POST' && url === '/insta/process') {
-    const b = await readBody(req);
-    if (!b.messages || !Array.isArray(b.messages)) { sendJson(res, 400, { error: 'messages_required' }); return; }
-    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 400, { error: 'no_license' }); return; }
-    if (!EXCEL_PATH && !findExcel()) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
-    if (!EXCEL_PATH) EXCEL_PATH = findExcel();
-    processInstaMessages(b.messages);
-    sendJson(res, 200, { ok: true, count: b.messages.length });
 
   } else if (req.method === 'POST' && url === '/convert') {
  // Конвертер: xlsx ↔ xls ↔ csv. Тело: { name, data(base64), to }
@@ -723,8 +709,26 @@ const server = http.createServer(async (req, res) => {
   }
 })();
 
+function openDesktopWindow(url) {
+  if (process.platform !== 'win32') {
+    exec('xdg-open "' + url.replace(/"/g, '') + '"');
+    return;
+  }
+  const browser = findBrowser(CHROME_PATHS) || findBrowser(BRAVE_PATHS);
+  if (!browser) { exec('start "" "' + url.replace(/"/g, '') + '"'); return; }
+  const profile = path.join(BASE_DIR, '.gn-tools-window');
+  const child = spawn(browser, [
+    '--app=' + url,
+    '--new-window',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--user-data-dir=' + profile
+  ], { detached: true, stdio: 'ignore', windowsHide: true });
+  child.unref();
+}
+
 server.listen(PORT, '127.0.0.1', () => {
   const url = 'http://127.0.0.1:' + PORT;
-  console.log('\n  ▶ Open: ' + url + '\n');
-  if (process.platform === 'win32') exec('start "" ' + url);
+  console.log('\n  ▶ Open GN Tools: ' + url + '\n');
+  openDesktopWindow(url);
 });

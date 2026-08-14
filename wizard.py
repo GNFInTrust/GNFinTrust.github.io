@@ -42,6 +42,7 @@ KEEP_ON_UPDATE = {
     "wizard_config.json",
     "node.exe",
     "GN Tools.bat",
+    "GN Tools.lnk",
 }
 KEEP_DIRS = {".wwebjs_auth", "node_modules"}
 
@@ -314,11 +315,11 @@ class GNWizard:
             font=("Segoe UI", 11), fg=TEXT2, bg=BG, justify="left", wraplength=680
         ).pack(fill=tk.X, pady=(0, 14))
         features = (
-            ("📱", "Бот WhatsApp → Excel (Opus 4.6 = 1 ток./чат)"),
-            ("📸", "Instagram и Telegram в ту же таблицу"),
-            ("📄", "4 документа на отгрузку (базовое + AI)"),
+            ("📱", "WhatsApp, Instagram и Telegram → одна база Excel"),
+            ("🔐", "Вход в сервисы в отдельном окне Chrome"),
+            ("📄", "4 документа на отгрузку"),
+            ("🔄", "Конвертер XLSX, XLS и CSV"),
             ("🔑", "Общий аккаунт с сайтом GN FinTrust"),
-            ("⚡", "Бесплатные пробные токены для новых аккаунтов"),
         )
         for icon, text in features:
             row = tk.Frame(f, bg=BG)
@@ -442,10 +443,30 @@ class GNWizard:
                 f.write(stub)
 
     def _create_shortcut(self, install_dir):
-        bat_path = os.path.join(DESKTOP, "GN Tools.bat")
+        lnk_path = os.path.join(DESKTOP, "GN Tools.lnk")
+        node = os.path.join(install_dir, "node.exe")
+        index_js = os.path.join(install_dir, "index.js")
+        icon = os.path.join(install_dir, "favicon.ico")
+        ps = (
+            "$w=New-Object -ComObject WScript.Shell;"
+            "$s=$w.CreateShortcut('" + lnk_path.replace("'", "''") + "');"
+            "$s.TargetPath='" + node.replace("'", "''") + "';"
+            "$s.Arguments='\"" + index_js.replace("'", "''") + "\"';"
+            "$s.WorkingDirectory='" + install_dir.replace("'", "''") + "';"
+            "$s.Description='GN Tools';"
+            "$s.WindowStyle=7;"
+            + ("$s.IconLocation='" + icon.replace("'", "''") + "';" if os.path.exists(icon) else "")
+            + "$s.Save();"
+        )
         try:
-            with open(bat_path, "w", encoding="utf-8") as f:
-                f.write('@echo off\ncd /d "' + install_dir + '"\nstart "" "' + os.path.join(install_dir, "node.exe") + '" index.js\nexit\n')
+            subprocess.run(
+                ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", ps],
+                capture_output=True,
+                timeout=20,
+            )
+            old_bat = os.path.join(DESKTOP, "GN Tools.bat")
+            if os.path.exists(old_bat):
+                os.remove(old_bat)
         except Exception:
             pass
 
@@ -541,7 +562,7 @@ class GNWizard:
             font=("Segoe UI", 10), fg=RED_DARK, bg=RED_SOFT, justify="left", wraplength=640
         ).pack(anchor="w", padx=12)
         tips = (
-            "Дважды кликните по GN Tools.bat на рабочем столе",
+            "Откройте ярлык GN Tools на рабочем столе",
             "Войдите с аккаунтом сайта (email + пароль)",
             "Вход и WhatsApp-сессия сохранились" if updating else "Новый аккаунт получит бесплатные токены",
             "Купить токены: gnfintrust.github.io/gntools.html",
