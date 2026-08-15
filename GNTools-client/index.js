@@ -709,26 +709,6 @@ const server = http.createServer(async (req, res) => {
   }
 })();
 
-function openDesktopWindow(url) {
-  if (process.platform !== 'win32') {
-    exec('xdg-open "' + url.replace(/"/g, '') + '"');
-    return;
-  }
-  const browser = findBrowser(CHROME_PATHS) || findBrowser(BRAVE_PATHS);
-  if (!browser) { exec('start "" "' + url.replace(/"/g, '') + '"'); return; }
-  const profile = path.join(BASE_DIR, '.gn-tools-window');
-  const child = spawn(browser, [
-    '--app=' + url,
-    '--new-window',
-    '--no-first-run',
-    '--no-default-browser-check',
-    '--user-data-dir=' + profile
-  ], { detached: true, stdio: 'ignore', windowsHide: true });
-  child.unref();
-}
-
 server.listen(PORT, '127.0.0.1', () => {
-  const url = 'http://127.0.0.1:' + PORT;
-  console.log('\n  ▶ Open GN Tools: ' + url + '\n');
-  openDesktopWindow(url);
+  console.log('\n  GN Tools готов: http://127.0.0.1:' + PORT + '\n');
 });

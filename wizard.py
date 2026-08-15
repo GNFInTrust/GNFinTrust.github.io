@@ -133,7 +133,7 @@ class GNWizard:
         self.install_path = tk.StringVar(value=found or INSTALL_DIR)
         self.progress_var = tk.DoubleVar(value=0)
         self.log_text = tk.StringVar(value="Готов к установке..." if not found else "Найдена установленная копия — можно обновить.")
-        self.desk_shortcut = tk.BooleanVar(value=not bool(found))
+        self.desk_shortcut = tk.BooleanVar(value=True)
         self.auto_launch = tk.BooleanVar(value=True)
         self.build_ui()
         self.show_step(0)
@@ -442,33 +442,29 @@ class GNWizard:
             with open(index_path, "w", encoding="utf-8") as f:
                 f.write(stub)
 
-    def _create_shortcut(self, install_dir):
-        lnk_path = os.path.join(DESKTOP, "GN Tools.lnk")
-        node = os.path.join(install_dir, "node.exe")
-        index_js = os.path.join(install_dir, "index.js")
-        icon = os.path.join(install_dir, "favicon.ico")
-        ps = (
-            "$w=New-Object -ComObject WScript.Shell;"
-            "$s=$w.CreateShortcut('" + lnk_path.replace("'", "''") + "');"
-            "$s.TargetPath='" + node.replace("'", "''") + "';"
-            "$s.Arguments='\"" + index_js.replace("'", "''") + "\"';"
-            "$s.WorkingDirectory='" + install_dir.replace("'", "''") + "';"
-            "$s.Description='GN Tools';"
-            "$s.WindowStyle=7;"
-            + ("$s.IconLocation='" + icon.replace("'", "''") + "';" if os.path.exists(icon) else "")
-            + "$s.Save();"
-        )
-        try:
-            subprocess.run(
-                ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", ps],
-                capture_output=True,
-                timeout=20,
-            )
-            old_bat = os.path.join(DESKTOP, "GN Tools.bat")
-            if os.path.exists(old_bat):
-                os.remove(old_bat)
-        except Exception:
-            pass
+    def _desktop_app_path(self, install_dir):
+        return os.path.join(install_dir, "GN Tools.exe")
+
+    def _copy_app_to_desktop(self, install_dir):
+        src = sys.executable if getattr(sys, "frozen", False) else None
+        dest_install = self._desktop_app_path(install_dir)
+        dest_desktop = os.path.join(DESKTOP, "GN Tools.exe")
+        copied = []
+        if src and src.lower().endswith(".exe"):
+            for dest in (dest_install, dest_desktop):
+                try:
+                    if os.path.abspath(src) != os.path.abspath(dest):
+                        shutil.copy2(src, dest)
+                    copied.append(dest)
+                except Exception:
+                    pass
+        for old in (os.path.join(DESKTOP, "GN Tools.bat"), os.path.join(DESKTOP, "GN Tools.lnk")):
+            try:
+                if os.path.isfile(old):
+                    os.remove(old)
+            except Exception:
+                pass
+        return dest_desktop if os.path.isfile(dest_desktop) else dest_install
 
     def _do_install(self):
         try:
@@ -526,9 +522,8 @@ class GNWizard:
                 except Exception:
                     pass
 
-            if self.desk_shortcut.get():
-                self.update_progress(90, "Создание ярлыков...")
-                self._create_shortcut(install_dir)
+            self.update_progress(90, "Копирую GN Tools на рабочий стол...")
+            self._copy_app_to_desktop(install_dir)
 
             config_path = os.path.join(install_dir, "wizard_config.json")
             with open(config_path, "w", encoding="utf-8") as f:
@@ -539,11 +534,8 @@ class GNWizard:
                     "updated": updating,
                 }, f, ensure_ascii=False, indent=2)
 
-            self.update_progress(100, "Обновление завершено!" if updating else "Установка завершена!", "GN Tools готов к работе")
-            if self.auto_launch.get():
-                self.root.after(500, self.launch_app)
-            else:
-                self.root.after(400, lambda: self.show_step(3))
+            self.update_progress(100, "Обновление завершено!" if updating else "Установка завершена!", "Запускаю GN Tools…")
+            self.root.after(400, self.launch_app)
         except Exception as e:
             self.root.after(0, lambda: messagebox.showerror("Ошибка", "Не удалось скачать:\n" + str(e) + "\n\nПроверьте интернет-соединение.\n\n"))
             self.update_progress(self.progress_var.get(), "Ошибка: " + str(e), "")
@@ -562,7 +554,7 @@ class GNWizard:
             font=("Segoe UI", 10), fg=RED_DARK, bg=RED_SOFT, justify="left", wraplength=640
         ).pack(anchor="w", padx=12)
         tips = (
-            "Откройте ярлык GN Tools на рабочем столе",
+            "Ярлык GN Tools.exe уже на рабочем столе",
             "Войдите с аккаунтом сайта (email + пароль)",
             "Вход и WhatsApp-сессия сохранились" if updating else "Новый аккаунт получит бесплатные токены",
             "Купить токены: gnfintrust.github.io/gntools.html",
@@ -572,17 +564,16 @@ class GNWizard:
 
     def launch_app(self):
         install_dir = self.install_path.get()
-        node_exe = os.path.join(install_dir, "node.exe")
-        index_js = os.path.join(install_dir, "index.js")
-        if not (os.path.exists(node_exe) and os.path.exists(index_js)):
-            messagebox.showwarning("Файлы не найдены", "Файлы приложения не найдены.\nЗапустите установщик заново.")
+        app = self._copy_app_to_desktop(install_dir)
+        if not os.path.isfile(app):
+            messagebox.showwarning("Файлы не найдены", "Не удалось положить GN Tools на рабочий стол.\nЗапустите установщик заново.")
             return
         try:
             kwargs = {}
             if sys.platform == "win32":
                 kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-            subprocess.Popen([node_exe, index_js], cwd=install_dir, **kwargs)
-            self.root.after(300, self.root.destroy)
+            subprocess.Popen([app, "--app"], cwd=install_dir, **kwargs)
+            self.root.after(400, self.root.destroy)
         except Exception as e:
             messagebox.showerror("Ошибка", "Не удалось запустить:\n" + str(e))
 
@@ -591,6 +582,11 @@ class GNWizard:
 
 
 def main():
+    name = os.path.basename(sys.executable if getattr(sys, "frozen", False) else __file__).lower()
+    if "--app" in sys.argv or name in ("gn tools.exe", "gntools-app.exe"):
+        from desktop import run_app
+        run_app()
+        return
     GNWizard().run()
 
 
