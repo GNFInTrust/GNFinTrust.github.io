@@ -22,7 +22,25 @@ APP_FILES_URL = GITHUB_RELEASES + "/GNTools-client.zip"
 NODE_URL = "https://nodejs.org/dist/v18.20.8/win-x64/node.exe"
 
 INSTALL_DIR = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "GNFinTrust", "GNTools")
-DESKTOP = os.path.join(os.path.expanduser("~"), "Desktop")
+
+
+def desktop_dirs():
+    home = os.environ.get("USERPROFILE") or os.path.expanduser("~")
+    public = os.environ.get("PUBLIC") or "C:\\Users\\Public"
+    seen = []
+    for folder in (
+        os.path.join(home, "Desktop"),
+        os.path.join(home, "OneDrive", "Desktop"),
+        os.path.join(home, "OneDrive", "Рабочий стол"),
+        os.path.join(home, "Рабочий стол"),
+        os.path.join(public, "Desktop"),
+    ):
+        if folder and os.path.isdir(folder) and folder not in seen:
+            seen.append(folder)
+    return seen or [os.path.join(home, "Desktop")]
+
+
+DESKTOP = desktop_dirs()[0]
 
 RED = "#C8102E"
 RED_DARK = "#A00E24"
@@ -445,26 +463,57 @@ class GNWizard:
     def _desktop_app_path(self, install_dir):
         return os.path.join(install_dir, "GN Tools.exe")
 
+    def _write_shortcut(self, lnk_path, target, args, workdir, icon):
+        ps = (
+            "$w=New-Object -ComObject WScript.Shell;"
+            "$s=$w.CreateShortcut('" + lnk_path.replace("'", "''") + "');"
+            "$s.TargetPath='" + target.replace("'", "''") + "';"
+            "$s.Arguments='" + args.replace("'", "''") + "';"
+            "$s.WorkingDirectory='" + workdir.replace("'", "''") + "';"
+            "$s.Description='GN Tools';"
+            "$s.WindowStyle=1;"
+            + ("$s.IconLocation='" + icon.replace("'", "''") + "';" if icon and os.path.isfile(icon) else "")
+            + "$s.Save();"
+        )
+        subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", ps],
+            capture_output=True,
+            timeout=20,
+        )
+
     def _copy_app_to_desktop(self, install_dir):
         src = sys.executable if getattr(sys, "frozen", False) else None
         dest_install = self._desktop_app_path(install_dir)
-        dest_desktop = os.path.join(DESKTOP, "GN Tools.exe")
-        copied = []
+        icon = os.path.join(install_dir, "favicon.ico")
         if src and src.lower().endswith(".exe"):
-            for dest in (dest_install, dest_desktop):
-                try:
-                    if os.path.abspath(src) != os.path.abspath(dest):
-                        shutil.copy2(src, dest)
-                    copied.append(dest)
-                except Exception:
-                    pass
-        for old in (os.path.join(DESKTOP, "GN Tools.bat"), os.path.join(DESKTOP, "GN Tools.lnk")):
             try:
-                if os.path.isfile(old):
-                    os.remove(old)
+                if os.path.abspath(src) != os.path.abspath(dest_install):
+                    shutil.copy2(src, dest_install)
+            except Exception:
+                dest_install = src
+        target = dest_install if os.path.isfile(dest_install) else (src or dest_install)
+        start_dir = os.path.join(os.environ.get("APPDATA") or "", "Microsoft", "Windows", "Start Menu", "Programs")
+        try:
+            os.makedirs(start_dir, exist_ok=True)
+        except Exception:
+            start_dir = ""
+        for folder in desktop_dirs() + ([start_dir] if start_dir else []):
+            lnk = os.path.join(folder, "GN Tools.lnk")
+            try:
+                self._write_shortcut(lnk, target, "--app", install_dir, icon if os.path.isfile(icon) else target)
             except Exception:
                 pass
-        return dest_desktop if os.path.isfile(dest_desktop) else dest_install
+            for old in (os.path.join(folder, "GN Tools.bat"), os.path.join(folder, "GN Tools.exe")):
+                try:
+                    if os.path.isfile(old) and os.path.abspath(old) != os.path.abspath(target):
+                        os.remove(old)
+                except Exception:
+                    pass
+        for folder in desktop_dirs():
+            lnk = os.path.join(folder, "GN Tools.lnk")
+            if os.path.isfile(lnk):
+                return target
+        return target
 
     def _do_install(self):
         try:
@@ -554,7 +603,7 @@ class GNWizard:
             font=("Segoe UI", 10), fg=RED_DARK, bg=RED_SOFT, justify="left", wraplength=640
         ).pack(anchor="w", padx=12)
         tips = (
-            "Ярлык GN Tools.exe уже на рабочем столе",
+            "Ярлык GN Tools на рабочем столе и в меню Пуск",
             "Войдите с аккаунтом сайта (email + пароль)",
             "Вход и WhatsApp-сессия сохранились" if updating else "Новый аккаунт получит бесплатные токены",
             "Купить токены: gnfintrust.github.io/gntools.html",

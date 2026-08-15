@@ -12,6 +12,10 @@
 html,body{height:100%}
 body{font-family:"Segoe UI",ui-sans-serif,-apple-system,Helvetica,Arial,sans-serif;background:#F7F8FA;color:#15202B;font-size:14px;line-height:1.5;overflow:hidden}
 .app{display:flex;height:100vh;min-height:0}
+body.locked .side nav,body.locked #v-bot,body.locked #v-conv,body.locked #v-dok,body.locked #v-guide{display:none!important}
+body.locked aside.side{display:none}
+body.locked main.main{display:flex;align-items:center;justify-content:center;padding:32px 16px}
+body.locked #auth{display:block!important;max-width:420px;width:100%}
 .side{width:244px;flex:none;background:#15202B;color:#E8ECF0;border-right:0;display:flex;flex-direction:column;padding:14px 10px;height:100vh;overflow-y:auto;min-width:0}
 .side-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:6px 10px 14px;margin-bottom:6px;letter-spacing:-.02em}
 .logo{width:22px;height:22px;border-radius:3px;background:#C8102E;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
@@ -130,7 +134,7 @@ textarea{min-height:100px;resize:vertical}
 }
 </style>
 </head>
-<body>
+<body class="locked">
 <div class="app">
 <aside class="side">
   <div class="side-title"><span class="logo">GN</span> GN Tools</div>
@@ -151,12 +155,12 @@ textarea{min-height:100px;resize:vertical}
 <main class="main">
 
 <div class="card" id="auth" style="display:none">
-  <h2>Вход в аккаунт</h2>
-  <div class="muted" id="trialNote" style="margin:4px 0 8px"></div>
-  <div class="muted">Email</div>
-  <input type="text" id="aEmail" placeholder="email@example.com">
+  <h2>Вход в GN Tools</h2>
+  <div class="muted" id="trialNote" style="margin:4px 0 8px">Введите почту и пароль от сайта GN FinTrust. Пока вы не войдёте, остальные разделы скрыты.</div>
+  <div class="muted">Почта</div>
+  <input type="text" id="aEmail" placeholder="you@email.com" autocomplete="username">
   <div class="muted" style="margin-top:10px">Пароль</div>
-  <input type="password" id="aPass" placeholder="••••••••">
+  <input type="password" id="aPass" placeholder="Пароль" autocomplete="current-password">
   <div class="err" id="aErr"></div>
   <button class="btn" onclick="login()">Войти</button>
   <button class="btn2" onclick="register()">Создать аккаунт</button>
@@ -250,15 +254,13 @@ textarea{min-height:100px;resize:vertical}
   <div class="pg-sub">Упаковочный лист, ТТН, ТН (ТОРГ-12) и CMR.</div>
 
   <div class="card" id="tools" style="display:none">
-    <h2>Способ заполнения</h2>
+    <h2>Как заполнять</h2>
     <div class="source-tabs" style="margin-bottom:14px">
-      <button class="source-tab sel" id="dm-basic" onclick="selDokMode('basic')">📝 Базовое (1 токен)</button>
-      <button class="source-tab" id="dm-haiku" onclick="selDokMode('haiku')">🤖 Haiku 4.5 (2 токена)</button>
-      <button class="source-tab" id="dm-opus" onclick="selDokMode('opus')">🧠 Opus 4.6 (3 токена)</button>
+      <button class="source-tab sel" id="dm-basic" onclick="selDokMode('basic')">Автоматически</button>
+      <button class="source-tab" id="dm-opus" onclick="selDokMode('opus')">Opus 4.6</button>
     </div>
-
-    <div id="basicFill" style="font-size:13px;color:#787670">Без ИИ: данные из таблицы подставляются в шаблоны. Быстро, дёшево, без ошибок.</div>
-    <div id="aiFill" style="display:none;font-size:13px;color:#787670">ИИ заполняет поля: понимает контекст, форматирует названия и адреса.</div>
+    <div id="basicFill" style="font-size:13px;color:#787670">Данные из таблицы подставляются в шаблоны сами. Без ИИ.</div>
+    <div id="aiFill" style="display:none;font-size:13px;color:#787670">Opus 4.6 понимает текст и заполняет поля документов.</div>
 
     <div class="err" id="dokErr"></div>
     <button class="btn green" id="dokOpenBtn" style="max-width:320px" onclick="openDok()">Открыть документы</button>
@@ -325,9 +327,8 @@ textarea{min-height:100px;resize:vertical}
         <tr><td>WhatsApp: точно (1 чат)</td><td><strong>3</strong></td></tr>
         <tr><td>Instagram (1 диалог)</td><td><strong>2</strong></td></tr>
         <tr><td>Telegram (1 диалог)</td><td><strong>1</strong></td></tr>
-        <tr><td>Документы: без ИИ</td><td><strong>1</strong></td></tr>
-        <tr><td>Документы: быстро</td><td><strong>2</strong></td></tr>
-        <tr><td>Документы: точно</td><td><strong>3</strong></td></tr>
+        <tr><td>Документы: автоматически</td><td><strong>1</strong></td></tr>
+        <tr><td>Документы: Opus 4.6</td><td><strong>3</strong></td></tr>
       </tbody>
     </table>
     <div class="callout">Купить токены: <a href="https://gnfintrust.github.io/gntools.html" target="_blank">gnfintrust.github.io/gntools.html</a></div>
@@ -342,7 +343,7 @@ textarea{min-height:100px;resize:vertical}
 
     <h2>Документы</h2>
     <ol>
-      <li>Выберите «без ИИ», «быстро» или «точно».</li>
+      <li>Выберите «Автоматически» или «Opus 4.6».</li>
       <li>Откройте документы → заполните «Данные» → печать Ctrl+P.</li>
     </ol>
   </div>
@@ -354,18 +355,33 @@ textarea{min-height:100px;resize:vertical}
 var LIC=null, CONFIGURED=false, ACTIVE_SOURCE='whatsapp', DOK_MODE='basic', RUNNING=false;
 
 function showLoggedIn(){
+  var app=document.querySelector('.app');
+  var bot=document.getElementById('v-bot');
+  var conv=document.getElementById('v-conv');
+  var dok=document.getElementById('v-dok');
+  var guide=document.getElementById('v-guide');
   if(!LIC){
     RUNNING=false;
+    document.body.classList.add('locked');
     document.getElementById('acct').style.display='none';
     document.getElementById('auth').style.display='block';
     document.getElementById('setup').style.display='none';
     document.getElementById('panel').style.display='none';
     document.getElementById('tools').style.display='none';
+    if(bot)bot.style.display='none';
+    if(conv)conv.style.display='none';
+    if(dok)dok.style.display='none';
+    if(guide)guide.style.display='none';
     return;
   }
+  document.body.classList.remove('locked');
   document.getElementById('acct').style.display='flex';
   document.getElementById('auth').style.display='none';
   document.getElementById('tools').style.display='block';
+  if(bot)bot.style.display='';
+  if(conv)conv.style.display='';
+  if(dok)dok.style.display='';
+  if(guide)guide.style.display='';
   document.getElementById('acctEmail').textContent=LIC.email||'';
   document.getElementById('setup').style.display=RUNNING?'none':'block';
   document.getElementById('panel').style.display=RUNNING?'block':'none';
@@ -401,10 +417,13 @@ function selSource(s){
 }
 
 function selDokMode(m){
-  DOK_MODE=m;
-  ['basic','haiku','opus'].forEach(function(x){document.getElementById('dm-'+x).classList.toggle('sel',m===x)});
-  document.getElementById('basicFill').style.display=(m==='basic')?'block':'none';
-  document.getElementById('aiFill').style.display=(m!=='basic')?'block':'none';
+  DOK_MODE=m==='opus'?'opus':'basic';
+  var basic=document.getElementById('dm-basic');
+  var opus=document.getElementById('dm-opus');
+  if(basic)basic.classList.toggle('sel',DOK_MODE==='basic');
+  if(opus)opus.classList.toggle('sel',DOK_MODE==='opus');
+  document.getElementById('basicFill').style.display=(DOK_MODE==='basic')?'block':'none';
+  document.getElementById('aiFill').style.display=(DOK_MODE==='opus')?'block':'none';
 }
 
 function selOpt(name,ids){
@@ -504,6 +523,7 @@ function openDok(){
 }
 
 function setView(v){
+ if(!LIC){showLoggedIn();return}
  ['bot','conv','dok','guide'].forEach(function(x){document.getElementById('v-'+x).classList.toggle('on',v===x);document.getElementById('nav-'+x).classList.toggle('on',v===x)});
  if(v==='dok'&&LIC)document.getElementById('tools').style.display='block';
  if(v==='bot')loadBase();

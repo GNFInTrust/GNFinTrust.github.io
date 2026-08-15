@@ -528,8 +528,8 @@ const server = http.createServer(async (req, res) => {
   } else if (req.method === 'GET' && url === '/dokumenty') {
     if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 403, { error: 'no_license' }); return; }
     const mode = params.get('mode') || DOK_MODE;
-    if (mode === 'opus' || mode === 'haiku' || mode === 'basic') DOK_MODE = mode;
-    const cost = DOK_MODE === 'opus' ? TOKEN_COST.dokOpus : DOK_MODE === 'haiku' ? TOKEN_COST.dokHaiku : TOKEN_COST.dokBasic;
+    DOK_MODE = mode === 'opus' ? 'opus' : 'basic';
+    const cost = DOK_MODE === 'opus' ? TOKEN_COST.dokOpus : TOKEN_COST.dokBasic;
     if (!(await licenseGate(cost))) { sendJson(res, 403, { error: 'no_tokens' }); return; }
     if (serveFile(res, 'dokumenty.html')) return;
     res.writeHead(500); res.end('dokumenty.html not found');
@@ -614,7 +614,7 @@ const server = http.createServer(async (req, res) => {
       setModel(String(b.model));
       WA_MODEL = String(b.model);
     }
-    if (b.dokMode === 'opus' || b.dokMode === 'haiku' || b.dokMode === 'basic') DOK_MODE = b.dokMode;
+    if (b.dokMode === 'opus' || b.dokMode === 'basic') DOK_MODE = b.dokMode;
     SCAN_ON_START = b.mode !== 'new';
     const excel = String(b.excel || '').trim().replace(/^"|"$/g, '').replace(/\\/g, '/');
     if (!excel || !fs.existsSync(excel)) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
