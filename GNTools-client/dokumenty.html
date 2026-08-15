@@ -131,15 +131,15 @@ const GROUPS = [
     ["cargoName","Краткое наименование груза"], ["packType","Вид упаковки"], ["cmrDocs","Документы с грузом (для CMR)"] ]}
 ];
 const DEFAULT_DATA = {
-  docNum:"96", docDate:"24.07.2026", contractNum:"", contractDate:"",
-  sender:'ОсОО "УМБИЛАРС"', senderAddr:"", receiver:"ИП Чарыкулыев Илшат", receiverAddr:"", payer:"ИП Чарыкулыев Илшат",
+  docNum:"", docDate:"", contractNum:"", contractDate:"",
+  sender:"", senderAddr:"", receiver:"", receiverAddr:"", payer:"",
   carrier:"", driver:"", driverLicense:"", truckModel:"", truckPlate:"", trailerPlate:"",
-  loadPoint:"г. Бишкек", loadCountry:"Кыргызстан", unloadPoint:"г. Казань", unloadCountry:"Россия",
-  cargoName:"", packType:"меш", cmrDocs:"",
+  loadPoint:"", loadCountry:"", unloadPoint:"", unloadCountry:"",
+  cargoName:"", packType:"", cmrDocs:"",
   items:[ {name:"", tnved:"", unit:"шт", qty:"", price:"", net:"", gross:"", places:""} ]
 };
 
-const LS_KEY="docapp_data";
+const LS_KEY="docapp_data_v2";
 let data;
 try{ data = Object.assign({}, DEFAULT_DATA, JSON.parse(localStorage.getItem(LS_KEY)) || {}); }
 catch(e){ data = JSON.parse(JSON.stringify(DEFAULT_DATA)); }
