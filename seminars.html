@@ -26,12 +26,6 @@
   .page-head{max-width:720px;margin:0 auto 36px;text-align:center}
   .page-head h1{font-size:clamp(30px,4vw,46px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:17px}
-  .fmt{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 0 22px}
-  .fmt button{
-    border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:3px;
-    padding:10px 16px;min-height:44px;font:700 14px var(--body);cursor:pointer
-  }
-  .fmt button[aria-pressed="true"]{background:var(--red);color:#fff;border-color:var(--red)}
   .book{
     background:#fff;border:1px solid var(--line);border-radius:2px;
     box-shadow:var(--shadow-sm);min-height:720px;overflow:hidden
@@ -83,12 +77,7 @@
     <div class="page-head">
       <span class="sec-kicker">Живые встречи</span>
       <h1>Семинары</h1>
-      <p>Выберите формат и свободное время — запись прямо на этой странице, без Google Календаря.</p>
-    </div>
-    <div class="fmt" role="tablist" aria-label="Формат встречи">
-      <button type="button" aria-pressed="true" data-cal="fintrust">Все форматы</button>
-      <button type="button" aria-pressed="false" data-cal="fintrust/вебинар-онлаин">Онлайн</button>
-      <button type="button" aria-pressed="false" data-cal="fintrust/вебинар-оффлаин">Очно</button>
+      <p>Выберите свободное время — запись прямо на этой странице.</p>
     </div>
     <div class="book">
       <div id="calMount"></div>
@@ -194,14 +183,6 @@ function mountCal(link) {
 }
 
 mountCal("fintrust")
-document.querySelector(".fmt").addEventListener("click", function (e) {
-  var btn = e.target.closest("button[data-cal]")
-  if (!btn) return
-  document.querySelectorAll(".fmt button").forEach(function (b) {
-    b.setAttribute("aria-pressed", b === btn ? "true" : "false")
-  })
-  mountCal(btn.getAttribute("data-cal"))
-})
 </script>
 <script type="module">
   try {
