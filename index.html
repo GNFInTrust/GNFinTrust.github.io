@@ -231,23 +231,24 @@
 	})
 })()
 </script>
-<header class="site-header">
-  <div class="wrap nav">
-    <a class="brand" href="#"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
-    <nav class="links" id="siteNav">
-      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
-      <a class="hide-m" href="#catalog">Каталог</a>
-      <a class="hide-m" href="seminars.html">Семинары</a>
-      <a class="hide-m" href="#how">Как купить</a>
-      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
-      <a href="#" id="navAdmin" style="display:none">Админ</a>
-      <a href="login.html" id="navLogin">Вход</a>
-      <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
-      <a href="#" id="navOut" style="display:none">Выйти</a>
-    </nav>
-  </div>
-</header>
+	<header class="site-header">
+	  <div class="wrap nav">
+	    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
+	    <nav class="nav-links" id="siteNav">
+	      <a href="index.html#catalog">Каталог</a>
+	      <a href="seminars.html">Семинары</a>
+	      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
+	    </nav>
+	    <div class="nav-tools">
+	      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
+	      <a class="nav-account" href="login.html" id="navLogin">Вход</a>
+	      <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
+	      <a class="nav-out" href="#" id="navOut" style="display:none">Выйти</a>
+	      <a class="nav-out" href="#" id="navAdmin" style="display:none">Админ</a>
+	      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
+	    </div>
+	  </div>
+	</header>
 <script>
 (function(){try{
   var a = localStorage.getItem("gn_auth") === "1"
@@ -255,9 +256,9 @@
   var l = document.getElementById("navLogin"), s = document.getElementById("navSignup")
   var o = document.getElementById("navOut"), d = document.getElementById("navAdmin")
   if (a) {
-    if (l) { l.textContent = "Мой кабинет"; l.href = "members.html" }
-    if (s) s.style.display = "none"
-    if (o) o.style.display = "inline"
+    if (l) { l.textContent = "Кабинет"; l.href = "members.html" }
+	    if (s) s.style.display = "none"
+	    if (o) o.style.display = ""
     if (m && d) d.style.display = ""
   }
 }catch(e){}})()
@@ -522,14 +523,8 @@ document.addEventListener("click", function(e){
 		var heroH = hero ? hero.offsetHeight : window.innerHeight
 		var threshold = Math.max(1, heroH * 0.75)
 		var pastHero = y >= threshold
-		header.classList.toggle("scrolled", pastHero)
-		var up = y < lastY
-		if (!pastHero) {
-			header.classList.remove("hide")
-		} else {
-			header.classList.toggle("hide", !up)
-		}
-		lastY = y
+			header.classList.toggle("scrolled", pastHero)
+			lastY = y
 	}, { passive: true })
 
 	var teamRow = document.querySelector(".team")
@@ -584,10 +579,10 @@ document.addEventListener("click", function(e){
     const navOut = document.getElementById("navOut")
     authMod.onAuthStateChanged(auth, async (user) => {
       if (user) {
-        navLogin.textContent = "Мой кабинет"
+        navLogin.textContent = "Кабинет"
         navLogin.href = "members.html"
         navSignup.style.display = "none"
-        navOut.style.display = "inline"
+        navOut.style.display = ""
         localStorage.setItem("gn_auth", "1")
         localStorage.setItem("gn_email", user.email || "")
         try {

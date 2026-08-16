@@ -84,7 +84,8 @@ var KY_DICT = {
 	"Войти": "Кирүү",
 	"Регистрация": "Каттоо",
 	"Выйти": "Чыгуу",
-	"Мой кабинет": "Менин кабинетим",
+		"Мой кабинет": "Менин кабинетим",
+		"Кабинет": "Кабинет",
 	"← На сайт": "← Сайтка",
 	"← Назад в каталог": "← Каталогго кайтуу",
 	"© 2026 GN FinTrust · Все права защищены": "© 2026 GN FinTrust · Бардык укуктар корголгон",
@@ -288,12 +289,36 @@ document.addEventListener("DOMContentLoaded", function () {
 			toggleLang()
 		})
 	}
-	// Логотип-картинка: если админ загрузил, показываем вместо букв GN
-	try {
-		var logo = localStorage.getItem("gn_logo")
-		if (logo) {
-			var mark = document.querySelector(".brand-mark")
-			if (mark) { mark.innerHTML = ""; mark.style.backgroundImage = "url(" + logo + ")"; mark.style.backgroundSize = "cover"; mark.style.backgroundPosition = "center" }
+		// Логотип-картинка: если админ загрузил, показываем вместо букв GN
+		try {
+			var logo = localStorage.getItem("gn_logo")
+			if (logo) {
+				var mark = document.querySelector(".brand-mark")
+				if (mark) { mark.innerHTML = ""; mark.style.backgroundImage = "url(" + logo + ")"; mark.style.backgroundSize = "cover"; mark.style.backgroundPosition = "center" }
+			}
+		} catch (e) {}
+		try {
+			if (localStorage.getItem("gn_auth") === "1") {
+				var acc = document.querySelector(".nav-account")
+				if (acc && acc.getAttribute("href") === "login.html") {
+					acc.textContent = "Кабинет"
+					acc.href = "members.html"
+				}
+			}
+		} catch (e) {}
+		var toggle = document.getElementById("navToggle")
+		var nav = document.getElementById("siteNav")
+		if (toggle && nav && !toggle.dataset.bound) {
+			toggle.dataset.bound = "1"
+			toggle.addEventListener("click", function () {
+				var open = nav.classList.toggle("open")
+				toggle.setAttribute("aria-expanded", open ? "true" : "false")
+			})
+			nav.addEventListener("click", function (e) {
+				if (e.target.closest("a")) {
+					nav.classList.remove("open")
+					toggle.setAttribute("aria-expanded", "false")
+				}
+			})
 		}
-	} catch (e) {}
-})
+	})

@@ -23,10 +23,6 @@
     radial-gradient(700px 280px at 10% -8%, rgba(200,16,46,.08), transparent 60%),
     radial-gradient(520px 240px at 100% 0, rgba(184,137,58,.10), transparent 55%),
     var(--paper)}
-  .site-header{background:rgba(247,248,250,.92);border-bottom:1px solid var(--line)}
-  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:var(--header-h)}
-  .back{font-size:14px;color:var(--slate);font-weight:600}
-  .back:hover{color:var(--red)}
   main{flex:1;display:flex;align-items:center;justify-content:center;padding:64px 20px}
   .card{background:#fff;border:1px solid var(--line);border-radius:2px;padding:44px 36px;width:100%;max-width:430px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
   .card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--red) 0 30%,var(--foil) 30% 38%,var(--red) 38% 100%)}
@@ -59,11 +55,17 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="nav">
+  <div class="wrap nav">
     <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
-    <div style="display:flex;align-items:center;gap:18px">
+    <nav class="nav-links" id="siteNav">
+      <a href="index.html#catalog">Каталог</a>
+      <a href="seminars.html">Семинары</a>
+      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
+    </nav>
+    <div class="nav-tools">
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
-      <a class="back" href="index.html">← На сайт</a>
+      <a class="nav-account" href="login.html" aria-current="page">Вход</a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
     </div>
   </div>
 </header>

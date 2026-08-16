@@ -19,10 +19,6 @@
 <link rel="stylesheet" href="theme.css">
 <style>
   body{min-height:100vh;display:flex;flex-direction:column;background:var(--paper)}
-  .site-header{background:rgba(247,248,250,.92);border-bottom:1px solid var(--line)}
-  .nav{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:var(--header-h)}
-  .back{font-size:14px;color:var(--slate);font-weight:600}
-  .back:hover{color:var(--red)}
   main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:56px 24px 96px}
   h1{font-size:32px;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
   .beta{font-size:11px;font-weight:700;color:#7A4500;background:var(--foil-soft);border:1px solid var(--foil-line);border-radius:3px;padding:3px 10px;letter-spacing:.08em;vertical-align:middle;font-family:var(--mono)}
@@ -64,9 +60,18 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="nav">
+  <div class="wrap nav">
     <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
-    <a class="back" href="index.html">← На сайт</a>
+    <nav class="nav-links" id="siteNav">
+      <a href="index.html#catalog">Каталог</a>
+      <a href="seminars.html">Семинары</a>
+      <a href="gntools.html" aria-current="page">GN Tools <span class="beta-tag">БЕТА</span></a>
+    </nav>
+    <div class="nav-tools">
+      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
+      <a class="nav-account" href="login.html">Вход</a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
+    </div>
   </div>
 </header>
 
