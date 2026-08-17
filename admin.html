@@ -31,15 +31,16 @@
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   ::selection{background:var(--red);color:#fff}
-  header{border-bottom:1px solid var(--border);background:#fff}
-  .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:66px}
+  header{border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:20}
+  header::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--red) 0 72px,#B8893A 72px 96px,transparent 96px)}
+  .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em}
   .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:3px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
 
-  main{flex:1;width:100%;max-width:1160px;margin:0 auto;padding:48px 24px 96px}
+  main{flex:1;width:100%;max-width:1160px;margin:0 auto;padding:28px 24px 80px}
   .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
@@ -49,12 +50,14 @@
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
   .btn-sm{padding:7px 12px;min-height:34px;font-size:13px}
 
-  h1.page{font-size:26px;margin-bottom:4px}
-  .lede{color:var(--text2);font-size:14px;margin-bottom:22px}
-  .mtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-  .mtab{border:1px solid var(--border);background:#fff;border-radius:3px;padding:10px 18px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;transition:border-color .18s ease,color .18s ease,background-color .18s ease}
+  h1.page{font-size:24px;margin-bottom:4px}
+  .lede{color:var(--text2);font-size:14px;margin-bottom:16px}
+  .mtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;position:sticky;top:62px;z-index:15;background:var(--soft);padding:8px 0}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:3px;padding:9px 14px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
   .mtab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:2px;padding:34px;box-shadow:0 1px 2px rgba(33,29,29,.05)}
+  .tab-n{min-width:20px;height:20px;padding:0 6px;border-radius:3px;background:var(--red);color:#fff;font-size:11px;line-height:20px;text-align:center;display:none}
+  .tab-n.on{display:inline-block}
+  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:2px;padding:26px;box-shadow:0 1px 2px rgba(33,29,29,.05)}
   .panel.on{display:block}
   .panel h2{font-size:20px;margin-bottom:6px}
   .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:26px;max-width:760px}
@@ -73,6 +76,13 @@
   .tip strong{color:var(--text)}
   .contact a{font-weight:600}
   .empty{color:var(--text2);font-size:14px;padding:18px 4px}
+  .reqs{display:flex;flex-direction:column;gap:10px}
+  .req{border:1px solid var(--border);border-left:4px solid #B8893A;padding:14px 16px;background:#fff}
+  .req.done{border-left-color:#B7D4C4;opacity:.72}
+  .req-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:6px}
+  .req h3{font-size:16px;margin:0 0 4px}
+  .req-meta{color:var(--text2);font-size:13.5px}
+  .req-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 
   form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
   form.grid .full{grid-column:1/-1}
@@ -131,37 +141,27 @@
   </div>
 
   <div id="panelWrap" style="display:none">
-    <h1 class="page">Админ-панель</h1>
-    <p class="lede">Здесь управляют сайтом. Для каждого раздела — своя вкладка. Не нужно знать программирование.</p>
-    <div class="tip"><strong>С чего начать:</strong> вкладка «Цены» — быстро менять цены, «Каталог» — добавлять новые материалы, «Аккаунты» — создавать логины для покупателей.</div>
+    <h1 class="page">Админ</h1>
+    <p class="lede">Сначала заявки: проверьте оплату, затем откройте доступ в «Аккаунты».</p>
 
     <div class="mtabs">
-      <button class="mtab on" data-p="orders" type="button">Заявки</button>
-      <button class="mtab" data-p="prices" type="button">Цены</button>
+      <button class="mtab on" data-p="orders" type="button">Заявки <span class="tab-n" id="nOrders">0</span></button>
       <button class="mtab" data-p="products" type="button">Каталог</button>
-      <button class="mtab" data-p="payment" type="button">Способы оплаты</button>
+      <button class="mtab" data-p="payment" type="button">Оплата</button>
       <button class="mtab" data-p="accounts" type="button">Аккаунты</button>
-      <button class="mtab" data-p="gntools" type="button">GN Tools</button>
-      <button class="mtab" data-p="logo" type="button">Логотип</button>
+      <button class="mtab" data-p="gntools" type="button">GN Tools <span class="tab-n" id="nGt">0</span></button>
+      <button class="mtab" data-p="logo" type="button">Сайт</button>
     </div>
 
     <div class="panel on" id="p-orders">
-      <h2>Новые заявки</h2>
-      <p class="sub">Покупатель оплатил (или говорит, что оплатил) и ждёт логин. Проверьте, что деньги пришли, создайте аккаунт во вкладке «Аккаунты», затем нажмите на контакт — сообщение с данными для входа уже будет заполнено.</p>
+      <h2>Заявки на оплату</h2>
+      <p class="sub">Покупатель нажал «Я оплатил(а)». Сверьте перевод, создайте логин во вкладке «Аккаунты», затем отметьте «Готово».</p>
       <div id="ordersWrap"></div>
     </div>
 
-    <div class="panel" id="p-prices">
-      <h2>Изменить цены</h2>
-      <p class="sub">Здесь можно быстро поменять цену любого материала. Изменения сразу появляются на главной и на странице оплаты.</p>
-      <div class="tip"><strong>Подсказка:</strong> введите новую цену и нажмите «Сохранить цену». Больше ничего перезаписывать не нужно.</div>
-      <div id="pricesWrap"></div>
-      <div class="formfoot"><span class="flash" id="priceFlash"></span></div>
-    </div>
-
     <div class="panel" id="p-products">
-      <h2>Добавить вебинар, семинар или курс</h2>
-      <p class="sub">Материал сразу появится на главной странице. Ссылки на видео — из Google Диска (формат /preview) или YouTube (embed). Название и описание можно заполнить на двух языках: посетители с кыргызским языком увидят кыргызскую версию, если она заполнена, иначе — русскую.</p>
+      <h2>Каталог</h2>
+      <p class="sub">Новый материал сразу появится на главной. Видео — ссылка Google Диска вида /preview или YouTube embed. Кыргызский текст необязателен.</p>
       <div class="tip"><strong>Для видео:</strong> загрузите файл на Google Диск, откройте доступ по ссылке и вставьте ссылку вида <code>https://drive.google.com/file/d/FILE_ID/preview</code>.</div>
       <form class="grid" id="prodForm">
         <div><label for="fType">Тип</label>
@@ -179,13 +179,16 @@
         <button class="btn" id="prodSave" type="button">Сохранить</button>
         <span class="flash" id="prodFlash"></span>
       </div>
-      <h2>Текущий каталог</h2>
+      <h2>Материалы и цены</h2>
+      <p class="sub">Цена меняется сразу на сайте. Чтобы убрать материал — «Удалить».</p>
+      <div id="pricesWrap"></div>
+      <div class="formfoot"><span class="flash" id="priceFlash"></span></div>
       <div id="prodWrap"></div>
     </div>
 
     <div class="panel" id="p-payment">
       <h2>Номера для оплаты</h2>
-      <p class="sub">Эти номера покупатели видят на странице оплаты. Добавляйте и удаляйте в любой момент. Если в названии есть слово «Visa» или «Карта» (или номер из 16 цифр) — реквизит попадёт во вкладку «Карта Visa» на странице оплаты, остальные — во вкладку «МБанк».</p>
+      <p class="sub">Покупатели видят эти реквизиты. Если в названии есть «Visa» или «Карта» — попадёт во вкладку карты, остальные — в МБанк.</p>
       <div id="numWrap"></div>
       <div class="inline">
         <div><label for="numLabel">Название</label><input type="text" id="numLabel" placeholder="Перевод MBank"></div>
@@ -207,8 +210,8 @@
     </div>
 
     <div class="panel" id="p-logo">
-      <h2>Логотип сайта</h2>
-      <p class="sub">Загрузите картинку (логотип), которая будет показываться слева в шапке вместо букв «GN». Рекомендуется квадратная картинка, не более 200x200 px.</p>
+      <h2>Логотип</h2>
+      <p class="sub">Квадратная картинка вместо букв «GN» в шапке. Сейчас она хранится в этом браузере.</p>
       <div class="inline" style="align-items:flex-end">
         <div><label for="logoFile">Файл картинки</label><input type="file" id="logoFile" accept="image/*"></div>
         <button class="btn btn-sm" id="logoUpload" type="button">Загрузить</button>
@@ -366,51 +369,54 @@ function contactLink(method, contact) {
 	return "#"
 }
 
-function renderOrders() {
-	var w = document.getElementById("ordersWrap")
-	var list = A.orders.filter(function (o) { return o.type !== "gntools" })
-	if (!list.length) { w.innerHTML = '<p class="empty">Заявок пока нет. Когда кто-то нажмёт «Я оплатил(а)» на сайте — заявка появится здесь.</p>'; return }
-	var rows = list.map(function (o) {
-		return "<tr>" +
-			'<td class="muted">' + esc(String(o.createdAt || "").slice(0, 16).replace("T", " ")) + "</td>" +
-			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>" + esc(o.price) + " сом</span></td>" +
-			"<td>" + esc(o.buyer || "—") + "</td>" +
-			'<td class="contact">' + esc(o.method) + '<br><a href="' + esc(contactLink(o.method, o.contact)) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
-				'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : (o.pay === "qr" || o.method === "QR" ? "запрос QR — проверьте оплату" : "новая")) + "</span></td>" +
-			"<td>" + (o.status === "done" ? "" : '<button class="btn btn-ghost btn-sm" data-done="' + esc(o._id) + '">Выполнено</button> ') +
-			'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></td>' +
-			"</tr>"
-	}).join("")
-	w.innerHTML = "<table><thead><tr><th>Когда</th><th>Материал</th><th>Покупатель</th><th>Куда писать</th><th>Статус</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
-}
+function setTabCount(id, n) {
+		var el = document.getElementById(id)
+		if (!el) return
+		el.textContent = n
+		el.classList.toggle("on", n > 0)
+	}
+	function renderOrders() {
+		var w = document.getElementById("ordersWrap")
+		var list = A.orders.filter(function (o) { return o.type !== "gntools" })
+		var open = list.filter(function (o) { return o.status !== "done" }).length
+		setTabCount("nOrders", open)
+		if (!list.length) { w.innerHTML = '<p class="empty">Заявок пока нет. Когда кто-то нажмёт «Я оплатил(а)» — заявка появится здесь.</p>'; return }
+		w.innerHTML = '<div class="reqs">' + list.map(function (o) {
+			var when = String(o.createdAt || "").slice(0, 16).replace("T", " ")
+			var isQr = o.pay === "qr" || o.method === "QR"
+			var status = o.status === "done" ? "готово" : (isQr ? "запрос QR — проверьте оплату" : "новая")
+			var href = contactLink(o.method, o.contact)
+			return '<article class="req' + (o.status === "done" ? " done" : "") + '">' +
+				'<div class="req-top"><span class="muted">' + esc(when) + '</span><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + status + "</span></div>" +
+				"<h3>" + esc(o.itemTitle || "Покупка") + "</h3>" +
+				'<div class="req-meta">' + esc(o.price) + " сом · " + esc(o.buyer || "без имени") + "<br>" +
+				esc(o.method || "") + (o.contact ? ' · <a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a>" : "") + "</div>" +
+				'<div class="req-actions">' +
+				(o.status === "done" ? "" : '<button class="btn btn-sm" data-done="' + esc(o._id) + '">Готово</button> ') +
+				'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></div></article>'
+		}).join("") + "</div>"
+	}
 
 function renderProducts() {
-	var w = document.getElementById("prodWrap")
-	if (!A.products.length) { w.innerHTML = '<p class="empty">Каталог пуст — добавьте первый материал выше.</p>'; return }
-	var rows = A.products.map(function (p) {
-		return "<tr>" +
-			"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
-			"<td><strong>" + esc(p.title) + "</strong><br><span class='muted'>" + esc(p.desc) + "</span>" + (p.titleKy ? "<br><span class='muted'>KG: " + esc(p.titleKy) + "</span>" : "") + "</td>" +
-			"<td>" + esc(p.price) + " сом</td>" +
-			'<td><button class="btn btn-ghost btn-sm" data-edit="' + esc(p.id) + '">Изменить</button> <button class="btn btn-ghost btn-sm" data-del="' + esc(p.id) + '">Удалить</button></td>' +
-			"</tr>"
-	}).join("")
-	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Название</th><th>Цена</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
-}
+		var w = document.getElementById("prodWrap")
+		if (!A.products.length) { w.innerHTML = ""; return }
+		var rows = A.products.map(function (p) {
+			return "<tr>" +
+				"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
+				"<td><strong>" + esc(p.title) + "</strong><br><span class='muted'>" + esc(p.desc || "") + "</span></td>" +
+				'<td><input type="number" class="price-input" min="0" step="1" id="price-' + esc(p.id) + '" value="' + esc(p.price) + '"></td>' +
+				'<td><button class="btn btn-sm" data-save-price="' + esc(p.id) + '">Цена</button> <button class="btn btn-ghost btn-sm" data-edit="' + esc(p.id) + '">Изменить</button> <button class="btn btn-ghost btn-sm" data-del="' + esc(p.id) + '">Удалить</button></td>' +
+				"</tr>"
+		}).join("")
+		w.innerHTML = "<table><thead><tr><th>Тип</th><th>Название</th><th>Цена</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
+	}
 
-function renderPrices() {
-	var w = document.getElementById("pricesWrap")
-	if (!A.products.length) { w.innerHTML = '<p class="empty">Каталог пуст — добавьте материалы во вкладке «Каталог».</p>'; return }
-	var rows = A.products.map(function (p) {
-		return "<tr>" +
-			"<td>" + esc(TYPE_LABEL[p.type] || p.type) + "</td>" +
-			"<td><strong>" + esc(p.title) + "</strong></td>" +
-			'<td><input type="number" class="price-input" min="0" step="1" id="price-' + esc(p.id) + '" value="' + esc(p.price) + '"></td>' +
-			'<td><button class="btn btn-sm" data-save-price="' + esc(p.id) + '">Сохранить цену</button></td>' +
-			"</tr>"
-	}).join("")
-	w.innerHTML = "<table><thead><tr><th>Тип</th><th>Материал</th><th>Цена (сом)</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
-}
+	function renderPrices() {
+		var w = document.getElementById("pricesWrap")
+		if (!w) return
+		if (!A.products.length) { w.innerHTML = '<p class="empty">Каталог пуст — добавьте первый материал выше.</p>'; return }
+		w.innerHTML = ""
+	}
 
 function renderPayment() {
 	var w = document.getElementById("numWrap")
@@ -481,8 +487,9 @@ function renderAccounts() {
 function renderGnTools() {
 	var w = document.getElementById("gtOrdersWrap")
 	if (!w) return
-	var list = A.orders.filter(function (o) { return o.type === "gntools" })
-	if (!list.length) { w.innerHTML = '<p class="empty">Заявок на GN Tools пока нет.</p>'; return }
+		var list = A.orders.filter(function (o) { return o.type === "gntools" })
+		setTabCount("nGt", list.filter(function (o) { return o.status !== "done" }).length)
+		if (!list.length) { w.innerHTML = '<p class="empty">Заявок на GN Tools пока нет.</p>'; return }
 	var rows = list.map(function (o) {
 		return "<tr>" +
 			'<td class="muted">' + esc(String(o.createdAt || "").slice(0, 16).replace("T", " ")) + "</td>" +
