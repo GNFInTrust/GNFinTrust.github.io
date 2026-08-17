@@ -78,6 +78,7 @@
     display:flex;align-items:center;justify-content:space-between;gap:10px
   }
   .box>h3 .cnt{flex:none;font-size:12px;font-weight:700;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 10px;border-radius:3px;font-family:var(--mono)}
+  .cat-empty{color:var(--slate);font-size:14.5px;padding:8px 4px 4px}
   .pcard{background:var(--snow);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:18px;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
   .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);border-color:var(--red-border)}
   .pcard:last-child{margin-bottom:0}
@@ -117,7 +118,7 @@
   .tphoto{position:relative;aspect-ratio:3/4;background:linear-gradient(160deg,#E7EBEE,#F7F8FA);overflow:hidden}
   .tphoto .tph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:13px}
   .tphoto .tph .big{font-size:40px;font-weight:700;color:#c9d1d8;font-family:var(--head)}
-  .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.92);transition:filter .35s ease,transform .5s ease}
+  .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#F6F1E8;filter:none;transition:transform .5s ease}
   .tcard:hover .tphoto img{filter:brightness(1.05);transform:scale(1.04)}
   .tinfo{padding:20px 20px 22px}
   .tinfo h3{font-size:18px;margin-bottom:4px}
@@ -295,35 +296,35 @@
       <div class="team">
         <article class="tcard">
           <div class="tphoto">
-            <div class="tph"><span class="big">GN</span><span>Фото: team-1.jpg</span></div>
-            <img src="team-1.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+            <div class="tph"><span class="big">GN</span><span>Кубатова Гулзат</span></div>
+            <img src="team-1.jpg" alt="Кубатова Гулзат" loading="lazy" decoding="async" onerror="this.remove()">
           </div>
           <div class="tinfo">
-            <h3>Имя Фамилия</h3>
-            <span class="trole">Основатель, финансовый консультант</span>
-            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+            <h3>Кубатова Гулзат</h3>
+            <span class="trole">Основатель, главный эксперт</span>
+            <p>Ведёт программу GN FinTrust: практика налогов, учёта и денег в бизнесе.</p>
           </div>
         </article>
         <article class="tcard">
           <div class="tphoto">
-            <div class="tph"><span class="big">GN</span><span>Фото: team-2.jpg</span></div>
-            <img src="team-2.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+            <div class="tph"><span class="big">GN</span><span>Чолпонбек кызы Назима</span></div>
+            <img src="team-2.jpg" alt="Чолпонбек кызы Назима" loading="lazy" decoding="async" onerror="this.remove()">
           </div>
           <div class="tinfo">
-            <h3>Имя Фамилия</h3>
-            <span class="trole">Ведущий вебинаров</span>
-            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+            <h3>Чолпонбек кызы Назима</h3>
+            <span class="trole">Эксперт</span>
+            <p>Работает с предпринимателями на вебинарах и живых встречах.</p>
           </div>
         </article>
         <article class="tcard">
           <div class="tphoto">
-            <div class="tph"><span class="big">GN</span><span>Фото: team-3.jpg</span></div>
-            <img src="team-3.jpg" alt="Сотрудник GN FinTrust" loading="lazy" decoding="async" onerror="this.remove()">
+            <div class="tph"><span class="big">GN</span><span>Болчурова Алия</span></div>
+            <img src="team-3.jpg" alt="Болчурова Алия" loading="lazy" decoding="async" onerror="this.remove()">
           </div>
           <div class="tinfo">
-            <h3>Имя Фамилия</h3>
-            <span class="trole">Куратор курсов</span>
-            <p>Короткий рассказ про сотрудника: опыт, специализация, какие вебинары и курсы ведёт. Замените этот текст в index.html.</p>
+            <h3>Болчурова Алия</h3>
+            <span class="trole">Эксперт</span>
+            <p>Помогает разобрать материалы курсов и довести практику до результата.</p>
           </div>
         </article>
       </div>
@@ -339,7 +340,7 @@
     <div class="wrap-wide">
       <span class="sec-kicker">Каталог</span>
       <h2>Каталог</h2>
-      <p class="sub">У каждого материала есть короткий видео-анонс. Купите то, что подходит вам.</p>
+      <p class="sub">Материалы появятся здесь, когда мы добавим их в админке.</p>
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
@@ -421,13 +422,21 @@
 <script src="catalog.js"></script>
 <script>
 function renderCatalog(products) {
-	var types = ["webinar", "course"]
-	types.forEach(function (t) {
-		var box = document.getElementById("box-" + t)
-		box.querySelectorAll(".pcard").forEach(function (n) { n.remove() })
-		var items = products.filter(function (p) { return p.type === t })
-		document.getElementById("cnt-" + t).textContent = items.length
-		items.forEach(function (p) {
+		var types = ["webinar", "course"]
+		var emptyHint = { webinar: "Скоро здесь появятся вебинары.", course: "Скоро здесь появятся курсы." }
+		types.forEach(function (t) {
+			var box = document.getElementById("box-" + t)
+			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
+			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
+			document.getElementById("cnt-" + t).textContent = items.length
+			if (!items.length) {
+				var empty = document.createElement("p")
+				empty.className = "cat-empty"
+				empty.textContent = emptyHint[t]
+				box.appendChild(empty)
+				return
+			}
+			items.forEach(function (p) {
 			var card = document.createElement("div")
 			card.className = "pcard"
 			card.innerHTML =
@@ -470,9 +479,12 @@ function closeWatch() {
 document.getElementById("watchClose").addEventListener("click", closeWatch)
 document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
-var cachedProducts = null
-try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
-renderCatalog(cachedProducts && cachedProducts.length ? cachedProducts : DEMO_PRODUCTS)
+	var cachedProducts = null
+	try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
+	if (cachedProducts && cachedProducts.length) {
+		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
+	}
+	renderCatalog(cachedProducts && cachedProducts.length ? cachedProducts : [])
 
 document.addEventListener("click", function(e){
 	if(e.target.classList && e.target.classList.contains("price-sub")){
@@ -629,11 +641,12 @@ document.addEventListener("click", function(e){
 
     const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
-    snap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
-    if (products.length) {
-      renderCatalog(products)
-      try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
-    }
+    snap.forEach((d) => {
+      var item = Object.assign({ id: d.id }, d.data())
+      if (!DEMO_IDS[item.id]) products.push(item)
+    })
+    renderCatalog(products)
+    try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
   } catch (e) { /* остаётся демо-каталог */ }
 </script>
 </body>

@@ -376,7 +376,7 @@ function renderOrders() {
 			"<td><strong>" + esc(o.itemTitle) + "</strong><br><span class='muted'>" + esc(o.price) + " сом</span></td>" +
 			"<td>" + esc(o.buyer || "—") + "</td>" +
 			'<td class="contact">' + esc(o.method) + '<br><a href="' + esc(contactLink(o.method, o.contact)) + '" target="_blank" rel="noopener">' + esc(o.contact) + "</a></td>" +
-			'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : (o.status === "qr-auto" ? "QR — доступ выдан, сверьте оплату" : "новая")) + "</span></td>" +
+				'<td><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + (o.status === "done" ? "готово" : (o.pay === "qr" || o.method === "QR" ? "запрос QR — проверьте оплату" : "новая")) + "</span></td>" +
 			"<td>" + (o.status === "done" ? "" : '<button class="btn btn-ghost btn-sm" data-done="' + esc(o._id) + '">Выполнено</button> ') +
 			'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></td>' +
 			"</tr>"

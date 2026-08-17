@@ -278,8 +278,7 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
         const pSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
         const products = []
         pSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
-        if (products.length) M.products = products
-        else M.products = DEMO_PRODUCTS
+        M.products = products.filter(function (p) { return p && !DEMO_IDS[p.id] })
         for (const id of M.owned) {
           try {
             const cSnap = await fsMod.getDoc(fsMod.doc(db, "productContent", id))

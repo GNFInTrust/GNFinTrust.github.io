@@ -101,36 +101,22 @@
 
     <h3 class="step"><span class="n">1</span>Выберите способ оплаты</h3>
     <div class="tabs" role="tablist">
-      <button class="tab on" id="tabQr" type="button">QR-код — доступ сразу</button>
+      <button class="tab on" id="tabQr" type="button">QR-код — проверка админом</button>
       <button class="tab" id="tabMbank" type="button">МБанк</button>
       <button class="tab" id="tabVisa" type="button">Карта Visa</button>
     </div>
     <div class="pane on" id="paneQr">
       <div class="qrs" id="qrList"></div>
-      <p class="hint" style="margin-top:10px">Отсканируйте QR в приложении банка и переведите ровно ту сумму, что указана выше — доступ откроется сразу.</p>
+      <p class="hint" style="margin-top:10px">Отсканируйте QR в приложении банка и переведите ровно ту сумму, что указана выше. Админ проверит оплату и откроет доступ.</p>
     </div>
     <div class="pane" id="paneMbank"><div id="mbankNums"></div></div>
     <div class="pane" id="paneVisa"><div id="visaNums"></div></div>
-    <p class="hint" id="manualHint" style="display:none">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек — мы сами напишем вам и пришлём доступ.</p>
+    <p class="hint" id="manualHint">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек — мы сами напишем вам и пришлём доступ.</p>
   </div>
 
-  <div class="card" id="stepQr">
-    <h3 class="step"><span class="n">2</span>Получите доступ сразу</h3>
-    <p class="lede">Оплатили по QR? Нажмите кнопку — покупка сразу появится в вашем кабинете. Мы сверяем оплаты с поступлениями в банке: если перевода не будет, доступ закроем.</p>
-    <div id="qrSignedIn" style="display:none">
-      <button class="submit" id="qrClaim" type="button">Я оплатил(а) по QR — открыть доступ</button>
-      <div class="ok" id="qrOk"><strong>Доступ открыт!</strong> Покупка уже в вашем кабинете. <a href="members.html">Открыть кабинет →</a></div>
-      <div class="err" id="qrErr"></div>
-    </div>
-    <div id="qrSignedOut">
-      <p class="hint" style="margin-bottom:12px">Чтобы доступ открылся автоматически, войдите или зарегистрируйтесь — покупка привяжется к вашему аккаунту.</p>
-      <a class="submit" href="login.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Войти / Регистрация</a>
-    </div>
-  </div>
-
-  <div class="card" id="stepManual" style="display:none">
-    <h3 class="step"><span class="n">2</span>Куда прислать ваш логин?</h3>
-    <p class="lede">Когда мы подтвердим оплату, пришлём личный логин, пароль и вашу покупку.</p>
+  <div class="card" id="stepManual">
+    <h3 class="step"><span class="n">2</span>Отправьте заявку</h3>
+    <p class="lede">Оплатили? Оставьте контакт — админ сверит перевод и пришлёт доступ.</p>
     <label>Способ связи</label>
     <div class="chips" id="chips">
       <button class="chip on" data-m="WhatsApp" type="button">WhatsApp</button>
@@ -160,18 +146,27 @@ var PLACEHOLDERS = {
 var METHOD_RU = { WhatsApp: "WhatsApp", Email: "почту", Telegram: "Telegram" }
 
 function currentItem() {
-	var id = new URLSearchParams(location.search).get("item")
-	return productById(state.products, id) || state.products[0]
-}
+		var id = new URLSearchParams(location.search).get("item")
+		var list = (state.products || []).filter(function (p) { return p && !DEMO_IDS[p.id] })
+		return productById(list, id) || list[0] || null
+	}
 
-function renderItem() {
-	var p = currentItem()
-	document.getElementById("iTitle").textContent = locTitle(p)
-	document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
-	document.getElementById("iDesc").textContent = locDesc(p)
-	document.getElementById("iPrice").textContent = formatPrice(p.price)
-	document.getElementById("iPriceSub").textContent = formatPriceSub(p.price)
-}
+	function renderItem() {
+		var p = currentItem()
+		if (!p) {
+			document.getElementById("iTitle").textContent = "Каталог ещё пуст — материалы добавим позже."
+			document.getElementById("iKind").textContent = ""
+			document.getElementById("iDesc").textContent = ""
+			document.getElementById("iPrice").textContent = ""
+			document.getElementById("iPriceSub").textContent = ""
+			return
+		}
+		document.getElementById("iTitle").textContent = locTitle(p)
+		document.getElementById("iKind").textContent = TYPE_LABEL[p.type] || p.type
+		document.getElementById("iDesc").textContent = locDesc(p)
+		document.getElementById("iPrice").textContent = formatPrice(p.price)
+		document.getElementById("iPriceSub").textContent = formatPriceSub(p.price)
+	}
 document.addEventListener("click", function(e){
 	if(e.target.id === "iPriceSub" || (e.target.classList && e.target.classList.contains("price-sub"))){
 		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
@@ -242,9 +237,8 @@ function setTab(mode) {
 	document.getElementById("paneQr").classList.toggle("on", mode === "qr")
 	document.getElementById("paneMbank").classList.toggle("on", mode === "mbank")
 	document.getElementById("paneVisa").classList.toggle("on", mode === "visa")
-	document.getElementById("manualHint").style.display = mode === "qr" ? "none" : "block"
-	document.getElementById("stepQr").style.display = mode === "qr" ? "block" : "none"
-	document.getElementById("stepManual").style.display = mode === "qr" ? "none" : "block"
+		document.getElementById("manualHint").style.display = "block"
+		document.getElementById("stepManual").style.display = "block"
 }
 
 document.getElementById("chips").addEventListener("click", function (e) {
@@ -262,14 +256,15 @@ document.getElementById("send").addEventListener("click", async function () {
 	var err = document.getElementById("err")
 	err.style.display = "none"
 	if (!contact) { err.textContent = "Укажите контакт (" + state.method + "), чтобы мы могли прислать логин."; err.style.display = "block"; return }
-	var p = currentItem()
-	if (state.db) {
+		var p = currentItem()
+		if (!p) { err.textContent = "Каталог ещё пуст — материалы добавим позже."; err.style.display = "block"; return }
+		if (state.db) {
 		try {
-			await state.fsMod.addDoc(state.fsMod.collection(state.db, "orders"), {
-				itemId: p.id, itemTitle: p.title, price: Number(p.price),
-				method: state.method, contact: contact, buyer: buyer,
-				status: "new", createdAt: new Date().toISOString(),
-			})
+				await state.fsMod.addDoc(state.fsMod.collection(state.db, "orders"), {
+					itemId: p.id, itemTitle: p.title, price: Number(p.price),
+					method: state.method, contact: contact, buyer: buyer,
+					pay: state.pay, status: "new", createdAt: new Date().toISOString(),
+				})
 		} catch (e) {
 			err.textContent = "Не удалось отправить заявку: " + (e.message || e)
 			err.style.display = "block"
@@ -299,35 +294,15 @@ renderPayment()
     const db = fsMod.getFirestore(app)
     const auth = authMod.getAuth(app)
     state.db = db; state.fsMod = fsMod
-    authMod.onAuthStateChanged(auth, (user) => {
-      state.user = user || null
-      document.getElementById("qrSignedIn").style.display = user ? "block" : "none"
-      document.getElementById("qrSignedOut").style.display = user ? "none" : "block"
-    })
-    document.getElementById("qrClaim").addEventListener("click", async function () {
-      const qErr = document.getElementById("qrErr")
-      qErr.style.display = "none"
-      if (!state.user) { location.href = "login.html"; return }
-      const p = currentItem()
-      try {
-        await fsMod.setDoc(fsMod.doc(db, "users", state.user.uid), { purchases: fsMod.arrayUnion(p.id) }, { merge: true })
-        await fsMod.addDoc(fsMod.collection(db, "orders"), {
-          itemId: p.id, itemTitle: p.title, price: Number(p.price),
-          method: "QR", contact: state.user.email || "", buyer: state.user.email || "",
-          status: "qr-auto", createdAt: new Date().toISOString(),
-        })
-        document.getElementById("qrOk").style.display = "block"
-        this.disabled = true
-        this.style.opacity = ".6"
-      } catch (e) {
-        qErr.textContent = "Не удалось открыть доступ: " + (e.message || e)
-        qErr.style.display = "block"
-      }
-    })
+    authMod.onAuthStateChanged(auth, (user) => { state.user = user || null })
     const prodSnap = await fsMod.getDocs(fsMod.collection(db, "products"))
     const products = []
-    prodSnap.forEach((d) => products.push(Object.assign({ id: d.id }, d.data())))
-    if (products.length) { state.products = products; renderItem() }
+    prodSnap.forEach((d) => {
+      var item = Object.assign({ id: d.id }, d.data())
+      if (!DEMO_IDS[item.id]) products.push(item)
+    })
+    state.products = products
+    renderItem()
     const paySnap = await fsMod.getDoc(fsMod.doc(db, "settings", "payment"))
     if (paySnap.exists()) { state.payment = paySnap.data(); renderPayment() }
   } catch (e) { /* остаются демо-реквизиты */ }
