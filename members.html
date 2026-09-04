@@ -105,14 +105,14 @@
   <div class="state on" id="stateSignedOut">
     <div class="center">
       <h1>Мой кабинет</h1>
-      <p>Войдите с логином и паролем, которые мы прислали после покупки.</p>
+      <p>Войдите с логином и паролем из письма, которое мы прислали после покупки.</p>
       <a class="btn btn-primary" href="login.html">Войти</a>
     </div>
   </div>
 
   <div class="promo-card" id="promoCard" style="display:none">
     <h2>Бесплатное видео за подписку</h2>
-    <p>Подпишитесь на <a id="promoInsta" href="https://instagram.com/" target="_blank" rel="noopener">наш Instagram</a> и привяжите свой ник — после проверки подписки мы добавим одно видео в ваш кабинет бесплатно.</p>
+    <p>Подпишитесь на <a id="promoInsta" href="https://instagram.com/" target="_blank" rel="noopener">наш Instagram</a> и укажите свой ник — как только проверим подписку, добавим видео в ваш кабинет.</p>
     <div class="promo-form" id="promoForm">
       <input type="text" id="promoUser" placeholder="Ваш ник в Instagram, например @user">
       <button class="btn btn-primary" id="promoSend" type="button">Привязать и получить</button>
@@ -123,17 +123,17 @@
   <div class="state" id="stateEmpty">
     <div class="center">
       <h1>Пока пусто</h1>
-      <p>В вашем аккаунте ещё нет покупок. Если вы уже оплатили — мы добавим доступ сразу после проверки оплаты.</p>
+      <p>Здесь пока ничего нет. Если уже оплатили, а покупки не видно — напишите нам, добавим вручную.</p>
       <a class="btn btn-primary" href="index.html#catalog">Открыть каталог</a>
     </div>
   </div>
 
   <div class="state" id="stateList">
-    <div class="banner">С возвращением! Всё, что вы купили, — ниже.</div>
+    <div class="banner">С возвращением! Вот всё, что вы уже купили:</div>
     <h1 class="page">Мои покупки</h1>
     <p class="sub">Нажмите на материал, чтобы открыть его.</p>
     <div id="list"></div>
-    <p class="note">Пожалуйста, не передавайте аккаунт другим — каждая покупка помогает делать новые материалы. </p>
+    <p class="note">Не передавайте аккаунт другим — с каждой покупки мы делаем новые материалы.</p>
   </div>
 
   <div class="state" id="stateDetail">
@@ -208,7 +208,7 @@ function openItem(id) {
 	if (isRealLink(c.video)) {
 		safeEmbed(v, c.video, "Видео")
 	} else {
-		v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео скоро появится — админ ещё не прикрепил его.</span></div>'
+		v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Скоро покажем видео — админ ещё не прикрепил его.</span></div>'
 	}
 	var t = document.getElementById("dText")
 	if (c.text) {
@@ -230,7 +230,7 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
 <script type="module">
   try {
     const { firebaseConfig } = await import("./firebase-config.js")
-    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("Сайт ещё не подключён к Firebase (см. README).")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("Сайт пока не подключён к Firebase (см. README).")
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
     const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
     const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
@@ -309,7 +309,7 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
             if (uData.promoStatus === "pending") {
               document.getElementById("promoForm").style.display = "none"
               promoSt.style.display = "block"
-              promoSt.textContent = "Аккаунт @" + (uData.instagram || "") + " привязан — проверяем подписку и добавим видео в ваш кабинет."
+              promoSt.textContent = "Аккаунт @" + (uData.instagram || "") + " привязан — как проверим подписку, сразу добавим видео в кабинет."
             }
             document.getElementById("promoCard").style.display = "block"
             document.getElementById("promoSend").addEventListener("click", async () => {

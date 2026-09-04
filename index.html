@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>GN FinTrust — вебинары, семинары и курсы</title>
-<meta name="description" content="GN FinTrust: практические финансовые вебинары, семинары и курсы. Смотрите анонс, покупайте в два клика — доступ придёт в WhatsApp, на почту или в Telegram.">
+<meta name="description" content="GN FinTrust: вебинары, семинары и курсы по финансам без воды. Смотрите анонс, оставляйте заявку — логин пришлём в WhatsApp, на почту или в Telegram.">
 <link rel="stylesheet" href="theme.css">
 <style>
   body{background:
@@ -55,7 +55,6 @@
   .hero-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
 
   section{padding:96px 0}
-  section#how{padding:110px 0 96px}
   h2{font-size:clamp(28px,3.4vw,42px);margin-bottom:12px;text-align:center}
   .sub{color:var(--slate);margin:0 auto 44px;max-width:640px;text-align:center}
   .sec-kicker{display:block;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--foil);margin-bottom:10px}
@@ -92,20 +91,6 @@
   .pbody p{font-size:14.5px;color:var(--slate);margin-bottom:16px}
   .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .step{
-    background:#fff;border:1px solid var(--line);border-radius:2px;padding:24px 22px;
-    opacity:0;transform:translateY(14px);
-    transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1),box-shadow .25s ease;
-    position:relative;overflow:hidden
-  }
-  .step::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--red),var(--foil))}
-  .step.show{opacity:1;transform:translateY(0)}
-  .step:hover{box-shadow:var(--shadow-md)}
-  .step .num{font-family:var(--mono);font-size:13px;color:var(--foil);letter-spacing:.12em;margin-bottom:14px}
-  .step h3{font-size:18px;margin-bottom:8px}
-  .step p{color:var(--slate);font-size:14.5px}
-
   .team-sec{padding:88px 0 92px}
   .team{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
   .tcard{
@@ -135,12 +120,11 @@
   #teamNext{right:6px}
 
   @media (prefers-reduced-motion:reduce){
-    .box,.step,.tcard{opacity:1;transform:none}
+    .box,.tcard{opacity:1;transform:none}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
   }
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
-    .steps{grid-template-columns:1fr}
     .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 10%}
     .team::-webkit-scrollbar{display:none}
     .tcard{flex:0 0 80%;scroll-snap-align:center}
@@ -162,7 +146,7 @@
     .hero h1{font-size:28px}
     .hero p{font-size:16px}
     .hero .wrap{gap:26px}
-    .boxes,.steps,.team{gap:16px}
+    .boxes,.team{gap:16px}
     .box{padding:16px}
     .pbody{padding:16px}
     .pbody h4{font-size:17px}
@@ -172,7 +156,6 @@
     .wbody{padding:20px 16px 24px}
     .wbody h3{font-size:20px}
     section{padding:64px 0}
-    section#how{padding:72px 0 64px}
     h2{font-size:26px}
     .sub{margin-bottom:32px}
   }
@@ -184,7 +167,6 @@
     .hero p{font-size:14.5px;margin-bottom:18px}
     .hero .eyebrow{margin-bottom:8px}
     section{padding:48px 0}
-    section#how{padding:56px 0 48px}
     .team-sec{padding:48px 0 52px}
     .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 8%}
     .team::-webkit-scrollbar{display:none}
@@ -193,7 +175,6 @@
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
     .team-nav{display:block}
     .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
-    .steps{grid-template-columns:repeat(3,1fr);gap:18px}
     .watch-modal{padding:0}
     .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
     .wvideo{aspect-ratio:auto;height:60vh}
@@ -218,7 +199,7 @@
 <a class="skip" href="#catalog">К каталогу</a>
 <div class="promo-bar" id="promoBar">
   <div class="wrap promo-in">
-    <a class="promo-txt" href="members.html#promo">Зарегистрируйтесь и подпишитесь на наш Instagram — получите одно видео бесплатно.</a>
+    <a class="promo-txt" href="members.html#promo">Подпишитесь на наш Instagram — подарим одно видео бесплатно.</a>
     <a class="promo-btn" href="members.html#promo">Получить</a>
     <button class="promo-x" id="promoClose" type="button" aria-label="Закрыть">×</button>
   </div>
@@ -278,10 +259,10 @@
       <div class="hero-copy">
         <span class="eyebrow">Вебинары · Семинары · Курсы</span>
         <h1>Финансовые навыки, которые <em>окупаются</em></h1>
-        <p>Смотрите бесплатный анонс каждого вебинара, семинара и курса. Оплата переводом по номеру или по QR-коду — логин и доступ придут в WhatsApp, на почту или в Telegram.</p>
+        <p>У каждого материала есть бесплатный анонс — смотрите прямо на сайте. Понравилось? Жмите «Купить» и оставляйте заявку — логин пришлём в WhatsApp, на почту или в Telegram.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#catalog">Что внутри</a>
-          <span class="hero-note">Одна оплата · доступ навсегда</span>
+          <span class="hero-note">Заплатили один раз — смотрите сколько хотите</span>
         </div>
       </div>
     </div>
@@ -291,7 +272,7 @@
     <div class="wrap">
       <span class="sec-kicker">Люди за курсами</span>
       <h2>Наша команда</h2>
-      <p class="sub">Люди, которые ведут вебинары, семинары и курсы.</p>
+      <p class="sub">Кто ведёт вебинары и отвечает на ваши вопросы.</p>
       <div class="team-wrap">
       <div class="team">
         <article class="tcard">
@@ -302,7 +283,7 @@
           <div class="tinfo">
             <h3>Кубатова Гулзат</h3>
             <span class="trole">Основатель, главный эксперт</span>
-            <p>Ведёт программу GN FinTrust: практика налогов, учёта и денег в бизнесе.</p>
+            <p>Ведёт программу GN FinTrust: налоги, учёт и деньги в бизнесе — на практике, без теории ради теории.</p>
           </div>
         </article>
         <article class="tcard">
@@ -313,7 +294,7 @@
           <div class="tinfo">
             <h3>Чолпонбек кызы Назима</h3>
             <span class="trole">Эксперт</span>
-            <p>Работает с предпринимателями на вебинарах и живых встречах.</p>
+            <p>Отвечает предпринимателям на вебинарах и живых встречах — разбирает реальные кейсы.</p>
           </div>
         </article>
         <article class="tcard">
@@ -324,7 +305,7 @@
           <div class="tinfo">
             <h3>Болчурова Алия</h3>
             <span class="trole">Эксперт</span>
-            <p>Помогает разобрать материалы курсов и довести практику до результата.</p>
+            <p>Разбирает с вами материалы курсов и помогает дойти от просмотра до результата.</p>
           </div>
         </article>
       </div>
@@ -340,35 +321,10 @@
     <div class="wrap-wide">
       <span class="sec-kicker">Каталог</span>
       <h2>Каталог</h2>
-      <p class="sub">Материалы появятся здесь, когда мы добавим их в админке.</p>
+      <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-soft" id="how">
-    <div class="wrap">
-      <span class="sec-kicker">Три шага</span>
-      <h2>Как купить</h2>
-      <p class="sub">Без карт на сайте и без подписок — одна оплата, доступ навсегда.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="num">01</div>
-          <h3>Выберите и оплатите</h3>
-          <p>Нажмите «Купить», переведите деньги по номеру или отсканируйте QR-код — как удобнее.</p>
-        </div>
-        <div class="step">
-          <div class="num">02</div>
-          <h3>Скажите, куда написать</h3>
-          <p>Выберите WhatsApp, почту или Telegram и оставьте контакт.</p>
-        </div>
-        <div class="step">
-          <div class="num">03</div>
-          <h3>Получите логин</h3>
-          <p>Мы пришлём личный логин и пароль. Войдите — покупка уже в вашем кабинете.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -382,7 +338,7 @@
   <div class="wrap foot">
     <div class="foot-brand">
       <a class="brand" href="#"><span class="brand-mark">GN</span> GN FinTrust</a>
-      <p>Практические вебинары, семинары и курсы по финансам и бухгалтерии.</p>
+      <p>Вебинары, семинары и курсы по финансам и бухгалтерии — берите и применяйте в работе.</p>
     </div>
     <div class="foot-links">
       <a href="#catalog">Каталог</a>
@@ -423,7 +379,7 @@
 <script>
 function renderCatalog(products) {
 		var types = ["webinar", "course"]
-		var emptyHint = { webinar: "Скоро здесь появятся вебинары.", course: "Скоро здесь появятся курсы." }
+		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
 		types.forEach(function (t) {
 			var box = document.getElementById("box-" + t)
 			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
@@ -494,7 +450,7 @@ document.addEventListener("click", function(e){
 })
 
 ;(function(){
-	var boxes = document.querySelectorAll(".box, .step, .tcard")
+		var boxes = document.querySelectorAll(".box, .tcard")
 	var observer = new IntersectionObserver(function(entries){
 		entries.forEach(function(entry){
 			if(entry.isIntersecting){

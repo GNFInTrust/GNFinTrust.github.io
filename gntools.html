@@ -77,38 +77,38 @@
 
 <main>
   <h1>GN Tools <span class="beta">БЕТА-ТЕСТ</span></h1>
-  <p class="lede">Одна программа для Windows — WhatsApp, Instagram, Telegram в Excel + документы на отгрузку + конвертер таблиц (XLSX ↔ XLS ↔ CSV). Аккаунт общий с сайтом. Каждый новый аккаунт получает <strong>бесплатные пробные токены</strong>.</p>
+  <p class="lede">Одна программа для Windows: выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы (XLSX ↔ XLS ↔ CSV). Аккаунт общий с сайтом. Каждый новый аккаунт получает <strong>бесплатные пробные токены</strong>.</p>
 
   <div class="card" style="border-left:4px solid var(--green);background:var(--green-soft)">
     <h2 style="color:var(--green);font-size:18px">Скачать программу</h2>
     <p style="font-size:15px;color:var(--text);margin-bottom:14px">Один файл .exe — мастер установки. Если GN Tools уже стоит на компьютере, мастер предложит <strong>обновить</strong> без полной переустановки: вход, WhatsApp-сессия, Node.js и Excel останутся. Если программы ещё нет — установит с нуля.</p>
-    <a class="submit" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe" style="background:var(--green);box-shadow:0 2px 8px rgba(47,115,81,.25)">Скачать GNTools.exe (установщик / обновление)</a>
-    <p class="hint">После установки на рабочем столе появится ярлык <strong>GN Tools</strong>. Откройте его в любой момент — программа запустится в своём окне Windows, не в Chrome.</p>
+    <a class="submit" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe" style="background:var(--green);box-shadow:0 2px 8px rgba(47,115,81,.25)">Скачать GNTools.exe (установка / обновление)</a>
+    <p class="hint">После установки на рабочем столе появится ярлык <strong>GN Tools</strong>. Откройте его в любой момент — программа запустится в своём окне Windows, не в браузере.</p>
     <p class="hint">Файл с GitHub Releases: GNTools.exe · SHA-256 <code id="exeHash" style="font-size:12px;word-break:break-all">ad04266bb57d9c7c554e8a2fb2afb6370035cb8f1e5222013dc15b3f57c9f91c</code></p>
     <div class="tip" style="margin-top:14px">
-      <strong>Windows / браузер пишет «вирус»?</strong> Это ложное срабатывание: файл не подписан сертификатом Microsoft, поэтому SmartScreen и Chrome пугают любой новый установщик. Это наш официальный мастер с GitHub.
+      <strong>Windows или браузер пишет «вирус»?</strong> Это ложное срабатывание: файл не подписан сертификатом Microsoft, поэтому SmartScreen и Chrome пугают любой новый установщик. Это наш официальный мастер с GitHub.
       <ol style="margin:8px 0 0;padding-left:20px">
         <li>В Chrome: <strong>Сохранить</strong> → стрелка у скачанного файла → <strong>Оставить</strong>.</li>
         <li>При запуске: <strong>Подробнее</strong> → <strong>Выполнить в любом случае</strong>.</li>
-        <li>Проверьте хеш выше, если хотите убедиться, что файл не подменён.</li>
+        <li>Хотите убедиться, что файл не подменён — сверьте хеш выше.</li>
       </ol>
     </div>
   </div>
 
   <div class="card">
-    <h2>Как работает доступ</h2>
+    <h2>Как устроен доступ</h2>
     <div style="display:grid;gap:10px;margin-bottom:6px">
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--green-soft);border-radius:3px;padding:11px 13px">
         <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
-        <div><strong>Бесплатный тест.</strong> После скачивания и входа в программу на ваш аккаунт автоматически начисляются пробные токены. WhatsApp = 3 токена, Instagram = 2, Telegram = 1, Документы = 1-3.рытие документов.</div>
+        <div><strong>Сначала — бесплатно.</strong> Скачали, вошли — пробные токены уже на счёте. Хватит проверить каждую функцию: WhatsApp, Instagram, Telegram и документы.</div>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--red-soft);border-radius:3px;padding:11px 13px">
         <span style="flex:none;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
-        <div><strong>Докупка.</strong> Когда пробные токены закончатся — выберите ниже пакет токенов, оплатите и нажмите «Я оплатил(а)». Админ проверит и включит доступ.</div>
+        <div><strong>Потом — докупка.</strong> Пробные токены закончились? Выберите пакет ниже, оплатите и нажмите «Я оплатил(а)». Проверим перевод и включим доступ.</div>
       </div>
-      
+
     </div>
-    <p class="hint">Пробные токены начисляются при первом входе. Дальше докупайте токены на этой странице.</p>
+    <p class="hint">Пробные токены начисляются один раз — при первом входе. Дальше докупайте пакеты на этой странице.</p>
   </div>
 
   <div class="card">
@@ -130,8 +130,8 @@
     <h3 style="margin-top:0">① Установка и первый запуск</h3>
     <ol>
       <li>Скачайте GNTools.exe и запустите.</li>
-      <li>Если программа уже есть — выберите «Обновить»: заменятся только файлы приложения. Если нет — мастер сам скачает Node.js и установит GN Tools. После этого нажмите «Запустить».</li>
-      <li>В программе войдите с почтой и паролем от этого сайта или создайте новый аккаунт. <strong>Пробные использования начислятся автоматически.</strong></li>
+      <li>Если программа уже стоит — выберите «Обновить»: заменятся только файлы приложения. Если нет — мастер сам скачает Node.js и установит GN Tools. После этого нажмите «Запустить».</li>
+      <li>Войдите с почтой и паролем от этого сайта или создайте новый аккаунт. <strong>Пробные токены начислятся сами.</strong></li>
     </ol>
 
     <h3>② WhatsApp, Instagram и Telegram → Excel</h3>
@@ -142,7 +142,7 @@
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
         <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#C8102E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
-        <div style="font-size:14px"><strong>WhatsApp:</strong> отсканируйте QR в телефоне. <strong>Instagram / Telegram:</strong> войдите в своём аккаунте в открывшемся окне — копировать переписку не нужно.</div>
+        <div style="font-size:14px"><strong>WhatsApp:</strong> отсканируйте QR в телефоне. <strong>Instagram / Telegram:</strong> войдите в аккаунт в открывшемся окне — копировать переписку вручную не нужно.</div>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
         <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#C8102E;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
@@ -159,14 +159,14 @@
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
         <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#2F7351;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
-        <div style="font-size:14px">Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальные зкладки заполнятся автоматически.</div>
+        <div style="font-size:14px">Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальные вкладки заполнятся автоматически.</div>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:2px;padding:11px 13px">
         <span style="flex:none;width:24px;height:24px;border-radius:50%;background:#2F7351;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
         <div style="font-size:14px">Откройте нужную вкладку: <strong>Упаковочный лист</strong>, <strong>ТТН (1-Т)</strong>, <strong>ТН (ТОРГ-12)</strong> или <strong>CMR</strong> — нажмите <strong>Ctrl+P</strong>.</div>
       </div>
     </div>
-    <div class="tip">⏳ Документы открыты — работайте сколько угодно, печатайте сколько надо. Использование спишется один раз при открытии.</div>
+    <div class="tip">⏳ Открыли документы — работайте сколько нужно и печатайте без ограничений. Токены спишутся один раз, при открытии.</div>
 
     <h3 style="margin-top:18px">Частые вопросы</h3>
     <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
@@ -175,28 +175,28 @@
     </details>
     <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
       <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">QR-код не появляется</summary>
-      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Подождите 20–30 секунд — браузер загружается. Если дольше нет — запустите Chrome или Brave вручную и убедитесь, что они открываются.</div>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Подождите 20–30 секунд — браузеру нужно время. Если QR так и не появился, откройте Chrome или Brave вручную и проверьте, что они запускаются.</div>
     </details>
     <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:6px">
       <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">Баланс не обновился после оплаты</summary>
-      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Доступ включает админ вручную после проверки оплаты. Перезапустите программу или выйдите/войдите снова — баланс подгрузится.</div>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Доступ включаем вручную, после проверки оплаты. Перезапустите программу или выйдите и войдите снова — баланс подгрузится.</div>
     </details>
     <details style="border:1px solid var(--border);border-radius:2px;margin-bottom:0">
       <summary style="padding:10px 13px;cursor:pointer;font-size:14px;font-weight:600">Пишет «Нет доступа»</summary>
-      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Закончились использования. Выберите тариф ниже, оплатите и нажмите «Я оплатил(а)» — админ проверит и начислит доступ.</div>
+      <div style="padding:0 13px 12px;font-size:13.5px;color:var(--text2)">Закончились токены. Выберите пакет ниже, оплатите и нажмите «Я оплатил(а)» — проверим и начислим.</div>
     </details>
   </div>
 
   <div class="card">
     <h2>Доступ и цены</h2>
-    <p>Новый аккаунт получает бесплатные пробные токены. Актуальные цены за каждое действие — в таблице «Цены» выше. Подписок нет — вы платите только токенами за то, что используете.</p>
-    <h3>Выберите пакет использований</h3>
+    <p>Новый аккаунт получает пробные токены бесплатно. Сколько токенов стоит каждое действие — в таблице выше. Подписок нет: платите только за то, чем реально пользуетесь.</p>
+    <h3>Выберите пакет токенов</h3>
     <div class="chips" id="opts">
-      <button class="chip" data-pack="10" data-price="100" type="button"><span class="t">10 использований</span><span class="p">100 сом</span></button>
-      <button class="chip" data-pack="20" data-price="200" type="button"><span class="t">20 использований</span><span class="p">200 сом</span></button>
-      <button class="chip on" data-pack="50" data-price="500" type="button"><span class="t">50 использований</span><span class="p">500 сом</span></button>
-      <button class="chip" data-pack="100" data-price="1000" type="button"><span class="t">100 использований</span><span class="p">1000 сом</span></button>
-      <button class="chip" data-pack="200" data-price="2000" type="button"><span class="t">200 использований</span><span class="p">2000 сом</span></button>
+      <button class="chip" data-pack="10" data-price="100" type="button"><span class="t">10 токенов</span><span class="p">100 сом</span></button>
+      <button class="chip" data-pack="20" data-price="200" type="button"><span class="t">20 токенов</span><span class="p">200 сом</span></button>
+      <button class="chip on" data-pack="50" data-price="500" type="button"><span class="t">50 токенов</span><span class="p">500 сом</span></button>
+      <button class="chip" data-pack="100" data-price="1000" type="button"><span class="t">100 токенов</span><span class="p">1000 сом</span></button>
+      <button class="chip" data-pack="200" data-price="2000" type="button"><span class="t">200 токенов</span><span class="p">2000 сом</span></button>
     </div>
     <h3>Оплатите удобным способом</h3>
     <div id="payNums"></div>
@@ -204,11 +204,11 @@
     <p class="hint">Переведите ровно ту сумму, что указана выше.</p>
     <div id="buyIn" style="display:none">
       <button class="submit" id="claim" type="button">Я оплатил(а) — включите доступ</button>
-      <div class="ok" id="ok"><strong>Заявка получена!</strong> Мы проверим оплату и включим доступ на ваш аккаунт <span id="okEmail"></span>. Перезапустите программу или войдите заново, когда мы подтвердим.</div>
+      <div class="ok" id="ok"><strong>Заявка у нас!</strong> Проверим оплату и включим доступ на аккаунт <span id="okEmail"></span>. После подтверждения перезапустите программу или войдите заново.</div>
       <div class="err" id="err"></div>
     </div>
     <div id="buyOut">
-      <p class="hint" style="margin:14px 0 0">Чтобы мы знали, кому включить доступ — войдите в аккаунт.</p>
+      <p class="hint" style="margin:14px 0 0">Войдите в аккаунт — так мы поймём, кому начислять токены.</p>
       <a class="submit" href="login.html">Войти / Регистрация</a>
     </div>
   </div>
@@ -305,7 +305,7 @@ renderPay()
         await fsMod.addDoc(fsMod.collection(db, "orders"), {
           type: "gntools",
           kind: "tokens",
-          itemTitle: "GN Tools: " + PACK.tokens + " использований",
+          itemTitle: "GN Tools: " + PACK.tokens + " токенов",
           price: Number(PACK.price),
           method: "GN Tools",
           contact: USER.email || "",
@@ -319,7 +319,7 @@ renderPay()
         this.disabled = true
         this.style.opacity = ".6"
       } catch (e) {
-        err.textContent = "Не удалось отправить заявку: " + (e.message || e)
+        err.textContent = "Не получилось отправить заявку: " + (e.message || e)
         err.style.display = "block"
       }
     })

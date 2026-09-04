@@ -198,18 +198,27 @@ img,iframe,video{max-width:100%}
     flex-direction:column;align-items:stretch;gap:4px;box-shadow:var(--shadow-lg)
   }
   .nav-links.open{display:flex}
-  .nav-links a{padding:12px 12px;min-height:44px}
+  .nav-links a{padding:12px 12px;min-height:44px;border-radius:2px}
   .nav-links a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--foil);background:var(--red-soft)}
   .nav-tools .btn{display:none}
   .nav-tools #navAdmin{display:none !important}
   .site-header{position:sticky}
+  .nav-toggle:active{border-color:var(--red)}
+  .site-footer-slim{padding:26px 0 24px}
 }
 @media (max-width:560px){
   .wrap,.wrap-wide{padding:0 16px}
   .promo-bar{font-size:13px}
-  .promo-in{gap:10px}
+  .promo-in{gap:10px;padding-top:8px;padding-bottom:8px}
+  .promo-txt{line-height:1.35}
+  .promo-btn{padding:8px 12px;font-size:12px}
+  .promo-x{padding:8px 4px;font-size:22px}
   .fab-wa{width:52px;height:52px}
+  .site-footer{padding:36px 0 30px}
+  .foot{gap:20px}
+  .foot-links{gap:14px;flex-direction:column;align-items:flex-start}
   .foot,.foot-copy{flex-direction:column;text-align:left}
+  .foot-copy{gap:10px}
   .nav-tools .nav-out{display:none}
   .brand{font-size:0;gap:0}
   .brand-mark{font-size:12px}
@@ -218,4 +227,5 @@ img,iframe,video{max-width:100%}
   .nav-links a,.nav-account,.nav-out{padding:12px 10px}
   .watch-close{width:44px;height:44px}
   .price-sub{padding:6px 0}
+  .made-by{padding:8px 0}
 }

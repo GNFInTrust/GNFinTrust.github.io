@@ -135,14 +135,14 @@
   <div id="gate">
     <div class="gatebox">
       <h1>Только для админов</h1>
-      <p id="gateText">Войдите в аккаунт админа, чтобы открыть панель. Как сделать себя админом — в README.</p>
+      <p id="gateText">Войдите в аккаунт админа, чтобы открыть панель. Как назначить админа — написано в README.</p>
       <a class="btn" href="login.html">Войти</a>
     </div>
   </div>
 
   <div id="panelWrap" style="display:none">
     <h1 class="page">Админ</h1>
-    <p class="lede">Сначала заявки: проверьте оплату, затем откройте доступ в «Аккаунты».</p>
+    <p class="lede">Сначала заявки: проверили оплату — потом открывайте доступ во вкладке «Аккаунты».</p>
 
     <div class="mtabs">
       <button class="mtab on" data-p="orders" type="button">Заявки <span class="tab-n" id="nOrders">0</span></button>
@@ -154,8 +154,8 @@
     </div>
 
     <div class="panel on" id="p-orders">
-      <h2>Заявки на оплату</h2>
-      <p class="sub">Покупатель нажал «Я оплатил(а)». Сверьте перевод, создайте логин во вкладке «Аккаунты», затем отметьте «Готово».</p>
+      <h2>Заявки на покупку</h2>
+      <p class="sub">Человек оставил заявку на странице покупки. Свяжитесь с ним, договоритесь об оплате, создайте логин во вкладке «Аккаунты» — и отметьте «Готово».</p>
       <div id="ordersWrap"></div>
     </div>
 
@@ -188,7 +188,7 @@
 
     <div class="panel" id="p-payment">
       <h2>Номера для оплаты</h2>
-      <p class="sub">Покупатели видят эти реквизиты. Если в названии есть «Visa» или «Карта» — попадёт во вкладку карты, остальные — в МБанк.</p>
+      <p class="sub">Эти реквизиты показываются на странице «GN Tools». Если в названии есть «Visa» или «Карта», номер попадёт во вкладку карты, остальные — в МБанк.</p>
       <div id="numWrap"></div>
       <div class="inline">
         <div><label for="numLabel">Название</label><input type="text" id="numLabel" placeholder="Перевод MBank"></div>
@@ -206,7 +206,7 @@
       <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
       <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
       <h2>Запись на семинары</h2>
-      <p class="sub">Google Календарь на сайте больше не используется. Запись идёт через Cal.com прямо на странице <a href="seminars.html">Семинары</a>. Даты и слоты меняйте в кабинете Cal.com — на сайте они обновятся сами.</p>
+      <p class="sub">Запись идёт через Cal.com прямо на странице <a href="seminars.html">Семинары</a>. Даты и слоты меняются в кабинете Cal.com — на сайте они обновятся сами.</p>
     </div>
 
     <div class="panel" id="p-logo">
@@ -380,11 +380,11 @@ function setTabCount(id, n) {
 		var list = A.orders.filter(function (o) { return o.type !== "gntools" })
 		var open = list.filter(function (o) { return o.status !== "done" }).length
 		setTabCount("nOrders", open)
-		if (!list.length) { w.innerHTML = '<p class="empty">Заявок пока нет. Когда кто-то нажмёт «Я оплатил(а)» — заявка появится здесь.</p>'; return }
+			if (!list.length) { w.innerHTML = '<p class="empty">Заявок пока нет. Как только кто-то оставит заявку на сайте — она появится здесь.</p>'; return }
 		w.innerHTML = '<div class="reqs">' + list.map(function (o) {
 			var when = String(o.createdAt || "").slice(0, 16).replace("T", " ")
 			var isQr = o.pay === "qr" || o.method === "QR"
-			var status = o.status === "done" ? "готово" : (isQr ? "запрос QR — проверьте оплату" : "новая")
+			var status = o.status === "done" ? "готово" : (isQr ? "запрос QR — проверьте оплату" : "новая заявка")
 			var href = contactLink(o.method, o.contact)
 			return '<article class="req' + (o.status === "done" ? " done" : "") + '">' +
 				'<div class="req-top"><span class="muted">' + esc(when) + '</span><span class="tag ' + (o.status === "done" ? "done" : "new") + '">' + status + "</span></div>" +

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
-<title>Оплата — GN FinTrust</title>
+<title>Заявка на покупку — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="theme.css">
 <style>
@@ -30,20 +30,8 @@
   .item p{font-size:13.5px;color:var(--slate);margin-top:4px}
   h3.step{font-size:17px;margin:0 0 14px}
   h3.step .n{display:inline-flex;width:26px;height:26px;border-radius:3px;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);margin-right:8px;vertical-align:-4px}
-  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-  .tab{flex:1;min-width:140px;padding:11px;border:1px solid var(--line);border-radius:3px;background:#fff;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--slate);transition:border-color .18s ease,color .18s ease,background-color .18s ease}
-  .tab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .pane{display:none}
-  .pane.on{display:block}
-  .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:3px;padding:12px 14px;margin-bottom:10px;background:var(--snow)}
-  .payrow .lbl{font-size:13px;color:var(--slate)}
-  .payrow .val{font-weight:700;font-size:15px;font-family:var(--mono)}
-  .copy{border:1px solid var(--line);background:#fff;border-radius:3px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body);font-weight:600;transition:border-color .18s ease,color .18s ease}
-  .copy:hover{border-color:var(--red);color:var(--red)}
-  .qrs{display:flex;gap:14px;flex-wrap:wrap}
-  .qrs img{width:180px;height:180px;object-fit:contain;border:1px solid var(--line);border-radius:3px;background:#fff;box-shadow:var(--shadow-sm)}
-  .qr-ph{width:180px;height:180px;border:2px dashed var(--line);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--slate);font-size:12px;text-align:center;padding:10px}
-  .qr-ph .big{font-size:30px;font-family:var(--head)}
+  .nopay{border:1px dashed var(--line-strong);border-radius:3px;background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
+  .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
   .hint{font-size:13px;color:var(--slate);margin-top:10px}
   label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
   input[type=text],input[type=email]{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
@@ -58,9 +46,8 @@
   .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:18px;font-size:14px}
   @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .card{padding:22px 18px}
-    .qrs img,.qr-ph{width:146px;height:146px}
     input[type=text],input[type=email]{font-size:16px}
-    button,.btn{min-height:44px}
+    button,.btn,.chip{min-height:44px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
@@ -87,8 +74,8 @@
 </header>
 
 <main>
-  <h1>Оформление покупки</h1>
-  <p class="lede" style="margin-bottom:22px">Одна оплата — доступ навсегда. Без подписок.</p>
+  <h1>Заявка на покупку</h1>
+  <p class="lede" style="margin-bottom:22px">Без подписок: заплатили один раз — доступ ваш навсегда.</p>
 
   <div class="card">
     <div class="item">
@@ -99,24 +86,16 @@
       <div class="price-wrap"><span class="price-main" id="iPrice"></span><span class="price-sub" id="iPriceSub"></span></div>
     </div>
 
-    <h3 class="step"><span class="n">1</span>Выберите способ оплаты</h3>
-    <div class="tabs" role="tablist">
-      <button class="tab on" id="tabQr" type="button">QR-код — проверка админом</button>
-      <button class="tab" id="tabMbank" type="button">МБанк</button>
-      <button class="tab" id="tabVisa" type="button">Карта Visa</button>
+    <h3 class="step"><span class="n">1</span>Способы оплаты</h3>
+    <div class="nopay">
+      <strong>Способов оплаты пока нет</strong>
+      Мы ещё не подключили оплату на сайте. Оставьте заявку ниже — как только оплата заработает, сразу напишем вам и всё оформим.
     </div>
-    <div class="pane on" id="paneQr">
-      <div class="qrs" id="qrList"></div>
-      <p class="hint" style="margin-top:10px">Отсканируйте QR в приложении банка и переведите ровно ту сумму, что указана выше. Админ проверит оплату и откроет доступ.</p>
-    </div>
-    <div class="pane" id="paneMbank"><div id="mbankNums"></div></div>
-    <div class="pane" id="paneVisa"><div id="visaNums"></div></div>
-    <p class="hint" id="manualHint">Переведите ровно ту сумму, что указана выше. Оплату проверяет живой человек — мы сами напишем вам и пришлём доступ.</p>
   </div>
 
   <div class="card" id="stepManual">
-    <h3 class="step"><span class="n">2</span>Отправьте заявку</h3>
-    <p class="lede">Оплатили? Оставьте контакт — админ сверит перевод и пришлёт доступ.</p>
+    <h3 class="step"><span class="n">2</span>Оставьте заявку</h3>
+    <p class="lede">Напишите, куда с вами связаться, — ответим лично и расскажем, как получить материал.</p>
     <label>Способ связи</label>
     <div class="chips" id="chips">
       <button class="chip on" data-m="WhatsApp" type="button">WhatsApp</button>
@@ -127,8 +106,8 @@
     <input type="text" id="contact" placeholder="+996 700 123 456">
     <label for="buyer">Ваше имя</label>
     <input type="text" id="buyer" placeholder="Айзат">
-    <button class="submit" id="send" type="button">Я оплатил(а) — пришлите логин</button>
-    <div class="ok" id="ok"><strong>Заявка получена!</strong> Мы проверим оплату и вскоре пришлём логин и пароль. Проверяйте: <span id="okMethod">WhatsApp</span>.</div>
+    <button class="submit" id="send" type="button">Отправить заявку</button>
+    <div class="ok" id="ok"><strong>Заявка у нас!</strong> Скоро напишем вам сюда: <span id="okMethod">WhatsApp</span>.</div>
     <div class="err" id="err"></div>
   </div>
 </main>
@@ -145,7 +124,7 @@
 <script src="catalog.js"></script>
 <script>
 var OWNER_EMAIL = "you@example.com" // TODO: ваша почта (используется, пока не настроен Firebase)
-var state = { products: DEMO_PRODUCTS, payment: DEMO_PAYMENT, method: "WhatsApp", pay: "qr", user: null, db: null, fsMod: null }
+var state = { products: DEMO_PRODUCTS, method: "WhatsApp", user: null, db: null, fsMod: null }
 
 var PLACEHOLDERS = {
 	WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456"],
@@ -162,8 +141,8 @@ function currentItem() {
 
 	function renderItem() {
 		var p = currentItem()
-		if (!p) {
-			document.getElementById("iTitle").textContent = "Каталог ещё пуст — материалы добавим позже."
+	if (!p) {
+		document.getElementById("iTitle").textContent = "Каталог пока пуст — скоро добавим материалы."
 			document.getElementById("iKind").textContent = ""
 			document.getElementById("iDesc").textContent = ""
 			document.getElementById("iPrice").textContent = ""
@@ -183,73 +162,6 @@ document.addEventListener("click", function(e){
 	}
 })
 
-function isVisaNumber(n) {
-	var s = (String(n.label || "") + " " + String(n.value || "")).toLowerCase()
-	if (s.indexOf("visa") >= 0 || s.indexOf("виза") >= 0 || s.indexOf("карта") >= 0 || s.indexOf("card") >= 0) return true
-	return String(n.value || "").replace(/\D/g, "").length === 16
-}
-function payRows(mount, list, emptyText) {
-	mount.innerHTML = ""
-	if (!list.length) {
-		var p = document.createElement("p")
-		p.className = "hint"
-		p.style.margin = "0 0 10px"
-		p.textContent = emptyText
-		mount.appendChild(p)
-		return
-	}
-	list.forEach(function (n) {
-		var row = document.createElement("div")
-		row.className = "payrow"
-		row.innerHTML = '<span><span class="lbl"></span><br><span class="val"></span></span><button class="copy" type="button">Копировать</button>'
-		row.querySelector(".lbl").textContent = n.label
-		row.querySelector(".val").textContent = n.value
-		row.querySelector(".copy").addEventListener("click", function () {
-			navigator.clipboard && navigator.clipboard.writeText(n.value)
-			this.textContent = "Скопировано"
-		})
-		mount.appendChild(row)
-	})
-}
-function renderPayment() {
-	var mbank = [], visa = []
-	state.payment.numbers.forEach(function (n) { (isVisaNumber(n) ? visa : mbank).push(n) })
-	payRows(document.getElementById("mbankNums"), mbank, "Номера МБанк скоро появятся.")
-	payRows(document.getElementById("visaNums"), visa, "Оплата картой Visa пока недоступна — оплатите через МБанк.")
-	var qr = document.getElementById("qrList")
-	qr.innerHTML = ""
-	state.payment.qrs.forEach(function (src) {
-		if (isRealLink(src)) {
-			var img = document.createElement("img")
-			img.src = src
-			img.loading = "lazy"
-			img.decoding = "async"
-			img.alt = "QR-код для оплаты"
-			qr.appendChild(img)
-		} else {
-			var ph = document.createElement("div")
-			ph.className = "qr-ph"
-			ph.innerHTML = '<span class="big">QR</span><span>QR-код скоро появится — оплатите по номеру</span>'
-			qr.appendChild(ph)
-		}
-	})
-}
-
-document.getElementById("tabQr").addEventListener("click", function () { setTab("qr") })
-document.getElementById("tabMbank").addEventListener("click", function () { setTab("mbank") })
-document.getElementById("tabVisa").addEventListener("click", function () { setTab("visa") })
-function setTab(mode) {
-	state.pay = mode
-	document.getElementById("tabQr").classList.toggle("on", mode === "qr")
-	document.getElementById("tabMbank").classList.toggle("on", mode === "mbank")
-	document.getElementById("tabVisa").classList.toggle("on", mode === "visa")
-	document.getElementById("paneQr").classList.toggle("on", mode === "qr")
-	document.getElementById("paneMbank").classList.toggle("on", mode === "mbank")
-	document.getElementById("paneVisa").classList.toggle("on", mode === "visa")
-		document.getElementById("manualHint").style.display = "block"
-		document.getElementById("stepManual").style.display = "block"
-}
-
 document.getElementById("chips").addEventListener("click", function (e) {
 	var btn = e.target.closest(".chip")
 	if (!btn) return
@@ -264,23 +176,23 @@ document.getElementById("send").addEventListener("click", async function () {
 	var buyer = document.getElementById("buyer").value.trim()
 	var err = document.getElementById("err")
 	err.style.display = "none"
-	if (!contact) { err.textContent = "Укажите контакт (" + state.method + "), чтобы мы могли прислать логин."; err.style.display = "block"; return }
+	if (!contact) { err.textContent = "Оставьте контакт (" + state.method + ") — иначе мы не сможем вам написать."; err.style.display = "block"; return }
 		var p = currentItem()
-		if (!p) { err.textContent = "Каталог ещё пуст — материалы добавим позже."; err.style.display = "block"; return }
+		if (!p) { err.textContent = "Каталог пока пуст — скоро добавим материалы."; err.style.display = "block"; return }
 		if (state.db) {
 		try {
 				await state.fsMod.addDoc(state.fsMod.collection(state.db, "orders"), {
 					itemId: p.id, itemTitle: p.title, price: Number(p.price),
 					method: state.method, contact: contact, buyer: buyer,
-					pay: state.pay, status: "new", createdAt: new Date().toISOString(),
+					pay: "request", status: "new", createdAt: new Date().toISOString(),
 				})
 		} catch (e) {
-			err.textContent = "Не удалось отправить заявку: " + (e.message || e)
+			err.textContent = "Не получилось отправить заявку: " + (e.message || e)
 			err.style.display = "block"
 			return
 		}
 	} else {
-		var body = "НОВАЯ ЗАЯВКА — " + p.title + " (" + formatPrice(p.price) + ")\nИмя: " + buyer + "\nПрислать логин через " + state.method + ": " + contact
+		var body = "НОВАЯ ЗАЯВКА — " + p.title + " (" + formatPrice(p.price) + ")\nИмя: " + buyer + "\nНаписать через " + state.method + ": " + contact
 		location.href = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent("Заявка: " + p.title) + "&body=" + encodeURIComponent(body)
 	}
 	document.getElementById("okMethod").textContent = METHOD_RU[state.method]
@@ -290,7 +202,6 @@ document.getElementById("send").addEventListener("click", async function () {
 })
 
 renderItem()
-renderPayment()
 </script>
 <script type="module">
   try {
@@ -312,9 +223,7 @@ renderPayment()
     })
     state.products = products
     renderItem()
-    const paySnap = await fsMod.getDoc(fsMod.doc(db, "settings", "payment"))
-    if (paySnap.exists()) { state.payment = paySnap.data(); renderPayment() }
-  } catch (e) { /* остаются демо-реквизиты */ }
+  } catch (e) { /* страница работает и без базы */ }
 </script>
 </body>
 </html>
