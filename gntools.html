@@ -33,19 +33,12 @@
   .submit{display:flex;align-items:center;justify-content:center;width:100%;margin-top:18px;background:var(--red);color:#fff;border:0;border-radius:3px;padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;text-decoration:none;box-shadow:0 8px 20px rgba(200,16,46,.24);transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease}
   .submit:hover{background:var(--red-dark);box-shadow:0 12px 26px rgba(200,16,46,.3);transform:translateY(-1px)}
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
-  .chip{flex:1;min-width:230px;text-align:left;border:1px solid var(--line);border-radius:3px;padding:14px 16px;background:#fff;font-family:var(--body);cursor:pointer;transition:border-color .18s ease,background-color .18s ease}
+  .chip{flex:1;min-width:230px;text-align:left;border:1px solid var(--line);border-radius:3px;padding:14px 16px;background:#fff;font-family:var(--body)}
   .chip .t{font-size:15px;font-weight:700;display:block}
   .chip .p{font-size:14px;color:var(--red);font-weight:700;font-family:var(--mono)}
   .chip.on{border-color:var(--red);background:var(--red-soft)}
-  .payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:3px;padding:12px 14px;margin-bottom:10px;background:var(--snow)}
-  .payrow .lbl{font-size:13px;color:var(--slate)}
-  .payrow .val{font-weight:700;font-size:15px;font-family:var(--mono)}
-  .copy{border:1px solid var(--line);background:#fff;border-radius:3px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--body);font-weight:600}
-  .copy:hover{border-color:var(--red);color:var(--red)}
-  .qrs{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
-  .qrs img{width:170px;height:170px;object-fit:contain;border:1px solid var(--line);border-radius:3px;background:#fff}
-  .ok{display:none;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);border-radius:3px;padding:16px;margin-top:16px;font-size:14.5px}
-  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:16px;font-size:14px}
+  .nopay{border:1px dashed var(--line-strong);border-radius:3px;background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate);margin-top:8px}
+  .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
   @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .card{padding:22px 18px}
     h1{font-size:24px}
@@ -190,26 +183,19 @@
   <div class="card">
     <h2>Доступ и цены</h2>
     <p>Новый аккаунт получает пробные токены бесплатно. Сколько токенов стоит каждое действие — в таблице выше. Подписок нет: платите только за то, чем реально пользуетесь.</p>
-    <h3>Выберите пакет токенов</h3>
+    <h3>Пакеты токенов</h3>
+    <p class="hint" style="margin:0 0 4px">Цены на будущее — пока посмотреть. Купить можно будет, когда подключим оплату.</p>
     <div class="chips" id="opts">
-      <button class="chip" data-pack="10" data-price="100" type="button"><span class="t">10 токенов</span><span class="p">100 сом</span></button>
-      <button class="chip" data-pack="20" data-price="200" type="button"><span class="t">20 токенов</span><span class="p">200 сом</span></button>
-      <button class="chip on" data-pack="50" data-price="500" type="button"><span class="t">50 токенов</span><span class="p">500 сом</span></button>
-      <button class="chip" data-pack="100" data-price="1000" type="button"><span class="t">100 токенов</span><span class="p">1000 сом</span></button>
-      <button class="chip" data-pack="200" data-price="2000" type="button"><span class="t">200 токенов</span><span class="p">2000 сом</span></button>
+      <span class="chip"><span class="t">10 токенов</span><span class="p">100 сом</span></span>
+      <span class="chip"><span class="t">20 токенов</span><span class="p">200 сом</span></span>
+      <span class="chip"><span class="t">50 токенов</span><span class="p">500 сом</span></span>
+      <span class="chip"><span class="t">100 токенов</span><span class="p">1000 сом</span></span>
+      <span class="chip"><span class="t">200 токенов</span><span class="p">2000 сом</span></span>
     </div>
-    <h3>Оплатите удобным способом</h3>
-    <div id="payNums"></div>
-    <div class="qrs" id="payQrs"></div>
-    <p class="hint">Переведите ровно ту сумму, что указана выше.</p>
-    <div id="buyIn" style="display:none">
-      <button class="submit" id="claim" type="button">Я оплатил(а) — включите доступ</button>
-      <div class="ok" id="ok"><strong>Заявка у нас!</strong> Проверим оплату и включим доступ на аккаунт <span id="okEmail"></span>. После подтверждения перезапустите программу или войдите заново.</div>
-      <div class="err" id="err"></div>
-    </div>
-    <div id="buyOut">
-      <p class="hint" style="margin:14px 0 0">Войдите в аккаунт — так мы поймём, кому начислять токены.</p>
-      <a class="submit" href="login.html">Войти / Регистрация</a>
+    <h3>Оплата</h3>
+    <div class="nopay">
+      <strong>Способов оплаты пока нет</strong>
+      Мы ещё не подключили оплату на сайте — сейчас пользуйтесь бесплатными пробными токенами. Как только оплата заработает, пакеты станут доступны здесь.
     </div>
   </div>
 </main>
@@ -226,9 +212,6 @@
 <script src="catalog.js"></script>
 <script>
 var G = { url: "", tokensAmount: 50, tokensPrice: 500 }
-var PAY = (typeof DEMO_PAYMENT !== "undefined") ? DEMO_PAYMENT : { numbers: [], qrs: [] }
-var PACK = { tokens: 50, price: 500 }
-var USER = null
 
 function renderG() {
 	var dl = document.getElementById("dl")
@@ -243,91 +226,18 @@ function renderG() {
 		setP("pDokF", G.costs.dokFolder); setP("pDokAI", G.costs.dokAiEdit)
 	}
 }
-function selectPack(el) {
-  Array.from(document.querySelectorAll("#opts .chip")).forEach(function (c) { c.classList.remove("on") })
-  el.classList.add("on")
-  PACK = { tokens: Number(el.getAttribute("data-pack")), price: Number(el.getAttribute("data-price")) }
-}
-function renderPay() {
-	var w = document.getElementById("payNums")
-	w.innerHTML = ""
-	;(PAY.numbers || []).forEach(function (n) {
-		var row = document.createElement("div")
-		row.className = "payrow"
-		row.innerHTML = '<span><span class="lbl"></span><br><span class="val"></span></span><button class="copy" type="button">Копировать</button>'
-		row.querySelector(".lbl").textContent = n.label
-		row.querySelector(".val").textContent = n.value
-		row.querySelector(".copy").addEventListener("click", function () {
-			navigator.clipboard && navigator.clipboard.writeText(n.value)
-			this.textContent = "Скопировано"
-		})
-		w.appendChild(row)
-	})
-	var q = document.getElementById("payQrs")
-	q.innerHTML = ""
-	;(PAY.qrs || []).forEach(function (src) {
-		if (typeof isRealLink === "function" && !isRealLink(src)) return
-		var img = document.createElement("img")
-		img.src = src
-		img.loading = "lazy"
-		img.alt = "QR-код для оплаты"
-		q.appendChild(img)
-	})
-}
-document.querySelectorAll("#opts .chip").forEach(function (chip) {
-  chip.addEventListener("click", function () { selectPack(this) })
-})
 renderG()
-renderPay()
 </script>
 <script type="module">
   try {
     const { firebaseConfig } = await import("./firebase-config.js")
     if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
-    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
     const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
     const app = initializeApp(firebaseConfig)
-    const auth = authMod.getAuth(app)
     const db = fsMod.getFirestore(app)
-
-    authMod.onAuthStateChanged(auth, (user) => {
-      USER = user || null
-      document.getElementById("buyIn").style.display = USER ? "block" : "none"
-      document.getElementById("buyOut").style.display = USER ? "none" : "block"
-    })
-
-    document.getElementById("claim").addEventListener("click", async function () {
-      const err = document.getElementById("err")
-      err.style.display = "none"
-      if (!USER) { location.href = "login.html"; return }
-      try {
-        await fsMod.addDoc(fsMod.collection(db, "orders"), {
-          type: "gntools",
-          kind: "tokens",
-          itemTitle: "GN Tools: " + PACK.tokens + " токенов",
-          price: Number(PACK.price),
-          method: "GN Tools",
-          contact: USER.email || "",
-          buyer: USER.email || "",
-          uid: USER.uid,
-          status: "new",
-          createdAt: new Date().toISOString(),
-        })
-        document.getElementById("okEmail").textContent = USER.email || ""
-        document.getElementById("ok").style.display = "block"
-        this.disabled = true
-        this.style.opacity = ".6"
-      } catch (e) {
-        err.textContent = "Не получилось отправить заявку: " + (e.message || e)
-        err.style.display = "block"
-      }
-    })
-
     const gSnap = await fsMod.getDoc(fsMod.doc(db, "settings", "gntools"))
     if (gSnap.exists()) { Object.assign(G, gSnap.data()); renderG() }
-    const paySnap = await fsMod.getDoc(fsMod.doc(db, "settings", "payment"))
-    if (paySnap.exists()) { PAY = paySnap.data(); renderPay() }
   } catch (e) { /* остаются значения по умолчанию */ }
 </script>
 </body>
