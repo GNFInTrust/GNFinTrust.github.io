@@ -34,8 +34,11 @@
   header{border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:20}
   header::after{content:"";display:block;height:2px;background:linear-gradient(90deg,var(--red) 0 72px,#B8893A 72px 96px,transparent 96px)}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em}
-  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em;cursor:pointer;transition:opacity .18s ease}
+  .brand:hover{opacity:.82}
+  .brand:hover .brand-mark{transform:translateY(-1px);box-shadow:0 6px 16px rgba(200,16,46,.35)}
+  .brand:active .brand-mark{transform:translateY(0)}
+  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;box-shadow:0 3px 10px rgba(200,16,46,.28);transition:transform .18s ease,box-shadow .18s ease}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:3px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
