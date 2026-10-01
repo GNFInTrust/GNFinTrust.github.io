@@ -309,4 +309,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 			})
 		}
+		var header = document.querySelector(".site-header")
+		if (header) {
+			var onScroll = function () {
+				header.classList.toggle("scrolled", window.scrollY > 10)
+			}
+			onScroll()
+			window.addEventListener("scroll", onScroll, { passive: true })
+		}
 	})

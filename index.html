@@ -26,8 +26,7 @@
 
   .hero{
     position:relative;overflow:hidden;display:flex;align-items:center;
-    min-height:calc(100vh - var(--header-h));padding:72px 0 80px;background:var(--paper);
-    transition:min-height .25s ease-out,margin .25s ease-out
+    min-height:calc(100vh - var(--header-h));padding:72px 0 80px;background:var(--paper)
   }
   @supports (min-height:100svh){.hero{min-height:calc(100svh - var(--header-h))}}
   .hero::before{display:none}
@@ -217,8 +216,8 @@
 	  <div class="wrap nav">
 	    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> GN FinTrust</a>
 	    <nav class="nav-links" id="siteNav">
-	      <a href="index.html#catalog">Каталог</a>
-	      <a href="seminars.html">Запись на встречу</a>
+	      <a href="#catalog">Каталог</a>
+	      <a href="meet.html">Запись на встречу</a>
 	      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
 	    </nav>
 	    <div class="nav-tools">
@@ -342,7 +341,7 @@
     </div>
     <div class="foot-links">
       <a href="#catalog">Каталог</a>
-      <a href="seminars.html">Запись на встречу</a>
+      <a href="meet.html">Запись на встречу</a>
       <a href="gntools.html">GN Tools</a>
       <a href="login.html">Мой кабинет</a>
     </div>
@@ -488,11 +487,7 @@ document.addEventListener("click", function(e){
 	window.addEventListener("scroll", function(){
 		var y = window.scrollY
 		heroShrink(y)
-		var heroH = hero ? hero.offsetHeight : window.innerHeight
-		var threshold = Math.max(1, heroH * 0.75)
-		var pastHero = y >= threshold
-			header.classList.toggle("scrolled", pastHero)
-			lastY = y
+		if (header) header.classList.toggle("scrolled", y > 10)
 	}, { passive: true })
 
 	var teamRow = document.querySelector(".team")
