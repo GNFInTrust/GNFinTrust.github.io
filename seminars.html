@@ -126,6 +126,7 @@
   var toggle = document.getElementById("navToggle")
   var nav = document.getElementById("siteNav")
   if (toggle && nav) {
+    toggle.dataset.bound = "1" // catalog.js не должен вешать второй обработчик
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("open")
       toggle.setAttribute("aria-expanded", open ? "true" : "false")
