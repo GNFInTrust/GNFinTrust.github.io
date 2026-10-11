@@ -7,3 +7,5 @@ build/
 dist/
 GNTools.spec
 __pycache__/
+*.exe
+*.zip

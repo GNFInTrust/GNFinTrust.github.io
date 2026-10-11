@@ -1,0 +1,107 @@
+rules_version = '2';
+
+// Правила доступа к базе Firestore проекта fintrust-af741.
+// Как опубликовать — см. README, раздел «Правила безопасности Firebase».
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    function shortString(v, max) {
+      return v is string && v.size() <= max;
+    }
+
+    // Профили: сайт (login.html, members.html), GN Tools (license.js) и dokumenty.html.
+    match /users/{uid} {
+      allow read: if (signedIn() && request.auth.uid == uid) || isAdmin();
+
+      // Админ заводит аккаунты, выдаёт покупки, токены и права.
+      allow create, update, delete: if isAdmin();
+
+      // Новый пользователь создаёт себе профиль без прав админа, без покупок
+      // и максимум с 5 пробными токенами.
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly([
+          'name', 'email', 'admin', 'purchases', 'createdAt', 'created',
+          'plan', 'tokens', 'subUntil', 'instagram', 'promoStatus', 'promoAt'
+        ])
+        && request.resource.data.get('admin', false) == false
+        && request.resource.data.get('purchases', []) == []
+        && request.resource.data.get('subUntil', '') == ''
+        && request.resource.data.get('plan', 'trial') == 'trial'
+        && request.resource.data.get('tokens', 0) is int
+        && request.resource.data.get('tokens', 0) >= 0
+        && request.resource.data.get('tokens', 0) <= 5
+        && request.resource.data.get('promoStatus', 'pending') == 'pending';
+
+      // Сам пользователь может только:
+      // 1) привязать Instagram для акции (members.html);
+      // 2) тратить свои токены — только уменьшать, не ниже нуля (GN Tools).
+      allow update: if signedIn() && request.auth.uid == uid && (
+        (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['instagram', 'promoStatus', 'promoAt'])
+          && shortString(request.resource.data.instagram, 100)
+          && request.resource.data.promoStatus == 'pending'
+        ) || (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tokens'])
+          && request.resource.data.tokens is int
+          && request.resource.data.tokens >= 0
+          && request.resource.data.tokens < resource.data.get('tokens', 0)
+        )
+      );
+    }
+
+    // Каталог виден всем, меняет только админ.
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Содержимое курса — только тем, кто его купил.
+    match /productContent/{id} {
+      allow read: if isAdmin() || (signedIn()
+        && id in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('purchases', []));
+      allow write: if isAdmin();
+    }
+
+    // Реквизиты оплаты, ссылка на GN Tools, ник Instagram — показываются на сайте.
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Заявки: любой посетитель может оставить новую, видит и меняет их только админ.
+    match /orders/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly([
+          'itemId', 'itemTitle', 'price', 'method', 'contact', 'buyer',
+          'pay', 'status', 'createdAt', 'type', 'email'
+        ])
+        && request.resource.data.status == 'new'
+        && request.resource.data.get('pay', 'request') in ['request', 'qr']
+        && request.resource.data.get('type', 'course') in ['course', 'gntools']
+        && shortString(request.resource.data.get('itemId', ''), 200)
+        && shortString(request.resource.data.get('itemTitle', ''), 300)
+        && shortString(request.resource.data.get('method', ''), 50)
+        && shortString(request.resource.data.get('contact', ''), 200)
+        && shortString(request.resource.data.get('buyer', ''), 200)
+        && shortString(request.resource.data.get('email', ''), 200)
+        && shortString(request.resource.data.get('createdAt', ''), 40)
+        && request.resource.data.get('price', 0) is number;
+    }
+
+    // Всё остальное закрыто.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
