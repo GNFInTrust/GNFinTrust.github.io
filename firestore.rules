@@ -1,0 +1,121 @@
+rules_version = '2';
+
+// Правила Firestore для GN FinTrust (проект fintrust-af741).
+// Как применить — в FIRESTORE_RULES.md.
+//
+// Коллекции, которые использует сайт:
+//   users/{uid}          — профиль: purchases, admin, tokens, промо-акция
+//   orders/{id}          — заявки с buy.html (может оставить любой посетитель)
+//   products/{id}        — каталог, виден всем
+//   productContent/{id}  — платные материалы, только купившим
+//   settings/{id}        — payment, promo, gntools: читают все, пишут админы
+// Всё остальное закрыто.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    function owns(productId) {
+      let me = /databases/$(database)/documents/users/$(request.auth.uid);
+      return signedIn()
+        && exists(me)
+        && get(me).data.get('purchases', []) is list
+        && productId in get(me).data.get('purchases', []);
+    }
+
+    function changed() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    function shortString(v, max) {
+      return v is string && v.size() <= max;
+    }
+
+    // ----- Пользователи -----
+    match /users/{uid} {
+      allow read: if (signedIn() && request.auth.uid == uid) || isAdmin();
+      allow list: if isAdmin();
+
+      // Новый профиль при первом входе: login.html или клиент GN Tools.
+      // Админ-флаг, покупки и подписку себе выдать нельзя.
+      allow create: if isAdmin() || (
+        signedIn() && request.auth.uid == uid && (
+          // login.html
+          (request.resource.data.keys().hasOnly(['name', 'email', 'admin', 'purchases', 'createdAt'])
+            && request.resource.data.get('admin', false) == false
+            && request.resource.data.get('purchases', []) == [])
+          ||
+          // GN Tools: пробные токены
+          (request.resource.data.keys().hasOnly(['email', 'tokens', 'subUntil', 'created'])
+            && request.resource.data.tokens is int
+            && request.resource.data.tokens >= 0
+            && request.resource.data.tokens <= 5
+            && request.resource.data.get('subUntil', '') == '')
+        )
+      );
+
+      allow update: if isAdmin() || (
+        signedIn() && request.auth.uid == uid && (
+          // members.html: заявка на промо-акцию (только статус "pending")
+          (changed().hasOnly(['name', 'instagram', 'promoStatus', 'promoAt'])
+            && request.resource.data.get('promoStatus', 'pending') == 'pending'
+            && shortString(request.resource.data.get('instagram', ''), 100))
+          ||
+          // GN Tools: списание токенов за печать (только вниз)
+          (changed().hasOnly(['tokens'])
+            && request.resource.data.tokens is int
+            && request.resource.data.tokens >= 0
+            && request.resource.data.tokens < resource.data.tokens)
+        )
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // ----- Заявки -----
+    match /orders/{orderId} {
+      // Любой посетитель может оставить заявку, но только новую и нужной формы.
+      allow create: if request.resource.data.keys().hasOnly(
+            ['itemId', 'itemTitle', 'price', 'method', 'contact', 'buyer', 'pay', 'status', 'createdAt'])
+        && request.resource.data.status == 'new'
+        && request.resource.data.pay == 'request'
+        && shortString(request.resource.data.itemId, 100)
+        && shortString(request.resource.data.itemTitle, 300)
+        && request.resource.data.price is number
+        && shortString(request.resource.data.method, 50)
+        && shortString(request.resource.data.contact, 200)
+        && shortString(request.resource.data.get('buyer', ''), 200)
+        && shortString(request.resource.data.createdAt, 40);
+      // Читать, отмечать и удалять — только админы.
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ----- Каталог -----
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ----- Платные материалы -----
+    match /productContent/{productId} {
+      allow get: if isAdmin() || owns(productId);
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ----- Настройки сайта -----
+    match /settings/{key} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
