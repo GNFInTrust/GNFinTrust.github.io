@@ -21,8 +21,8 @@
   --green-soft:#E4F0EA;
   --green-border:#B7D4C4;
   --shadow-sm:0 1px 2px rgba(21,32,43,.05);
-  --shadow-md:0 12px 32px rgba(21,32,43,.10);
-  --shadow-lg:0 28px 64px rgba(21,32,43,.16);
+  --shadow-md:0 6px 18px rgba(21,32,43,.07);
+  --shadow-lg:0 16px 40px rgba(21,32,43,.12);
   --head:"Unbounded","Manrope",-apple-system,"Segoe UI",sans-serif;
   --body:"Manrope",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --cat:"Manrope",-apple-system,"Segoe UI",sans-serif;
@@ -51,6 +51,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,.lang-slider:focus-visi
 img,iframe,video{max-width:100%}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 .wrap-wide{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* Small uppercase label above a section or page title (shared by every page) */
+.kicker,.sec-kicker{display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--foil);margin-bottom:10px}
+input::placeholder,textarea::placeholder{color:#9AA3AD}
+/* Long error text (URLs, Firebase messages) wraps inside its box instead of spilling out */
+.err,.msg{overflow-wrap:anywhere}
 
 .skip{position:absolute;left:16px;top:-48px;z-index:200;background:var(--red);color:#fff;padding:8px 14px;border-radius:var(--radius-sm);font-weight:700}
 .skip:focus{top:12px}

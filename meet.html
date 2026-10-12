@@ -16,17 +16,14 @@
 <meta name="description" content="Семинары, вебинары и консультации GN FinTrust — онлайн и очно. Выберите формат, день и время — мы подтвердим встречу в WhatsApp, Telegram или по почте.">
 <link rel="stylesheet" href="theme.css">
 <style>
-  body{background:
-    radial-gradient(900px 420px at 8% -10%, rgba(200,16,46,.07), transparent 60%),
-    radial-gradient(700px 360px at 100% 8%, rgba(184,137,58,.08), transparent 55%),
-    var(--snow)}
+  body{background:var(--snow)}
   .page{padding:56px 0 88px}
   .page-head{max-width:720px;margin:0 auto 36px;text-align:center}
   .page-head h1{font-size:clamp(30px,4vw,46px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:17px}
   .book{
     max-width:760px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:2px;
-    box-shadow:var(--shadow-md)
+    box-shadow:var(--shadow-sm)
   }
   .step{padding:28px 32px;border-bottom:1px solid var(--line)}
   .step h2{display:flex;align-items:center;gap:10px;font-size:16px;margin:0 0 16px;font-weight:600}
@@ -35,7 +32,7 @@
   .book input,.book textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
   .book input::placeholder,.book textarea::placeholder{color:#9AA3AD}
   .book textarea{min-height:84px;resize:vertical}
-  .book input:focus,.book textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .book input:focus,.book textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
   .book input.bad{border-color:#d9776b;background:#FFF9F8}
   .opt{font-weight:400;color:var(--muted)}
   .pick{border:1px solid var(--line);border-radius:3px;background:#fff;font-family:var(--body);color:var(--ink);cursor:pointer;
