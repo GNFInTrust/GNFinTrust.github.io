@@ -29,7 +29,8 @@
 
   /* Hero: one headline, one line, one button */
   .hero{padding:120px 0 128px;background:var(--paper);border-bottom:1px solid var(--line)}
-  .hero-copy{max-width:760px}
+  /* As you scroll down, the hero text drifts up and fades out (--hp is 0..1, set by JS) */
+  .hero-copy{max-width:760px;transform:translateY(calc(var(--hp,0) * -60px));opacity:calc(1 - var(--hp,0) * .9)}
   @keyframes heroReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .hero h1{font-size:clamp(36px,4.4vw,64px);font-weight:600;line-height:1.08;letter-spacing:-.035em;margin:0 0 22px;animation:heroReveal .6s ease-out both}
   .hero h1 em{color:var(--red);font-style:normal}
@@ -115,7 +116,7 @@
   #teamNext{right:6px}
 
   @media (prefers-reduced-motion:reduce){
-    .box,.tcard,.hero h1,.hero p,.hero .btn{opacity:1;transform:none;animation:none}
+    .hero-copy,.box,.tcard,.hero h1,.hero p,.hero .btn{opacity:1;transform:none;animation:none}
     .tinfo p{max-height:none;opacity:1;margin-top:10px}
   }
   @media (max-width:900px){
@@ -445,6 +446,24 @@ document.addEventListener("click", function(e){
 		})
 	}, { threshold: 0.15 })
 	boxes.forEach(function(b){ observer.observe(b) })
+
+	var hero = document.querySelector(".hero")
+	// Scroll only drives a 0..1 CSS variable (transform/opacity), so the page height never changes mid-scroll
+	function heroProgress(y){
+		if (!hero) return
+		hero.style.setProperty("--hp", Math.min(1, Math.max(0, y / (hero.offsetHeight * 0.8))).toFixed(3))
+	}
+	heroProgress(window.scrollY)
+	var ticking = false
+	window.addEventListener("scroll", function(){
+		if (!ticking) {
+			window.requestAnimationFrame(function(){
+				heroProgress(window.scrollY)
+				ticking = false
+			})
+			ticking = true
+		}
+	}, { passive: true })
 
 	var teamRow = document.querySelector(".team")
 	var tPrev = document.getElementById("teamPrev")
