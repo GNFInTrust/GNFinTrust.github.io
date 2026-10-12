@@ -407,6 +407,13 @@ function setTabCount(id, n) {
 var MEET_KIND = { consult: "Консультация", seminar: "Семинар", webinar: "Вебинар" }
 var MEET_PLACE = { online: "онлайн", offline: "очно" }
 var MEET_STATUS = { "new": "новая", confirmed: "подтвердили", done: "прошла" }
+function meetDay(v) {
+	var p = String(v || "").split("-")
+	if (p.length !== 3) return v || ""
+	var d = new Date(+p[0], p[1] - 1, +p[2])
+	return ["вс", "пн", "вт", "ср", "чт", "пт", "сб"][d.getDay()] + ", " + d.getDate() + " " +
+		["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"][d.getMonth()]
+}
 function renderMeetings() {
 	var w = document.getElementById("meetWrap")
 	if (!w) return
@@ -424,7 +431,7 @@ function renderMeetings() {
 		var closed = m.status === "done"
 		return '<article class="req' + (closed ? " done" : "") + '">' +
 			'<div class="req-top"><span class="muted">Заявка от ' + esc(when) + '</span><span class="tag ' + (m.status === "new" ? "new" : "done") + '">' + esc(MEET_STATUS[m.status] || m.status) + "</span></div>" +
-			"<h3>" + esc(m.date) + " в " + esc(m.time) + " · " + esc(MEET_KIND[m.kind] || m.kind) + ", " + esc(MEET_PLACE[m.place] || m.place) + "</h3>" +
+			"<h3>" + esc(meetDay(m.date)) + " · " + esc(m.time) + " · " + esc(MEET_KIND[m.kind] || m.kind) + ", " + esc(MEET_PLACE[m.place] || m.place) + "</h3>" +
 			'<div class="req-meta">' + esc(m.name || "без имени") + (m.lang === "ky" ? " · пишет на кыргызском" : "") + "<br>" +
 			esc(m.method || "") + (m.contact ? ' · <a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(m.contact) + "</a>" : "") +
 			(m.note ? "<br>«" + esc(m.note) + "»" : "") + "</div>" +
