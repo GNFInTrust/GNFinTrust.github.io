@@ -38,8 +38,9 @@
   .hero .btn{min-width:180px;animation:heroReveal .6s ease-out .2s both}
 
   section{padding:96px 0}
-  h2{font-size:clamp(28px,3.4vw,42px);margin-bottom:12px;text-align:center}
-  .sub{color:var(--slate);margin:0 auto 44px;max-width:640px;text-align:center}
+  /* Section titles sit on the left edge, like a printed page, not centred over the content */
+  h2{font-size:clamp(28px,3.4vw,42px);margin-bottom:12px}
+  .sub{color:var(--slate);margin:0 0 44px;max-width:560px}
 
   #catalog h2{font-size:clamp(30px,4vw,44px)}
   .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;align-items:start;font-family:var(--cat)}
@@ -58,7 +59,7 @@
     padding:4px 4px 16px;border-bottom:1px solid var(--line);margin-bottom:18px;
     display:flex;align-items:center;justify-content:space-between;gap:10px
   }
-  .box>h3 .cnt{flex:none;font-size:12px;font-weight:700;line-height:1.5;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);padding:2px 10px;border-radius:3px;font-family:var(--mono)}
+  .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;color:var(--muted);font-family:var(--mono)}
   .cat-empty{color:var(--slate);font-size:14.5px;padding:8px 4px 4px}
   .pcard{background:var(--snow);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:18px;box-shadow:var(--shadow-sm);transition:box-shadow .28s cubic-bezier(.16,1,.3,1),transform .28s cubic-bezier(.16,1,.3,1),border-color .25s ease}
   .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--line-strong)}
@@ -79,26 +80,26 @@
   .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
   .team-sec{padding:88px 0 92px}
-  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+  /* The founder gets the wide column; the two experts sit beside her */
+  .team{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:28px;align-items:start}
   .tcard{
     background:#fff;border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;
     opacity:0;transform:translateY(18px);
     transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1),border-color .25s ease
   }
   .tcard.show{opacity:1;transform:translateY(0)}
-  .tcard.lead{border-color:var(--red-border)}
   .tcard.lead .tinfo h3::after{content:"";display:block;width:28px;height:2px;background:var(--foil);margin-top:8px}
-  .tcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
-  .tphoto{position:relative;aspect-ratio:1/1;background:#EEF1F4;overflow:hidden}
+  .tphoto{position:relative;aspect-ratio:4/5;background:#EEF1F4;overflow:hidden}
   .tphoto .tph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:13px}
   .tphoto .tph .big{font-size:40px;font-weight:700;color:#c9d1d8;font-family:var(--head)}
   .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;background:#F6F1E8;filter:none;transition:transform .55s cubic-bezier(.16,1,.3,1),filter .4s ease}
-  .tcard:hover .tphoto img{filter:brightness(1.05);transform:scale(1.05)}
+  .tcard:hover .tphoto img{transform:scale(1.03)}
   .tinfo{padding:20px 20px 22px}
   .tinfo h3{font-size:18px;margin-bottom:4px}
+  .tcard.lead .tinfo h3{font-size:22px}
   .tinfo .trole{display:block;font-size:13px;font-weight:700;color:var(--red)}
-  .tinfo p{font-size:14px;color:var(--slate);max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .45s cubic-bezier(.16,1,.3,1),opacity .35s cubic-bezier(.16,1,.3,1),margin-top .35s cubic-bezier(.16,1,.3,1)}
-  .tcard:hover .tinfo p{max-height:220px;opacity:1;margin-top:10px}
+  .tinfo p{font-size:14.5px;color:var(--slate);margin-top:10px}
+  .tcard.lead .tinfo p{font-size:15.5px}
 
   .section-soft{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .team-wrap{position:relative}
@@ -117,15 +118,13 @@
 
   @media (prefers-reduced-motion:reduce){
     .hero-copy,.box,.tcard,.hero h1,.hero p,.hero .btn{opacity:1;transform:none;animation:none}
-    .tinfo p{max-height:none;opacity:1;margin-top:10px}
   }
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
-    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 10%}
-    .team::-webkit-scrollbar{display:none}
-    .tcard{flex:0 0 80%;scroll-snap-align:center}
-    .team-nav{display:block}
-    .tinfo p{max-height:none;opacity:1;margin-top:10px}
+    /* Phones and tablets: founder full width on top, the two experts side by side below */
+    .team{grid-template-columns:1fr 1fr;gap:16px}
+    .tcard.lead{grid-column:1/-1}
+    .tcard.lead .tphoto{aspect-ratio:4/3}
     .hero h1{font-size:40px}
     .hero{padding:80px 0 88px}
     .brand{font-size:15px;gap:8px;white-space:nowrap}
@@ -139,7 +138,14 @@
     .hero{padding:56px 0 64px}
     .hero h1{font-size:32px}
     .hero p{font-size:16px}
-    .boxes,.team{gap:16px}
+    .boxes{gap:16px}
+    .team{gap:12px}
+    .tinfo{padding:14px 14px 16px}
+    .tinfo h3{font-size:16px}
+    .tinfo .trole{font-size:12px}
+    .tinfo p{font-size:13.5px}
+    .tcard.lead .tinfo{padding:18px 18px 20px}
+    .tcard.lead .tinfo h3{font-size:20px}
     .box{padding:16px}
     .pbody{padding:16px}
     .pbody h4{font-size:17px}
@@ -158,12 +164,9 @@
     .hero p{font-size:14.5px;margin-bottom:18px}
     section{padding:48px 0}
     .team-sec{padding:48px 0 52px}
-    .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 8%}
-    .team::-webkit-scrollbar{display:none}
-    .tcard{flex:0 0 44%;scroll-snap-align:center}
-    .tphoto{aspect-ratio:4/3}
-    .tinfo p{max-height:none;opacity:1;margin-top:10px}
-    .team-nav{display:block}
+    .team{grid-template-columns:1.35fr 1fr 1fr}
+    .tcard.lead{grid-column:auto}
+    .tphoto,.tcard.lead .tphoto{aspect-ratio:4/3}
     .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
     .watch-modal{padding:0}
     .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
@@ -248,8 +251,8 @@
   <div class="hero">
     <div class="wrap">
       <div class="hero-copy">
-        <h1>Финансовые навыки, которые <em>окупаются</em></h1>
-        <p>Вебинары и курсы по финансам. У каждого есть бесплатный анонс.</p>
+        <h1>Налоги, учёт и деньги в бизнесе — <em>простым языком</em></h1>
+        <p>Вебинары и курсы для предпринимателей. Перед покупкой можно бесплатно посмотреть анонс.</p>
         <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
       </div>
     </div>
@@ -261,6 +264,17 @@
       <p class="sub">Кто ведёт вебинары и отвечает на ваши вопросы.</p>
       <div class="team-wrap">
       <div class="team">
+        <article class="tcard lead">
+          <div class="tphoto">
+            <div class="tph"><span class="big">GN</span><span>Кубатова Гулзат</span></div>
+            <img src="team-1.jpg" alt="Кубатова Гулзат" loading="lazy" decoding="async" onerror="this.remove()">
+          </div>
+          <div class="tinfo">
+            <h3>Кубатова Гулзат</h3>
+            <span class="trole">Основатель, главный эксперт</span>
+            <p>Ведёт программу GN FinTrust: налоги, учёт и деньги в бизнесе. Объясняет на примерах из практики.</p>
+          </div>
+        </article>
         <article class="tcard">
           <div class="tphoto">
             <div class="tph"><span class="big">GN</span><span>Чолпонбек кызы Назима</span></div>
@@ -272,17 +286,6 @@
             <p>Отвечает предпринимателям на вебинарах и живых встречах — разбирает реальные кейсы.</p>
           </div>
         </article>
-        <article class="tcard lead">
-          <div class="tphoto">
-            <div class="tph"><span class="big">GN</span><span>Кубатова Гулзат</span></div>
-            <img src="team-1.jpg" alt="Кубатова Гулзат" loading="lazy" decoding="async" onerror="this.remove()">
-          </div>
-          <div class="tinfo">
-            <h3>Кубатова Гулзат</h3>
-            <span class="trole">Основатель, главный эксперт</span>
-            <p>Ведёт программу GN FinTrust: налоги, учёт и деньги в бизнесе — на практике, без теории ради теории.</p>
-          </div>
-        </article>
         <article class="tcard">
           <div class="tphoto">
             <div class="tph"><span class="big">GN</span><span>Болчурова Алия</span></div>
@@ -291,7 +294,7 @@
           <div class="tinfo">
             <h3>Болчурова Алия</h3>
             <span class="trole">Эксперт</span>
-            <p>Разбирает с вами материалы курсов и помогает дойти от просмотра до результата.</p>
+            <p>Разбирает с вами материалы курсов и помогает применить их в своей работе.</p>
           </div>
         </article>
       </div>
@@ -304,7 +307,7 @@
   </section>
 
   <section id="catalog">
-    <div class="wrap-wide">
+    <div class="wrap">
       <h2>Каталог</h2>
       <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
       <div class="boxes">
@@ -323,7 +326,7 @@
   <div class="wrap foot">
     <div class="foot-brand">
       <a class="brand" href="#"><span class="brand-mark">GN</span> GN FinTrust</a>
-      <p>Вебинары, семинары и курсы по финансам и бухгалтерии — берите и применяйте в работе.</p>
+      <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
     </div>
     <div class="foot-links">
       <a href="#catalog">Каталог</a>
