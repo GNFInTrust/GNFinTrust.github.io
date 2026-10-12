@@ -149,6 +149,7 @@
 
     <div class="mtabs">
       <button class="mtab on" data-p="orders" type="button">Заявки <span class="tab-n" id="nOrders">0</span></button>
+      <button class="mtab" data-p="meetings" type="button">Встречи <span class="tab-n" id="nMeet">0</span></button>
       <button class="mtab" data-p="products" type="button">Каталог</button>
       <button class="mtab" data-p="payment" type="button">Оплата</button>
       <button class="mtab" data-p="accounts" type="button">Аккаунты</button>
@@ -160,6 +161,12 @@
       <h2>Заявки на покупку</h2>
       <p class="sub">Человек оставил заявку на странице покупки. Свяжитесь с ним, договоритесь об оплате, создайте логин во вкладке «Аккаунты» — и отметьте «Готово».</p>
       <div id="ordersWrap"></div>
+    </div>
+
+    <div class="panel" id="p-meetings">
+      <h2>Запись на встречу</h2>
+      <p class="sub">Человек выбрал формат, день и время на странице <a href="meet.html" target="_blank" rel="noopener">Запись на встречу</a>. Напишите ему, подтвердите или предложите другое время — и отметьте «Подтвердили». Время — по Бишкеку.</p>
+      <div id="meetWrap"></div>
     </div>
 
     <div class="panel" id="p-products">
@@ -207,9 +214,6 @@
         <button class="btn btn-sm" id="qrAdd" type="button">Добавить</button>
       </div>
       <div class="formfoot" style="margin-top:18px"><span class="flash" id="payFlash"></span></div>
-      <hr style="border:0;border-top:1px solid var(--border);margin:26px 0">
-      <h2>Запись на семинары</h2>
-      <p class="sub">Запись идёт через Cal.com прямо на странице <a href="meet.html">Запись на встречу</a>. Даты и слоты меняются в кабинете Cal.com — на сайте они обновятся сами.</p>
     </div>
 
     <div class="panel" id="p-logo">
@@ -350,7 +354,7 @@
 <script src="catalog.js"></script>
 <script>
 // ---------- Состояние и рендер (работает и без Firebase — для предпросмотра) ----------
-var A = { orders: [], products: [], payment: { numbers: [], qrs: [] }, accounts: [], editingId: null, fb: null }
+var A = { orders: [], meetings: null, products: [], payment: { numbers: [], qrs: [] }, accounts: [], editingId: null, fb: null }
 
 function esc(s) {
 	return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -399,6 +403,37 @@ function setTabCount(id, n) {
 				'<button class="btn btn-ghost btn-sm" data-del="' + esc(o._id) + '">Удалить</button></div></article>'
 		}).join("") + "</div>"
 	}
+
+var MEET_KIND = { consult: "Консультация", seminar: "Семинар", webinar: "Вебинар" }
+var MEET_PLACE = { online: "онлайн", offline: "очно" }
+var MEET_STATUS = { "new": "новая", confirmed: "подтвердили", done: "прошла" }
+function renderMeetings() {
+	var w = document.getElementById("meetWrap")
+	if (!w) return
+	if (A.meetings === null) {
+		setTabCount("nMeet", 0)
+		w.innerHTML = '<p class="empty">Не удалось загрузить записи. Скорее всего, в Firebase ещё не опубликованы новые правила из firestore.rules — см. README, раздел «Правила безопасности».</p>'
+		return
+	}
+	var list = A.meetings
+	setTabCount("nMeet", list.filter(function (m) { return m.status === "new" }).length)
+	if (!list.length) { w.innerHTML = '<p class="empty">Записей пока нет. Как только кто-то запишется на сайте — запись появится здесь.</p>'; return }
+	w.innerHTML = '<div class="reqs">' + list.map(function (m) {
+		var when = String(m.createdAt || "").slice(0, 16).replace("T", " ")
+		var href = contactLink(m.method, m.contact)
+		var closed = m.status === "done"
+		return '<article class="req' + (closed ? " done" : "") + '">' +
+			'<div class="req-top"><span class="muted">Заявка от ' + esc(when) + '</span><span class="tag ' + (m.status === "new" ? "new" : "done") + '">' + esc(MEET_STATUS[m.status] || m.status) + "</span></div>" +
+			"<h3>" + esc(m.date) + " в " + esc(m.time) + " · " + esc(MEET_KIND[m.kind] || m.kind) + ", " + esc(MEET_PLACE[m.place] || m.place) + "</h3>" +
+			'<div class="req-meta">' + esc(m.name || "без имени") + (m.lang === "ky" ? " · пишет на кыргызском" : "") + "<br>" +
+			esc(m.method || "") + (m.contact ? ' · <a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(m.contact) + "</a>" : "") +
+			(m.note ? "<br>«" + esc(m.note) + "»" : "") + "</div>" +
+			'<div class="req-actions">' +
+			(m.status === "new" ? '<button class="btn btn-sm" data-mconfirm="' + esc(m._id) + '">Подтвердили</button> ' : "") +
+			(closed ? "" : '<button class="btn btn-ghost btn-sm" data-mdone="' + esc(m._id) + '">Встреча прошла</button> ') +
+			'<button class="btn btn-ghost btn-sm" data-mdel="' + esc(m._id) + '">Удалить</button></div></article>'
+	}).join("") + "</div>"
+}
 
 function renderProducts() {
 		var w = document.getElementById("prodWrap")
@@ -506,7 +541,7 @@ function renderGnTools() {
 	w.innerHTML = "<table><thead><tr><th>Когда</th><th>Что</th><th>Почта</th><th>Статус</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>"
 }
 
-function renderAll(email) { showAdminUI(email); renderOrders(); renderPrices(); renderProducts(); renderPayment(); renderAccounts(); renderGnTools() }
+function renderAll(email) { showAdminUI(email); renderOrders(); renderMeetings(); renderPrices(); renderProducts(); renderPayment(); renderAccounts(); renderGnTools() }
 function showAdminUI(email) {
 	document.getElementById("gate").style.display = "none"
 	document.getElementById("panelWrap").style.display = "block"
@@ -592,6 +627,12 @@ document.getElementById("aGen").addEventListener("click", function () {
       A.products = []; pSnap.forEach((d) => A.products.push(Object.assign({ id: d.id }, d.data())))
       A.payment = paySnap.exists() ? paySnap.data() : { numbers: [], qrs: [] }
       A.accounts = []; uSnap.forEach((d) => A.accounts.push(Object.assign({ _id: d.id }, d.data())))
+      // Отдельно: пока новые правила не опубликованы, чтение записей запрещено — остальная админка должна работать.
+      try {
+        const mSnap = await fsMod.getDocs(fsMod.collection(db, "meetings"))
+        A.meetings = []; mSnap.forEach((d) => A.meetings.push(Object.assign({ _id: d.id }, d.data())))
+        A.meetings.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
+      } catch (err) { A.meetings = null }
     }
 
     // ----- Заявки -----
@@ -600,6 +641,17 @@ document.getElementById("aGen").addEventListener("click", function () {
       if (done) { await fsMod.updateDoc(fsMod.doc(db, "orders", done), { status: "done" }) }
       if (del) { if (!confirm("Удалить заявку?")) return; await fsMod.deleteDoc(fsMod.doc(db, "orders", del)) }
       if (done || del) { await reloadAll(); renderOrders() }
+    })
+
+    // ----- Запись на встречу -----
+    document.getElementById("meetWrap").addEventListener("click", async (e) => {
+      const ok = e.target.getAttribute("data-mconfirm"), done = e.target.getAttribute("data-mdone"), del = e.target.getAttribute("data-mdel")
+      try {
+        if (ok) await fsMod.updateDoc(fsMod.doc(db, "meetings", ok), { status: "confirmed" })
+        if (done) await fsMod.updateDoc(fsMod.doc(db, "meetings", done), { status: "done" })
+        if (del) { if (!confirm("Удалить запись?")) return; await fsMod.deleteDoc(fsMod.doc(db, "meetings", del)) }
+      } catch (err) { alert("Ошибка: " + (err.message || err)); return }
+      if (ok || done || del) { await reloadAll(); renderMeetings() }
     })
 
     // ----- Цены -----

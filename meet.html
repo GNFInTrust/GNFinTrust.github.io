@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://app.cal.com https://cal.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://app.cal.com https://cal.com; font-src https://fonts.gstatic.com https://app.cal.com https://cal.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com https://*.cal.com https://cal.com; frame-src 'self' https://cal.com https://app.cal.com https://*.cal.com https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' https://cal.com https://app.cal.com mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#15202B">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://app.cal.com">
-<link rel="preconnect" href="https://cal.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>Запись на встречу — GN FinTrust</title>
-<meta name="description" content="Семинары, вебинары и консультации GN FinTrust — онлайн и очно. Выберите удобное время в календаре и запишитесь, не выходя с сайта.">
+<meta name="description" content="Семинары, вебинары и консультации GN FinTrust — онлайн и очно. Выберите формат, день и время — мы подтвердим встречу в WhatsApp, Telegram или по почте.">
 <link rel="stylesheet" href="theme.css">
 <style>
   body{background:
@@ -27,15 +25,41 @@
   .page-head h1{font-size:clamp(30px,4vw,46px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:17px}
   .book{
-    background:#fff;border:1px solid var(--line);border-radius:2px;
-    box-shadow:var(--shadow-sm);min-height:720px;overflow:hidden
+    max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:2px;
+    box-shadow:var(--shadow-sm);padding:32px
   }
-  #calMount{min-height:720px;width:100%}
-  #calMount iframe{display:block;width:100%;min-height:720px;border:0}
+  .book h2{font-size:17px;margin:0 0 4px}
+  .book .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .book label{display:block;font-size:13px;font-weight:700;margin:16px 0 6px}
+  .book input,.book select,.book textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
+  .book textarea{min-height:84px;resize:vertical}
+  .book input:focus,.book select:focus,.book textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .opt{font-weight:400;color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    border:1px solid var(--line);border-radius:3px;padding:10px 16px;background:#fff;
+    font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--slate);
+    transition:border-color .2s ease,color .2s ease,background-color .2s ease
+  }
+  .chip:hover{border-color:var(--line-strong)}
+  .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .submit{
+    width:100%;margin-top:24px;background:var(--red);color:#fff;border:0;border-radius:3px;
+    padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;
+    box-shadow:0 8px 20px rgba(200,16,46,.24);transition:background-color .2s ease
+  }
+  .submit:hover{background:var(--red-dark)}
+  .submit:disabled{opacity:.6;cursor:default}
+  .ok{display:none;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);border-radius:3px;padding:16px;margin-top:18px;font-size:14.5px}
+  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:18px;font-size:14px}
+  .err a{color:inherit;font-weight:700;text-decoration:underline}
   .note{margin-top:16px;text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
   @media (max-width:640px){
     .page{padding:36px 0 64px}
-    .book,#calMount,#calMount iframe{min-height:640px}
+    .book{padding:22px 18px}
+    .book .row{grid-template-columns:1fr;gap:0}
+    .book input,.book select,.book textarea{font-size:16px}
+    .chip{min-height:44px}
   }
 </style>
 </head>
@@ -78,12 +102,41 @@
     <div class="page-head">
       <span class="sec-kicker">Онлайн и очно</span>
       <h1>Запись на встречу</h1>
-      <p>Семинары, вебинары и консультации — онлайн и очно. Выберите формат и время в календаре ниже, запись займёт минуту.</p>
+      <p>Семинары, вебинары и консультации — онлайн и очно. Выберите формат и удобное время — мы подтвердим встречу и напишем вам.</p>
     </div>
-    <div class="book">
-      <div id="calMount"></div>
+    <div class="book" id="book">
+      <label>Формат</label>
+      <div class="chips" data-group="kind">
+        <button class="chip on" data-v="consult" type="button">Консультация</button>
+        <button class="chip" data-v="seminar" type="button">Семинар</button>
+        <button class="chip" data-v="webinar" type="button">Вебинар</button>
+      </div>
+      <label>Где</label>
+      <div class="chips" data-group="place">
+        <button class="chip on" data-v="online" type="button">Онлайн</button>
+        <button class="chip" data-v="offline" type="button">Очно в Бишкеке</button>
+      </div>
+      <div class="row">
+        <div><label for="mDate">Удобный день</label><input type="date" id="mDate"></div>
+        <div><label for="mTime">Удобное время</label><select id="mTime"></select></div>
+      </div>
+      <label>Способ связи</label>
+      <div class="chips" data-group="method">
+        <button class="chip on" data-v="WhatsApp" type="button">WhatsApp</button>
+        <button class="chip" data-v="Telegram" type="button">Telegram</button>
+        <button class="chip" data-v="Email" type="button">Почта</button>
+      </div>
+      <label for="mContact" id="mContactLabel">Ваш номер WhatsApp</label>
+      <input type="text" id="mContact" placeholder="+996 700 123 456" autocomplete="tel">
+      <label for="mName">Ваше имя</label>
+      <input type="text" id="mName" placeholder="Айзат" autocomplete="name">
+      <label for="mNote">Вопрос или тема <span class="opt">(необязательно)</span></label>
+      <textarea id="mNote" placeholder="Коротко: что хотите обсудить"></textarea>
+      <button class="submit" id="mSend" type="button">Записаться</button>
+      <div class="ok" id="mOk"><strong>Заявка у нас!</strong> Подтвердим день и время и напишем вам сюда: <span id="mOkMethod">WhatsApp</span>.</div>
+      <div class="err" id="mErr"></div>
     </div>
-    <p class="note">Расписание ведёт Cal.com · часовой пояс Asia/Bishkek</p>
+    <p class="note">Время — по Бишкеку (GMT+6)</p>
   </div>
 </main>
 
@@ -138,53 +191,101 @@
 })()
 </script>
 <script>
-(function (C, A, L) {
-  var p = function (a, ar) { a.q.push(ar) }
-  var d = C.document
-  C.Cal = C.Cal || function () {
-    var cal = C.Cal
-    var ar = arguments
-    if (!cal.loaded) {
-      cal.ns = {}
-      cal.q = cal.q || []
-      d.head.appendChild(d.createElement("script")).src = A
-      cal.loaded = true
-    }
-    if (ar[0] === L) {
-      var api = function () { p(api, arguments) }
-      var namespace = ar[1]
-      api.q = api.q || []
-      if (typeof namespace === "string") {
-        cal.ns[namespace] = cal.ns[namespace] || api
-        p(cal.ns[namespace], ar)
-        p(cal, ["initNamespace", namespace])
-      } else p(cal, ar)
-      return
-    }
-    p(cal, ar)
-  }
-})(window, "https://app.cal.com/embed/embed.js", "init")
+(function () {
+	var WA = "996500797441"
+	var M = { kind: "consult", place: "online", method: "WhatsApp" }
+	var CONTACT = {
+		WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456", "tel"],
+		Telegram: ["Ваш Telegram", "@username", "off"],
+		Email: ["Ваша почта", "you@example.com", "email"],
+	}
+	var KIND_RU = { consult: "Консультация", seminar: "Семинар", webinar: "Вебинар" }
+	var PLACE_RU = { online: "Онлайн", offline: "Очно в Бишкеке" }
+	var METHOD_RU = { WhatsApp: "WhatsApp", Telegram: "Telegram", Email: "почту" }
+	function t(s) { return (GN_LANG === "ky" && KY_DICT[s]) || s }
+	function pad(n) { return (n < 10 ? "0" : "") + n }
+	function ymd(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) }
 
-Cal("init", { origin: "https://app.cal.com" })
-Cal("ui", {
-  theme: "light",
-  cssVarsPerTheme: { light: { "cal-brand": "#C8102E" } },
-  hideEventTypeDetails: false,
-  layout: "month_view"
-})
+	var date = document.getElementById("mDate")
+	var now = new Date()
+	date.min = ymd(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))
+	date.max = ymd(new Date(now.getFullYear(), now.getMonth() + 3, now.getDate()))
 
-function mountCal(link) {
-  var box = document.getElementById("calMount")
-  if (!box) return
-  box.innerHTML = ""
-  Cal("inline", {
-    elementOrSelector: "#calMount",
-    calLink: link,
-    config: { layout: "month_view", theme: "light" }
-  })
-}
+	var time = document.getElementById("mTime")
+	var first = document.createElement("option")
+	first.value = ""
+	first.textContent = t("Выберите время")
+	time.appendChild(first)
+	for (var h = 10; h <= 18; h++) {
+		var o = document.createElement("option")
+		o.value = o.textContent = pad(h) + ":00"
+		time.appendChild(o)
+	}
 
-mountCal("fintrust")
+	document.getElementById("book").addEventListener("click", function (e) {
+		var chip = e.target.closest(".chip")
+		if (!chip) return
+		var group = chip.parentNode.getAttribute("data-group")
+		M[group] = chip.getAttribute("data-v")
+		chip.parentNode.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("on", c === chip) })
+		if (group === "method") {
+			var c = CONTACT[M.method]
+			document.getElementById("mContactLabel").textContent = t(c[0])
+			var input = document.getElementById("mContact")
+			input.placeholder = c[1]
+			input.setAttribute("autocomplete", c[2])
+		}
+	})
+
+	function waLink(r) {
+		var text = "Здравствуйте! Хочу записаться: " + KIND_RU[r.kind] + ", " + PLACE_RU[r.place].toLowerCase() +
+			", " + r.date + " в " + r.time + "." + (r.name ? " Меня зовут " + r.name + "." : "") + (r.note ? " " + r.note : "")
+		return "https://wa.me/" + WA + "?text=" + encodeURIComponent(text)
+	}
+
+	document.getElementById("mSend").addEventListener("click", async function () {
+		var btn = this
+		var err = document.getElementById("mErr")
+		err.style.display = "none"
+		var r = {
+			kind: M.kind, place: M.place, method: M.method,
+			date: date.value, time: time.value,
+			contact: document.getElementById("mContact").value.trim(),
+			name: document.getElementById("mName").value.trim(),
+			note: document.getElementById("mNote").value.trim(),
+		}
+		var problem = !r.date ? "Выберите удобный день." :
+			(r.date < date.min || r.date > date.max) ? "Выберите день в ближайшие три месяца, начиная с завтра." :
+			!r.time ? "Выберите удобное время." :
+			!r.contact ? "Оставьте контакт — иначе мы не сможем подтвердить встречу." : ""
+		if (problem) { err.textContent = t(problem); err.style.display = "block"; return }
+		var fb = window.GN_FB
+		if (!fb) { location.href = waLink(r); return }
+		btn.disabled = true
+		try {
+			await fb.fsMod.addDoc(fb.fsMod.collection(fb.db, "meetings"), {
+				kind: r.kind, place: r.place, date: r.date, time: r.time,
+				method: r.method, contact: r.contact.slice(0, 200), name: r.name.slice(0, 200),
+				note: r.note.slice(0, 1000), lang: GN_LANG === "ky" ? "ky" : "ru",
+				status: "new", createdAt: new Date().toISOString(),
+			})
+		} catch (x) {
+			btn.disabled = false
+			err.textContent = ""
+			err.appendChild(document.createTextNode(t("Не получилось отправить заявку.") + " "))
+			var a = document.createElement("a")
+			a.href = waLink(r)
+			a.target = "_blank"
+			a.rel = "noopener"
+			a.textContent = t("Записаться через WhatsApp")
+			err.appendChild(a)
+			err.style.display = "block"
+			return
+		}
+		document.getElementById("mOkMethod").textContent = t(METHOD_RU[r.method])
+		document.getElementById("mOk").style.display = "block"
+	})
+})()
 </script>
 <script type="module">
   try {
@@ -196,6 +297,7 @@ mountCal("fintrust")
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
     const auth = authMod.getAuth(app)
     const db = fsMod.getFirestore(app)
+    window.GN_FB = { db, fsMod }
     const navAdmin = document.getElementById("navAdmin")
     const navLogin = document.getElementById("navLogin")
     const navSignup = document.getElementById("navSignup")
@@ -248,7 +350,7 @@ mountCal("fintrust")
     }
     document.getElementById("adminClose").addEventListener("click", closeAdmin)
     adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
-  } catch (e) { /* страница записи работает и без Firebase */ }
+  } catch (e) { /* без Firebase запись уходит в WhatsApp */ }
 </script>
 </body>
 </html>
