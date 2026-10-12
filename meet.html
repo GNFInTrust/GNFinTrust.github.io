@@ -25,41 +25,77 @@
   .page-head h1{font-size:clamp(30px,4vw,46px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:17px}
   .book{
-    max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:2px;
-    box-shadow:var(--shadow-sm);padding:32px
+    max-width:760px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:2px;
+    box-shadow:var(--shadow-md)
   }
-  .book h2{font-size:17px;margin:0 0 4px}
-  .book .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .book label{display:block;font-size:13px;font-weight:700;margin:16px 0 6px}
-  .book input,.book select,.book textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
+  .step{padding:28px 32px;border-bottom:1px solid var(--line)}
+  .step h2{display:flex;align-items:center;gap:10px;font-size:16px;margin:0 0 16px;font-weight:600}
+  .step h2 .n{display:inline-flex;width:24px;height:24px;border-radius:3px;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);flex:none}
+  .book label{display:block;font-size:13px;font-weight:700;margin:16px 0 6px;color:var(--ink)}
+  .book input,.book textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
+  .book input::placeholder,.book textarea::placeholder{color:#9AA3AD}
   .book textarea{min-height:84px;resize:vertical}
-  .book input:focus,.book select:focus,.book textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .book input:focus,.book textarea:focus{outline:2px solid var(--red);outline-offset:0;border-color:var(--red)}
+  .book input.bad{border-color:#d9776b;background:#FFF9F8}
   .opt{font-weight:400;color:var(--muted)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip{
-    border:1px solid var(--line);border-radius:3px;padding:10px 16px;background:#fff;
-    font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer;color:var(--slate);
-    transition:border-color .2s ease,color .2s ease,background-color .2s ease
-  }
-  .chip:hover{border-color:var(--line-strong)}
-  .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .pick{border:1px solid var(--line);border-radius:3px;background:#fff;font-family:var(--body);color:var(--ink);cursor:pointer;
+    transition:border-color .18s ease,background-color .18s ease,color .18s ease}
+  .pick:hover{border-color:var(--line-strong);background:var(--snow)}
+  .pick.on{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+  .pick:disabled{opacity:.45;cursor:not-allowed;background:#fff}
+  .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .kinds .pick{text-align:left;padding:14px 16px}
+  .kinds strong{display:block;font-size:15px;margin-bottom:3px}
+  .kinds span{display:block;font-size:13px;line-height:1.4;color:var(--slate)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:3px;padding:3px;background:var(--snow);margin-top:14px;gap:3px;flex-wrap:wrap}
+  .seg .pick{border-color:transparent;background:transparent;padding:8px 16px;font-size:14px;font-weight:700;color:var(--slate)}
+  .seg .pick:hover{background:#fff}
+  .seg .pick.on{background:#fff;border-color:var(--line);color:var(--ink);box-shadow:var(--shadow-sm)}
+  .seg .pick:disabled:hover{background:transparent}
+  .hint{font-size:13px;color:var(--muted);margin-top:8px}
+  .days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;scrollbar-width:thin}
+  .days .pick{flex:none;width:64px;padding:9px 0 10px;text-align:center;scroll-snap-align:start}
+  .days .wd{display:block;font-size:12px;color:var(--slate);text-transform:lowercase}
+  .days .dn{display:block;font-family:var(--head);font-size:20px;font-weight:600;line-height:1.25}
+  .days .mo{display:block;font-size:12px;color:var(--slate)}
+  .days .pick.on .wd,.days .pick.on .mo{color:var(--red)}
+  .times{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+  .times .pick{padding:10px 0;font-size:14px;font-weight:700;font-family:var(--mono)}
+  .sub-l{font-size:13px;font-weight:700;margin:18px 0 8px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .book-foot{padding:24px 32px 28px;background:var(--snow)}
+  .summary{display:flex;gap:10px;align-items:baseline;font-size:15px;color:var(--ink)}
+  .summary .k{font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;flex:none}
+  .summary.empty b{color:var(--muted);font-weight:500}
   .submit{
-    width:100%;margin-top:24px;background:var(--red);color:#fff;border:0;border-radius:3px;
-    padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;
-    box-shadow:0 8px 20px rgba(200,16,46,.24);transition:background-color .2s ease
+    width:100%;margin-top:16px;background:var(--red);color:#fff;border:0;border-radius:3px;
+    padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;transition:background-color .2s ease
   }
   .submit:hover{background:var(--red-dark)}
   .submit:disabled{opacity:.6;cursor:default}
-  .ok{display:none;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);border-radius:3px;padding:16px;margin-top:18px;font-size:14.5px}
-  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:18px;font-size:14px}
+  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:14px;font-size:14px}
   .err a{color:inherit;font-weight:700;text-decoration:underline}
+  .done{display:none;padding:44px 32px;text-align:center}
+  .done .ok-mark{width:52px;height:52px;border-radius:50%;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .done h2{font-size:22px;margin:0 0 10px}
+  .done p{color:var(--slate);font-size:15px;max-width:440px;margin:0 auto}
+  .done .when{display:inline-block;margin:16px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:3px;background:var(--snow);font-weight:700}
+  .book.sent .step,.book.sent .book-foot{display:none}
+  .book.sent .done{display:block}
   .note{margin-top:16px;text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
   @media (max-width:640px){
     .page{padding:36px 0 64px}
-    .book{padding:22px 18px}
-    .book .row{grid-template-columns:1fr;gap:0}
-    .book input,.book select,.book textarea{font-size:16px}
-    .chip{min-height:44px}
+    .step{padding:22px 18px}
+    .book-foot{padding:20px 18px 22px}
+    .kinds{grid-template-columns:1fr}
+    .kinds .pick{padding:12px 14px}
+    .times{grid-template-columns:repeat(3,1fr)}
+    .two{grid-template-columns:1fr}
+    .seg{display:flex}
+    .seg .pick{flex:1 1 auto;min-height:44px}
+    .times .pick,.days .pick{min-height:44px}
+    .book input,.book textarea{font-size:16px}
+    .summary{flex-direction:column;gap:2px}
   }
 </style>
 </head>
@@ -105,36 +141,52 @@
       <p>Семинары, вебинары и консультации — онлайн и очно. Выберите формат и удобное время — мы подтвердим встречу и напишем вам.</p>
     </div>
     <div class="book" id="book">
-      <label>Формат</label>
-      <div class="chips" data-group="kind">
-        <button class="chip on" data-v="consult" type="button">Консультация</button>
-        <button class="chip" data-v="seminar" type="button">Семинар</button>
-        <button class="chip" data-v="webinar" type="button">Вебинар</button>
+      <section class="step">
+        <h2><span class="n">1</span>Формат</h2>
+        <div class="kinds" data-group="kind">
+          <button class="pick on" data-v="consult" type="button" aria-pressed="true"><strong>Консультация</strong><span>Разберём ваш вопрос один на один</span></button>
+          <button class="pick" data-v="seminar" type="button" aria-pressed="false"><strong>Семинар</strong><span>Занятие в группе с практикой</span></button>
+          <button class="pick" data-v="webinar" type="button" aria-pressed="false"><strong>Вебинар</strong><span>Онлайн-занятие с ответами на вопросы</span></button>
+        </div>
+        <div class="seg" data-group="place">
+          <button class="pick on" data-v="online" type="button" aria-pressed="true">Онлайн</button>
+          <button class="pick" data-v="offline" type="button" aria-pressed="false">Очно в Бишкеке</button>
+        </div>
+      </section>
+      <section class="step">
+        <h2><span class="n">2</span>День и время</h2>
+        <div class="days" id="mDays" data-group="date"></div>
+        <p class="sub-l">Время</p>
+        <div class="times" id="mTimes" data-group="time"></div>
+        <p class="hint">Нужен другой день — напишите об этом в комментарии.</p>
+      </section>
+      <section class="step">
+        <h2><span class="n">3</span>Как с вами связаться</h2>
+        <div class="seg" data-group="method" style="margin-top:0">
+          <button class="pick on" data-v="WhatsApp" type="button" aria-pressed="true">WhatsApp</button>
+          <button class="pick" data-v="Telegram" type="button" aria-pressed="false">Telegram</button>
+          <button class="pick" data-v="Email" type="button" aria-pressed="false">Почта</button>
+        </div>
+        <div class="two">
+          <div><label for="mContact" id="mContactLabel">Ваш номер WhatsApp</label>
+          <input type="text" id="mContact" placeholder="+996 700 123 456" autocomplete="tel"></div>
+          <div><label for="mName">Ваше имя</label>
+          <input type="text" id="mName" placeholder="Айзат" autocomplete="name"></div>
+        </div>
+        <label for="mNote">Комментарий <span class="opt">(необязательно)</span></label>
+        <textarea id="mNote" placeholder="Коротко: что хотите обсудить"></textarea>
+      </section>
+      <div class="book-foot">
+        <div class="summary empty" id="mSummary"><span class="k">Ваша запись</span><b id="mSummaryText">Выберите день и время</b></div>
+        <button class="submit" id="mSend" type="button">Записаться</button>
+        <div class="err" id="mErr" role="alert"></div>
       </div>
-      <label>Где</label>
-      <div class="chips" data-group="place">
-        <button class="chip on" data-v="online" type="button">Онлайн</button>
-        <button class="chip" data-v="offline" type="button">Очно в Бишкеке</button>
+      <div class="done" id="mOk" role="status">
+        <span class="ok-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+        <h2>Заявка у нас!</h2>
+        <p>Подтвердим день и время и напишем вам сюда: <span id="mOkMethod">WhatsApp</span>.</p>
+        <span class="when" id="mOkWhen"></span>
       </div>
-      <div class="row">
-        <div><label for="mDate">Удобный день</label><input type="date" id="mDate"></div>
-        <div><label for="mTime">Удобное время</label><select id="mTime"></select></div>
-      </div>
-      <label>Способ связи</label>
-      <div class="chips" data-group="method">
-        <button class="chip on" data-v="WhatsApp" type="button">WhatsApp</button>
-        <button class="chip" data-v="Telegram" type="button">Telegram</button>
-        <button class="chip" data-v="Email" type="button">Почта</button>
-      </div>
-      <label for="mContact" id="mContactLabel">Ваш номер WhatsApp</label>
-      <input type="text" id="mContact" placeholder="+996 700 123 456" autocomplete="tel">
-      <label for="mName">Ваше имя</label>
-      <input type="text" id="mName" placeholder="Айзат" autocomplete="name">
-      <label for="mNote">Вопрос или тема <span class="opt">(необязательно)</span></label>
-      <textarea id="mNote" placeholder="Коротко: что хотите обсудить"></textarea>
-      <button class="submit" id="mSend" type="button">Записаться</button>
-      <div class="ok" id="mOk"><strong>Заявка у нас!</strong> Подтвердим день и время и напишем вам сюда: <span id="mOkMethod">WhatsApp</span>.</div>
-      <div class="err" id="mErr"></div>
     </div>
     <p class="note">Время — по Бишкеку (GMT+6)</p>
   </div>
@@ -193,7 +245,8 @@
 <script>
 (function () {
 	var WA = "996500797441"
-	var M = { kind: "consult", place: "online", method: "WhatsApp" }
+	var KY = GN_LANG === "ky"
+	var M = { kind: "consult", place: "online", method: "WhatsApp", date: "", time: "" }
 	var CONTACT = {
 		WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456", "tel"],
 		Telegram: ["Ваш Telegram", "@username", "off"],
@@ -202,32 +255,71 @@
 	var KIND_RU = { consult: "Консультация", seminar: "Семинар", webinar: "Вебинар" }
 	var PLACE_RU = { online: "Онлайн", offline: "Очно в Бишкеке" }
 	var METHOD_RU = { WhatsApp: "WhatsApp", Telegram: "Telegram", Email: "почту" }
-	function t(s) { return (GN_LANG === "ky" && KY_DICT[s]) || s }
+	var WD = KY ? ["жк", "дш", "шш", "шр", "бш", "жм", "иш"] : ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
+	var MON = KY ? ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
+		: ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
+	var DAYS = 21
+	function t(s) { return (KY && KY_DICT[s]) || s }
 	function pad(n) { return (n < 10 ? "0" : "") + n }
 	function ymd(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) }
+	function parse(v) { var p = v.split("-"); return new Date(+p[0], p[1] - 1, +p[2]) }
+	function nice(v) { var d = parse(v); return WD[d.getDay()] + ", " + d.getDate() + " " + MON[d.getMonth()] }
 
-	var date = document.getElementById("mDate")
+	var days = document.getElementById("mDays")
 	var now = new Date()
-	date.min = ymd(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))
-	date.max = ymd(new Date(now.getFullYear(), now.getMonth() + 3, now.getDate()))
-
-	var time = document.getElementById("mTime")
-	var first = document.createElement("option")
-	first.value = ""
-	first.textContent = t("Выберите время")
-	time.appendChild(first)
+	for (var i = 1; i <= DAYS; i++) {
+		var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i)
+		var b = document.createElement("button")
+		b.type = "button"
+		b.className = "pick"
+		b.setAttribute("data-v", ymd(d))
+		b.setAttribute("aria-pressed", "false")
+		b.setAttribute("aria-label", nice(ymd(d)))
+		b.innerHTML = '<span class="wd">' + (i === 1 ? t("завтра") : WD[d.getDay()]) + '</span><span class="dn">' + d.getDate() + '</span><span class="mo">' + MON[d.getMonth()] + "</span>"
+		days.appendChild(b)
+	}
+	var times = document.getElementById("mTimes")
 	for (var h = 10; h <= 18; h++) {
-		var o = document.createElement("option")
-		o.value = o.textContent = pad(h) + ":00"
-		time.appendChild(o)
+		var tb = document.createElement("button")
+		tb.type = "button"
+		tb.className = "pick"
+		tb.setAttribute("data-v", pad(h) + ":00")
+		tb.setAttribute("aria-pressed", "false")
+		tb.textContent = pad(h) + ":00"
+		times.appendChild(tb)
+	}
+
+	function select(group, value) {
+		M[group] = value
+		document.querySelectorAll('[data-group="' + group + '"] .pick').forEach(function (c) {
+			var on = c.getAttribute("data-v") === value
+			c.classList.toggle("on", on)
+			c.setAttribute("aria-pressed", on ? "true" : "false")
+		})
+	}
+	function whenText() {
+		return t(KIND_RU[M.kind]) + " · " + t(PLACE_RU[M.place]).toLowerCase() + " · " + nice(M.date) + " · " + M.time
+	}
+	function summary() {
+		var box = document.getElementById("mSummary")
+		var ready = M.date && M.time
+		box.classList.toggle("empty", !ready)
+		document.getElementById("mSummaryText").textContent = ready ? whenText()
+			: !M.date && !M.time ? t("Выберите день и время") : !M.date ? t("Выберите день") : t("Выберите время")
 	}
 
 	document.getElementById("book").addEventListener("click", function (e) {
-		var chip = e.target.closest(".chip")
-		if (!chip) return
-		var group = chip.parentNode.getAttribute("data-group")
-		M[group] = chip.getAttribute("data-v")
-		chip.parentNode.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("on", c === chip) })
+		var pick = e.target.closest(".pick")
+		if (!pick || pick.disabled) return
+		var group = pick.parentNode.getAttribute("data-group")
+		if (!group) return
+		select(group, pick.getAttribute("data-v"))
+		if (group === "kind") {
+			// Вебинар проходит только онлайн
+			var offline = document.querySelector('[data-group="place"] [data-v="offline"]')
+			offline.disabled = M.kind === "webinar"
+			if (M.kind === "webinar") select("place", "online")
+		}
 		if (group === "method") {
 			var c = CONTACT[M.method]
 			document.getElementById("mContactLabel").textContent = t(c[0])
@@ -235,7 +327,10 @@
 			input.placeholder = c[1]
 			input.setAttribute("autocomplete", c[2])
 		}
+		document.getElementById("mErr").style.display = "none"
+		summary()
 	})
+	document.getElementById("mContact").addEventListener("input", function () { this.classList.remove("bad") })
 
 	function waLink(r) {
 		var text = "Здравствуйте! Хочу записаться: " + KIND_RU[r.kind] + ", " + PLACE_RU[r.place].toLowerCase() +
@@ -246,31 +341,37 @@
 	document.getElementById("mSend").addEventListener("click", async function () {
 		var btn = this
 		var err = document.getElementById("mErr")
+		var contactInput = document.getElementById("mContact")
 		err.style.display = "none"
 		var r = {
-			kind: M.kind, place: M.place, method: M.method,
-			date: date.value, time: time.value,
-			contact: document.getElementById("mContact").value.trim(),
+			kind: M.kind, place: M.place, method: M.method, date: M.date, time: M.time,
+			contact: contactInput.value.trim(),
 			name: document.getElementById("mName").value.trim(),
 			note: document.getElementById("mNote").value.trim(),
 		}
 		var problem = !r.date ? "Выберите удобный день." :
-			(r.date < date.min || r.date > date.max) ? "Выберите день в ближайшие три месяца, начиная с завтра." :
 			!r.time ? "Выберите удобное время." :
 			!r.contact ? "Оставьте контакт — иначе мы не сможем подтвердить встречу." : ""
-		if (problem) { err.textContent = t(problem); err.style.display = "block"; return }
+		if (problem) {
+			err.textContent = t(problem)
+			err.style.display = "block"
+			if (!r.contact && r.date && r.time) { contactInput.classList.add("bad"); contactInput.focus() }
+			return
+		}
 		var fb = window.GN_FB
 		if (!fb) { location.href = waLink(r); return }
 		btn.disabled = true
+		btn.textContent = t("Отправляем…")
 		try {
 			await fb.fsMod.addDoc(fb.fsMod.collection(fb.db, "meetings"), {
 				kind: r.kind, place: r.place, date: r.date, time: r.time,
 				method: r.method, contact: r.contact.slice(0, 200), name: r.name.slice(0, 200),
-				note: r.note.slice(0, 1000), lang: GN_LANG === "ky" ? "ky" : "ru",
+				note: r.note.slice(0, 1000), lang: KY ? "ky" : "ru",
 				status: "new", createdAt: new Date().toISOString(),
 			})
 		} catch (x) {
 			btn.disabled = false
+			btn.textContent = t("Записаться")
 			err.textContent = ""
 			err.appendChild(document.createTextNode(t("Не получилось отправить заявку.") + " "))
 			var a = document.createElement("a")
@@ -283,8 +384,12 @@
 			return
 		}
 		document.getElementById("mOkMethod").textContent = t(METHOD_RU[r.method])
-		document.getElementById("mOk").style.display = "block"
+		document.getElementById("mOkWhen").textContent = whenText()
+		var book = document.getElementById("book")
+		book.classList.add("sent")
+		book.scrollIntoView({ behavior: "smooth", block: "center" })
 	})
+	summary()
 })()
 </script>
 <script type="module">
