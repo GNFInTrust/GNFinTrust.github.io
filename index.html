@@ -13,111 +13,96 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>GN FinTrust — вебинары, семинары и курсы</title>
 <meta name="description" content="GN FinTrust: вебинары, семинары и курсы по финансам без воды. Смотрите анонс, оставляйте заявку — логин пришлём в WhatsApp, на почту или в Telegram.">
 <link rel="stylesheet" href="theme.css">
 <style>
-  .site-header .nav-links a{position:relative}
-  .site-header .nav-links a::after{
-    content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;background:var(--red);
-    transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1)
-  }
-  .site-header .nav-links a:hover{background:transparent}
-  .site-header .nav-links a:hover::after{transform:scaleX(1)}
-
-  /* Hero: one headline, one line, one button */
-  .hero{padding:120px 0 128px;background:var(--paper);border-bottom:1px solid var(--line)}
+  /* Hero: centred, big type, lots of air */
+  .hero{padding:112px 0 104px;background:var(--white);text-align:center;overflow:hidden}
   /* As you scroll down, the hero text drifts up and fades out (--hp is 0..1, set by JS) */
-  .hero-copy{max-width:760px;transform:translateY(calc(var(--hp,0) * -60px));opacity:calc(1 - var(--hp,0) * .9)}
-  @keyframes heroReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  .hero h1{font-size:clamp(36px,4.4vw,64px);font-weight:600;line-height:1.08;letter-spacing:-.035em;margin:0 0 22px;animation:heroReveal .6s ease-out both}
-  .hero h1 em{color:var(--red);font-style:normal}
-  .hero p{color:var(--slate);font-size:clamp(17px,1.2vw,19px);max-width:540px;margin:0 0 36px;animation:heroReveal .6s ease-out .1s both}
-  .hero .btn{min-width:180px;animation:heroReveal .6s ease-out .2s both}
+  .hero-copy{max-width:880px;margin:0 auto;transform:translateY(calc(var(--hp,0) * -60px));opacity:calc(1 - var(--hp,0) * .9)}
+  @keyframes heroReveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .hero h1{font-size:clamp(40px,6.2vw,80px);font-weight:700;line-height:1.04;letter-spacing:-.04em;margin:0 0 20px;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) both}
+  .hero h1 em{font-style:normal;color:var(--red)}
+  .hero p{color:var(--slate);font-size:clamp(19px,1.7vw,24px);line-height:1.4;letter-spacing:-.015em;max-width:640px;margin:0 auto 36px;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) .1s both}
+  .hero-cta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) .2s both}
+  .hero .btn{min-width:180px;font-size:17px;padding:13px 28px}
+  .link-more{font-size:17px;font-weight:500;color:var(--red)}
+  .link-more::after{content:" ›"}
+  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
 
-  section{padding:96px 0}
-  /* Section titles sit on the left edge, like a printed page, not centred over the content */
-  h2{font-size:clamp(28px,3.4vw,42px);margin-bottom:12px}
-  .sub{color:var(--slate);margin:0 0 44px;max-width:560px}
+  section{padding:104px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+  h2{font-size:clamp(32px,4vw,52px);letter-spacing:-.035em;margin-bottom:12px}
+  .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4;margin:0}
 
-  #catalog h2{font-size:clamp(30px,4vw,44px)}
-  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;align-items:start;font-family:var(--cat)}
+  /* Catalog: two soft grey panels, white product cards inside */
+  #catalog{background:var(--white)}
+  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start;font-family:var(--cat)}
   .box{
-    background:var(--white);border:1px solid var(--line);border-radius:2px;padding:22px;
-    opacity:0;transform:translateY(18px);
-    transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1),box-shadow .28s ease,border-color .28s ease;
-    box-shadow:var(--shadow-sm)
+    background:var(--paper);border:0;border-radius:28px;padding:28px;
+    opacity:0;transform:translateY(24px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)
   }
   a.box-link{display:block;color:var(--ink)}
-  a.box-link p{color:var(--red);font-weight:600;font-size:14px;margin-top:6px}
-  a.box-link:hover{box-shadow:var(--shadow-md);border-color:var(--red-border)}
+  a.box-link p{color:var(--red);font-weight:600;font-size:15px;margin-top:6px}
   .box.show{opacity:1;transform:translateY(0)}
   .box>h3{
-    font-family:var(--head);font-weight:600;font-size:22px;letter-spacing:-.03em;line-height:1.2;
-    padding:4px 4px 16px;border-bottom:1px solid var(--line);margin-bottom:18px;
-    display:flex;align-items:center;justify-content:space-between;gap:10px
+    font-family:var(--head);font-weight:700;font-size:28px;letter-spacing:-.03em;line-height:1.15;
+    padding:2px 2px 20px;margin-bottom:0;
+    display:flex;align-items:baseline;gap:10px
   }
-  .box>h3 .cnt{flex:none;font-size:13px;font-weight:600;color:var(--muted);font-family:var(--mono)}
-  .cat-empty{color:var(--slate);font-size:14.5px;padding:8px 4px 4px}
-  .pcard{background:var(--snow);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:18px;box-shadow:var(--shadow-sm);transition:box-shadow .28s cubic-bezier(.16,1,.3,1),transform .28s cubic-bezier(.16,1,.3,1),border-color .25s ease}
-  .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--line-strong)}
+  .box>h3 .cnt{flex:none;font-size:17px;font-weight:600;color:var(--muted)}
+  .cat-empty{color:var(--slate);font-size:16px;padding:24px;background:var(--white);border-radius:var(--radius);text-align:center}
+  .pcard{background:var(--white);border:0;border-radius:var(--radius);overflow:hidden;cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1)}
+  .pcard:hover{box-shadow:var(--shadow-md);transform:scale(1.012)}
   .pcard:last-child{margin-bottom:0}
-  .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:var(--ink-deep)}
+  .pcard:focus-visible{outline:3px solid rgba(215,15,46,.35);outline-offset:2px}
+  .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#000}
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.82);font-size:14px}
+  .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.85);font-size:15px;font-weight:500;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%)}
   .pvideo .ph .big{font-size:34px}
   .pvideo .ph .play{
-    width:54px;height:54px;border-radius:3px;background:var(--red);color:#fff;
-    display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:3px;
-        transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1),background-color .2s ease
+    width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;
+    transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease
   }
-  .pcard:hover .play{background:var(--red-dark)}
-  .pbody{padding:18px 18px 16px}
-  .pbody h4{font-family:var(--head);font-size:18px;line-height:1.25;margin-bottom:8px}
-  .pbody p{font-size:14.5px;color:var(--slate);margin-bottom:16px}
+  .pcard:hover .play{background:var(--red);transform:scale(1.06)}
+  .pbody{padding:22px 22px 20px}
+  .pbody h4{font-family:var(--head);font-size:21px;line-height:1.2;letter-spacing:-.02em;margin-bottom:6px}
+  .pbody p{font-size:15px;color:var(--slate);margin-bottom:18px}
   .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
-  .team-sec{padding:88px 0 92px}
+  /* Team on a soft grey band; photos with rounded corners, no borders */
+  .team-sec{padding:104px 0;background:var(--paper)}
   /* The founder gets the wide column; the two experts sit beside her */
-  .team{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:28px;align-items:start}
+  .team{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;align-items:start}
   .tcard{
-    background:#fff;border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;
-    opacity:0;transform:translateY(18px);
-    transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1),border-color .25s ease
+    background:#fff;border:0;border-radius:28px;overflow:hidden;
+    opacity:0;transform:translateY(24px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)
   }
   .tcard.show{opacity:1;transform:translateY(0)}
-  .tcard.lead .tinfo h3::after{content:"";display:block;width:28px;height:2px;background:var(--foil);margin-top:8px}
-  .tphoto{position:relative;aspect-ratio:4/5;background:#EEF1F4;overflow:hidden}
+  .tphoto{position:relative;aspect-ratio:4/5;background:var(--paper);overflow:hidden}
   .tphoto .tph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:13px}
-  .tphoto .tph .big{font-size:40px;font-weight:700;color:#c9d1d8;font-family:var(--head)}
-  .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;background:#F6F1E8;filter:none;transition:transform .55s cubic-bezier(.16,1,.3,1),filter .4s ease}
+  .tphoto .tph .big{font-size:40px;font-weight:700;color:#C7C7CC;font-family:var(--head)}
+  .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;background:#F6F1E8;transition:transform .8s cubic-bezier(.16,1,.3,1)}
   .tcard:hover .tphoto img{transform:scale(1.03)}
-  .tinfo{padding:20px 20px 22px}
-  .tinfo h3{font-size:18px;margin-bottom:4px}
-  .tcard.lead .tinfo h3{font-size:22px}
-  .tinfo .trole{display:block;font-size:13px;font-weight:700;color:var(--red)}
-  .tinfo p{font-size:14.5px;color:var(--slate);margin-top:10px}
-  .tcard.lead .tinfo p{font-size:15.5px}
+  .tinfo{padding:22px 24px 26px}
+  .tinfo h3{font-size:21px;margin-bottom:4px;letter-spacing:-.02em}
+  .tcard.lead .tinfo h3{font-size:26px}
+  .tinfo .trole{display:block;font-size:14px;font-weight:600;color:var(--red)}
+  .tinfo p{font-size:15px;color:var(--slate);margin-top:10px}
+  .tcard.lead .tinfo p{font-size:17px}
 
-  .section-soft{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .team-wrap{position:relative}
   .team-nav{display:none}
-  .tn-btn{
-    position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;
-    border-radius:3px;border:1px solid var(--line);background:rgba(255,255,255,.96);color:var(--ink);
-    font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
-    font-family:var(--body);box-shadow:var(--shadow-sm);
-    transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease
-  }
-  .tn-btn:hover{border-color:var(--line-strong)}
-  .tn-btn:active{border-color:var(--red);color:var(--red);transform:translateY(-50%) scale(.95)}
-  #teamPrev{left:6px}
-  #teamNext{right:6px}
 
   @media (prefers-reduced-motion:reduce){
-    .hero-copy,.box,.tcard,.hero h1,.hero p,.hero .btn{opacity:1;transform:none;animation:none}
+    .hero-copy,.box,.tcard,.hero h1,.hero p,.hero-cta{opacity:1;transform:none;animation:none}
   }
   @media (max-width:900px){
     .boxes{grid-template-columns:1fr}
@@ -125,45 +110,47 @@
     .team{grid-template-columns:1fr 1fr;gap:16px}
     .tcard.lead{grid-column:1/-1}
     .tcard.lead .tphoto{aspect-ratio:4/3}
-    .hero h1{font-size:40px}
-    .hero{padding:80px 0 88px}
-    .brand{font-size:15px;gap:8px;white-space:nowrap}
+    .hero{padding:80px 0 72px}
+    .brand{font-size:16px;gap:8px;white-space:nowrap}
   }
   @media (max-width:640px){
-    .watch-modal{padding:0}
-    .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
+    .watch-modal{padding:0;align-items:flex-end}
+    .watch-sheet{width:100%;max-height:92vh;border-radius:22px 22px 0 0}
     .wvideo{position:sticky;top:0;z-index:1}
   }
   @media (max-width:560px){
-    .hero{padding:56px 0 64px}
-    .hero h1{font-size:32px}
-    .hero p{font-size:16px}
+    .hero{padding:56px 0 56px}
+    .hero h1{font-size:40px}
+    .hero p{font-size:19px;margin-bottom:28px}
+    .hero-cta{flex-direction:column;gap:16px}
+    .hero .btn{width:100%;max-width:340px}
+    section,.team-sec{padding:72px 0}
+    .sec-head{margin-bottom:36px}
+    h2{font-size:32px}
+    .sub{font-size:17px}
     .boxes{gap:16px}
+    .box{padding:18px;border-radius:22px}
+    .box>h3{font-size:24px;padding-bottom:16px}
     .team{gap:12px}
+    .tcard{border-radius:20px}
     .tinfo{padding:14px 14px 16px}
-    .tinfo h3{font-size:16px}
-    .tinfo .trole{font-size:12px}
-    .tinfo p{font-size:13.5px}
-    .tcard.lead .tinfo{padding:18px 18px 20px}
-    .tcard.lead .tinfo h3{font-size:20px}
-    .box{padding:16px}
-    .pbody{padding:16px}
-    .pbody h4{font-size:17px}
+    .tinfo h3{font-size:17px}
+    .tinfo .trole{font-size:13px}
+    .tinfo p{font-size:14px}
+    .tcard.lead .tinfo{padding:20px 20px 22px}
+    .tcard.lead .tinfo h3{font-size:22px}
+    .tcard.lead .tinfo p{font-size:16px}
+    .pbody{padding:18px}
+    .pbody h4{font-size:19px}
     .prow{flex-wrap:wrap}
     .prow .buy{flex:1 1 auto;justify-content:center}
-    .hero .btn{width:100%;max-width:340px}
-    .wbody{padding:20px 16px 24px}
-    .wbody h3{font-size:20px}
-    section,.team-sec{padding:96px 0}
-    h2{font-size:26px}
-    .sub{margin-bottom:32px}
+    .wbody h3{font-size:22px}
   }
   @media (max-height:560px) and (orientation:landscape){
     .hero{padding:32px 0}
-    .hero h1{font-size:28px;margin-bottom:10px}
-    .hero p{font-size:14.5px;margin-bottom:18px}
-    section{padding:48px 0}
-    .team-sec{padding:48px 0 52px}
+    .hero h1{font-size:32px;margin-bottom:10px}
+    .hero p{font-size:16px;margin-bottom:18px}
+    section,.team-sec{padding:48px 0}
     .team{grid-template-columns:1.35fr 1fr 1fr}
     .tcard.lead{grid-column:auto}
     .tphoto,.tcard.lead .tphoto{aspect-ratio:4/3}
@@ -174,16 +161,10 @@
     .fab-wa{width:46px;height:46px}
     .fab-wa svg{width:26px;height:26px}
   }
-  /* 16:9 desktop (1440px+): use the width instead of a narrow centre column */
   @media (min-width:1440px){
-    .wrap{max-width:1360px;padding-left:48px;padding-right:48px}
-    .wrap-wide{max-width:1520px;padding-left:48px;padding-right:48px}
-    .team{gap:32px}
-    .boxes{gap:36px}
-    section{padding:112px 0}
+    .wrap{max-width:1200px}
   }
   @media (pointer:coarse){
-    .tn-btn{width:48px;height:48px}
     .buy{min-height:44px}
   }
 </style>
@@ -253,15 +234,20 @@
       <div class="hero-copy">
         <h1>Налоги, учёт и деньги в бизнесе — <em>простым языком</em></h1>
         <p>Вебинары и курсы для предпринимателей. Перед покупкой можно бесплатно посмотреть анонс.</p>
-        <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
+          <a class="link-more" href="meet.html">Записаться на консультацию</a>
+        </div>
       </div>
     </div>
   </div>
 
   <section id="team" class="team-sec">
     <div class="wrap">
-      <h2>Наша команда</h2>
-      <p class="sub">Кто ведёт вебинары и отвечает на ваши вопросы.</p>
+      <div class="sec-head">
+        <h2>Наша команда</h2>
+        <p class="sub">Кто ведёт вебинары и отвечает на ваши вопросы.</p>
+      </div>
       <div class="team-wrap">
       <div class="team">
         <article class="tcard lead">
@@ -308,8 +294,10 @@
 
   <section id="catalog">
     <div class="wrap">
-      <h2>Каталог</h2>
-      <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
+      <div class="sec-head">
+        <h2>Каталог</h2>
+        <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
+      </div>
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
@@ -325,7 +313,7 @@
 <footer class="site-footer">
   <div class="wrap foot">
     <div class="foot-brand">
-      <a class="brand" href="#"><span class="brand-mark">GN</span> GN FinTrust</a>
+      <a class="brand" href="index.html"><span class="brand-mark">GN</span> FinTrust</a>
       <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
     </div>
     <div class="foot-links">
@@ -348,7 +336,7 @@
   </div>
 </div>
 
-<div class="watch-modal" id="watchModal">
+<div class="watch-modal" id="watchModal" role="dialog" aria-modal="true" aria-labelledby="wTitle">
   <div class="watch-sheet">
     <button class="watch-close" id="watchClose" type="button" aria-label="Закрыть">✕</button>
     <div class="wvideo" id="wVideo"></div>
@@ -365,24 +353,27 @@
 
 <script src="catalog.js"></script>
 <script>
-function renderCatalog(products) {
+function renderCatalog(products, loading) {
 		var types = ["webinar", "course"]
 		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
 		types.forEach(function (t) {
 			var box = document.getElementById("box-" + t)
 			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
 			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
-			document.getElementById("cnt-" + t).textContent = items.length
+			document.getElementById("cnt-" + t).textContent = loading ? "" : items.length
 			if (!items.length) {
 				var empty = document.createElement("p")
 				empty.className = "cat-empty"
-				empty.textContent = emptyHint[t]
+				// Первый визит: пока база не ответила, не пишем «пусто» — материалы могут быть
+				empty.textContent = loading ? "Загружаем…" : emptyHint[t]
 				box.appendChild(empty)
 				return
 			}
 			items.forEach(function (p) {
 			var card = document.createElement("div")
 			card.className = "pcard"
+			card.tabIndex = 0
+			card.setAttribute("role", "button")
 			card.innerHTML =
 				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
 				'<div class="pbody"><h4></h4><p></p>' +
@@ -390,8 +381,15 @@ function renderCatalog(products) {
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
 			card.querySelector("h4").textContent = locTitle(p)
 			card.querySelector("p").textContent = locDesc(p)
+			card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
 			card.addEventListener("click", function (ev) {
-				if (ev.target.closest("a")) return
+				// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
+				if (ev.target.closest("a, .price-sub")) return
+				openWatch(p)
+			})
+			card.addEventListener("keydown", function (ev) {
+				if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
+				ev.preventDefault()
 				openWatch(p)
 			})
 			box.appendChild(card)
@@ -399,6 +397,7 @@ function renderCatalog(products) {
 	})
 }
 
+var watchReturnFocus = null
 function openWatch(p) {
 	var m = document.getElementById("watchModal")
 	var v = document.getElementById("wVideo")
@@ -409,8 +408,9 @@ function openWatch(p) {
 	document.getElementById("wPrice").textContent = formatPrice(p.price)
 	document.getElementById("wPriceSub").textContent = formatPriceSub(p.price)
 	document.getElementById("wBuy").href = "buy.html?item=" + encodeURIComponent(p.id)
+	watchReturnFocus = document.activeElement
 	m.classList.add("on")
-	requestAnimationFrame(function () { m.classList.add("show") })
+	requestAnimationFrame(function () { m.classList.add("show"); document.getElementById("watchClose").focus() })
 	document.body.style.overflow = "hidden"
 }
 function closeWatch() {
@@ -419,6 +419,7 @@ function closeWatch() {
 	m.classList.remove("show")
 	document.body.style.overflow = ""
 	setTimeout(function () { m.classList.remove("on"); document.getElementById("wVideo").innerHTML = "" }, 250)
+	if (watchReturnFocus && watchReturnFocus.focus) watchReturnFocus.focus()
 }
 document.getElementById("watchClose").addEventListener("click", closeWatch)
 document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
@@ -428,7 +429,8 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
 	if (cachedProducts && cachedProducts.length) {
 		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
 	}
-	renderCatalog(cachedProducts && cachedProducts.length ? cachedProducts : [])
+	var hasCache = !!(cachedProducts && cachedProducts.length)
+	renderCatalog(hasCache ? cachedProducts : [], !hasCache)
 
 document.addEventListener("click", function(e){
 	if(e.target.classList && e.target.classList.contains("price-sub")){
@@ -562,7 +564,12 @@ document.addEventListener("click", function(e){
     })
     renderCatalog(products)
     try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
-  } catch (e) { /* остаётся демо-каталог */ }
+  } catch (e) {
+    // База недоступна: убираем «Загружаем…», показываем кэш или честное «пока нет»
+    var cached = []
+    try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (x) {}
+    renderCatalog(cached)
+  }
 </script>
 </body>
 </html>

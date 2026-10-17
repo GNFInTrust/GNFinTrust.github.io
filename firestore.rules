@@ -105,7 +105,7 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
       allow create: if request.resource.data.keys().hasOnly([
           'kind', 'place', 'date', 'time', 'method', 'contact', 'name',
-          'note', 'lang', 'status', 'createdAt'
+          'note', 'lang', 'status', 'createdAt', 'slot'
         ])
         && request.resource.data.keys().hasAll(['kind', 'place', 'date', 'time', 'method', 'contact', 'status'])
         && request.resource.data.status == 'new'
@@ -122,7 +122,26 @@ service cloud.firestore {
         && shortString(request.resource.data.get('name', ''), 200)
         && shortString(request.resource.data.get('note', ''), 1000)
         && request.resource.data.get('lang', 'ru') in ['ru', 'ky']
-        && shortString(request.resource.data.get('createdAt', ''), 40);
+        && shortString(request.resource.data.get('createdAt', ''), 40)
+        // Запись со слотом создаётся только вместе со слотом в busy на те же день и время
+        && (!('slot' in request.resource.data) || (
+          request.resource.data.slot == request.resource.data.date + '_' + request.resource.data.time
+          && existsAfter(/databases/$(database)/documents/busy/$(request.resource.data.slot))
+        ));
+    }
+
+    // Занятые слоты записи (meet.html): только день и время, без данных о людях.
+    // Видны всем, чтобы не записывали двоих на одно время. Создать можно только
+    // свободный слот (занятый — это уже update, он запрещён); освобождает админ.
+    match /busy/{slot} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['date', 'time'])
+        && request.resource.data.date is string
+        && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && request.resource.data.time is string
+        && request.resource.data.time.matches('[0-9]{2}:00')
+        && slot == request.resource.data.date + '_' + request.resource.data.time;
+      allow delete: if isAdmin();
     }
 
     // Всё остальное закрыто.
