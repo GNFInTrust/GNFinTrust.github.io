@@ -13,20 +13,20 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>Вход — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="theme.css">
 <style>
   body{min-height:100vh;display:flex;flex-direction:column;background:var(--paper)}
   main{flex:1;display:flex;align-items:center;justify-content:center;padding:64px 20px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:2px;padding:44px 36px;width:100%;max-width:430px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:44px 36px;width:100%;max-width:430px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
   h1{font-size:26px;text-align:center;margin-bottom:8px}
   .lede{color:var(--slate);font-size:14.5px;text-align:center;margin-bottom:24px}
   .gbtn{
     display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--line);
-    background:#fff;border-radius:3px;padding:12px;font-size:15px;font-weight:700;font-family:var(--body);
+    background:#fff;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:700;font-family:var(--body);
     cursor:pointer;min-height:48px;
     transition:background-color .2s cubic-bezier(.16,1,.3,1),border-color .2s cubic-bezier(.16,1,.3,1),transform .2s cubic-bezier(.16,1,.3,1),box-shadow .2s cubic-bezier(.16,1,.3,1)
   }
@@ -37,11 +37,11 @@
   .div{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;margin:20px 0;font-family:var(--mono);letter-spacing:.04em}
   .div::before,.div::after{content:"";flex:1;height:1px;background:var(--line)}
   label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
-  input{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .18s ease,box-shadow .18s ease}
+  input{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .18s ease,box-shadow .18s ease}
   input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
   .row{display:flex;gap:10px;margin-top:22px}
   .row .btn{flex:1}
-  .msg{display:none;border-radius:3px;padding:12px 14px;margin-top:18px;font-size:14px}
+  .msg{display:none;border-radius:var(--radius-sm);padding:12px 14px;margin-top:18px;font-size:14px}
   .msg.err{background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f}
   .msg.good{background:var(--green-soft);border:1px solid var(--green-border);color:var(--green)}
   .note{font-size:12.5px;color:var(--slate);text-align:center;margin-top:18px}

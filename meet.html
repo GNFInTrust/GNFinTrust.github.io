@@ -10,8 +10,8 @@
 <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>Запись на встречу — GN FinTrust</title>
 <meta name="description" content="Семинары, вебинары и консультации GN FinTrust — онлайн и очно. Выберите формат, день и время — мы подтвердим встречу в WhatsApp, Telegram или по почте.">
 <link rel="stylesheet" href="theme.css">
@@ -22,20 +22,20 @@
   .page-head h1{font-size:clamp(30px,4vw,46px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:17px}
   .book{
-    max-width:760px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:2px;
-    box-shadow:var(--shadow-sm)
+    max-width:760px;margin:0 auto;background:#fff;border:0;border-radius:24px;overflow:hidden;
+    box-shadow:var(--shadow-md)
   }
   .step{padding:28px 32px;border-bottom:1px solid var(--line)}
   .step h2{display:flex;align-items:center;gap:10px;font-size:16px;margin:0 0 16px;font-weight:600}
-  .step h2 .n{display:inline-flex;width:24px;height:24px;border-radius:3px;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);flex:none}
+  .step h2 .n{display:inline-flex;width:24px;height:24px;border-radius:var(--radius-sm);background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);flex:none}
   .book label{display:block;font-size:13px;font-weight:700;margin:16px 0 6px;color:var(--ink)}
-  .book input,.book textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
+  .book input,.book textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .18s ease}
   .book input::placeholder,.book textarea::placeholder{color:#9AA3AD}
   .book textarea{min-height:84px;resize:vertical}
   .book input:focus,.book textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
   .book input.bad{border-color:#d9776b;background:#FFF9F8}
   .opt{font-weight:400;color:var(--muted)}
-  .pick{border:1px solid var(--line);border-radius:3px;background:#fff;font-family:var(--body);color:var(--ink);cursor:pointer;
+  .pick{border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;font-family:var(--body);color:var(--ink);cursor:pointer;
     transition:border-color .18s ease,background-color .18s ease,color .18s ease}
   .pick:hover{border-color:var(--line-strong);background:var(--snow)}
   .pick.on{border-color:var(--red);background:var(--red-soft);color:var(--red)}
@@ -44,7 +44,7 @@
   .kinds .pick{text-align:left;padding:14px 16px}
   .kinds strong{display:block;font-size:15px;margin-bottom:3px}
   .kinds span{display:block;font-size:13px;line-height:1.4;color:var(--slate)}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:3px;padding:3px;background:var(--snow);margin-top:14px;gap:3px;flex-wrap:wrap}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--radius-sm);padding:3px;background:var(--snow);margin-top:14px;gap:3px;flex-wrap:wrap}
   .seg .pick{border-color:transparent;background:transparent;padding:8px 16px;font-size:14px;font-weight:700;color:var(--slate)}
   .seg .pick:hover{background:#fff}
   .seg .pick.on{background:#fff;border-color:var(--line);color:var(--ink);box-shadow:var(--shadow-sm)}
@@ -54,7 +54,7 @@
   .cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:32px;align-items:start}
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .cal-head strong{font-family:var(--head);font-size:16px;font-weight:600;text-transform:capitalize}
-  .cal-nav{width:36px;height:36px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink);font-size:18px;line-height:1;cursor:pointer;transition:border-color .18s ease,color .18s ease}
+  .cal-nav{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);font-size:18px;line-height:1;cursor:pointer;transition:border-color .18s ease,color .18s ease}
   .cal-nav:hover:not(:disabled){border-color:var(--red);color:var(--red)}
   .cal-nav:disabled{opacity:.35;cursor:default}
   .cal-wd,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
@@ -76,18 +76,18 @@
   .summary .k{font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;flex:none}
   .summary.empty b{color:var(--muted);font-weight:500}
   .submit{
-    width:100%;margin-top:16px;background:var(--red);color:#fff;border:0;border-radius:3px;
+    width:100%;margin-top:16px;background:var(--red);color:#fff;border:0;border-radius:var(--radius-sm);
     padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;transition:background-color .2s ease
   }
   .submit:hover{background:var(--red-dark)}
   .submit:disabled{opacity:.6;cursor:default}
-  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:3px;padding:12px 14px;margin-top:14px;font-size:14px}
+  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:var(--radius-sm);padding:12px 14px;margin-top:14px;font-size:14px}
   .err a{color:inherit;font-weight:700;text-decoration:underline}
   .done{display:none;padding:44px 32px;text-align:center}
   .done .ok-mark{width:52px;height:52px;border-radius:50%;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
   .done h2{font-size:22px;margin:0 0 10px}
   .done p{color:var(--slate);font-size:15px;max-width:440px;margin:0 auto}
-  .done .when{display:inline-block;margin:16px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:3px;background:var(--snow);font-weight:700}
+  .done .when{display:inline-block;margin:16px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--snow);font-weight:700}
   .book.sent .step,.book.sent .book-foot{display:none}
   .book.sent .done{display:block}
   .note{margin-top:16px;text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}

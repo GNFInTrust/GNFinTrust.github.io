@@ -13,40 +13,41 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>Админ — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
   :root{
     --red:#C8102E; --red-dark:#9E0C24; --red-soft:#F8E6E9; --red-border:#E8B4BC;
-    --text:#15202B; --text2:#5A6570; --soft:#EEF1F4; --border:#D5DBE2;
-    --green:#2A6B4E; --green-soft:#E4F0EA;
-    --head:"Unbounded","Manrope",-apple-system,"Segoe UI",sans-serif;
-    --body:"Manrope",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --text:#1D1D1F; --text2:#6E6E73; --soft:#F5F5F7; --border:#E3E3E8;
+    --green:#1E7B4E; --green-soft:#E7F6EE;
+    --head:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,Arial,sans-serif;
+    --radius:14px; --radius-sm:10px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
-  h1,h2,h3{font-family:var(--head)}
+  body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--head);font-weight:700;letter-spacing:-.02em}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   ::selection{background:var(--red);color:#fff}
-  header{border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:20}
+  header{border-bottom:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.78);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:20}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
   .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em;cursor:pointer;transition:opacity .18s ease}
   .brand:hover{opacity:.82}
   .brand:hover .brand-mark{transform:translateY(-1px)}
   .brand:active .brand-mark{transform:translateY(0)}
-  .brand-mark{width:32px;height:32px;border-radius:3px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;box-shadow:0 3px 10px rgba(200,16,46,.28);transition:transform .18s ease,box-shadow .18s ease}
+  .brand-mark{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;transition:transform .18s ease,box-shadow .18s ease}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
-  .navr button{border:1px solid var(--border);background:#fff;border-radius:3px;padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
+  .navr button{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
 
   main{flex:1;width:100%;max-width:1160px;margin:0 auto;padding:28px 24px 80px}
-  .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px 32px}
+  .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:3px;padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:980px;padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
   .btn:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
@@ -55,11 +56,11 @@
   h1.page{font-size:24px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:14px;margin-bottom:16px}
   .mtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;position:sticky;top:62px;z-index:15;background:var(--soft);padding:8px 0}
-  .mtab{border:1px solid var(--border);background:#fff;border-radius:3px;padding:9px 14px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 14px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
   .mtab.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
-  .tab-n{min-width:20px;height:20px;padding:0 6px;border-radius:3px;background:var(--red);color:#fff;font-size:11px;line-height:20px;text-align:center;display:none}
+  .tab-n{min-width:20px;height:20px;padding:0 6px;border-radius:var(--radius-sm);background:var(--red);color:#fff;font-size:11px;line-height:20px;text-align:center;display:none}
   .tab-n.on{display:inline-block}
-  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:2px;padding:26px;box-shadow:0 1px 2px rgba(33,29,29,.05)}
+  .panel{display:none;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px;box-shadow:0 1px 2px rgba(33,29,29,.05)}
   .panel.on{display:block}
   .panel h2{font-size:20px;margin-bottom:6px}
   .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:26px;max-width:760px}
@@ -68,7 +69,7 @@
   th{text-align:left;color:var(--text2);font-weight:600;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
   td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:top}
   tr:last-child td{border-bottom:0}
-  .tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:3px;padding:2px 10px}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:var(--radius-sm);padding:2px 10px}
   .tag.new{background:#FFF3E2;color:#9a5b00;border:1px solid #f0d9b5}
   .tag.done{background:var(--green-soft);color:var(--green);border:1px solid #bcd9c9}
   .tag.admin{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border)}
@@ -89,21 +90,21 @@
   form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
   form.grid .full{grid-column:1/-1}
   label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)}
-  input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:3px;padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
+  input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
   textarea{min-height:70px;resize:vertical}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
   .formfoot{display:flex;align-items:center;gap:14px;margin:14px 0 26px}
-  .flash{display:none;font-size:13.5px;border-radius:3px;padding:9px 13px}
+  .flash{display:none;font-size:13.5px;border-radius:var(--radius-sm);padding:9px 13px}
   .flash.good{background:var(--green-soft);border:1px solid #bcd9c9;color:var(--green)}
   .flash.bad{background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f}
-  .qr-thumb{width:64px;height:64px;object-fit:contain;border:1px solid var(--border);border-radius:3px;background:#fff}
+  .qr-thumb{width:64px;height:64px;object-fit:contain;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff}
   .inline{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:14px}
   .inline>div{flex:1;min-width:160px}
   .checks{display:flex;flex-direction:column;gap:8px;margin:6px 0 2px}
   .checks label{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:400;color:var(--text);margin:0}
-  .credbox{display:none;background:var(--soft);border:1px solid var(--border);border-radius:3px;padding:16px;margin-top:18px}
+  .credbox{display:none;background:var(--soft);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-top:18px}
   .credbox h3{font-size:15px;margin-bottom:8px}
-  .credbox pre{background:#fff;border:1px solid var(--border);border-radius:3px;padding:12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;font-family:Consolas,Menlo,monospace}
+  .credbox pre{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:13px;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;font-family:Consolas,Menlo,monospace}
   .credbox .row{display:flex;gap:8px;flex-wrap:wrap}
   @media (max-width:760px){ form.grid{grid-template-columns:1fr} .price-input{width:80px} }
   html{-webkit-text-size-adjust:100%}
@@ -255,7 +256,7 @@
           <div style="background:#F8FAFC;border:1px solid var(--border);border-left:4px solid #f0a500;border-radius:0 3px 3px 0;padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Как обновить ссылку на скачивание</strong>
             <ol style="font-size:13px;color:var(--text2);margin:0;padding-left:18px">
-              <li>Соберите exe через <code style="background:#eee;border-radius:3px;padding:1px 4px">build_exe.bat</code> (нужен Node.js).</li>
+              <li>Соберите exe через <code style="background:#eee;border-radius:var(--radius-sm);padding:1px 4px">build_exe.bat</code> (нужен Node.js).</li>
               <li>Залейте GNTools-client.zip на GitHub Releases или Google Drive (открытый доступ).</li>
               <li>Вставьте прямую ссылку в поле «Ссылка на скачивание» и нажмите «Сохранить» — кнопка в приложении и на сайте обновится автоматически.</li>
             </ol>

@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>GN Tools — GN FinTrust</title>
 <link rel="stylesheet" href="theme.css">
 <style>
@@ -46,22 +46,22 @@
   .cta-meta{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 
   /* App window mock */
-  .mock{background:#fff;border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow-lg);overflow:hidden;animation:up .8s cubic-bezier(.16,1,.3,1) .2s both;transform-origin:center}
+  .mock{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);overflow:hidden;animation:up .8s cubic-bezier(.16,1,.3,1) .2s both;transform-origin:center}
   .mock-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--snow);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
   .mock-bar i{width:9px;height:9px;border-radius:50%;background:var(--line-strong);display:block}
   .mock-bar i:first-child{background:var(--red)}
   .mock-bar span{margin-left:6px}
   .mock-body{display:grid;grid-template-columns:110px 1fr;min-height:260px}
   .mock-side{border-right:1px solid var(--line);padding:12px 8px;display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600}
-  .mock-side b{padding:7px 9px;border-radius:2px;color:var(--slate);font-weight:600}
+  .mock-side b{padding:7px 9px;border-radius:var(--radius);color:var(--slate);font-weight:600}
   .mock-side b.on{background:var(--red-soft);color:var(--red)}
   .mock-main{padding:14px}
   .mock-row{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:8px;padding:8px 6px;border-bottom:1px solid var(--line);font-size:11.5px;align-items:center;opacity:0;animation:up .5s cubic-bezier(.16,1,.3,1) both}
   .mock-row.h{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;opacity:1;animation:none}
   .mock-row:nth-child(2){animation-delay:.7s}.mock-row:nth-child(3){animation-delay:.95s}.mock-row:nth-child(4){animation-delay:1.2s}.mock-row:nth-child(5){animation-delay:1.45s}
-  .mock-row em{font-style:normal;justify-self:start;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:2px;background:var(--green-soft);color:var(--green)}
+  .mock-row em{font-style:normal;justify-self:start;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:var(--radius);background:var(--green-soft);color:var(--green)}
   .mock-row em.w{background:var(--foil-soft);color:#7A4500}
-  .sk{display:block;height:7px;border-radius:2px;background:var(--line)}
+  .sk{display:block;height:7px;border-radius:var(--radius);background:var(--line)}
 
   /* Sections */
   .sec{padding:88px 0}
@@ -78,16 +78,16 @@
   .feat .tag{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--green)}
 
   .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-  .card{background:#fff;border:1px solid var(--line);border-radius:2px;padding:30px;box-shadow:var(--shadow-sm)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm)}
   .card h3{font-size:19px;margin-bottom:16px}
   .steps{list-style:none;display:grid;gap:10px;counter-reset:s}
-  .steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;background:var(--snow);border:1px solid var(--line);border-radius:2px;padding:12px 14px;font-size:14.5px}
+  .steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;background:var(--snow);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:14.5px}
   .steps li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
   .steps.g li::before{background:var(--green)}
   .tip{background:var(--snow);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:0 3px 3px 0;padding:12px 16px;font-size:13.5px;color:var(--slate);margin-top:14px}
   .tip ol{margin:8px 0 0;padding-left:20px}
   .hint{font-size:13px;color:var(--slate);margin-top:12px}
-  code.hash{font-family:var(--mono);font-size:11.5px;word-break:break-all;background:var(--snow);border:1px solid var(--line);padding:1px 6px;border-radius:2px}
+  code.hash{font-family:var(--code);font-size:11.5px;word-break:break-all;background:var(--snow);border:1px solid var(--line);padding:1px 6px;border-radius:var(--radius)}
 
   .prices{width:100%;border-collapse:collapse;font-size:14.5px}
   .prices td{padding:11px 0;border-bottom:1px solid var(--line)}
@@ -95,7 +95,7 @@
   .prices td:last-child{text-align:right;font-family:var(--mono);font-weight:600;color:var(--red);white-space:nowrap}
   .prices td.free{color:var(--green)}
   .access{display:grid;gap:10px;margin-bottom:6px}
-  .access div{display:flex;gap:12px;align-items:flex-start;border-radius:2px;padding:12px 14px;font-size:14.5px}
+  .access div{display:flex;gap:12px;align-items:flex-start;border-radius:var(--radius);padding:12px 14px;font-size:14.5px}
   .access div:first-child{background:var(--green-soft)}
   .access div:last-child{background:var(--foil-soft)}
   .access .n{flex:none;width:26px;height:26px;border-radius:50%;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
@@ -103,14 +103,14 @@
   .access div:last-child .n{background:var(--foil)}
 
   .chips{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:4px 0 18px}
-  .chip{border:1px solid var(--line);border-radius:2px;padding:16px;background:#fff;text-align:left}
+  .chip{border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:#fff;text-align:left}
   .chip .t{font-size:15px;font-weight:700;display:block}
   .chip .p{font-size:14px;color:var(--red);font-weight:600;font-family:var(--mono)}
-  .nopay{border:1px dashed var(--line-strong);border-radius:3px;background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
+  .nopay{border:1px dashed var(--line-strong);border-radius:var(--radius-sm);background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
   .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
 
   .faq{display:grid;gap:10px;max-width:860px}
-  .faq details{background:#fff;border:1px solid var(--line);border-radius:2px;transition:border-color .2s ease,box-shadow .2s ease}
+  .faq details{background:#fff;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .2s ease,box-shadow .2s ease}
   .faq details[open]{border-color:var(--red-border);box-shadow:var(--shadow-sm)}
   .faq summary{list-style:none;padding:16px 18px;cursor:pointer;font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:16px;align-items:center}
   .faq summary::-webkit-details-marker{display:none}
