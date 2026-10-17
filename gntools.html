@@ -13,131 +13,147 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>GN Tools — GN FinTrust</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  body{min-height:100vh;display:flex;flex-direction:column;background:var(--snow)}
+  body{min-height:100vh;display:flex;flex-direction:column;background:var(--white)}
   main{flex:1;width:100%}
-  .wrap.gt{max-width:1180px}
-  @media (min-width:1440px){.wrap.gt{max-width:1320px;padding-left:48px;padding-right:48px}}
+  .wrap.gt{max-width:1080px}
 
   @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  .rv{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
   .rv.show{opacity:1;transform:none}
 
-  /* Hero */
-  .gt-hero{position:relative;overflow:hidden;background:var(--paper);border-bottom:1px solid var(--line);padding:72px 0 80px;isolation:isolate}
-  .gt-hero .wrap{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:center}
-  .gt-hero .copy>*{animation:up .7s cubic-bezier(.16,1,.3,1) both}
-  .gt-hero .copy>:nth-child(2){animation-delay:.08s}
-  .gt-hero .copy>:nth-child(3){animation-delay:.16s}
-  .gt-hero .copy>:nth-child(4){animation-delay:.24s}
-  .eyebrow{display:inline-flex;align-items:baseline;gap:10px;color:var(--slate);font-size:14px;font-weight:600;margin-bottom:18px}
-  .beta{font-size:11px;font-weight:700;color:var(--foil);letter-spacing:.08em;font-family:var(--mono)}
-  .gt-hero h1{font-size:clamp(36px,4.6vw,64px);line-height:1.04;letter-spacing:-.045em;margin-bottom:18px}
-  .gt-hero h1 em{font-style:normal;color:var(--red)}
-  .lede{color:var(--slate);font-size:clamp(16px,1.15vw,18.5px);max-width:600px;margin-bottom:28px}
-  .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-  .btn-dl{background:var(--green);color:#fff;padding:14px 26px;font-size:16px}
-  .btn-dl:hover{background:#215a40}
-  .btn-dl svg{width:18px;height:18px}
-  .cta-meta{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  /* Hero: product name, one line, download — then the app window */
+  .gt-hero{padding:96px 0 0;text-align:center;overflow:hidden;background:#fff}
+  .gt-hero .copy>*{animation:up .8s cubic-bezier(.16,1,.3,1) both}
+  .gt-hero .copy>:nth-child(2){animation-delay:.06s}
+  .gt-hero .copy>:nth-child(3){animation-delay:.12s}
+  .gt-hero .copy>:nth-child(4){animation-delay:.18s}
+  .gt-hero .copy>:nth-child(5){animation-delay:.24s}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--slate);font-size:16px;font-weight:500;margin-bottom:14px}
+  .badge{display:inline-block;font-size:12px;font-weight:600;line-height:1;padding:5px 8px;border-radius:var(--radius-xs);background:var(--paper);color:var(--slate)}
+  .badge.green{background:var(--green-soft);color:var(--green)}
+  .gt-hero h1{font-size:clamp(52px,8vw,96px);font-weight:700;line-height:1;letter-spacing:-.04em;margin-bottom:14px}
+  .tagline{font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:18px}
+  .tagline em{font-style:normal;color:var(--red)}
+  .lede{color:var(--slate);font-size:clamp(17px,1.4vw,20px);line-height:1.5;max-width:640px;margin:0 auto 30px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:center}
+  .btn-dl{padding:14px 26px;font-size:17px;min-height:52px}
+  .btn-dl svg{width:19px;height:19px}
+  .link-more{font-size:17px;font-weight:500;color:var(--red)}
+  .link-more::after{content:" ›"}
+  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
+  .cta-meta{display:block;margin-top:14px;font-size:14px;color:var(--muted)}
 
-  /* App window mock */
-  .mock{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);overflow:hidden;animation:up .8s cubic-bezier(.16,1,.3,1) .2s both;transform-origin:center}
-  .mock-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--snow);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
-  .mock-bar i{width:9px;height:9px;border-radius:50%;background:var(--line-strong);display:block}
-  .mock-bar i:first-child{background:var(--red)}
-  .mock-bar span{margin-left:6px}
-  .mock-body{display:grid;grid-template-columns:110px 1fr;min-height:260px}
-  .mock-side{border-right:1px solid var(--line);padding:12px 8px;display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600}
-  .mock-side b{padding:7px 9px;border-radius:var(--radius);color:var(--slate);font-weight:600}
-  .mock-side b.on{background:var(--red-soft);color:var(--red)}
-  .mock-main{padding:14px}
-  .mock-row{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:8px;padding:8px 6px;border-bottom:1px solid var(--line);font-size:11.5px;align-items:center;opacity:0;animation:up .5s cubic-bezier(.16,1,.3,1) both}
-  .mock-row.h{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;opacity:1;animation:none}
-  .mock-row:nth-child(2){animation-delay:.7s}.mock-row:nth-child(3){animation-delay:.95s}.mock-row:nth-child(4){animation-delay:1.2s}.mock-row:nth-child(5){animation-delay:1.45s}
-  .mock-row em{font-style:normal;justify-self:start;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:var(--radius);background:var(--green-soft);color:var(--green)}
-  .mock-row em.w{background:var(--foil-soft);color:#7A4500}
-  .sk{display:block;height:7px;border-radius:var(--radius);background:var(--line)}
+  /* App window (Windows-style title bar, it is a Windows program) */
+  .mock{max-width:880px;margin:56px auto 0;text-align:left;background:#fff;border-radius:var(--radius) var(--radius) 0 0;box-shadow:0 30px 80px rgba(0,0,0,.14),0 0 0 1px rgba(0,0,0,.05);overflow:hidden;animation:up 1s cubic-bezier(.16,1,.3,1) .3s both}
+  .mock-bar{display:flex;align-items:center;height:40px;padding:0 0 0 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;color:var(--slate)}
+  .mock-bar .ctl{margin-left:auto;display:flex;height:100%}
+  .mock-bar .ctl i{width:46px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;color:var(--muted)}
+  .mock-body{display:grid;grid-template-columns:180px 1fr;min-height:300px}
+  .mock-side{background:var(--paper);padding:14px 10px;display:flex;flex-direction:column;gap:2px;font-size:14px}
+  .mock-side b{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-xs);color:var(--slate);font-weight:500}
+  .mock-side b svg{width:17px;height:17px;flex:none}
+  .mock-side b.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .mock-main{padding:18px 22px}
+  .mock-title{font-size:18px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+  .mock-title span{font-size:13px;font-weight:500;color:var(--muted)}
+  .mock-row{display:grid;grid-template-columns:1.3fr 1fr .7fr;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);font-size:13px;align-items:center;opacity:0;animation:up .6s cubic-bezier(.16,1,.3,1) both}
+  .mock-row.h{font-size:12px;font-weight:500;color:var(--muted);opacity:1;animation:none;padding-top:4px}
+  .mock-row:nth-child(3){animation-delay:.7s}.mock-row:nth-child(4){animation-delay:.9s}.mock-row:nth-child(5){animation-delay:1.1s}.mock-row:nth-child(6){animation-delay:1.3s}
+  .mock-row em{font-style:normal;justify-self:start;font-size:12px;font-weight:600;padding:3px 8px;border-radius:var(--radius-xs);background:var(--green-soft);color:var(--green)}
+  .mock-row em.w{background:var(--amber-soft);color:var(--amber)}
+  .sk{display:block;height:8px;border-radius:4px;background:var(--line)}
 
   /* Sections */
-  .sec{padding:88px 0}
-  .sec.soft{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .sec h2{font-size:clamp(26px,2.8vw,40px);margin-bottom:10px}
-  .sec .sub{color:var(--slate);max-width:640px;margin-bottom:40px}
+  .sec{padding:112px 0}
+  .sec.soft{background:var(--paper)}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+  .sec h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin-bottom:12px;text-wrap:balance}
+  .sec .sub{text-wrap:balance}
+  .sec .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4}
 
-  /* Four tools as a numbered, ruled list rather than icon cards */
-  .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:0 32px;counter-reset:feat}
-  .feat{border-top:2px solid var(--ink);padding:18px 0 8px;counter-increment:feat}
-  .feat::before{content:counter(feat,decimal-leading-zero);display:block;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--red);margin-bottom:14px}
-  .feat h3{font-size:18px;margin-bottom:8px}
-  .feat p{font-size:14.5px;color:var(--slate)}
-  .feat .tag{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--green)}
+  /* Four tools */
+  .feats{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .feat{background:#fff;border-radius:var(--radius);padding:32px}
+  .feat .ico{width:48px;height:48px;border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+  .feat .ico svg{width:24px;height:24px}
+  .feat h3{font-size:22px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .feat p{font-size:16px;color:var(--slate)}
 
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm)}
-  .card h3{font-size:19px;margin-bottom:16px}
-  .steps{list-style:none;display:grid;gap:10px;counter-reset:s}
-  .steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;background:var(--snow);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:14.5px}
-  .steps li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
-  .steps.g li::before{background:var(--green)}
-  .tip{background:var(--snow);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:0 3px 3px 0;padding:12px 16px;font-size:13.5px;color:var(--slate);margin-top:14px}
-  .tip ol{margin:8px 0 0;padding-left:20px}
-  .hint{font-size:13px;color:var(--slate);margin-top:12px}
-  code.hash{font-family:var(--code);font-size:11.5px;word-break:break-all;background:var(--snow);border:1px solid var(--line);padding:1px 6px;border-radius:var(--radius)}
+  /* How to start: three columns of short numbered steps */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+  .card{background:var(--paper);border-radius:var(--radius);padding:30px}
+  .sec.soft .card{background:#fff}
+  .card h3{font-size:21px;margin-bottom:18px}
+  .steps{list-style:none;display:grid;gap:16px;counter-reset:s}
+  .steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;font-size:15.5px;line-height:1.5}
+  .steps li::before{content:counter(s);flex:none;width:24px;height:24px;margin-top:1px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .note{background:#fff;border-radius:var(--radius-sm);padding:14px 16px;font-size:14.5px;color:var(--slate);margin-top:20px}
+  .sec.soft .note{background:var(--paper)}
+  .warn{display:flex;gap:18px;align-items:flex-start;margin-top:20px;background:var(--amber-soft);border-radius:var(--radius);padding:26px 30px;font-size:15.5px;color:#4D3200}
+  .warn .wi{flex:none;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--amber);display:flex;align-items:center;justify-content:center}
+  .warn .wi svg{width:22px;height:22px}
+  .warn-title{display:block;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px}
+  .warn ol{margin:10px 0 0;padding-left:20px}
+  .warn ol li{margin-top:4px}
+  .hashline{font-size:13.5px;color:var(--muted);margin-top:12px}
+  code.hash{font-family:var(--code);font-size:12px;word-break:break-all;background:#fff;padding:2px 6px;border-radius:4px;color:var(--slate)}
 
-  .prices{width:100%;border-collapse:collapse;font-size:14.5px}
-  .prices td{padding:11px 0;border-bottom:1px solid var(--line)}
+  /* Prices */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .prices{width:100%;border-collapse:collapse;font-size:16px}
+  .prices td{padding:13px 0;border-bottom:1px solid var(--line)}
   .prices tr:last-child td{border-bottom:0}
-  .prices td:last-child{text-align:right;font-family:var(--mono);font-weight:600;color:var(--red);white-space:nowrap}
+  .prices td:last-child{text-align:right;font-weight:600;white-space:nowrap;padding-left:16px}
   .prices td.free{color:var(--green)}
-  .access{display:grid;gap:10px;margin-bottom:6px}
-  .access div{display:flex;gap:12px;align-items:flex-start;border-radius:var(--radius);padding:12px 14px;font-size:14.5px}
-  .access div:first-child{background:var(--green-soft)}
-  .access div:last-child{background:var(--foil-soft)}
-  .access .n{flex:none;width:26px;height:26px;border-radius:50%;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
-  .access div:first-child .n{background:var(--green)}
-  .access div:last-child .n{background:var(--foil)}
-
+  .access{display:grid;gap:18px}
+  .access div{display:flex;gap:14px;align-items:flex-start;font-size:16px;color:var(--slate)}
+  .access strong{display:block;color:var(--ink);font-size:17px;margin-bottom:2px}
+  .access .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
   .chips{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:4px 0 18px}
-  .chip{border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:#fff;text-align:left}
-  .chip .t{font-size:15px;font-weight:700;display:block}
-  .chip .p{font-size:14px;color:var(--red);font-weight:600;font-family:var(--mono)}
-  .nopay{border:1px dashed var(--line-strong);border-radius:var(--radius-sm);background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
-  .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+  .chip{border-radius:var(--radius-sm);padding:18px 16px;background:var(--paper);text-align:left}
+  .chip .t{font-size:16px;font-weight:600;display:block}
+  .chip .p{font-size:15px;color:var(--slate)}
+  .nopay{border-radius:var(--radius-sm);background:var(--paper);padding:16px 18px;font-size:15px;color:var(--slate)}
+  .nopay strong{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
 
-  .faq{display:grid;gap:10px;max-width:860px}
-  .faq details{background:#fff;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .2s ease,box-shadow .2s ease}
-  .faq details[open]{border-color:var(--red-border);box-shadow:var(--shadow-sm)}
-  .faq summary{list-style:none;padding:16px 18px;cursor:pointer;font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+  /* FAQ: a plain list with dividers */
+  .faq{max-width:760px;margin:0 auto;border-top:1px solid var(--line-strong)}
+  .faq details{border-bottom:1px solid var(--line-strong)}
+  .faq summary{list-style:none;padding:22px 4px;cursor:pointer;font-weight:600;font-size:18px;display:flex;justify-content:space-between;gap:16px;align-items:center}
   .faq summary::-webkit-details-marker{display:none}
-  .faq summary::after{content:"+";flex:none;font-family:var(--mono);font-size:20px;color:var(--red);transition:transform .3s cubic-bezier(.16,1,.3,1)}
-  .faq details[open] summary::after{transform:rotate(45deg)}
-  .faq .ans{padding:0 18px 16px;font-size:14.5px;color:var(--slate)}
+  .faq summary::after{content:"";flex:none;width:12px;height:12px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-3px) rotate(45deg);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+  .faq details[open] summary::after{transform:translateY(3px) rotate(-135deg)}
+  .faq .ans{padding:0 4px 22px;font-size:16px;color:var(--slate);max-width:660px}
   .faq details[open] .ans{animation:up .35s cubic-bezier(.16,1,.3,1) both}
 
   @media (prefers-reduced-motion:reduce){.rv,.mock,.mock-row,.gt-hero .copy>*{opacity:1;transform:none;animation:none}}
-  @media (max-width:1080px){
-    .feats{grid-template-columns:repeat(2,1fr);gap:24px 32px}
+  @media (max-width:980px){
+    .how{grid-template-columns:1fr}
     .chips{grid-template-columns:repeat(3,1fr)}
   }
-  @media (max-width:900px){
-    .gt-hero{padding:48px 0 56px}
-    .gt-hero .wrap,.split{grid-template-columns:1fr}
-    .gt-hero .wrap{gap:36px}
-    .sec{padding:64px 0}
+  @media (max-width:760px){
+    .gt-hero{padding:56px 0 0}
+    .feats,.split{grid-template-columns:1fr}
+    .sec{padding:80px 0}
+    .sec-head{margin-bottom:36px}
+    .mock-body{grid-template-columns:1fr}
+    .mock-side{flex-direction:row;overflow:hidden;padding:8px}
+    .mock-row .sk:nth-child(2){display:none}
+    .mock-row{grid-template-columns:1.3fr .7fr}
+    .mock-row.h span:nth-child(2){display:none}
   }
   @media (max-width:560px){
-    .feats,.chips{grid-template-columns:1fr 1fr}
-    .feats{grid-template-columns:1fr;gap:20px}
-    .card{padding:22px 18px}
-    .btn-dl{width:100%}
-    .mock-body{grid-template-columns:1fr}
-    .mock-side{flex-direction:row;border-right:0;border-bottom:1px solid var(--line);overflow:hidden}
-    .sec{padding:88px 0}
+    .feat,.card{padding:24px 20px}
+    .warn{flex-direction:column;padding:22px 20px;gap:12px}
+    .chips{grid-template-columns:1fr 1fr}
+    .cta{flex-direction:column;gap:16px}
+    .btn-dl{width:100%;max-width:340px}
+    .mock{margin-top:40px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
@@ -167,94 +183,113 @@
   <section class="gt-hero">
     <div class="wrap gt">
       <div class="copy">
-        <span class="eyebrow">Программа для Windows <span class="beta">БЕТА-ТЕСТ</span></span>
-        <h1>GN Tools — переписки и документы <em>без ручной работы</em></h1>
-        <p class="lede">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Аккаунт общий с сайтом, а каждый новый аккаунт получает <strong>бесплатные пробные токены</strong>.</p>
-        <div class="cta">
-          <a class="btn btn-dl" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Скачать GNTools.exe</a>
-          <span class="cta-meta">Установка / обновление · ~42 МБ</span>
+        <span class="eyebrow">Программа для Windows <span class="badge">Бета</span></span>
+        <h1>GN Tools</h1>
+        <p class="tagline">Переписки и документы — <em>без ручной работы</em></p>
+        <p class="lede">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Вход — тот же аккаунт, что на сайте, и сразу <strong>бесплатные пробные токены</strong>.</p>
+        <div>
+          <div class="cta">
+            <a class="btn btn-primary btn-dl" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Скачать GNTools.exe</a>
+            <a class="link-more" href="#install">Как установить</a>
+          </div>
+          <span class="cta-meta">Установка и обновление · около 42 МБ</span>
         </div>
       </div>
       <div class="mock" aria-hidden="true">
-        <div class="mock-bar"><i></i><i></i><i></i><span>GN Tools</span></div>
+        <div class="mock-bar">GN Tools<span class="ctl"><i>&#8211;</i><i>&#9633;</i><i>&#10005;</i></span></div>
         <div class="mock-body">
-          <div class="mock-side"><b class="on">Контакты</b><b>Документы</b><b>Конвертер</b></div>
+          <div class="mock-side">
+            <b class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>Контакты</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>Документы</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg>Конвертер</b>
+          </div>
           <div class="mock-main">
+            <div class="mock-title">Контакты <span>WhatsApp → Excel</span></div>
             <div class="mock-row h"><span>Имя</span><span>Телефон</span><span>Статус</span></div>
-            <div class="mock-row"><span class="sk" style="width:80%"></span><span class="sk" style="width:70%"></span><em>Новый</em></div>
-            <div class="mock-row"><span class="sk" style="width:64%"></span><span class="sk" style="width:76%"></span><em class="w">В работе</em></div>
-            <div class="mock-row"><span class="sk" style="width:72%"></span><span class="sk" style="width:60%"></span><em>Новый</em></div>
-            <div class="mock-row"><span class="sk" style="width:56%"></span><span class="sk" style="width:68%"></span><em class="w">В работе</em></div>
+            <div class="mock-row"><span class="sk" style="width:78%"></span><span class="sk" style="width:70%"></span><em>Новый</em></div>
+            <div class="mock-row"><span class="sk" style="width:62%"></span><span class="sk" style="width:76%"></span><em class="w">В работе</em></div>
+            <div class="mock-row"><span class="sk" style="width:70%"></span><span class="sk" style="width:60%"></span><em>Новый</em></div>
+            <div class="mock-row"><span class="sk" style="width:54%"></span><span class="sk" style="width:68%"></span><em class="w">В работе</em></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec soft">
     <div class="wrap gt">
-      <span class="kicker">Что умеет</span>
-      <h2>Четыре инструмента в одном окне</h2>
-      <p class="sub">Программа запускается в своём окне Windows, не в браузере.</p>
+      <div class="sec-head">
+        <h2>Четыре инструмента в одном окне</h2>
+        <p class="sub">Программа запускается в своём окне Windows, не в браузере.</p>
+      </div>
       <div class="feats">
-        <article class="feat rv"><h3>Переписки → Excel</h3><p>Читает диалоги WhatsApp, Instagram и Telegram и заполняет таблицу: имя, телефон, компания, интерес, статус.</p></article>
-        <article class="feat rv"><h3>База контактов</h3><p>Поиск и просмотр всех записанных строк прямо в GN Tools, без открытия Excel.</p></article>
-        <article class="feat rv"><h3>Документы на отгрузку</h3><p>Упаковочный лист, ТТН (1-Т), ТН (ТОРГ-12) и CMR заполняются из одной вкладки «Данные».</p></article>
-        <article class="feat rv"><h3>Конвертер таблиц</h3><p>XLSX ↔ XLS ↔ CSV, все 6 направлений. Файлы не уходят в интернет.</p><span class="tag">бесплатно</span></article>
+        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><h3>Переписки → Excel</h3><p>Читает диалоги WhatsApp, Instagram и Telegram и заполняет таблицу: имя, телефон, компания, интерес, статус.</p></article>
+        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span><h3>База контактов</h3><p>Поиск и просмотр всех записанных строк прямо в GN Tools, без открытия Excel.</p></article>
+        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg></span><h3>Документы на отгрузку</h3><p>Упаковочный лист, ТТН (1-Т), ТН (ТОРГ-12) и CMR заполняются из одной вкладки «Данные».</p></article>
+        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg></span><h3>Конвертер таблиц <span class="badge green">бесплатно</span></h3><p>XLSX ↔ XLS ↔ CSV, все 6 направлений. Файлы не уходят в интернет.</p></article>
       </div>
     </div>
   </section>
 
-  <section class="sec soft">
-    <div class="wrap gt split">
-      <div class="card rv">
-        <h3>Установка и первый запуск</h3>
-        <ol class="steps">
-          <li><span>Скачайте <strong>GNTools.exe</strong> и запустите мастер.</span></li>
-          <li><span>Программа уже стоит? Выберите <strong>«Обновить»</strong> — заменятся только файлы приложения, а вход, WhatsApp-сессия, Node.js и Excel останутся. Если нет — мастер сам скачает Node.js и всё установит.</span></li>
-          <li><span>Откройте ярлык <strong>GN Tools</strong> на рабочем столе и войдите с почтой и паролем от этого сайта. <strong>Пробные токены начислятся сами.</strong></span></li>
-        </ol>
-        <div class="tip">
-          <strong>Windows или браузер пишет «вирус»?</strong> Это ложное срабатывание: файл не подписан сертификатом Microsoft, поэтому SmartScreen и Chrome предупреждают о любом новом установщике.
+  <section class="sec" id="install">
+    <div class="wrap gt">
+      <div class="sec-head">
+        <h2>Как начать</h2>
+        <p class="sub">Установка занимает пару минут. Дальше — три шага на каждую задачу.</p>
+      </div>
+      <div class="how">
+        <div class="card rv">
+          <h3>Установка</h3>
+          <ol class="steps">
+            <li><span>Скачайте <strong>GNTools.exe</strong> и запустите мастер.</span></li>
+            <li><span>Программа уже стоит? Выберите <strong>«Обновить»</strong> — вход, WhatsApp-сессия, Node.js и Excel останутся. Если нет — мастер сам всё установит.</span></li>
+            <li><span>Откройте ярлык <strong>GN Tools</strong> и войдите с почтой и паролем от этого сайта. Пробные токены начислятся сами.</span></li>
+          </ol>
+        </div>
+        <div class="card rv">
+          <h3>Переписки → Excel</h3>
+          <ol class="steps">
+            <li><span><strong>Выберите сервис</strong> (WhatsApp, Instagram или Telegram), браузер Chrome или Brave и файл Excel.</span></li>
+            <li><span><strong>WhatsApp:</strong> отсканируйте QR-код телефоном. <strong>Instagram, Telegram:</strong> войдите в открывшемся окне.</span></li>
+            <li><span>Контакты появятся в таблице внутри GN Tools и в Excel.</span></li>
+          </ol>
+          <div class="note"><strong>Кнопки WhatsApp:</strong> «Остановить» — пауза; «Прочитать всё заново» — пройти чаты снова; «Заполнить пустые поля» — дозаполнить строки.</div>
+        </div>
+        <div class="card rv">
+          <h3>Документы на отгрузку</h3>
+          <ol class="steps">
+            <li><span>Откройте вкладку <strong>«Документы»</strong> → <strong>«Открыть документы»</strong>.</span></li>
+            <li><span>Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальное заполнится само.</span></li>
+            <li><span>Откройте нужный документ и нажмите <strong>Ctrl+P</strong>.</span></li>
+          </ol>
+          <div class="note">Токены списываются один раз, при открытии папки документов. Дальше печатайте без ограничений.</div>
+        </div>
+      </div>
+      <div class="warn rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg></span>
+        <div>
+          <span class="warn-title">Windows или браузер пишет «вирус»?</span>
+          Это ложное срабатывание: файл не подписан сертификатом Microsoft, поэтому SmartScreen и Chrome предупреждают о любом новом установщике.
           <ol>
             <li>В Chrome: <strong>Сохранить</strong> → стрелка у скачанного файла → <strong>Оставить</strong>.</li>
             <li>При запуске: <strong>Подробнее</strong> → <strong>Выполнить в любом случае</strong>.</li>
             <li>Проверьте, что файл не подменён: сверьте SHA-256 ниже.</li>
           </ol>
-        </div>
-        <p class="hint">GNTools.exe с GitHub Releases · SHA-256 <code class="hash" id="exeHash">ad04266bb57d9c7c554e8a2fb2afb6370035cb8f1e5222013dc15b3f57c9f91c</code></p>
-      </div>
-      <div style="display:grid;gap:28px">
-        <div class="card rv">
-          <h3>Переписки → Excel</h3>
-          <ol class="steps">
-            <li><span><strong>Выберите сервис</strong> (WhatsApp, Instagram или Telegram), браузер Chrome или Brave и файл Excel.</span></li>
-            <li><span><strong>WhatsApp:</strong> отсканируйте QR-код телефоном. <strong>Instagram / Telegram:</strong> войдите в аккаунт в открывшемся окне.</span></li>
-            <li><span>Контакты появятся в таблице внутри GN Tools и в Excel.</span></li>
-          </ol>
-          <div class="tip"><strong>Кнопки WhatsApp:</strong> «Остановить» — пауза; «Прочитать всё заново» — пройти чаты снова; «Заполнить пустые поля» — дозаполнить строки, где данных не хватило.</div>
-        </div>
-        <div class="card rv">
-          <h3>Документы на отгрузку</h3>
-          <ol class="steps g">
-            <li><span>Откройте вкладку <strong>«Документы»</strong> → <strong>«Открыть документы»</strong>.</span></li>
-            <li><span>Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальные вкладки заполнятся сами.</span></li>
-            <li><span>Откройте нужный документ и нажмите <strong>Ctrl+P</strong>.</span></li>
-          </ol>
-          <div class="tip">Токены списываются один раз, при открытии папки документов. Дальше работайте и печатайте без ограничений.</div>
+          <p class="hashline">GNTools.exe с GitHub Releases · SHA-256 <code class="hash" id="exeHash">ad04266bb57d9c7c554e8a2fb2afb6370035cb8f1e5222013dc15b3f57c9f91c</code></p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="prices">
+  <section class="sec soft" id="prices">
     <div class="wrap gt">
-      <span class="kicker">Доступ и цены</span>
-      <h2>Платите только за то, чем пользуетесь</h2>
-      <p class="sub">Подписок нет. Новый аккаунт получает пробные токены бесплатно — их хватит, чтобы проверить каждую функцию.</p>
+      <div class="sec-head">
+        <h2>Платите только за то, чем пользуетесь</h2>
+        <p class="sub">Подписок нет. Новый аккаунт получает пробные токены бесплатно — их хватит, чтобы проверить каждую функцию.</p>
+      </div>
       <div class="split">
         <div class="card rv">
-          <h3>Что сколько стоит (в токенах)</h3>
+          <h3>Что сколько стоит</h3>
           <table class="prices">
             <tr><td>Разбор чата WhatsApp — Opus 4.6</td><td id="pWa46">1 токен</td></tr>
             <tr><td>Разбор чата WhatsApp — Opus 4.8</td><td id="pWa48">3 токена</td></tr>
@@ -269,12 +304,12 @@
         <div class="card rv">
           <h3>Как устроен доступ</h3>
           <div class="access">
-            <div><span class="n">1</span><span><strong>Сначала — бесплатно.</strong> Скачали, вошли — пробные токены уже на счёте. Начисляются один раз, при первом входе.</span></div>
-            <div><span class="n">2</span><span><strong>Потом — пакеты токенов.</strong> Оплату на сайте мы ещё подключаем. Когда она заработает, пакеты можно будет купить здесь.</span></div>
+            <div><span class="n">1</span><span><strong>Сначала — бесплатно</strong>Скачали, вошли — пробные токены уже на счёте. Начисляются один раз, при первом входе.</span></div>
+            <div><span class="n">2</span><span><strong>Потом — пакеты токенов</strong>Оплату на сайте мы ещё подключаем. Когда она заработает, пакеты можно будет купить здесь.</span></div>
           </div>
         </div>
       </div>
-      <div class="card rv" style="margin-top:28px">
+      <div class="card rv" style="margin-top:20px">
         <h3>Пакеты токенов</h3>
         <div class="chips" id="opts">
           <div class="chip"><span class="t">10 токенов</span><span class="p">100 сом</span></div>
@@ -291,17 +326,18 @@
     </div>
   </section>
 
-  <section class="sec soft">
+  <section class="sec">
     <div class="wrap gt">
-      <span class="kicker">Вопросы</span>
-      <h2>Частые вопросы</h2>
-      <p class="sub">Не нашли ответ — напишите нам в WhatsApp.</p>
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+        <p class="sub">Не нашли ответ — напишите нам в WhatsApp.</p>
+      </div>
       <div class="faq">
-        <details class="rv"><summary>Windows или браузер пишет, что это вирус</summary><div class="ans">Ложное срабатывание: установщик пока без платного сертификата Microsoft, поэтому SmartScreen и Chrome помечают любой новый .exe. Скачивайте только с этой страницы или GitHub Releases. В браузере: «Оставить». При запуске: «Подробнее» → «Выполнить в любом случае».</div></details>
-        <details class="rv"><summary>QR-код не появляется</summary><div class="ans">Подождите 20–30 секунд — браузеру нужно время. Если QR так и не появился, откройте Chrome или Brave вручную и проверьте, что они запускаются.</div></details>
-        <details class="rv"><summary>Пишет «Нет доступа»</summary><div class="ans">Закончились пробные токены. Оплату пакетов мы ещё подключаем — напишите нам в WhatsApp, и мы поможем.</div></details>
-        <details class="rv"><summary>Баланс не обновился</summary><div class="ans">Перезапустите программу или выйдите и войдите снова — баланс подгрузится.</div></details>
-        <details class="rv"><summary>Как обновить программу</summary><div class="ans">Скачайте свежий GNTools.exe с этой страницы и запустите — мастер предложит «Обновить». Вход, WhatsApp-сессия и ваши таблицы сохранятся.</div></details>
+        <details><summary>Windows или браузер пишет, что это вирус</summary><div class="ans">Ложное срабатывание: установщик пока без платного сертификата Microsoft, поэтому SmartScreen и Chrome помечают любой новый .exe. Скачивайте только с этой страницы или GitHub Releases. В браузере: «Оставить». При запуске: «Подробнее» → «Выполнить в любом случае».</div></details>
+        <details><summary>QR-код не появляется</summary><div class="ans">Подождите 20–30 секунд — браузеру нужно время. Если QR так и не появился, откройте Chrome или Brave вручную и проверьте, что они запускаются.</div></details>
+        <details><summary>Пишет «Нет доступа»</summary><div class="ans">Закончились пробные токены. Оплату пакетов мы ещё подключаем — напишите нам в WhatsApp, и мы поможем.</div></details>
+        <details><summary>Баланс не обновился</summary><div class="ans">Перезапустите программу или выйдите и войдите снова — баланс подгрузится.</div></details>
+        <details><summary>Как обновить программу</summary><div class="ans">Скачайте свежий GNTools.exe с этой страницы и запустите — мастер предложит «Обновить». Вход, WhatsApp-сессия и ваши таблицы сохранятся.</div></details>
       </div>
     </div>
   </section>

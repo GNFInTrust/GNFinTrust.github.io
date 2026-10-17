@@ -13,31 +13,31 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>Заявка на покупку — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="theme.css">
 <style>
   body{min-height:100vh;display:flex;flex-direction:column;background:var(--paper)}
   main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:56px 24px 96px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px;margin-bottom:24px;box-shadow:var(--shadow-sm)}
+  .card{background:#fff;border:0;border-radius:var(--radius);padding:32px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
   main>h1{font-size:clamp(28px,4vw,38px);margin-bottom:10px}
   .lede{color:var(--slate);font-size:15px}
   main>.lede{font-size:16px}
-  .item{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:16px;margin-bottom:18px}
+  .item{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:22px}
   .item h2{font-size:20px}
-  .item .kind{font-size:11px;font-weight:700;color:var(--red);background:var(--red-soft);border:1px solid var(--red-border);border-radius:var(--radius-sm);padding:3px 10px;margin-left:8px;vertical-align:middle;font-family:var(--mono);letter-spacing:.04em}
+  .item .kind{display:inline-block;font-size:12px;font-weight:600;color:var(--slate);background:var(--paper);border:0;border-radius:var(--radius-xs);padding:4px 8px;margin-left:8px;vertical-align:middle;line-height:1}
   .item .kind:empty{display:none}
-  .item p{font-size:13.5px;color:var(--slate);margin-top:4px}
-  h3.step{font-size:17px;margin:0 0 14px}
-  h3.step .n{display:inline-flex;width:26px;height:26px;border-radius:var(--radius-sm);background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);margin-right:8px;vertical-align:-4px}
-  .nopay{border:1px dashed var(--line-strong);border-radius:var(--radius-sm);background:var(--snow);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
+  .item p{font-size:15px;color:var(--slate);margin-top:6px}
+  h3.step{display:flex;align-items:center;gap:10px;font-size:19px;margin:0 0 16px}
+  h3.step .n{display:inline-flex;flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+  .nopay{border:0;border-radius:var(--radius-sm);background:var(--paper);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
   .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
   .hint{font-size:13px;color:var(--slate);margin-top:10px}
   label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
   input[type=text],input[type=email]{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .18s ease,box-shadow .18s ease}
-  input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+  input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
   .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .chip{
     border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 8px;background:#fff;
@@ -46,7 +46,7 @@
   }
   .chip:hover{border-color:var(--line-strong);color:var(--ink)}
   .chip:active{transform:translateY(0) scale(.98)}
-  .chip.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+  .chip.on{border-color:var(--ink);color:#fff;background:var(--ink)}
   .submit{
     width:100%;margin-top:22px;background:var(--red);color:#fff;border:0;border-radius:var(--radius-sm);
     padding:15px;font-size:16px;font-weight:700;font-family:var(--body);cursor:pointer;
@@ -55,11 +55,15 @@
   .submit:hover{background:var(--red-dark)}
   .submit:active{transform:translateY(0) scale(.99)}
   .ok{display:none;background:var(--green-soft);border:1px solid var(--green-border);color:var(--green);border-radius:var(--radius-sm);padding:16px;margin-top:18px;font-size:14.5px}
-  .err{display:none;background:#FCE9E7;border:1px solid #f0c3bd;color:#b3402f;border-radius:var(--radius-sm);padding:12px 14px;margin-top:18px;font-size:14px}
+  .err{display:none;background:var(--err-soft);border:1px solid var(--err-border);color:var(--err);border-radius:var(--radius-sm);padding:12px 14px;margin-top:18px;font-size:14px}
   @media (max-width:640px), (max-height:560px) and (orientation:landscape){
     .card{padding:22px 18px}
     input[type=text],input[type=email]{font-size:16px}
     button,.btn,.chip{min-height:44px}
+  }
+  /* Phones: price goes under the title instead of squeezing it */
+  @media (max-width:480px){
+    .item{flex-direction:column;gap:12px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
