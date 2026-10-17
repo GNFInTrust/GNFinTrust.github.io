@@ -227,7 +227,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 20px)}
   .site-footer{padding:36px 0 30px}
   .foot{gap:20px}
   .foot-links{gap:14px;flex-direction:column;align-items:flex-start}
-  .foot,.foot-copy{flex-direction:column;text-align:left}
+  .foot,.foot-copy{flex-direction:column;text-align:left;align-items:flex-start}
   .foot-copy{gap:10px}
   .nav-tools .nav-out{display:none}
   .brand{font-size:0;gap:0}

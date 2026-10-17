@@ -64,6 +64,7 @@
   .pcard{background:var(--snow);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;margin-bottom:18px;box-shadow:var(--shadow-sm);transition:box-shadow .28s cubic-bezier(.16,1,.3,1),transform .28s cubic-bezier(.16,1,.3,1),border-color .25s ease}
   .pcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--line-strong)}
   .pcard:last-child{margin-bottom:0}
+  .pcard:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:var(--ink-deep)}
   .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.82);font-size:14px}
@@ -325,7 +326,7 @@
 <footer class="site-footer">
   <div class="wrap foot">
     <div class="foot-brand">
-      <a class="brand" href="#"><span class="brand-mark">GN</span> GN FinTrust</a>
+      <a class="brand" href="index.html"><span class="brand-mark">GN</span> FinTrust</a>
       <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
     </div>
     <div class="foot-links">
@@ -348,7 +349,7 @@
   </div>
 </div>
 
-<div class="watch-modal" id="watchModal">
+<div class="watch-modal" id="watchModal" role="dialog" aria-modal="true" aria-labelledby="wTitle">
   <div class="watch-sheet">
     <button class="watch-close" id="watchClose" type="button" aria-label="Закрыть">✕</button>
     <div class="wvideo" id="wVideo"></div>
@@ -365,24 +366,27 @@
 
 <script src="catalog.js"></script>
 <script>
-function renderCatalog(products) {
+function renderCatalog(products, loading) {
 		var types = ["webinar", "course"]
 		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
 		types.forEach(function (t) {
 			var box = document.getElementById("box-" + t)
 			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
 			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
-			document.getElementById("cnt-" + t).textContent = items.length
+			document.getElementById("cnt-" + t).textContent = loading ? "" : items.length
 			if (!items.length) {
 				var empty = document.createElement("p")
 				empty.className = "cat-empty"
-				empty.textContent = emptyHint[t]
+				// Первый визит: пока база не ответила, не пишем «пусто» — материалы могут быть
+				empty.textContent = loading ? "Загружаем…" : emptyHint[t]
 				box.appendChild(empty)
 				return
 			}
 			items.forEach(function (p) {
 			var card = document.createElement("div")
 			card.className = "pcard"
+			card.tabIndex = 0
+			card.setAttribute("role", "button")
 			card.innerHTML =
 				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
 				'<div class="pbody"><h4></h4><p></p>' +
@@ -390,8 +394,15 @@ function renderCatalog(products) {
 				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
 			card.querySelector("h4").textContent = locTitle(p)
 			card.querySelector("p").textContent = locDesc(p)
+			card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
 			card.addEventListener("click", function (ev) {
-				if (ev.target.closest("a")) return
+				// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
+				if (ev.target.closest("a, .price-sub")) return
+				openWatch(p)
+			})
+			card.addEventListener("keydown", function (ev) {
+				if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
+				ev.preventDefault()
 				openWatch(p)
 			})
 			box.appendChild(card)
@@ -399,6 +410,7 @@ function renderCatalog(products) {
 	})
 }
 
+var watchReturnFocus = null
 function openWatch(p) {
 	var m = document.getElementById("watchModal")
 	var v = document.getElementById("wVideo")
@@ -409,8 +421,9 @@ function openWatch(p) {
 	document.getElementById("wPrice").textContent = formatPrice(p.price)
 	document.getElementById("wPriceSub").textContent = formatPriceSub(p.price)
 	document.getElementById("wBuy").href = "buy.html?item=" + encodeURIComponent(p.id)
+	watchReturnFocus = document.activeElement
 	m.classList.add("on")
-	requestAnimationFrame(function () { m.classList.add("show") })
+	requestAnimationFrame(function () { m.classList.add("show"); document.getElementById("watchClose").focus() })
 	document.body.style.overflow = "hidden"
 }
 function closeWatch() {
@@ -419,6 +432,7 @@ function closeWatch() {
 	m.classList.remove("show")
 	document.body.style.overflow = ""
 	setTimeout(function () { m.classList.remove("on"); document.getElementById("wVideo").innerHTML = "" }, 250)
+	if (watchReturnFocus && watchReturnFocus.focus) watchReturnFocus.focus()
 }
 document.getElementById("watchClose").addEventListener("click", closeWatch)
 document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
@@ -428,7 +442,8 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
 	if (cachedProducts && cachedProducts.length) {
 		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
 	}
-	renderCatalog(cachedProducts && cachedProducts.length ? cachedProducts : [])
+	var hasCache = !!(cachedProducts && cachedProducts.length)
+	renderCatalog(hasCache ? cachedProducts : [], !hasCache)
 
 document.addEventListener("click", function(e){
 	if(e.target.classList && e.target.classList.contains("price-sub")){
@@ -562,7 +577,12 @@ document.addEventListener("click", function(e){
     })
     renderCatalog(products)
     try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
-  } catch (e) { /* остаётся демо-каталог */ }
+  } catch (e) {
+    // База недоступна: убираем «Загружаем…», показываем кэш или честное «пока нет»
+    var cached = []
+    try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (x) {}
+    renderCatalog(cached)
+  }
 </script>
 </body>
 </html>

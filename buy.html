@@ -135,8 +135,11 @@
 
 <script src="catalog.js"></script>
 <script>
-var OWNER_EMAIL = "you@example.com" // TODO: ваша почта (используется, пока не настроен Firebase)
-var state = { products: DEMO_PRODUCTS, method: "WhatsApp", user: null, db: null, fsMod: null }
+// Если база недоступна, заявка уходит в WhatsApp (тот же номер, что у кнопки на главной)
+var OWNER_WHATSAPP = "996500797441"
+var cachedProducts = []
+try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (e) {}
+var state = { products: cachedProducts.length ? cachedProducts : DEMO_PRODUCTS, loaded: false, method: "WhatsApp", user: null, db: null, fsMod: null }
 
 var PLACEHOLDERS = {
 	WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456"],
@@ -154,7 +157,8 @@ function currentItem() {
 	function renderItem() {
 		var p = currentItem()
 	if (!p) {
-		document.getElementById("iTitle").textContent = "Каталог пока пуст — скоро добавим материалы."
+		// Пока база не ответила, не пугаем «пустым каталогом»
+		document.getElementById("iTitle").textContent = state.loaded ? "Каталог пока пуст — скоро добавим материалы." : "Загружаем…"
 			document.getElementById("iKind").textContent = ""
 			document.getElementById("iDesc").textContent = ""
 			document.getElementById("iPrice").textContent = ""
@@ -190,6 +194,7 @@ document.getElementById("send").addEventListener("click", async function () {
 	err.style.display = "none"
 	if (!contact) { err.textContent = "Оставьте контакт (" + state.method + ") — иначе мы не сможем вам написать."; err.style.display = "block"; return }
 		var p = currentItem()
+		if (!p && !state.loaded) { err.textContent = "Загружаем…"; err.style.display = "block"; return }
 		if (!p) { err.textContent = "Каталог пока пуст — скоро добавим материалы."; err.style.display = "block"; return }
 		if (state.db) {
 		try {
@@ -205,7 +210,7 @@ document.getElementById("send").addEventListener("click", async function () {
 		}
 	} else {
 		var body = "НОВАЯ ЗАЯВКА — " + p.title + " (" + formatPrice(p.price) + ")\nИмя: " + buyer + "\nНаписать через " + state.method + ": " + contact
-		location.href = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent("Заявка: " + p.title) + "&body=" + encodeURIComponent(body)
+		window.open("https://wa.me/" + OWNER_WHATSAPP + "?text=" + encodeURIComponent(body), "_blank", "noopener")
 	}
 	document.getElementById("okMethod").textContent = METHOD_RU[state.method]
 	document.getElementById("ok").style.display = "block"
@@ -234,8 +239,14 @@ renderItem()
       if (!DEMO_IDS[item.id]) products.push(item)
     })
     state.products = products
+    state.loaded = true
     renderItem()
-  } catch (e) { /* страница работает и без базы */ }
+    try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
+  } catch (e) {
+    // Страница работает и без базы: показываем кэш или «каталог пуст»
+    state.loaded = true
+    renderItem()
+  }
 </script>
 </body>
 </html>

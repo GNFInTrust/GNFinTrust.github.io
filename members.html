@@ -282,13 +282,14 @@ document.getElementById("backBtn").addEventListener("click", function () { showS
       document.getElementById("who").textContent = user.email || ""
       const outBtn = document.getElementById("outBtn")
       outBtn.style.display = "inline-block"
-      outBtn.addEventListener("click", async () => {
+      // onclick, а не addEventListener: колбэк входа срабатывает не один раз, обработчики копились бы
+      outBtn.onclick = async () => {
         localStorage.setItem("gn_auth", "0")
         localStorage.setItem("gn_admin", "0")
         localStorage.removeItem("gn_email")
         await authMod.signOut(auth)
         location.href = "index.html"
-      })
+      }
       try {
         const uSnap = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
         M.owned = (uSnap.exists() && uSnap.data().purchases) || []
