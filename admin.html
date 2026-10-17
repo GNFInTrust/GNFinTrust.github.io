@@ -655,7 +655,12 @@ document.getElementById("aGen").addEventListener("click", function () {
       try {
         if (ok) await fsMod.updateDoc(fsMod.doc(db, "meetings", ok), { status: "confirmed" })
         if (done) await fsMod.updateDoc(fsMod.doc(db, "meetings", done), { status: "done" })
-        if (del) { if (!confirm("Удалить запись?")) return; await fsMod.deleteDoc(fsMod.doc(db, "meetings", del)) }
+        if (del) {
+          if (!confirm("Удалить запись? Время снова станет свободным на сайте.")) return
+          const m = (A.meetings || []).find((x) => x._id === del)
+          await fsMod.deleteDoc(fsMod.doc(db, "meetings", del))
+          if (m && m.slot) { try { await fsMod.deleteDoc(fsMod.doc(db, "busy", m.slot)) } catch (x) { /* слот уже свободен */ } }
+        }
       } catch (err) { alert("Ошибка: " + (err.message || err)); return }
       if (ok || done || del) { await reloadAll(); renderMeetings() }
     })
