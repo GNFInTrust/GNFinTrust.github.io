@@ -22,8 +22,36 @@
   .page-head h1{font-size:clamp(34px,4.6vw,52px);margin:0 0 12px}
   .page-head p{color:var(--slate);font-size:19px;line-height:1.45}
   .book{max-width:820px;margin:0 auto;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
-  .step{padding:32px 36px;border-bottom:1px solid var(--line)}
-  .step h2{display:flex;align-items:center;gap:12px;font-size:19px;margin:0 0 20px}
+  .step{padding:32px 36px}
+  .step h2{font-size:24px;margin:0 0 22px;outline:none}
+
+  /* Wizard: one step at a time; the next one slides in over the previous */
+  .wiz-head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--line)}
+  .wiz-back{flex:none;border:0;background:transparent;font:inherit;font-size:15px;font-weight:500;color:var(--ink);padding:8px 10px;border-radius:var(--radius-xs);cursor:pointer}
+  .wiz-back:hover{background:var(--paper)}
+  .wiz-bar{flex:1;display:flex;gap:6px;list-style:none;min-width:0}
+  .wiz-bar li{flex:1;min-width:0}
+  .wiz-bar button{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;font:inherit;text-align:left;padding:6px 10px;border-radius:var(--radius-sm);color:var(--muted);cursor:default}
+  .wiz-bar .n{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+  .wiz-bar .t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+  .wiz-bar b{font-size:14px;font-weight:600}
+  .wiz-bar small{font-size:12.5px;color:var(--slate);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wiz-bar small:empty{display:none}
+  .wiz-bar li.cur button{color:var(--ink)}
+  .wiz-bar li.cur .n{background:var(--ink);border-color:var(--ink);color:#fff}
+  .wiz-bar li.is-done button,.wiz-bar li.reach button{color:var(--ink);cursor:pointer}
+  .wiz-bar li.is-done button:hover,.wiz-bar li.reach button:hover{background:var(--paper)}
+  .wiz-bar li.is-done .n{background:var(--green-soft);border-color:var(--green-soft);color:var(--green);font-size:0}
+  .wiz-bar li.is-done .n::after{content:"";width:10px;height:6px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-1px) rotate(-45deg)}
+  .pane{display:none}
+  .pane.active{display:block;animation:paneIn .45s cubic-bezier(.16,1,.3,1) both}
+  .pane.active.from-left{animation-name:paneInBack}
+  @keyframes paneIn{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:none}}
+  @keyframes paneInBack{from{opacity:0;transform:translateX(-48px)}to{opacity:1;transform:none}}
+  .pane-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .pane-top h2{margin:0}
+  .pane-top .seg{margin-top:0}
+  .other-day{display:none;border:0;background:transparent;font:inherit;font-size:15px;font-weight:500;color:var(--ink);padding:6px 0;margin-bottom:6px;cursor:pointer}
   .step h2 .n{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
   .book label{display:block;font-size:14px;font-weight:600;margin:18px 0 8px;color:var(--ink)}
   .book input,.book textarea{width:100%;border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:13px 15px;font-size:16px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease}
@@ -41,7 +69,7 @@
 
   /* Format: big tiles; the chosen one gets a 2px black outline and a tick, text stays readable */
   .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .kinds .pick{position:relative;text-align:left;padding:16px 44px 16px 18px}
+  .kinds .pick{position:relative;text-align:left;padding:20px 44px 20px 20px;min-height:104px}
   .kinds strong{display:block;font-size:16px;font-weight:600;margin-bottom:4px}
   .kinds span{display:block;font-size:14px;line-height:1.4;color:var(--slate)}
   .kinds .pick.on{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
@@ -58,7 +86,7 @@
   .hint{font-size:14px;color:var(--muted);margin-top:16px}
 
   /* День и время: месяц слева, свободные часы выбранного дня справа (как в Cal.com) */
-  .cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:36px;align-items:start}
+  .cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:36px;align-items:start}
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   .cal-head strong{font-family:var(--head);font-size:17px;font-weight:600;text-transform:capitalize}
   .cal-nav{width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:20px;line-height:1;cursor:pointer;transition:background-color .2s ease}
@@ -73,13 +101,13 @@
   .cal-grid .pick.on{background:var(--ink);border-color:var(--ink);color:#fff}
   .slots{scroll-margin-top:calc(var(--header-h) + 16px)}
   .slots-title{font-size:17px;font-weight:600;margin:0 0 12px;line-height:36px}
-  .times{display:grid;grid-template-columns:1fr;gap:8px}
+  .times{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .times .pick{height:46px;font-size:16px;font-weight:600}
   .times-empty{font-size:15px;color:var(--muted);line-height:1.45}
   .add-cal{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 
-  .book-foot{padding:28px 36px 32px;background:var(--paper)}
+  .book-foot{margin:28px -36px -32px;padding:24px 36px 32px;background:var(--paper)}
   .summary{display:flex;gap:10px;align-items:baseline;font-size:16px;color:var(--ink)}
   .summary .k{font-size:14px;color:var(--muted);flex:none}
   .summary b{font-weight:600}
@@ -98,17 +126,29 @@
   .done h2{font-size:26px;margin:0 0 10px}
   .done p{color:var(--slate);font-size:17px;max-width:460px;margin:0 auto}
   .done .when{display:inline-block;margin:18px 0 4px;padding:10px 16px;border-radius:var(--radius-sm);background:var(--paper);font-weight:600}
-  .book.sent .step,.book.sent .book-foot{display:none}
+  .book.sent .wiz-head,.book.sent .pane{display:none}
   .book.sent .done{display:block}
   .note{margin-top:18px;text-align:center;color:var(--muted);font-size:14px}
   @media (max-width:640px){
     .page{padding:40px 0 72px}
     .page-head{margin-bottom:28px}
     .page-head p{font-size:17px}
-    .step{padding:26px 18px}
-    .book-foot{padding:22px 18px 24px}
+    .step{padding:24px 18px 26px}
+    .step h2{font-size:21px;margin-bottom:18px}
+    .book-foot{margin:24px -18px -26px;padding:20px 18px 24px}
+    .wiz-head{padding:10px 8px}
+    .wiz-bar{gap:2px}
+    .wiz-bar button{flex-direction:column;align-items:center;text-align:center;gap:4px;padding:6px 2px}
+    .wiz-bar .t{align-items:center}
+    .wiz-bar b{font-size:12.5px}
+    .wiz-bar small{display:none}
+    .wiz-back{padding:8px 6px;font-size:14px}
+    /* Phones: calendar first; after a day is picked its times replace the calendar */
+    #calWrap.has-day .cal{display:none}
+    #calWrap.has-day .other-day{display:inline-block}
+    #calWrap:not(.has-day) .slots{display:none}
+    .kinds .pick{min-height:0;padding:16px 44px 16px 16px}
     .kinds{grid-template-columns:1fr;gap:10px}
-    .kinds .pick{padding:14px 44px 14px 16px}
     .kinds .pick.on::after{top:50%;margin-top:-10px}
     .cal-wrap{grid-template-columns:1fr;gap:24px}
     .cal-wd,.cal-grid{gap:4px}
@@ -163,21 +203,31 @@
       <p>Семинары, вебинары и консультации — онлайн и очно. Выберите формат и удобное время — мы подтвердим встречу и напишем вам.</p>
     </div>
     <div class="book" id="book">
-      <section class="step">
-        <h2><span class="n">1</span>Формат</h2>
+      <div class="wiz-head">
+        <button class="wiz-back" id="wBack" type="button" hidden>‹ Назад</button>
+        <ol class="wiz-bar" id="wBar">
+          <li data-s="1"><button type="button"><span class="n">1</span><span class="t"><b>Формат</b><small id="wv1"></small></span></button></li>
+          <li data-s="2"><button type="button"><span class="n">2</span><span class="t"><b>Время</b><small id="wv2"></small></span></button></li>
+          <li data-s="3"><button type="button"><span class="n">3</span><span class="t"><b>Контакты</b><small></small></span></button></li>
+        </ol>
+      </div>
+      <section class="step pane" data-step="1">
+        <h2 tabindex="-1">Что вас интересует?</h2>
         <div class="kinds" data-group="kind">
-          <button class="pick on" data-v="consult" type="button" aria-pressed="true"><strong>Консультация</strong><span>Разберём ваш вопрос один на один</span></button>
+          <button class="pick" data-v="consult" type="button" aria-pressed="false"><strong>Консультация</strong><span>Разберём ваш вопрос один на один</span></button>
           <button class="pick" data-v="seminar" type="button" aria-pressed="false"><strong>Семинар</strong><span>Занятие в группе с практикой</span></button>
           <button class="pick" data-v="webinar" type="button" aria-pressed="false"><strong>Вебинар</strong><span>Онлайн-занятие с ответами на вопросы</span></button>
         </div>
-        <div class="seg" data-group="place">
-          <button class="pick on" data-v="online" type="button" aria-pressed="true">Онлайн</button>
-          <button class="pick" data-v="offline" type="button" aria-pressed="false">Очно в Бишкеке</button>
-        </div>
       </section>
-      <section class="step">
-        <h2><span class="n">2</span>День и время</h2>
-        <div class="cal-wrap">
+      <section class="step pane" data-step="2">
+        <div class="pane-top">
+          <h2 tabindex="-1">Выберите день и время</h2>
+          <div class="seg" data-group="place">
+            <button class="pick on" data-v="online" type="button" aria-pressed="true">Онлайн</button>
+            <button class="pick" data-v="offline" type="button" aria-pressed="false">Очно в Бишкеке</button>
+          </div>
+        </div>
+        <div class="cal-wrap" id="calWrap">
           <div class="cal">
             <div class="cal-head">
               <button class="cal-nav" id="calPrev" type="button" aria-label="Предыдущий месяц">‹</button>
@@ -188,14 +238,16 @@
             <div class="cal-grid" id="mDays" data-group="date"></div>
           </div>
           <div class="slots">
+            <button class="other-day" id="otherDay" type="button">‹ Другой день</button>
             <p class="slots-title" id="slotsTitle">Время</p>
             <div class="times" id="mTimes" data-group="time"></div>
           </div>
         </div>
         <p class="hint">Показано только свободное время. Нужен другой день — напишите об этом в комментарии.</p>
+        <div class="err" id="mErr2" role="alert"></div>
       </section>
-      <section class="step">
-        <h2><span class="n">3</span>Как с вами связаться</h2>
+      <section class="step pane" data-step="3">
+        <h2 tabindex="-1">Как с вами связаться?</h2>
         <div class="seg" data-group="method" style="margin-top:0">
           <button class="pick on" data-v="WhatsApp" type="button" aria-pressed="true">WhatsApp</button>
           <button class="pick" data-v="Telegram" type="button" aria-pressed="false">Telegram</button>
@@ -209,12 +261,12 @@
         </div>
         <label for="mNote">Комментарий <span class="opt">(необязательно)</span></label>
         <textarea id="mNote" placeholder="Коротко: что хотите обсудить"></textarea>
+        <div class="book-foot">
+          <div class="summary empty" id="mSummary"><span class="k">Ваша запись:</span><b id="mSummaryText">Выберите день и время</b></div>
+          <button class="submit" id="mSend" type="button">Записаться</button>
+          <div class="err" id="mErr" role="alert"></div>
+        </div>
       </section>
-      <div class="book-foot">
-        <div class="summary empty" id="mSummary"><span class="k">Ваша запись:</span><b id="mSummaryText">Выберите день и время</b></div>
-        <button class="submit" id="mSend" type="button">Записаться</button>
-        <div class="err" id="mErr" role="alert"></div>
-      </div>
       <div class="done" id="mOk" role="status">
         <span class="ok-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
         <h2>Заявка у нас!</h2>
@@ -284,7 +336,7 @@
 (function () {
 	var WA = "996500797441"
 	var KY = GN_LANG === "ky"
-	var M = { kind: "consult", place: "online", method: "WhatsApp", date: "", time: "" }
+	var M = { kind: "", place: "online", method: "WhatsApp", date: "", time: "" }
 	// подпись, пример, autocomplete, клавиатура на телефоне
 	var CONTACT = {
 		WhatsApp: ["Ваш номер WhatsApp", "+996 700 123 456", "tel", "tel"],
@@ -391,7 +443,57 @@
 	function whenText() {
 		return t(KIND_RU[M.kind]) + " · " + t(PLACE_RU[M.place]).toLowerCase() + " · " + nice(M.date) + " · " + M.time
 	}
+	// ---- Шаги: показываем по одному, следующий выезжает поверх предыдущего ----
+	var step = 1, reached = 1
+	var calWrap = document.getElementById("calWrap")
+	function go(n) {
+		if (n === step || n < 1 || n > 3) return
+		var back = n < step
+		step = n
+		reached = Math.max(reached, n)
+		document.querySelectorAll(".pane").forEach(function (p) {
+			var on = +p.getAttribute("data-step") === n
+			p.classList.toggle("active", on)
+			p.classList.toggle("from-left", on && back)
+		})
+		document.getElementById("wBack").hidden = n === 1
+		paintBar()
+		// Не листаем страницу вниз: если карточка ушла вверх за край — возвращаем её начало в кадр
+		var book = document.getElementById("book")
+		var top = book.getBoundingClientRect().top
+		if (top < 0) window.scrollBy({ top: top - 80, behavior: "smooth" })
+		var h = document.querySelector('.pane[data-step="' + n + '"] h2')
+		if (h) h.focus({ preventScroll: true })
+	}
+	function paintBar() {
+		document.querySelectorAll("#wBar li").forEach(function (li) {
+			var n = +li.getAttribute("data-s")
+			li.classList.toggle("cur", n === step)
+			var ready = n === 1 ? !!M.kind : n === 2 ? !!(M.kind && M.date && M.time) : false
+			li.classList.toggle("is-done", n !== step && n <= reached && ready)
+			// Контакты: можно вернуться вперёд, если всё до них уже выбрано (без галочки — шаг ещё не заполнен)
+			li.classList.toggle("reach", n === 3 && step !== 3 && reached >= 3 && !!(M.kind && M.date && M.time))
+			li.querySelector("button").setAttribute("aria-current", n === step ? "step" : "false")
+		})
+		document.getElementById("wv1").textContent = M.kind ? t(KIND_RU[M.kind]) + " · " + t(PLACE_RU[M.place]).toLowerCase() : ""
+		document.getElementById("wv2").textContent = M.date && M.time ? nice(M.date) + " · " + M.time : ""
+	}
+	document.getElementById("wBack").addEventListener("click", function () {
+		// На телефоне «назад» со списка времени сначала возвращает к календарю
+		if (step === 2 && calWrap.classList.contains("has-day") && window.matchMedia("(max-width:640px)").matches) {
+			calWrap.classList.remove("has-day")
+			return
+		}
+		go(step - 1)
+	})
+	document.getElementById("wBar").addEventListener("click", function (e) {
+		var li = e.target.closest("li")
+		if (li && (li.classList.contains("is-done") || li.classList.contains("reach"))) go(+li.getAttribute("data-s"))
+	})
+	document.getElementById("otherDay").addEventListener("click", function () { calWrap.classList.remove("has-day") })
+
 	function summary() {
+		if (typeof paintBar === "function") paintBar()
 		var box = document.getElementById("mSummary")
 		var ready = M.date && M.time
 		box.classList.toggle("empty", !ready)
@@ -408,11 +510,12 @@
 		if (group === "date") {
 			M.time = ""
 			renderTimes()
-			// На телефоне время стоит под календарём — прокручиваем к нему
-			if (window.matchMedia("(max-width:640px)").matches) {
-				document.querySelector(".slots").scrollIntoView({ behavior: "smooth", block: "start" })
-			}
+			// На телефоне время показывается вместо календаря — без прокрутки вниз
+			calWrap.classList.add("has-day")
 		}
+		// Выбор формата и времени сразу открывает следующий шаг — даём глазу увидеть отметку
+		if (group === "kind") setTimeout(function () { go(2) }, 260)
+		if (group === "time") setTimeout(function () { go(3) }, 260)
 		if (group === "kind") {
 			// Вебинар проходит только онлайн
 			var offline = document.querySelector('[data-group="place"] [data-v="offline"]')
@@ -428,6 +531,7 @@
 			input.setAttribute("inputmode", c[3])
 		}
 		document.getElementById("mErr").style.display = "none"
+		document.getElementById("mErr2").style.display = "none"
 		summary()
 	})
 	document.getElementById("mContact").addEventListener("input", function () { this.classList.remove("bad") })
@@ -464,7 +568,10 @@
 		busy[slotId(M.date, M.time)] = true
 		M.time = ""
 		renderMonth(); renderTimes(); summary()
-		var err = document.getElementById("mErr")
+		// Возвращаем на шаг со временем и показываем, что случилось
+		go(2)
+		calWrap.classList.add("has-day")
+		var err = document.getElementById("mErr2")
 		err.textContent = t("Это время только что заняли — выберите другое.")
 		err.style.display = "block"
 	}
@@ -483,6 +590,14 @@
 		var problem = !r.date ? "Выберите удобный день." :
 			!r.time ? "Выберите удобное время." :
 			!r.contact ? "Оставьте контакт — иначе мы не сможем подтвердить встречу." : ""
+		if (problem && (!r.date || !r.time)) {
+			// Время успели занять, пока заполняли контакты — возвращаем к выбору
+			go(2)
+			var err2 = document.getElementById("mErr2")
+			err2.textContent = t(problem)
+			err2.style.display = "block"
+			return
+		}
 		if (problem) {
 			err.textContent = t(problem)
 			err.style.display = "block"
@@ -543,6 +658,7 @@
 	})
 	renderMonth()
 	renderTimes()
+	document.querySelector('.pane[data-step="1"]').classList.add("active")
 	summary()
 })()
 </script>
