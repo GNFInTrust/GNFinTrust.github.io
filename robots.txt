@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /members.html
+Disallow: /buy.html
+Disallow: /GNTools-client/
+
+Sitemap: https://fintrust.dev/sitemap.xml
