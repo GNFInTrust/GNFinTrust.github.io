@@ -122,16 +122,7 @@
   .prices tr:last-child td{border-bottom:0}
   .prices td:last-child{text-align:right;font-weight:600;white-space:nowrap;padding-left:16px}
   .prices td.free{color:var(--green)}
-  .access{display:grid;gap:18px}
-  .access div{display:flex;gap:14px;align-items:flex-start;font-size:16px;color:var(--slate)}
-  .access strong{display:block;color:var(--ink);font-size:17px;margin-bottom:2px}
-  .access .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
-  .chips{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:4px 0 18px}
-  .chip{border-radius:var(--radius-sm);padding:18px 16px;background:var(--paper);text-align:left}
-  .chip .t{font-size:16px;font-weight:600;display:block}
-  .chip .p{font-size:15px;color:var(--slate)}
-  .nopay{border-radius:var(--radius-sm);background:var(--paper);padding:16px 18px;font-size:15px;color:var(--slate)}
-  .nopay strong{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+  .more p{font-size:16px;color:var(--slate);margin-bottom:24px}
 
   /* FAQ: a plain list with dividers */
   .faq{max-width:760px;margin:0 auto;border-top:1px solid var(--line-strong)}
@@ -146,7 +137,6 @@
   @media (prefers-reduced-motion:reduce){.rv,.mock,.mock-row,.gt-hero .copy>*{opacity:1;transform:none;animation:none}}
   @media (max-width:980px){
     .how{grid-template-columns:1fr}
-    .chips{grid-template-columns:repeat(3,1fr)}
   }
   @media (max-width:760px){
     .gt-hero{padding:56px 0 0}
@@ -162,14 +152,12 @@
   @media (max-width:560px){
     .feat,.card{padding:24px 20px}
     .warn{flex-direction:column;padding:22px 20px;gap:12px}
-    .chips{grid-template-columns:1fr 1fr}
     .cta{flex-direction:column;gap:16px}
     .btn-dl{width:100%;max-width:340px}
     .mock{margin-top:40px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
-<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
 <link rel="prefetch" href="index.html">
 <link rel="prefetch" href="login.html">
@@ -297,42 +285,25 @@
     <div class="wrap gt">
       <div class="sec-head">
         <h2>Платите только за то, чем пользуетесь</h2>
-        <p class="sub">Подписок нет. Новый аккаунт получает пробные токены бесплатно — их хватит, чтобы проверить каждую функцию.</p>
+        <p class="sub">Подписок нет. При первом входе новый аккаунт получает пробные токены бесплатно.</p>
       </div>
       <div class="split">
         <div class="card rv">
           <h3>Что сколько стоит</h3>
           <table class="prices">
-            <tr><td>Разбор чата WhatsApp — Opus 4.6</td><td id="pWa46">1 токен</td></tr>
-            <tr><td>Разбор чата WhatsApp — Opus 4.8</td><td id="pWa48">3 токена</td></tr>
-            <tr><td>Сообщение в Instagram DM</td><td id="pInsta">2 токена</td></tr>
-            <tr><td>Сообщение в Telegram</td><td id="pTg">1 токен</td></tr>
-            <tr><td>Папка документов на отгрузку</td><td id="pDokF">3 токена</td></tr>
-            <tr><td>Правки в документах с ИИ</td><td id="pDokAI">1 токен</td></tr>
-            <tr><td>Правки вручную</td><td class="free">бесплатно</td></tr>
+            <tr><td>Чат WhatsApp, модель Opus&nbsp;4.6</td><td id="pWa46">1 токен</td></tr>
+            <tr><td>Чат WhatsApp, модель Opus&nbsp;4.8</td><td id="pWa48">3 токена</td></tr>
+            <tr><td>Чат Instagram</td><td id="pInsta">2 токена</td></tr>
+            <tr><td>Чат Telegram</td><td id="pTg">1 токен</td></tr>
+            <tr><td>Документы, режим «Автоматически»</td><td id="pDokBasic">1 токен</td></tr>
+            <tr><td>Документы, режим Opus&nbsp;4.6</td><td id="pDokOpus">3 токена</td></tr>
             <tr><td>Конвертер таблиц</td><td class="free">бесплатно</td></tr>
           </table>
         </div>
-        <div class="card rv">
-          <h3>Как устроен доступ</h3>
-          <div class="access">
-            <div><span class="n">1</span><span><strong>Сначала — бесплатно</strong>Скачали, вошли — пробные токены уже на счёте. Начисляются один раз, при первом входе.</span></div>
-            <div><span class="n">2</span><span><strong>Потом — пакеты токенов</strong>Оплату на сайте мы ещё подключаем. Когда она заработает, пакеты можно будет купить здесь.</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="card rv" style="margin-top:20px">
-        <h3>Пакеты токенов</h3>
-        <div class="chips" id="opts">
-          <div class="chip"><span class="t">10 токенов</span><span class="p">100 сом</span></div>
-          <div class="chip"><span class="t">20 токенов</span><span class="p">200 сом</span></div>
-          <div class="chip"><span class="t">50 токенов</span><span class="p">500 сом</span></div>
-          <div class="chip"><span class="t">100 токенов</span><span class="p">1000 сом</span></div>
-          <div class="chip"><span class="t">200 токенов</span><span class="p">2000 сом</span></div>
-        </div>
-        <div class="nopay">
-          <strong>Способов оплаты пока нет</strong>
-          Мы ещё не подключили оплату на сайте — сейчас пользуйтесь бесплатными пробными токенами. Как только оплата заработает, пакеты станут доступны здесь.
+        <div class="card rv more">
+          <h3>Нужно больше токенов?</h3>
+          <p>Оплату на сайте мы ещё подключаем. Пока напишите нам в WhatsApp: скажите почту, с которой входите в GN&nbsp;Tools, и сколько токенов нужно. Мы начислим их вручную, а новый баланс появится после перезапуска программы.</p>
+          <a class="btn btn-primary" href="https://wa.me/996500797441?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%BD%D1%8B%20%D1%82%D0%BE%D0%BA%D0%B5%D0%BD%D1%8B%20GN%20Tools." target="_blank" rel="noopener">Написать в WhatsApp</a>
         </div>
       </div>
     </div>
@@ -345,10 +316,9 @@
         <p class="sub">Не нашли ответ — напишите нам в WhatsApp.</p>
       </div>
       <div class="faq">
-        <details><summary>Windows или браузер пишет, что это вирус</summary><div class="ans">Ложное срабатывание: установщик пока без платного сертификата Microsoft, поэтому SmartScreen и Chrome помечают любой новый .exe. Скачивайте только с этой страницы или GitHub Releases. В браузере: «Оставить». При запуске: «Подробнее» → «Выполнить в любом случае».</div></details>
         <details><summary>QR-код не появляется</summary><div class="ans">Подождите 20–30 секунд — браузеру нужно время. Если QR так и не появился, откройте Chrome или Brave вручную и проверьте, что они запускаются.</div></details>
-        <details><summary>Пишет «Нет доступа»</summary><div class="ans">Закончились пробные токены. Оплату пакетов мы ещё подключаем — напишите нам в WhatsApp, и мы поможем.</div></details>
-        <details><summary>Баланс не обновился</summary><div class="ans">Перезапустите программу или выйдите и войдите снова — баланс подгрузится.</div></details>
+        <details><summary>Пишет «Нет доступа»</summary><div class="ans">Закончились токены. <a href="#prices">Напишите нам в WhatsApp</a> — начислим ещё.</div></details>
+        <details><summary>Баланс не обновился</summary><div class="ans">Перезапустите программу или выйдите и войдите снова — баланс подгрузится. Токены, которые мы начислили вручную, появляются так же.</div></details>
         <details><summary>Как обновить программу</summary><div class="ans">Скачайте свежий GNTools.exe с этой страницы и запустите — мастер предложит «Обновить». Вход, WhatsApp-сессия и ваши таблицы сохранятся.</div></details>
       </div>
     </div>
@@ -370,7 +340,7 @@
 
 <script src="catalog.js"></script>
 <script>
-var G = { url: "", tokensAmount: 50, tokensPrice: 500 }
+var G = { url: "" }
 
 function renderG() {
 	// Админ может подменить ссылку на установщик в settings/gntools.url
@@ -380,7 +350,7 @@ function renderG() {
 		var setP = function (id, v) { var e = document.getElementById(id); if (e && v !== undefined && v !== null) e.textContent = tokWord(v) }
 		setP("pWa46", G.costs.waOpus46); setP("pWa48", G.costs.waOpus48)
 		setP("pInsta", G.costs.instagram); setP("pTg", G.costs.telegram)
-		setP("pDokF", G.costs.dokFolder); setP("pDokAI", G.costs.dokAiEdit)
+		setP("pDokBasic", G.costs.dokBasic); setP("pDokOpus", G.costs.dokOpus)
 	}
 }
 renderG()
