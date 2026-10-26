@@ -184,7 +184,7 @@
     <div class="nav-tools">
       <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
       <a class="nav-account" href="login.html" id="navLogin">Вход</a>
-      <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
+      <a class="btn btn-primary btn-sm" href="login.html#signup" id="navSignup">Регистрация</a>
       <a class="nav-out" href="#" id="navOut" style="display:none">Выйти</a>
       <a class="nav-out" href="#" id="navAdmin" style="display:none">Админ</a>
       <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
@@ -587,6 +587,12 @@
 		err.style.display = "block"
 	}
 
+	// Enter в поле контакта или имени отправляет запись, как в любой форме на компьютере
+	;["mContact", "mName"].forEach(function (id) {
+		document.getElementById(id).addEventListener("keydown", function (e) {
+			if (e.key === "Enter") { e.preventDefault(); document.getElementById("mSend").click() }
+		})
+	})
 	document.getElementById("mSend").addEventListener("click", async function () {
 		var btn = this
 		var err = document.getElementById("mErr")
