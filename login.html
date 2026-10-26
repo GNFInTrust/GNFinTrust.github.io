@@ -122,6 +122,8 @@
 </footer>
 <script src="catalog.js"></script>
 <script type="module">
+  // С баннера акции (login.html?next=promo) после входа сразу открываем карточку подарка
+  const AFTER_LOGIN = new URLSearchParams(location.search).get("next") === "promo" ? "members.html#promo" : "members.html"
   const msg = document.getElementById("msg")
   function show(text, good) {
     msg.textContent = text
@@ -173,7 +175,7 @@
         if (user) {
           show("Вы уже вошли — открываем кабинет…", true)
           try { localStorage.setItem("gn_auth", "1"); localStorage.setItem("gn_email", user.email || "") } catch (x) {}
-          location.href = "members.html"
+          location.href = AFTER_LOGIN
         }
       })
     } catch (e) {
@@ -200,7 +202,7 @@
     await ensureUserDoc(user)
     try { localStorage.setItem("gn_auth", "1"); localStorage.setItem("gn_email", user.email || "") } catch (x) {}
     show("Добро пожаловать! Переходим…", true)
-    location.href = "members.html"
+    location.href = AFTER_LOGIN
   }
 
   const googleBtn = document.getElementById("googleBtn")

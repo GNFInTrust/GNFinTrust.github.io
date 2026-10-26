@@ -120,6 +120,16 @@
       <a class="btn btn-primary" href="login.html">Войти</a>
     </div>
   </div>
+<script>
+// Пришли с баннера «подарим видео»: объясняем акцию и ведём на регистрацию, после входа вернём к карточке подарка
+if (location.hash === "#promo") (function () {
+  var box = document.querySelector("#stateSignedOut .center")
+  box.querySelector("p").textContent = "Подпишитесь на наш Instagram — подарим одно видео. Сначала войдите или зарегистрируйтесь: это бесплатно."
+  var a = box.querySelector("a")
+  a.textContent = "Войти или зарегистрироваться"
+  a.href = "login.html?next=promo#signup"
+})()
+</script>
 
   <div class="promo-card" id="promoCard" style="display:none">
     <h2>Бесплатное видео за подписку</h2>
