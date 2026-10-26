@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#15202B">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://identitytoolkit.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<title>Каталог — GN FinTrust</title>
+<meta name="description" content="Вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс.">
+<link rel="canonical" href="https://fintrust.dev/catalog.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GN FinTrust">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://fintrust.dev/catalog.html">
+<meta property="og:title" content="Каталог — GN FinTrust">
+<meta property="og:description" content="Вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс.">
+<meta property="og:image" content="https://fintrust.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="theme.css">
+<style>
+
+  /* Generous space between the parts of the page */
+  section{padding:144px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 72px}
+  /* Section titles fade up when they come into view */
+  .sec-head{opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+  .sec-head.show{opacity:1;transform:none}
+  h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin-bottom:12px}
+  .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4;margin:0}
+
+  /* Catalog: two soft grey panels, white product cards inside */
+  .link-more{font-size:17px;font-weight:500;color:var(--red)}
+  .link-more::after{content:" ›"}
+  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
+  #catalog{background:var(--white);padding:88px 0 128px}
+  #catalog h1{font-size:clamp(36px,5vw,56px);letter-spacing:-.03em;margin-bottom:12px}
+  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start;font-family:var(--cat)}
+  .box{
+    background:var(--paper);border:0;border-radius:var(--radius);padding:24px;
+    opacity:0;transform:translateY(24px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)
+  }
+  a.box-link{display:block;color:var(--ink)}
+  a.box-link p{color:var(--red);font-weight:600;font-size:15px;margin-top:6px}
+  .box.show{opacity:1;transform:translateY(0)}
+  .box>h3{
+    font-family:var(--head);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1.15;
+    padding:2px 2px 20px;margin-bottom:0;
+    display:flex;align-items:baseline;gap:10px
+  }
+  .box>h3 .cnt{flex:none;font-size:17px;font-weight:600;color:var(--muted)}
+  .cat-none{max-width:720px;margin:0 auto;text-align:center;background:var(--paper);border-radius:var(--radius);padding:48px 40px}
+  .cat-none h3{font-size:clamp(22px,2.4vw,28px);margin-bottom:10px}
+  .cat-none p{color:var(--slate);font-size:17px;max-width:520px;margin:0 auto 28px}
+  .cat-none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
+  .boxes[hidden],.cat-none[hidden]{display:none}
+  .cat-empty{color:var(--slate);font-size:16px;padding:24px;background:var(--white);border-radius:var(--radius-sm);text-align:center}
+  .pcard{background:var(--white);border:0;border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1)}
+  .pcard:hover{box-shadow:var(--shadow-md);transform:scale(1.012)}
+  .pcard:last-child{margin-bottom:0}
+  .pcard:focus-visible{outline:3px solid rgba(0,0,0,.25);outline-offset:2px}
+  .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+  .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.85);font-size:15px;font-weight:500;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%)}
+  .pvideo .ph .big{font-size:34px}
+  .pvideo .ph .play{
+    width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;
+    transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease
+  }
+  .pcard:hover .play{background:rgba(255,255,255,.28);transform:scale(1.06)}
+  .pbody{padding:22px 22px 20px}
+  .pbody h4{font-family:var(--head);font-size:21px;line-height:1.2;letter-spacing:-.02em;margin-bottom:6px}
+  .pbody p{font-size:15px;color:var(--slate);margin-bottom:18px}
+  .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+
+
+  @media (prefers-reduced-motion:reduce){
+  }
+  @media (max-width:900px){
+    .brand{font-size:16px;gap:8px;white-space:nowrap}
+    .boxes{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .watch-modal{padding:0;align-items:flex-end}
+    .watch-sheet{width:100%;max-height:92vh;border-radius:var(--radius) var(--radius) 0 0}
+    .wvideo{position:sticky;top:0;z-index:1}
+  }
+  @media (max-width:560px){
+    section,.team-sec{padding:96px 0}
+    .sec-head{margin-bottom:44px}
+    h2{font-size:32px}
+    .sub{font-size:17px}
+    .boxes{gap:16px}
+    .box{padding:16px}
+    .cat-none{padding:32px 20px}
+    .box>h3{font-size:24px;padding-bottom:16px}
+    .pbody{padding:18px}
+    .pbody h4{font-size:19px}
+    .prow{flex-wrap:wrap}
+    .prow .buy{flex:1 1 auto;justify-content:center}
+    .wbody h3{font-size:22px}
+  }
+  @media (max-height:560px) and (orientation:landscape){
+    section,.team-sec{padding:48px 0}
+    .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
+    .watch-modal{padding:0}
+    .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
+    .wvideo{aspect-ratio:auto;height:60vh}
+    .fab-wa{width:46px;height:46px}
+    .fab-wa svg{width:26px;height:26px}
+  }
+  @media (min-width:1440px){
+    .wrap{max-width:1200px}
+  }
+  /* Desktop with a mouse: product cards rise in one after another once their panel shows,
+     and the WhatsApp button fades in after the hero instead of being there from the first frame */
+  @media (min-width:1024px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+    @keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+    .box.show .pcard{animation:cardIn .8s cubic-bezier(.16,1,.3,1) backwards}
+    .box.show .pcard:nth-child(3){animation-delay:.08s}
+    .box.show .pcard:nth-child(4){animation-delay:.16s}
+    .box.show .pcard:nth-child(n+5){animation-delay:.24s}
+    @keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .fab-wa{animation:fabIn .7s cubic-bezier(.16,1,.3,1) .9s backwards}
+  }
+  @media (pointer:coarse){
+    .buy{min-height:44px}
+  }
+</style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
+<link rel="prefetch" href="buy.html">
+<link rel="prefetch" href="login.html">
+<link rel="prefetch" href="members.html">
+<link rel="prefetch" href="admin.html">
+</head>
+<body>
+
+<a class="skip" href="#catalog">К каталогу</a>
+<div class="promo-bar" id="promoBar">
+  <div class="wrap promo-in">
+    <a class="promo-txt" href="members.html#promo">Подпишитесь на наш Instagram — подарим одно видео бесплатно.</a>
+    <a class="promo-btn" href="members.html#promo">Получить</a>
+    <button class="promo-x" id="promoClose" type="button" aria-label="Закрыть">×</button>
+  </div>
+</div>
+<script>
+(function () {
+	try { if (localStorage.getItem("gn_promo_hide") === "1") document.getElementById("promoBar").classList.add("off") } catch (e) {}
+	document.getElementById("promoClose").addEventListener("click", function () {
+		document.getElementById("promoBar").classList.add("off")
+		try { localStorage.setItem("gn_promo_hide", "1") } catch (e) {}
+	})
+})()
+</script>
+	<header class="site-header">
+	  <div class="wrap nav">
+	    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> FinTrust</a>
+	    <nav class="nav-links" id="siteNav">
+	      <a href="catalog.html" aria-current="page">Каталог</a>
+	      <a href="meet.html">Запись на встречу</a>
+	      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
+	    </nav>
+	    <div class="nav-tools">
+	      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
+	      <a class="nav-account" href="login.html" id="navLogin">Вход</a>
+	      <a class="btn btn-primary btn-sm" href="login.html#signup" id="navSignup">Регистрация</a>
+	      <a class="nav-out" href="#" id="navOut" style="display:none">Выйти</a>
+	      <a class="nav-out" href="#" id="navAdmin" style="display:none">Админ</a>
+	      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
+	    </div>
+	  </div>
+	</header>
+<script>
+(function(){try{
+  var a = localStorage.getItem("gn_auth") === "1"
+  var m = localStorage.getItem("gn_admin") === "1"
+  var l = document.getElementById("navLogin"), s = document.getElementById("navSignup")
+  var o = document.getElementById("navOut"), d = document.getElementById("navAdmin")
+  if (a) {
+    if (l) { l.textContent = "Кабинет"; l.href = "members.html" }
+	    if (s) s.style.display = "none"
+	    if (o) o.style.display = ""
+    if (m && d) d.style.display = ""
+  }
+}catch(e){}})()
+</script>
+
+<main>
+  <section id="catalog">
+    <div class="wrap">
+      <div class="sec-head">
+        <h1>Каталог</h1>
+        <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
+      </div>
+      <div class="boxes">
+        <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
+        <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
+      </div>
+      <div class="cat-none" id="catNone" hidden>
+        <h3>Первые вебинары и курсы скоро появятся</h3>
+        <p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>
+        <div class="cat-none-cta">
+          <a class="btn btn-primary" href="meet.html">Записаться на консультацию</a>
+          <a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<a class="fab-wa" href="https://wa.me/996500797441" target="_blank" rel="noopener" aria-label="WhatsApp" title="Написать в WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#25D366" d="M16 2.7C8.7 2.7 2.7 8.7 2.7 16c0 2.4.6 4.6 1.8 6.6L2.7 29.3l6.9-1.8c1.9 1.1 4.1 1.6 6.4 1.6 7.3 0 13.3-6 13.3-13.3S23.3 2.7 16 2.7z"/><path fill="#fff" d="M12.1 9.6c-.3-.6-.6-.6-.8-.6h-.7c-.2 0-.6.1-1 .5-.3.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.8c.2.3 2.6 4.1 6.3 5.6 3.1 1.2 3.7 1 4.4.9.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.6.2-1.7-.1-.1-.3-.2-.7-.4-.4-.2-2.1-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.8-1.1-1-1.8-2.1-2-2.5-.2-.4 0-.6.2-.7.2-.2.4-.4.5-.7.2-.2.2-.4.3-.7.1-.3.1-.5 0-.7-.1-.2-.8-1.9-1.2-2.9z"/></svg>
+</a>
+
+<footer class="site-footer">
+  <div class="wrap foot">
+    <div class="foot-brand">
+      <a class="brand" href="index.html"><span class="brand-mark">GN</span> FinTrust</a>
+      <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
+    </div>
+    <div class="foot-links">
+      <a href="#catalog">Каталог</a>
+      <a href="meet.html">Запись на встречу</a>
+      <a href="gntools.html">GN Tools</a>
+      <a href="login.html">Мой кабинет</a>
+    </div>
+    <div class="foot-copy">
+      <span>© 2026 GN FinTrust · Все права защищены</span>
+      <a class="made-by" href="https://github.com/tipilek2020-ai" target="_blank" rel="noopener" title="losdek on GitHub"><span class="mark">L</span> made by losdek</a>
+    </div>
+  </div>
+</footer>
+
+<div class="admin-modal" id="adminModal">
+  <div class="admin-sheet">
+    <div class="admin-bar"><strong>Панель админа</strong><button id="adminClose" type="button">Закрыть</button></div>
+    <iframe id="adminFrame" title="Панель админа"></iframe>
+  </div>
+</div>
+
+<div class="watch-modal" id="watchModal" role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="watch-sheet">
+    <button class="watch-close" id="watchClose" type="button" aria-label="Закрыть">✕</button>
+    <div class="wvideo" id="wVideo"></div>
+    <div class="wbody">
+      <h3 id="wTitle"></h3>
+      <p id="wDesc"></p>
+      <div class="prow">
+        <div class="price-wrap"><span class="price-main" id="wPrice"></span><span class="price-sub" id="wPriceSub"></span></div>
+        <a class="btn btn-primary buy" id="wBuy" href="buy.html">Купите</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="catalog.js"></script>
+<script>
+function renderCatalog(products, loading) {
+		var types = ["webinar", "course"]
+		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
+		types.forEach(function (t) {
+			var box = document.getElementById("box-" + t)
+			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
+			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
+			document.getElementById("cnt-" + t).textContent = loading ? "" : items.length
+			if (!items.length) {
+				var empty = document.createElement("p")
+				empty.className = "cat-empty"
+				// Первый визит: пока база не ответила, не пишем «пусто» — материалы могут быть
+				empty.textContent = loading ? "Загружаем…" : emptyHint[t]
+				box.appendChild(empty)
+				return
+			}
+			items.forEach(function (p) {
+			var card = document.createElement("div")
+			card.className = "pcard"
+			card.tabIndex = 0
+			card.setAttribute("role", "button")
+			card.innerHTML =
+				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
+				'<div class="pbody"><h4></h4><p></p>' +
+				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
+				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
+			card.querySelector("h4").textContent = locTitle(p)
+			card.querySelector("p").textContent = locDesc(p)
+			card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
+			card.addEventListener("click", function (ev) {
+				// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
+				if (ev.target.closest("a, .price-sub")) return
+				openWatch(p)
+			})
+			card.addEventListener("keydown", function (ev) {
+				if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
+				ev.preventDefault()
+				openWatch(p)
+			})
+			box.appendChild(card)
+		})
+	})
+	// Оба раздела пусты: вместо двух пустых коробок — одна понятная карточка с дальнейшим шагом
+	var none = !loading && !(products || []).some(function (p) { return (p.type === "webinar" || p.type === "course") && !DEMO_IDS[p.id] })
+	document.getElementById("catNone").hidden = !none
+	document.querySelector("#catalog .boxes").hidden = none
+}
+
+var watchReturnFocus = null
+function openWatch(p) {
+	var m = document.getElementById("watchModal")
+	var v = document.getElementById("wVideo")
+	v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео-анонс появится позже</span></div>'
+	if (isRealLink(p.preview)) { v.innerHTML = ""; safeEmbed(v, p.preview, "Анонс") }
+	document.getElementById("wTitle").textContent = locTitle(p)
+	document.getElementById("wDesc").textContent = locDesc(p)
+	document.getElementById("wPrice").textContent = formatPrice(p.price)
+	document.getElementById("wPriceSub").textContent = formatPriceSub(p.price)
+	document.getElementById("wBuy").href = "buy.html?item=" + encodeURIComponent(p.id)
+	watchReturnFocus = document.activeElement
+	m.classList.add("on")
+	requestAnimationFrame(function () { m.classList.add("show"); document.getElementById("watchClose").focus() })
+	document.body.style.overflow = "hidden"
+}
+function closeWatch() {
+	var m = document.getElementById("watchModal")
+	if (!m.classList.contains("on")) return
+	m.classList.remove("show")
+	document.body.style.overflow = ""
+	setTimeout(function () { m.classList.remove("on"); document.getElementById("wVideo").innerHTML = "" }, 250)
+	if (watchReturnFocus && watchReturnFocus.focus) watchReturnFocus.focus()
+}
+document.getElementById("watchClose").addEventListener("click", closeWatch)
+document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
+	var cachedProducts = null
+	try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
+	if (cachedProducts && cachedProducts.length) {
+		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
+	}
+	var hasCache = !!(cachedProducts && cachedProducts.length)
+	renderCatalog(hasCache ? cachedProducts : [], !hasCache)
+
+document.addEventListener("click", function(e){
+	if(e.target.classList && e.target.classList.contains("price-sub")){
+		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
+		location.reload()
+	}
+})
+
+;(function(){
+	// Панели каталога и заголовок плавно появляются по очереди
+	document.querySelectorAll(".box").forEach(function(c, i){ c.style.transitionDelay = i * 120 + "ms" })
+	var observer = new IntersectionObserver(function(entries){
+		entries.forEach(function(entry){
+			if (!entry.isIntersecting) return
+			observer.unobserve(entry.target)
+			entry.target.classList.add("show")
+			setTimeout(function(){ entry.target.style.transitionDelay = "" }, 1800)
+		})
+	}, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" })
+	document.querySelectorAll(".box, .sec-head").forEach(function(b){ observer.observe(b) })
+	// Кнопку меню на мобильных подключает catalog.js
+})()
+</script>
+<script type="module">
+  try {
+    const { firebaseConfig } = await import("./firebase-config.js")
+    if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js")
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js")
+    const fsMod = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js")
+    const app = initializeApp(firebaseConfig)
+
+    const auth = authMod.getAuth(app)
+    const db = fsMod.getFirestore(app)
+    const navAdmin = document.getElementById("navAdmin")
+    const navLogin = document.getElementById("navLogin")
+    const navSignup = document.getElementById("navSignup")
+    const navOut = document.getElementById("navOut")
+    authMod.onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        navLogin.textContent = "Кабинет"
+        navLogin.href = "members.html"
+        navSignup.style.display = "none"
+        navOut.style.display = ""
+        localStorage.setItem("gn_auth", "1")
+        localStorage.setItem("gn_email", user.email || "")
+        try {
+          const u = await fsMod.getDoc(fsMod.doc(db, "users", user.uid))
+          const isAdmin = u.exists() && u.data().admin === true
+          navAdmin.style.display = isAdmin ? "" : "none"
+          localStorage.setItem("gn_admin", isAdmin ? "1" : "0")
+        } catch (x) { navAdmin.style.display = "none"; localStorage.setItem("gn_admin", "0") }
+      } else {
+        navLogin.textContent = "Вход"
+        navLogin.href = "login.html"
+        navSignup.style.display = ""
+        navOut.style.display = "none"
+        navAdmin.style.display = "none"
+        localStorage.setItem("gn_auth", "0")
+        localStorage.setItem("gn_admin", "0")
+        localStorage.removeItem("gn_email")
+      }
+    })
+    navOut.addEventListener("click", async (e) => {
+      e.preventDefault()
+      localStorage.setItem("gn_auth", "0")
+      localStorage.setItem("gn_admin", "0")
+      localStorage.removeItem("gn_email")
+      await authMod.signOut(auth)
+    })
+
+    const adminModal = document.getElementById("adminModal")
+    const adminFrame = document.getElementById("adminFrame")
+    navAdmin.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (!adminFrame.src) adminFrame.src = "admin.html"
+      adminModal.classList.add("on")
+      requestAnimationFrame(() => adminModal.classList.add("show"))
+      document.body.style.overflow = "hidden"
+    })
+    function closeAdmin() {
+      adminModal.classList.remove("show")
+      document.body.style.overflow = ""
+      setTimeout(() => adminModal.classList.remove("on"), 250)
+    }
+    document.getElementById("adminClose").addEventListener("click", closeAdmin)
+    adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
+
+    const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
+    const products = []
+    snap.forEach((d) => {
+      var item = Object.assign({ id: d.id }, d.data())
+      if (!DEMO_IDS[item.id]) products.push(item)
+    })
+    renderCatalog(products)
+    try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
+  } catch (e) {
+    // База недоступна: убираем «Загружаем…», показываем кэш или честное «пока нет»
+    var cached = []
+    try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (x) {}
+    renderCatalog(cached)
+  }
+</script>
+</body>
+</html>

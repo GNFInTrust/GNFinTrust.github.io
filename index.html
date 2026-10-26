@@ -51,50 +51,11 @@
   .sec-head{opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
   .sec-head.show{opacity:1;transform:none}
   h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin-bottom:12px}
+  #catalog-cta{background:var(--white)}
+  #catalog-cta .sec-head{margin-bottom:0}
+  .cta-btn{margin-top:32px;min-width:200px;font-size:17px;padding:13px 28px}
   .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4;margin:0}
 
-  /* Catalog: two soft grey panels, white product cards inside */
-  #catalog{background:var(--white)}
-  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start;font-family:var(--cat)}
-  .box{
-    background:var(--paper);border:0;border-radius:var(--radius);padding:24px;
-    opacity:0;transform:translateY(24px);
-    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)
-  }
-  a.box-link{display:block;color:var(--ink)}
-  a.box-link p{color:var(--red);font-weight:600;font-size:15px;margin-top:6px}
-  .box.show{opacity:1;transform:translateY(0)}
-  .box>h3{
-    font-family:var(--head);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1.15;
-    padding:2px 2px 20px;margin-bottom:0;
-    display:flex;align-items:baseline;gap:10px
-  }
-  .box>h3 .cnt{flex:none;font-size:17px;font-weight:600;color:var(--muted)}
-  .cat-none{max-width:720px;margin:0 auto;text-align:center;background:var(--paper);border-radius:var(--radius);padding:48px 40px}
-  .cat-none h3{font-size:clamp(22px,2.4vw,28px);margin-bottom:10px}
-  .cat-none p{color:var(--slate);font-size:17px;max-width:520px;margin:0 auto 28px}
-  .cat-none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
-  .boxes[hidden],.cat-none[hidden]{display:none}
-  .cat-empty{color:var(--slate);font-size:16px;padding:24px;background:var(--white);border-radius:var(--radius-sm);text-align:center}
-  .pcard{background:var(--white);border:0;border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1)}
-  .pcard:hover{box-shadow:var(--shadow-md);transform:scale(1.012)}
-  .pcard:last-child{margin-bottom:0}
-  .pcard:focus-visible{outline:3px solid rgba(0,0,0,.25);outline-offset:2px}
-  .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#000}
-  .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.85);font-size:15px;font-weight:500;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%)}
-  .pvideo .ph .big{font-size:34px}
-  .pvideo .ph .play{
-    width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;
-    transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease
-  }
-  .pcard:hover .play{background:rgba(255,255,255,.28);transform:scale(1.06)}
-  .pbody{padding:22px 22px 20px}
-  .pbody h4{font-family:var(--head);font-size:21px;line-height:1.2;letter-spacing:-.02em;margin-bottom:6px}
-  .pbody p{font-size:15px;color:var(--slate);margin-bottom:18px}
-  .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
   /* Team on a soft grey band: three equal cards, the founder in the middle */
   .team-sec{padding:144px 0;background:var(--paper)}
@@ -131,7 +92,6 @@
     .tphoto img{transform:none}
   }
   @media (max-width:900px){
-    .boxes{grid-template-columns:1fr}
     /* Phones and tablets: a swipeable row of equal cards that opens on the founder */
     .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -24px;padding:4px 24px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
     .team::-webkit-scrollbar{display:none}
@@ -142,9 +102,6 @@
     .brand{font-size:16px;gap:8px;white-space:nowrap}
   }
   @media (max-width:640px){
-    .watch-modal{padding:0;align-items:flex-end}
-    .watch-sheet{width:100%;max-height:92vh;border-radius:var(--radius) var(--radius) 0 0}
-    .wvideo{position:sticky;top:0;z-index:1}
   }
   @media (max-width:560px){
     .hero{padding:56px 0 56px}
@@ -156,20 +113,11 @@
     .sec-head{margin-bottom:44px}
     h2{font-size:32px}
     .sub{font-size:17px}
-    .boxes{gap:16px}
-    .box{padding:16px}
-    .cat-none{padding:32px 20px}
-    .box>h3{font-size:24px;padding-bottom:16px}
     .team{gap:12px;margin:0 -16px;padding:4px 16px 12px}
     .tcard{flex-basis:80%}
     .tinfo{padding:20px 20px 22px}
     .tinfo h3{font-size:20px}
     .tinfo p{font-size:15px}
-    .pbody{padding:18px}
-    .pbody h4{font-size:19px}
-    .prow{flex-wrap:wrap}
-    .prow .buy{flex:1 1 auto;justify-content:center}
-    .wbody h3{font-size:22px}
   }
   @media (max-height:560px) and (orientation:landscape){
     .hero{padding:32px 0}
@@ -179,10 +127,6 @@
     .team{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0;padding:0}
     .team-dots{display:none}
     .tphoto{aspect-ratio:4/3}
-    .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
-    .watch-modal{padding:0}
-    .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
-    .wvideo{aspect-ratio:auto;height:60vh}
     .fab-wa{width:46px;height:46px}
     .fab-wa svg{width:26px;height:26px}
   }
@@ -192,29 +136,21 @@
   /* Desktop with a mouse: product cards rise in one after another once their panel shows,
      and the WhatsApp button fades in after the hero instead of being there from the first frame */
   @media (min-width:1024px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-    @keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-    .box.show .pcard{animation:cardIn .8s cubic-bezier(.16,1,.3,1) backwards}
-    .box.show .pcard:nth-child(3){animation-delay:.08s}
-    .box.show .pcard:nth-child(4){animation-delay:.16s}
-    .box.show .pcard:nth-child(n+5){animation-delay:.24s}
     @keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
     .fab-wa{animation:fabIn .7s cubic-bezier(.16,1,.3,1) .9s backwards}
-  }
-  @media (pointer:coarse){
-    .buy{min-height:44px}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
-<link rel="prefetch" href="buy.html">
+<link rel="prefetch" href="catalog.html">
 <link rel="prefetch" href="login.html">
 <link rel="prefetch" href="members.html">
 <link rel="prefetch" href="admin.html">
 </head>
 <body>
 
-<a class="skip" href="#catalog">К каталогу</a>
+<a class="skip" href="catalog.html">К каталогу</a>
 <div class="promo-bar" id="promoBar">
   <div class="wrap promo-in">
     <a class="promo-txt" href="members.html#promo">Подпишитесь на наш Instagram — подарим одно видео бесплатно.</a>
@@ -235,7 +171,7 @@
 	  <div class="wrap nav">
 	    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> FinTrust</a>
 	    <nav class="nav-links" id="siteNav">
-	      <a href="#catalog">Каталог</a>
+	      <a href="catalog.html">Каталог</a>
 	      <a href="meet.html">Запись на встречу</a>
 	      <a href="gntools.html">GN Tools <span class="beta-tag">БЕТА</span></a>
 	    </nav>
@@ -271,7 +207,7 @@
         <h1>Налоги, учёт и деньги в бизнесе&nbsp;— <em>простым языком</em></h1>
         <p>Вебинары и курсы для предпринимателей. Перед покупкой можно бесплатно посмотреть анонс.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
+          <a class="btn btn-primary" href="catalog.html">Смотреть каталог</a>
           <a class="link-more" href="meet.html">Записаться на консультацию</a>
         </div>
       </div>
@@ -325,23 +261,12 @@
     </div>
   </section>
 
-  <section id="catalog">
+  <section id="catalog-cta">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Каталог</h2>
-        <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
-      </div>
-      <div class="boxes">
-        <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
-        <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
-      </div>
-      <div class="cat-none" id="catNone" hidden>
-        <h3>Первые вебинары и курсы скоро появятся</h3>
-        <p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>
-        <div class="cat-none-cta">
-          <a class="btn btn-primary" href="meet.html">Записаться на консультацию</a>
-          <a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a>
-        </div>
+        <h2>Вебинары и курсы</h2>
+        <p class="sub">У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
+        <a class="btn btn-primary cta-btn" href="catalog.html">Открыть каталог</a>
       </div>
     </div>
   </section>
@@ -358,7 +283,7 @@
       <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
     </div>
     <div class="foot-links">
-      <a href="#catalog">Каталог</a>
+      <a href="catalog.html">Каталог</a>
       <a href="meet.html">Запись на встречу</a>
       <a href="gntools.html">GN Tools</a>
       <a href="login.html">Мой кабинет</a>
@@ -377,119 +302,13 @@
   </div>
 </div>
 
-<div class="watch-modal" id="watchModal" role="dialog" aria-modal="true" aria-labelledby="wTitle">
-  <div class="watch-sheet">
-    <button class="watch-close" id="watchClose" type="button" aria-label="Закрыть">✕</button>
-    <div class="wvideo" id="wVideo"></div>
-    <div class="wbody">
-      <h3 id="wTitle"></h3>
-      <p id="wDesc"></p>
-      <div class="prow">
-        <div class="price-wrap"><span class="price-main" id="wPrice"></span><span class="price-sub" id="wPriceSub"></span></div>
-        <a class="btn btn-primary buy" id="wBuy" href="buy.html">Купите</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="catalog.js"></script>
 <script>
-function renderCatalog(products, loading) {
-		var types = ["webinar", "course"]
-		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
-		types.forEach(function (t) {
-			var box = document.getElementById("box-" + t)
-			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
-			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
-			document.getElementById("cnt-" + t).textContent = loading ? "" : items.length
-			if (!items.length) {
-				var empty = document.createElement("p")
-				empty.className = "cat-empty"
-				// Первый визит: пока база не ответила, не пишем «пусто» — материалы могут быть
-				empty.textContent = loading ? "Загружаем…" : emptyHint[t]
-				box.appendChild(empty)
-				return
-			}
-			items.forEach(function (p) {
-			var card = document.createElement("div")
-			card.className = "pcard"
-			card.tabIndex = 0
-			card.setAttribute("role", "button")
-			card.innerHTML =
-				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
-				'<div class="pbody"><h4></h4><p></p>' +
-				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
-				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
-			card.querySelector("h4").textContent = locTitle(p)
-			card.querySelector("p").textContent = locDesc(p)
-			card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
-			card.addEventListener("click", function (ev) {
-				// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
-				if (ev.target.closest("a, .price-sub")) return
-				openWatch(p)
-			})
-			card.addEventListener("keydown", function (ev) {
-				if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
-				ev.preventDefault()
-				openWatch(p)
-			})
-			box.appendChild(card)
-		})
-	})
-	// Оба раздела пусты: вместо двух пустых коробок — одна понятная карточка с дальнейшим шагом
-	var none = !loading && !(products || []).some(function (p) { return (p.type === "webinar" || p.type === "course") && !DEMO_IDS[p.id] })
-	document.getElementById("catNone").hidden = !none
-	document.querySelector("#catalog .boxes").hidden = none
-}
-
-var watchReturnFocus = null
-function openWatch(p) {
-	var m = document.getElementById("watchModal")
-	var v = document.getElementById("wVideo")
-	v.innerHTML = '<div class="ph"><span class="big">Видео</span><span>Видео-анонс появится позже</span></div>'
-	if (isRealLink(p.preview)) { v.innerHTML = ""; safeEmbed(v, p.preview, "Анонс") }
-	document.getElementById("wTitle").textContent = locTitle(p)
-	document.getElementById("wDesc").textContent = locDesc(p)
-	document.getElementById("wPrice").textContent = formatPrice(p.price)
-	document.getElementById("wPriceSub").textContent = formatPriceSub(p.price)
-	document.getElementById("wBuy").href = "buy.html?item=" + encodeURIComponent(p.id)
-	watchReturnFocus = document.activeElement
-	m.classList.add("on")
-	requestAnimationFrame(function () { m.classList.add("show"); document.getElementById("watchClose").focus() })
-	document.body.style.overflow = "hidden"
-}
-function closeWatch() {
-	var m = document.getElementById("watchModal")
-	if (!m.classList.contains("on")) return
-	m.classList.remove("show")
-	document.body.style.overflow = ""
-	setTimeout(function () { m.classList.remove("on"); document.getElementById("wVideo").innerHTML = "" }, 250)
-	if (watchReturnFocus && watchReturnFocus.focus) watchReturnFocus.focus()
-}
-document.getElementById("watchClose").addEventListener("click", closeWatch)
-document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
-document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
-	var cachedProducts = null
-	try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
-	if (cachedProducts && cachedProducts.length) {
-		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
-	}
-	var hasCache = !!(cachedProducts && cachedProducts.length)
-	renderCatalog(hasCache ? cachedProducts : [], !hasCache)
-
-document.addEventListener("click", function(e){
-	if(e.target.classList && e.target.classList.contains("price-sub")){
-		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
-		location.reload()
-	}
-})
-
 ;(function(){
 	// Команда появляется от центра (основатель) к краям, остальные блоки — по порядку
 	document.querySelectorAll(".tcard").forEach(function(c, i, all){
 		c.style.setProperty("--d", Math.abs(i - (all.length - 1) / 2) * 160 + "ms")
 	})
-	document.querySelectorAll(".box").forEach(function(c, i){ c.style.transitionDelay = i * 120 + "ms" })
 	var observer = new IntersectionObserver(function(entries){
 		entries.forEach(function(entry){
 			if(entry.isIntersecting){
@@ -504,7 +323,7 @@ document.addEventListener("click", function(e){
 			}
 		})
 	}, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" })
-	document.querySelectorAll(".box, .team, .sec-head").forEach(function(b){ observer.observe(b) })
+	document.querySelectorAll(".team, .sec-head").forEach(function(b){ observer.observe(b) })
 
 	var hero = document.querySelector(".hero")
 	// Scroll only drives a 0..1 CSS variable (transform/opacity), so the page height never changes mid-scroll
@@ -625,20 +444,7 @@ document.addEventListener("click", function(e){
     document.getElementById("adminClose").addEventListener("click", closeAdmin)
     adminModal.addEventListener("click", (e) => { if (e.target === adminModal) closeAdmin() })
 
-    const snap = await fsMod.getDocs(fsMod.collection(db, "products"))
-    const products = []
-    snap.forEach((d) => {
-      var item = Object.assign({ id: d.id }, d.data())
-      if (!DEMO_IDS[item.id]) products.push(item)
-    })
-    renderCatalog(products)
-    try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
-  } catch (e) {
-    // База недоступна: убираем «Загружаем…», показываем кэш или честное «пока нет»
-    var cached = []
-    try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (x) {}
-    renderCatalog(cached)
-  }
+  } catch (e) { /* без Firebase шапка остаётся как есть */ }
 </script>
 </body>
 </html>
