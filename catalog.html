@@ -12,147 +12,124 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
-<link rel="preconnect" href="https://identitytoolkit.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <title>Каталог — GN FinTrust</title>
-<meta name="description" content="Вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс.">
+<meta name="description" content="Все вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала бесплатный видео-анонс.">
 <link rel="canonical" href="https://fintrust.dev/catalog.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GN FinTrust">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:url" content="https://fintrust.dev/catalog.html">
 <meta property="og:title" content="Каталог — GN FinTrust">
-<meta property="og:description" content="Вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс.">
+<meta property="og:description" content="Все вебинары и курсы GN FinTrust по налогам, учёту и деньгам в бизнесе. У каждого материала бесплатный видео-анонс.">
 <meta property="og:image" content="https://fintrust.dev/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="theme.css">
 <style>
+  /* Page head */
+  .cat-head{padding:72px 0 40px;text-align:center}
+  .cat-head h1{font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.05;letter-spacing:-.035em;margin-bottom:14px}
+  .cat-head p{color:var(--slate);font-size:clamp(17px,1.5vw,21px);line-height:1.4;max-width:620px;margin:0 auto}
 
-  /* Generous space between the parts of the page */
-  section{padding:144px 0}
-  .sec-head{text-align:center;max-width:680px;margin:0 auto 72px}
-  /* Section titles fade up when they come into view */
-  .sec-head{opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
-  .sec-head.show{opacity:1;transform:none}
-  h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin-bottom:12px}
-  .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4;margin:0}
+  /* Toolbar: type tabs, search, sort. Sticks under the header while scrolling the grid */
+  .toolbar{position:sticky;top:var(--header-h);z-index:30;background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid transparent;transition:border-color .2s ease}
+  .toolbar.stuck{border-bottom-color:rgba(0,0,0,.08)}
+  .tb{display:flex;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  .tabs{display:inline-flex;gap:2px;padding:3px;border-radius:var(--radius-sm);background:rgba(0,0,0,.06);flex:none}
+  .tab{border:0;background:transparent;font-family:var(--body);font-size:15px;font-weight:500;color:var(--ink);padding:7px 14px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:36px;transition:background-color .2s ease,box-shadow .2s ease}
+  .tab .n{font-size:13px;color:var(--muted);font-weight:500}
+  .tab[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.14);font-weight:600}
+  .search{position:relative;flex:1 1 220px;min-width:180px}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted);pointer-events:none}
+  .search input{width:100%;height:42px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 36px 0 36px;font-family:var(--body);font-size:16px;color:var(--ink);background:#fff;transition:border-color .2s ease}
+  .search input:focus{outline:none;border-color:var(--ink)}
+  .search input::-webkit-search-cancel-button{display:none}
+  .search .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;display:none}
+  .search .clear:hover{color:var(--ink);background:rgba(0,0,0,.05)}
+  .search.has-q .clear{display:block}
+  .sort{flex:none;height:42px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:0 34px 0 12px;font-family:var(--body);font-size:15px;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2386868B' stroke-width='1.6' d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;-webkit-appearance:none;appearance:none;cursor:pointer}
+  .sort:focus{outline:none;border-color:var(--ink)}
 
-  /* Catalog: two soft grey panels, white product cards inside */
+  .results{padding:28px 0 112px}
+  .found{color:var(--slate);font-size:15px;margin-bottom:18px;min-height:22px}
+
+  /* Product grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .pcard{display:flex;flex-direction:column;background:#fff;border-radius:var(--radius);overflow:hidden;cursor:pointer;box-shadow:var(--shadow-sm),0 0 0 1px rgba(0,0,0,.04);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1);animation:cardIn .6s cubic-bezier(.16,1,.3,1) backwards}
+  @keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .pcard:hover{box-shadow:var(--shadow-md),0 0 0 1px rgba(0,0,0,.04);transform:translateY(-4px)}
+  .pcard:focus-visible{outline:3px solid rgba(215,15,46,.35);outline-offset:2px}
+  .pthumb{position:relative;aspect-ratio:16/9;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%);overflow:hidden}
+  .pthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+  .pcard:hover .pthumb img{transform:scale(1.04)}
+  .pthumb .play{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease}
+  .pcard:hover .play{background:rgba(255,255,255,.32);transform:scale(1.08)}
+  .pthumb .hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;color:rgba(255,255,255,.85);font-size:14px;font-weight:500}
+  .pthumb img+.play+.hint{display:none}
+  .badge{position:absolute;left:12px;top:12px;z-index:1;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;font-weight:600;padding:4px 9px;border-radius:var(--radius-xs)}
+  .pbody{display:flex;flex-direction:column;flex:1;padding:20px 22px 22px}
+  .pbody h3{font-size:20px;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px}
+  .pbody p{font-size:15px;color:var(--slate);line-height:1.5;margin-bottom:20px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .prow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
+  mark{background:rgba(215,15,46,.14);color:inherit;border-radius:2px}
+
+  /* Loading placeholders */
+  .skel{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.04)}
+  .skel .a,.skel .b,.skel .c{background:linear-gradient(90deg,#F0F0F2 0%,#F7F7F9 50%,#F0F0F2 100%);background-size:200% 100%;animation:shim 1.4s ease-in-out infinite}
+  .skel .a{aspect-ratio:16/9}
+  .skel .b{height:20px;margin:22px 22px 10px;border-radius:4px;width:70%}
+  .skel .c{height:14px;margin:0 22px 24px;border-radius:4px;width:90%}
+  @keyframes shim{from{background-position:100% 0}to{background-position:-100% 0}}
+
+  /* Empty / nothing found */
+  .none{grid-column:1/-1;text-align:center;padding:64px 24px;background:var(--paper);border-radius:var(--radius)}
+  .none h2{font-size:24px;margin-bottom:8px}
+  .none p{color:var(--slate);font-size:16px;max-width:520px;margin:0 auto 20px}
+  .none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
   .link-more{font-size:17px;font-weight:500;color:var(--red)}
   .link-more::after{content:" ›"}
   .link-more:hover{text-decoration:underline;text-underline-offset:3px}
-  #catalog{background:var(--white);padding:88px 0 128px}
-  #catalog h1{font-size:clamp(36px,5vw,56px);letter-spacing:-.03em;margin-bottom:12px}
-  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start;font-family:var(--cat)}
-  .box{
-    background:var(--paper);border:0;border-radius:var(--radius);padding:24px;
-    opacity:0;transform:translateY(24px);
-    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)
-  }
-  a.box-link{display:block;color:var(--ink)}
-  a.box-link p{color:var(--red);font-weight:600;font-size:15px;margin-top:6px}
-  .box.show{opacity:1;transform:translateY(0)}
-  .box>h3{
-    font-family:var(--head);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1.15;
-    padding:2px 2px 20px;margin-bottom:0;
-    display:flex;align-items:baseline;gap:10px
-  }
-  .box>h3 .cnt{flex:none;font-size:17px;font-weight:600;color:var(--muted)}
-  .cat-none{max-width:720px;margin:0 auto;text-align:center;background:var(--paper);border-radius:var(--radius);padding:48px 40px}
-  .cat-none h3{font-size:clamp(22px,2.4vw,28px);margin-bottom:10px}
-  .cat-none p{color:var(--slate);font-size:17px;max-width:520px;margin:0 auto 28px}
-  .cat-none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
-  .boxes[hidden],.cat-none[hidden]{display:none}
-  .cat-empty{color:var(--slate);font-size:16px;padding:24px;background:var(--white);border-radius:var(--radius-sm);text-align:center}
-  .pcard{background:var(--white);border:0;border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1)}
-  .pcard:hover{box-shadow:var(--shadow-md);transform:scale(1.012)}
-  .pcard:last-child{margin-bottom:0}
-  .pcard:focus-visible{outline:3px solid rgba(0,0,0,.25);outline-offset:2px}
-  .pvideo{position:relative;width:100%;aspect-ratio:16/9;background:#000}
-  .pvideo iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .pvideo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.85);font-size:15px;font-weight:500;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%)}
-  .pvideo .ph .big{font-size:34px}
-  .pvideo .ph .play{
-    width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;
-    transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease
-  }
-  .pcard:hover .play{background:rgba(255,255,255,.28);transform:scale(1.06)}
-  .pbody{padding:22px 22px 20px}
-  .pbody h4{font-family:var(--head);font-size:21px;line-height:1.2;letter-spacing:-.02em;margin-bottom:6px}
-  .pbody p{font-size:15px;color:var(--slate);margin-bottom:18px}
-  .prow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 
+  /* Help band under the grid */
+  .help{margin-top:72px;background:var(--paper);border-radius:var(--radius);padding:40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .help h2{font-size:26px;margin-bottom:6px}
+  .help p{color:var(--slate);font-size:16px;max-width:520px}
 
-
-  @media (prefers-reduced-motion:reduce){
-  }
-  @media (max-width:900px){
-    .brand{font-size:16px;gap:8px;white-space:nowrap}
-    .boxes{grid-template-columns:1fr}
-  }
+  @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:900px){ .brand{font-size:16px;gap:8px;white-space:nowrap} }
   @media (max-width:640px){
     .watch-modal{padding:0;align-items:flex-end}
     .watch-sheet{width:100%;max-height:92vh;border-radius:var(--radius) var(--radius) 0 0}
     .wvideo{position:sticky;top:0;z-index:1}
   }
   @media (max-width:560px){
-    section,.team-sec{padding:96px 0}
-    .sec-head{margin-bottom:44px}
-    h2{font-size:32px}
-    .sub{font-size:17px}
-    .boxes{gap:16px}
-    .box{padding:16px}
-    .cat-none{padding:32px 20px}
-    .box>h3{font-size:24px;padding-bottom:16px}
+    .cat-head{padding:44px 0 24px}
+    .tb{gap:10px}
+    .tabs{width:100%}
+    .tab{flex:1;justify-content:center;padding:7px 8px}
+    .sort{flex:1}
+    .grid{grid-template-columns:1fr;gap:16px}
     .pbody{padding:18px}
-    .pbody h4{font-size:19px}
-    .prow{flex-wrap:wrap}
-    .prow .buy{flex:1 1 auto;justify-content:center}
+    .results{padding:20px 0 80px}
+    .help{padding:28px 22px;margin-top:48px}
+    .help .btn{width:100%}
     .wbody h3{font-size:22px}
   }
-  @media (max-height:560px) and (orientation:landscape){
-    section,.team-sec{padding:48px 0}
-    .boxes{grid-template-columns:repeat(2,1fr);gap:18px}
-    .watch-modal{padding:0}
-    .watch-sheet{width:100%;height:100%;max-height:none;border-radius:0}
-    .wvideo{aspect-ratio:auto;height:60vh}
-    .fab-wa{width:46px;height:46px}
-    .fab-wa svg{width:26px;height:26px}
-  }
-  @media (min-width:1440px){
-    .wrap{max-width:1200px}
-  }
-  /* Desktop with a mouse: product cards rise in one after another once their panel shows,
-     and the WhatsApp button fades in after the hero instead of being there from the first frame */
-  @media (min-width:1024px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-    @keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-    .box.show .pcard{animation:cardIn .8s cubic-bezier(.16,1,.3,1) backwards}
-    .box.show .pcard:nth-child(3){animation-delay:.08s}
-    .box.show .pcard:nth-child(4){animation-delay:.16s}
-    .box.show .pcard:nth-child(n+5){animation-delay:.24s}
-    @keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    .fab-wa{animation:fabIn .7s cubic-bezier(.16,1,.3,1) .9s backwards}
-  }
-  @media (pointer:coarse){
-    .buy{min-height:44px}
-  }
+  @media (min-width:1440px){ .wrap{max-width:1200px} }
+  @media (pointer:coarse){ .buy{min-height:44px} }
+  @media (prefers-reduced-motion:reduce){ .pcard{animation:none} .skel .a,.skel .b,.skel .c{animation:none} }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js">
 <link rel="prefetch" href="buy.html">
-<link rel="prefetch" href="login.html">
-<link rel="prefetch" href="members.html">
-<link rel="prefetch" href="admin.html">
 </head>
 <body>
 
-<a class="skip" href="#catalog">К каталогу</a>
+<a class="skip" href="#results">К каталогу</a>
 <div class="promo-bar" id="promoBar">
   <div class="wrap promo-in">
     <a class="promo-txt" href="members.html#promo">Подпишитесь на наш Instagram — подарим одно видео бесплатно.</a>
@@ -203,23 +180,43 @@
 </script>
 
 <main>
-  <section id="catalog">
+  <div class="cat-head">
     <div class="wrap">
-      <div class="sec-head">
-        <h1>Каталог</h1>
-        <p class="sub">Новые материалы появляются здесь сразу после публикации.</p>
+      <h1>Каталог</h1>
+      <p>Вебинары и курсы по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="wrap tb">
+      <div class="tabs" role="group" aria-label="Тип материала">
+        <button class="tab" type="button" data-type="all" aria-pressed="true"><span>Все</span> <span class="n" id="n-all"></span></button>
+        <button class="tab" type="button" data-type="webinar" aria-pressed="false"><span>Вебинары</span> <span class="n" id="n-webinar"></span></button>
+        <button class="tab" type="button" data-type="course" aria-pressed="false"><span>Курсы</span> <span class="n" id="n-course"></span></button>
       </div>
-      <div class="boxes">
-        <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
-        <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
-      </div>
-      <div class="cat-none" id="catNone" hidden>
-        <h3>Первые вебинары и курсы скоро появятся</h3>
-        <p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>
-        <div class="cat-none-cta">
-          <a class="btn btn-primary" href="meet.html">Записаться на консультацию</a>
-          <a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a>
+      <label class="search" id="searchWrap">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5.25" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="search" id="q" placeholder="Поиск по названию и описанию" aria-label="Поиск по каталогу" autocomplete="off">
+        <button class="clear" id="qClear" type="button" aria-label="Очистить поиск">×</button>
+      </label>
+      <select class="sort" id="sort" aria-label="Сортировка">
+        <option value="new">Сначала новые</option>
+        <option value="cheap">Сначала дешевле</option>
+        <option value="dear">Сначала дороже</option>
+      </select>
+    </div>
+  </div>
+
+  <section class="results" id="results">
+    <div class="wrap">
+      <p class="found" id="found" aria-live="polite"></p>
+      <div class="grid" id="grid"></div>
+      <div class="help">
+        <div>
+          <h2>Не знаете, с чего начать?</h2>
+          <p>Запишитесь на консультацию — эксперт разберёт вашу ситуацию и подскажет, какой материал подойдёт.</p>
         </div>
+        <a class="btn btn-dark" href="meet.html">Записаться на консультацию</a>
       </div>
     </div>
   </section>
@@ -236,7 +233,7 @@
       <p>Вебинары, семинары и курсы по финансам и бухгалтерии.</p>
     </div>
     <div class="foot-links">
-      <a href="#catalog">Каталог</a>
+      <a href="catalog.html">Каталог</a>
       <a href="meet.html">Запись на встречу</a>
       <a href="gntools.html">GN Tools</a>
       <a href="login.html">Мой кабинет</a>
@@ -272,53 +269,197 @@
 
 <script src="catalog.js"></script>
 <script>
-function renderCatalog(products, loading) {
-		var types = ["webinar", "course"]
-		var emptyHint = { webinar: "Пока вебинаров нет — загляните позже.", course: "Пока курсов нет — загляните позже." }
-		types.forEach(function (t) {
-			var box = document.getElementById("box-" + t)
-			box.querySelectorAll(".pcard, .cat-empty").forEach(function (n) { n.remove() })
-			var items = (products || []).filter(function (p) { return p.type === t && !DEMO_IDS[p.id] })
-			document.getElementById("cnt-" + t).textContent = loading ? "" : items.length
-			if (!items.length) {
-				var empty = document.createElement("p")
-				empty.className = "cat-empty"
-				// Первый визит: пока база не ответила, не пишем «пусто» — материалы могут быть
-				empty.textContent = loading ? "Загружаем…" : emptyHint[t]
-				box.appendChild(empty)
-				return
-			}
-			items.forEach(function (p) {
-			var card = document.createElement("div")
-			card.className = "pcard"
-			card.tabIndex = 0
-			card.setAttribute("role", "button")
-			card.innerHTML =
-				'<div class="pvideo"><div class="ph"><span class="play">▶</span><span>Смотреть анонс</span></div></div>' +
-				'<div class="pbody"><h4></h4><p></p>' +
-				'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" data-pid="' + encodeURIComponent(p.id) + '">' + formatPriceSub(p.price) + '</span></div>' +
-				'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
-			card.querySelector("h4").textContent = locTitle(p)
-			card.querySelector("p").textContent = locDesc(p)
-			card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
-			card.addEventListener("click", function (ev) {
-				// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
-				if (ev.target.closest("a, .price-sub")) return
-				openWatch(p)
-			})
-			card.addEventListener("keydown", function (ev) {
-				if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
-				ev.preventDefault()
-				openWatch(p)
-			})
-			box.appendChild(card)
-		})
-	})
-	// Оба раздела пусты: вместо двух пустых коробок — одна понятная карточка с дальнейшим шагом
-	var none = !loading && !(products || []).some(function (p) { return (p.type === "webinar" || p.type === "course") && !DEMO_IDS[p.id] })
-	document.getElementById("catNone").hidden = !none
-	document.querySelector("#catalog .boxes").hidden = none
+var CAT = { products: [], loading: true, type: "all", q: "", sort: "new" }
+var TYPE_PLURAL = { webinar: "Вебинары", course: "Курсы" }
+
+// Filters live in the address (?type=course&q=налог) so a filtered list can be shared or bookmarked
+;(function () {
+	var u = new URLSearchParams(location.search)
+	if (u.get("type") === "webinar" || u.get("type") === "course") CAT.type = u.get("type")
+	CAT.q = (u.get("q") || "").slice(0, 80)
+	if (u.get("sort") === "cheap" || u.get("sort") === "dear") CAT.sort = u.get("sort")
+	document.getElementById("q").value = CAT.q
+	document.getElementById("sort").value = CAT.sort
+})()
+
+function syncUrl() {
+	var u = new URLSearchParams()
+	if (CAT.type !== "all") u.set("type", CAT.type)
+	if (CAT.q) u.set("q", CAT.q)
+	if (CAT.sort !== "new") u.set("sort", CAT.sort)
+	var s = u.toString()
+	try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")) } catch (e) {}
 }
+
+// Product ids end in a base-36 timestamp written by the admin panel ("nalogi-lq3x9k2a") — that is the publish order
+function addedAt(p) {
+	var t = parseInt(String(p.id || "").split("-").pop(), 36)
+	return isFinite(t) ? t : 0
+}
+
+// A still picture for the card: YouTube and public Google Drive files have one; anything else keeps the dark placeholder
+function thumbUrl(link) {
+	if (!isRealLink(link)) return ""
+	var m = link.match(/(?:youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([\w-]{11})/)
+	if (m) return "https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg"
+	m = link.match(/drive\.google\.com\/file\/d\/([\w-]+)/)
+	if (m) return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w800"
+	return ""
+}
+
+function norm(s) { return String(s || "").toLowerCase().replace(/ё/g, "е") }
+
+// Puts the title into el with every search match wrapped in <mark>, without ever using innerHTML on product text
+function fillHighlighted(el, text, q) {
+	el.textContent = ""
+	if (!q) { el.textContent = text; return }
+	var hay = norm(text), needle = norm(q), i = 0, j
+	while ((j = hay.indexOf(needle, i)) !== -1) {
+		if (j > i) el.appendChild(document.createTextNode(text.slice(i, j)))
+		var mk = document.createElement("mark")
+		mk.textContent = text.slice(j, j + needle.length)
+		el.appendChild(mk)
+		i = j + needle.length
+	}
+	if (i < text.length) el.appendChild(document.createTextNode(text.slice(i)))
+}
+
+function plural(n, one, few, many) {
+	var a = n % 10, b = n % 100
+	if (a === 1 && b !== 11) return one
+	if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return few
+	return many
+}
+
+function renderCatalog() {
+	var all = CAT.products.filter(function (p) { return p && !DEMO_IDS[p.id] && (p.type === "webinar" || p.type === "course") })
+	var counts = { all: all.length, webinar: 0, course: 0 }
+	all.forEach(function (p) { counts[p.type]++ })
+	Object.keys(counts).forEach(function (k) { document.getElementById("n-" + k).textContent = CAT.loading ? "" : counts[k] })
+	document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.type === CAT.type ? "true" : "false") })
+	document.getElementById("searchWrap").classList.toggle("has-q", !!CAT.q)
+
+	var grid = document.getElementById("grid")
+	var found = document.getElementById("found")
+	grid.textContent = ""
+
+	if (CAT.loading) {
+		found.textContent = "Загружаем…"
+		for (var s = 0; s < 6; s++) {
+			var sk = document.createElement("div")
+			sk.className = "skel"
+			sk.setAttribute("aria-hidden", "true")
+			sk.innerHTML = '<div class="a"></div><div class="b"></div><div class="c"></div>'
+			grid.appendChild(sk)
+		}
+		return
+	}
+
+	var q = norm(CAT.q.trim())
+	var items = all.filter(function (p) {
+		if (CAT.type !== "all" && p.type !== CAT.type) return false
+		return !q || norm(locTitle(p) + " " + locDesc(p)).indexOf(q) !== -1
+	})
+	items.sort(function (a, b) {
+		if (CAT.sort === "cheap") return (Number(a.price) || 0) - (Number(b.price) || 0)
+		if (CAT.sort === "dear") return (Number(b.price) || 0) - (Number(a.price) || 0)
+		return addedAt(b) - addedAt(a)
+	})
+
+	if (!items.length) {
+		found.textContent = ""
+		var none = document.createElement("div")
+		none.className = "none"
+		if (!all.length) {
+			none.innerHTML = '<h2>Первые вебинары и курсы скоро появятся</h2><p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>' +
+				'<div class="none-cta"><a class="btn btn-primary" href="meet.html">Записаться на консультацию</a><a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a></div>'
+		} else {
+			none.innerHTML = '<h2>Ничего не нашли</h2><p>Попробуйте другое слово или посмотрите все материалы.</p><button class="btn btn-ghost" type="button" id="resetAll">Показать все</button>'
+		}
+		grid.appendChild(none)
+		var r = document.getElementById("resetAll")
+		if (r) r.addEventListener("click", function () { setFilter({ type: "all", q: "" }) })
+		return
+	}
+
+	var howMany = GN_LANG === "ky"
+		? items.length + " материал"
+		: items.length + " " + plural(items.length, "материал", "материала", "материалов")
+	found.textContent = CAT.q || CAT.type !== "all" ? (GN_LANG === "ky" ? "Табылды: " : "Найдено: ") + howMany : howMany
+
+	items.forEach(function (p, idx) {
+		var card = document.createElement("article")
+		card.className = "pcard"
+		card.tabIndex = 0
+		card.setAttribute("role", "button")
+		card.style.animationDelay = Math.min(idx, 8) * 40 + "ms"
+		card.innerHTML =
+			'<div class="pthumb"><span class="badge"></span><span class="play">▶</span><span class="hint">Смотреть анонс</span></div>' +
+			'<div class="pbody"><h3></h3><p></p>' +
+			'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" title="Сменить валюту">' + formatPriceSub(p.price) + '</span></div>' +
+			'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
+		card.querySelector(".badge").textContent = TYPE_LABEL[p.type] || ""
+		var t = thumbUrl(p.preview)
+		if (t) {
+			var img = document.createElement("img")
+			img.src = t
+			img.alt = ""
+			img.loading = "lazy"
+			img.decoding = "async"
+			img.referrerPolicy = "no-referrer"
+			img.onerror = function () { img.remove() }
+			card.querySelector(".pthumb").insertBefore(img, card.querySelector(".play"))
+		}
+		fillHighlighted(card.querySelector("h3"), locTitle(p), CAT.q.trim())
+		card.querySelector(".pbody p").textContent = locDesc(p)
+		card.setAttribute("aria-label", "Смотреть анонс: " + locTitle(p))
+		card.addEventListener("click", function (ev) {
+			// Кнопка «Купите» и переключатель валюты — свои действия, анонс не открываем
+			if (ev.target.closest("a, .price-sub")) return
+			openWatch(p)
+		})
+		card.addEventListener("keydown", function (ev) {
+			if (ev.target !== card || (ev.key !== "Enter" && ev.key !== " ")) return
+			ev.preventDefault()
+			openWatch(p)
+		})
+		grid.appendChild(card)
+	})
+}
+
+function setFilter(next) {
+	Object.keys(next).forEach(function (k) { CAT[k] = next[k] })
+	document.getElementById("q").value = CAT.q
+	document.getElementById("sort").value = CAT.sort
+	syncUrl()
+	renderCatalog()
+}
+
+document.querySelectorAll(".tab").forEach(function (b) {
+	b.addEventListener("click", function () { setFilter({ type: b.dataset.type }) })
+})
+var qTimer = null
+document.getElementById("q").addEventListener("input", function (e) {
+	clearTimeout(qTimer)
+	var v = e.target.value.slice(0, 80)
+	qTimer = setTimeout(function () { setFilter({ q: v }) }, 120)
+})
+document.getElementById("q").addEventListener("keydown", function (e) {
+	if (e.key === "Escape" && CAT.q) { e.stopPropagation(); setFilter({ q: "" }) }
+})
+document.getElementById("qClear").addEventListener("click", function () {
+	setFilter({ q: "" })
+	document.getElementById("q").focus()
+})
+document.getElementById("sort").addEventListener("change", function (e) { setFilter({ sort: e.target.value }) })
+
+// Toolbar gets a hairline once it sticks under the header
+;(function () {
+	var tb = document.getElementById("toolbar")
+	var onScroll = function () { tb.classList.toggle("stuck", tb.getBoundingClientRect().top <= parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) + 1) }
+	onScroll()
+	window.addEventListener("scroll", onScroll, { passive: true })
+})()
 
 var watchReturnFocus = null
 function openWatch(p) {
@@ -347,37 +488,29 @@ function closeWatch() {
 document.getElementById("watchClose").addEventListener("click", closeWatch)
 document.getElementById("watchModal").addEventListener("click", function (e) { if (e.target === document.getElementById("watchModal")) closeWatch() })
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeWatch() })
-	var cachedProducts = null
-	try { cachedProducts = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
-	if (cachedProducts && cachedProducts.length) {
-		cachedProducts = cachedProducts.filter(function (p) { return p && !DEMO_IDS[p.id] })
-	}
-	var hasCache = !!(cachedProducts && cachedProducts.length)
-	renderCatalog(hasCache ? cachedProducts : [], !hasCache)
 
-document.addEventListener("click", function(e){
-	if(e.target.classList && e.target.classList.contains("price-sub")){
-		try{ localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") }catch(x){}
+// Нажатие на цену в другой валюте меняет основную валюту на всём сайте
+document.addEventListener("click", function (e) {
+	if (e.target.classList && e.target.classList.contains("price-sub")) {
+		try { localStorage.setItem("gn_cur", GN_CUR === "kgs" ? "rub" : "kgs") } catch (x) {}
 		location.reload()
 	}
 })
 
-;(function(){
-	// Панели каталога и заголовок плавно появляются по очереди
-	document.querySelectorAll(".box").forEach(function(c, i){ c.style.transitionDelay = i * 120 + "ms" })
-	var observer = new IntersectionObserver(function(entries){
-		entries.forEach(function(entry){
-			if (!entry.isIntersecting) return
-			observer.unobserve(entry.target)
-			entry.target.classList.add("show")
-			setTimeout(function(){ entry.target.style.transitionDelay = "" }, 1800)
-		})
-	}, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" })
-	document.querySelectorAll(".box, .sec-head").forEach(function(b){ observer.observe(b) })
-	// Кнопку меню на мобильных подключает catalog.js
+// Первый кадр — из кэша, чтобы сетка не мигала скелетом у тех, кто уже заходил
+;(function () {
+	var cached = null
+	try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "null") } catch (e) {}
+	if (cached && cached.length) { CAT.products = cached; CAT.loading = false }
+	renderCatalog()
 })()
 </script>
 <script type="module">
+  function showProducts(list) {
+    CAT.products = list
+    CAT.loading = false
+    renderCatalog()
+  }
   try {
     const { firebaseConfig } = await import("./firebase-config.js")
     if (firebaseConfig.apiKey.startsWith("PASTE_")) throw new Error("not configured")
@@ -448,13 +581,13 @@ document.addEventListener("click", function(e){
       var item = Object.assign({ id: d.id }, d.data())
       if (!DEMO_IDS[item.id]) products.push(item)
     })
-    renderCatalog(products)
+    showProducts(products)
     try { localStorage.setItem("gn_products_cache", JSON.stringify(products)) } catch (e) { /* нет места — не страшно */ }
   } catch (e) {
-    // База недоступна: убираем «Загружаем…», показываем кэш или честное «пока нет»
+    // База недоступна: убираем скелет, показываем кэш или честное «пока пусто»
     var cached = []
     try { cached = JSON.parse(localStorage.getItem("gn_products_cache") || "[]") || [] } catch (x) {}
-    renderCatalog(cached)
+    showProducts(cached)
   }
 </script>
 </body>
