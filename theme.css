@@ -257,3 +257,13 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 20px)}
   .price-sub{padding:6px 0}
   .made-by{padding:8px 0}
 }
+
+/* Desktop: the header looks the same on every page. The menu sits in the exact centre,
+   so it does not shift when the buttons on the right change (Вход / Кабинет / Выйти),
+   and on wide screens the header and footer share one width on all pages. */
+@media (min-width:1180px){
+  .nav-links{position:absolute;left:50%;transform:translateX(-50%);flex:none}
+}
+@media (min-width:1440px){
+  .site-header .wrap.nav,.site-footer .wrap.foot{max-width:1200px}
+}

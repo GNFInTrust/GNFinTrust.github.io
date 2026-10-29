@@ -88,9 +88,26 @@
     <label for="pass">Пароль</label>
     <input type="password" id="pass" placeholder="Не менее 6 символов" autocomplete="current-password">
     <div class="row">
-      <button class="btn btn-primary" id="signupBtn" type="button">Регистрация</button>
-      <button class="btn btn-ghost" id="loginBtn" type="button">Войти</button>
+      <button class="btn btn-primary" id="loginBtn" type="button">Войти</button>
+      <button class="btn btn-ghost" id="signupBtn" type="button">Регистрация</button>
     </div>
+<script>
+// Пришли по кнопке «Регистрация» (login.html#signup) — главной делаем её; Enter жмёт главную кнопку
+(function () {
+  var login = document.getElementById("loginBtn"), signup = document.getElementById("signupBtn")
+  if (location.hash === "#signup") {
+    login.className = "btn btn-ghost"; signup.className = "btn btn-primary"
+    login.parentNode.insertBefore(signup, login)
+  }
+  ;["email", "pass"].forEach(function (id) {
+    document.getElementById(id).addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return
+      e.preventDefault()
+      ;(location.hash === "#signup" ? signup : login).click()
+    })
+  })
+})()
+</script>
     <div class="msg" id="msg"></div>
     <p class="note">Купили, а логин не пришёл? Проверьте WhatsApp, почту и Telegram — мы отправляем доступ туда после подтверждения оплаты.</p>
   </div>

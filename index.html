@@ -70,6 +70,11 @@
     display:flex;align-items:baseline;gap:10px
   }
   .box>h3 .cnt{flex:none;font-size:17px;font-weight:600;color:var(--muted)}
+  .cat-none{max-width:720px;margin:0 auto;text-align:center;background:var(--paper);border-radius:var(--radius);padding:48px 40px}
+  .cat-none h3{font-size:clamp(22px,2.4vw,28px);margin-bottom:10px}
+  .cat-none p{color:var(--slate);font-size:17px;max-width:520px;margin:0 auto 28px}
+  .cat-none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
+  .boxes[hidden],.cat-none[hidden]{display:none}
   .cat-empty{color:var(--slate);font-size:16px;padding:24px;background:var(--white);border-radius:var(--radius-sm);text-align:center}
   .pcard{background:var(--white);border:0;border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1)}
   .pcard:hover{box-shadow:var(--shadow-md);transform:scale(1.012)}
@@ -153,6 +158,7 @@
     .sub{font-size:17px}
     .boxes{gap:16px}
     .box{padding:16px}
+    .cat-none{padding:32px 20px}
     .box>h3{font-size:24px;padding-bottom:16px}
     .team{gap:12px;margin:0 -16px;padding:4px 16px 12px}
     .tcard{flex-basis:80%}
@@ -236,7 +242,7 @@
 	    <div class="nav-tools">
 	      <div class="lang-slider" id="langSlider" title="Русский / Кыргызча"><span class="lbl l">RU</span><span class="lbl r">KG</span><span class="knob" id="langKnob">RU</span></div>
 	      <a class="nav-account" href="login.html" id="navLogin">Вход</a>
-	      <a class="btn btn-primary btn-sm" href="login.html" id="navSignup">Регистрация</a>
+	      <a class="btn btn-primary btn-sm" href="login.html#signup" id="navSignup">Регистрация</a>
 	      <a class="nav-out" href="#" id="navOut" style="display:none">Выйти</a>
 	      <a class="nav-out" href="#" id="navAdmin" style="display:none">Админ</a>
 	      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Меню"><span></span><span></span></button>
@@ -328,6 +334,14 @@
       <div class="boxes">
         <div class="box" id="box-webinar"><h3>Вебинары <span class="cnt" id="cnt-webinar"></span></h3></div>
         <div class="box" id="box-course"><h3>Курсы <span class="cnt" id="cnt-course"></span></h3></div>
+      </div>
+      <div class="cat-none" id="catNone" hidden>
+        <h3>Первые вебинары и курсы скоро появятся</h3>
+        <p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>
+        <div class="cat-none-cta">
+          <a class="btn btn-primary" href="meet.html">Записаться на консультацию</a>
+          <a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a>
+        </div>
       </div>
     </div>
   </section>
@@ -422,6 +436,10 @@ function renderCatalog(products, loading) {
 			box.appendChild(card)
 		})
 	})
+	// Оба раздела пусты: вместо двух пустых коробок — одна понятная карточка с дальнейшим шагом
+	var none = !loading && !(products || []).some(function (p) { return (p.type === "webinar" || p.type === "course") && !DEMO_IDS[p.id] })
+	document.getElementById("catNone").hidden = !none
+	document.querySelector("#catalog .boxes").hidden = none
 }
 
 var watchReturnFocus = null

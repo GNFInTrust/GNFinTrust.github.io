@@ -32,8 +32,16 @@
   .item p{font-size:15px;color:var(--slate);margin-top:6px}
   h3.step{display:flex;align-items:center;gap:10px;font-size:19px;margin:0 0 16px}
   h3.step .n{display:inline-flex;flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:600}
-  .nopay{border:0;border-radius:var(--radius-sm);background:var(--paper);padding:18px 18px 16px;font-size:14.5px;color:var(--slate)}
-  .nopay strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+  .how{list-style:none;counter-reset:h;display:grid;gap:12px}
+  .how li{counter-increment:h;display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--slate)}
+  .how li::before{content:counter(h);flex:none;width:24px;height:24px;border-radius:50%;background:var(--paper);color:var(--ink);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  /* Desktop: what you buy on the left, the request form on the right */
+  @media (min-width:960px){
+    main{max-width:1080px}
+    .buy-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+    .buy-grid>.card{margin-bottom:0}
+  }
+  @media (min-width:1440px){main{max-width:1200px}}
   .hint{font-size:13px;color:var(--slate);margin-top:10px}
   label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
   input[type=text],input[type=email]{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:var(--body);background:#fff;transition:border-color .18s ease,box-shadow .18s ease}
@@ -93,6 +101,7 @@
   <h1>Заявка на покупку</h1>
   <p class="lede" style="margin-bottom:22px">Без подписок: заплатили один раз — доступ ваш навсегда.</p>
 
+  <div class="buy-grid">
   <div class="card">
     <div class="item">
       <div>
@@ -102,15 +111,16 @@
       <div class="price-wrap"><span class="price-main" id="iPrice"></span><span class="price-sub" id="iPriceSub"></span></div>
     </div>
 
-    <h3 class="step"><span class="n">1</span>Способы оплаты</h3>
-    <div class="nopay">
-      <strong>Способов оплаты пока нет</strong>
-      Мы ещё не подключили оплату на сайте. Оставьте заявку ниже — как только оплата заработает, сразу напишем вам и всё оформим.
-    </div>
+    <h3 class="step">Как это работает</h3>
+    <ol class="how">
+      <li>Оставьте заявку — это бесплатно и ни к чему не обязывает.</li>
+      <li>Мы напишем вам и расскажем, как оплатить.</li>
+      <li>После оплаты материал откроется в вашем кабинете.</li>
+    </ol>
   </div>
 
   <div class="card" id="stepManual">
-    <h3 class="step"><span class="n">2</span>Оставьте заявку</h3>
+    <h3 class="step">Оставьте заявку</h3>
     <p class="lede">Напишите, куда с вами связаться, — ответим лично и расскажем, как получить материал.</p>
     <label>Способ связи</label>
     <div class="chips" id="chips">
@@ -125,6 +135,7 @@
     <button class="submit" id="send" type="button">Отправить заявку</button>
     <div class="ok" id="ok"><strong>Заявка у нас!</strong> Скоро напишем вам сюда: <span id="okMethod">WhatsApp</span>.</div>
     <div class="err" id="err"></div>
+  </div>
   </div>
 </main>
 
@@ -191,6 +202,11 @@ document.getElementById("chips").addEventListener("click", function (e) {
 	document.getElementById("contact").placeholder = PLACEHOLDERS[state.method][1]
 })
 
+;["contact", "buyer"].forEach(function (id) {
+	document.getElementById(id).addEventListener("keydown", function (e) {
+		if (e.key === "Enter") { e.preventDefault(); document.getElementById("send").click() }
+	})
+})
 document.getElementById("send").addEventListener("click", async function () {
 	var contact = document.getElementById("contact").value.trim()
 	var buyer = document.getElementById("buyer").value.trim()
