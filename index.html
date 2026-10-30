@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>GN FinTrust — вебинары, семинары и курсы</title>
 <meta name="description" content="GN FinTrust: вебинары, семинары и курсы по финансам без воды. Смотрите анонс, оставляйте заявку — логин пришлём в WhatsApp, на почту или в Telegram.">
 <link rel="canonical" href="https://fintrust.dev/">
@@ -30,117 +30,188 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="theme.css">
 <style>
-  /* Hero: centred, big type, lots of air */
-  .hero{padding:112px 0 104px;background:var(--white);text-align:center;overflow:hidden}
+  /* ---------- Hero: big centred type, glow behind it, the team fanned out below ---------- */
+  .hero{position:relative;padding:120px 0 0;background:var(--white);text-align:center;overflow:hidden;isolation:isolate}
+  /* Soft colour glow that drifts slowly behind the headline */
+  .hero-glow{position:absolute;inset:-20% -10% auto;height:900px;z-index:-1;pointer-events:none;filter:blur(80px);opacity:.55}
+  .hero-glow i{position:absolute;border-radius:50%;animation:glowDrift 18s ease-in-out infinite alternate}
+  .hero-glow i:nth-child(1){width:520px;height:520px;left:12%;top:8%;background:radial-gradient(circle,rgba(255,55,95,.45),transparent 65%)}
+  .hero-glow i:nth-child(2){width:600px;height:600px;right:8%;top:0;background:radial-gradient(circle,rgba(255,149,0,.30),transparent 65%);animation-duration:22s;animation-delay:-6s}
+  .hero-glow i:nth-child(3){width:480px;height:480px;left:38%;top:30%;background:radial-gradient(circle,rgba(175,82,222,.22),transparent 65%);animation-duration:26s;animation-delay:-12s}
+  @keyframes glowDrift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(60px,-30px,0) scale(1.12)}100%{transform:translate3d(-40px,40px,0) scale(.95)}}
+
   /* As you scroll down, the hero text drifts up and fades out (--hp is 0..1, set by JS) */
-  .hero-copy{max-width:880px;margin:0 auto;transform:translateY(calc(var(--hp,0) * -60px));opacity:calc(1 - var(--hp,0) * .9)}
-  @keyframes heroReveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  .hero h1{font-size:clamp(40px,6vw,76px);font-weight:700;line-height:1.05;letter-spacing:-.035em;margin:0 0 20px;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) both}
-  .hero h1 em{font-style:normal;color:var(--red)}
-  .hero p{color:var(--slate);font-size:clamp(19px,1.7vw,24px);line-height:1.4;letter-spacing:-.015em;max-width:640px;margin:0 auto 36px;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) .1s both}
-  .hero-cta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;animation:heroReveal .8s cubic-bezier(.16,1,.3,1) .2s both}
-  .hero .btn{min-width:180px;font-size:17px;padding:13px 28px}
-  .link-more{font-size:17px;font-weight:500;color:var(--red)}
-  .link-more::after{content:" ›"}
-  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
+  .hero-copy{max-width:920px;margin:0 auto;transform:translateY(calc(var(--hp,0) * -80px));opacity:calc(1 - var(--hp,0) * 1.4);will-change:transform,opacity}
+  @keyframes heroReveal{from{opacity:0;transform:translateY(18px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;letter-spacing:-.005em;color:var(--ink);
+    padding:7px 14px 7px 10px;border-radius:980px;background:rgba(255,255,255,.7);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);margin-bottom:28px;animation:heroReveal 1s var(--spring) both}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(215,15,46,.15);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 7px rgba(215,15,46,0)}}
+  .hero h1{font-size:clamp(44px,7.2vw,96px);font-weight:700;line-height:1.02;letter-spacing:-.045em;margin:0 0 24px}
+  /* Each word of the headline rises out of a blur, one after another (split by JS) */
+  .hero h1 .w{display:inline-block;opacity:0;transform:translateY(.35em);filter:blur(10px);
+    animation:wordIn 1.1s var(--spring) both;animation-delay:calc(var(--i) * 70ms + 120ms)}
+  @keyframes wordIn{to{opacity:1;transform:none;filter:blur(0)}}
+  .hero h1 em{font-style:normal}
+  .hero h1 em .w,.hero h1 em:not(:has(.w)){background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.06em}
+  .hero p{color:var(--slate);font-size:clamp(19px,1.8vw,25px);line-height:1.38;letter-spacing:-.018em;max-width:640px;margin:0 auto 40px;animation:heroReveal 1s var(--spring) .55s both}
+  .hero-cta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;animation:heroReveal 1s var(--spring) .7s both}
+  .hero .btn{min-width:190px;font-size:17px;padding:14px 30px;min-height:52px}
+  .link-more{font-size:17px;font-weight:500;color:var(--red);display:inline-flex;align-items:center;gap:4px}
+  .link-more::after{content:"›";font-size:1.15em;line-height:1;transition:transform .35s var(--spring)}
+  .link-more:hover{text-decoration:underline;text-underline-offset:4px}
+  .link-more:hover::after{transform:translateX(3px)}
 
-  /* Generous space between the parts of the page */
-  section{padding:144px 0}
-  .sec-head{text-align:center;max-width:680px;margin:0 auto 72px}
-  /* Section titles fade up when they come into view */
-  .sec-head{opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
-  .sec-head.show{opacity:1;transform:none}
-  h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin-bottom:12px}
-  #catalog-cta{background:var(--white)}
-  .cta-btn{min-width:200px;font-size:17px;padding:13px 28px}
-  /* Two big tiles that open the catalog page on the right tab */
-  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-  .box{
-    display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:240px;
-    background:var(--paper);border-radius:var(--radius);padding:32px;color:var(--ink);
-    opacity:0;transform:translateY(24px);
-    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),background-color .3s var(--ease)
-  }
-  .box.show{opacity:1;transform:translateY(0)}
-  .box:hover{background:#EDEDF0}
-  .box h3{font-size:30px;letter-spacing:-.025em;margin-bottom:8px}
-  .box p{color:var(--slate);font-size:17px;line-height:1.45;max-width:400px}
-  .box .go{font-size:17px;font-weight:600;color:var(--red)}
-  .box .go::after{content:"›";display:inline-block;margin-left:5px;transition:transform .3s cubic-bezier(.16,1,.3,1)}
-  .box:hover .go::after{transform:translateX(4px)}
-  .cat-all{text-align:center;margin-top:40px}
-  .sub{color:var(--slate);font-size:clamp(17px,1.4vw,21px);line-height:1.4;margin:0}
+  /* The team fanned out under the headline: tilted at first, straightening and spreading as you scroll */
+  .hero-stage{position:relative;margin:80px auto 0;max-width:1080px;height:clamp(380px,46vw,560px);perspective:1400px;animation:heroReveal 1.3s var(--spring) .85s both}
+  .stack{position:absolute;inset:0;display:flex;justify-content:center;align-items:flex-start}
+  .ph{position:absolute;top:0;left:0;right:0;width:clamp(220px,27vw,320px);aspect-ratio:4/5;margin:0 auto;border-radius:28px;overflow:hidden;background:var(--paper);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.25),0 8px 24px -8px rgba(0,0,0,.12);will-change:transform}
+  .ph img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .ph-c{z-index:3;transform:translateY(calc(var(--hp,0) * -20px)) scale(calc(1 + var(--hp,0) * .04))}
+  .ph-l{z-index:2;transform:translateX(calc(-62% - var(--hp,0) * 22%)) translateY(calc(48px - var(--hp,0) * 40px)) rotate(calc(-7deg + var(--hp,0) * 7deg)) scale(.9)}
+  .ph-r{z-index:2;transform:translateX(calc(62% + var(--hp,0) * 22%)) translateY(calc(48px - var(--hp,0) * 40px)) rotate(calc(7deg - var(--hp,0) * 7deg)) scale(.9)}
+  .ph figcaption{position:absolute;left:12px;right:12px;bottom:12px;padding:12px 16px;border-radius:18px;text-align:left;
+    background:rgba(255,255,255,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+    font-size:15px;font-weight:600;letter-spacing:-.015em;color:var(--ink);line-height:1.25}
+  .ph figcaption small{display:block;font-size:13px;font-weight:500;color:var(--red);margin-top:2px}
+  /* Fade the bottom of the stage into the next section */
+  .hero-stage::after{content:"";position:absolute;left:-50vw;right:-50vw;bottom:0;height:140px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);z-index:4;pointer-events:none}
 
+  /* ---------- Statement: words light up one by one as you scroll (--lp 0..1 set by JS) ---------- */
+  .statement{background:#000;color:#fff;padding:180px 0}
+  .lit{font-family:var(--head);font-size:clamp(32px,4.6vw,60px);font-weight:700;line-height:1.12;letter-spacing:-.035em;max-width:980px;margin:0 auto;text-wrap:balance}
+  .lit .w{color:#3A3A3C;transition:color .5s var(--ease)}
+  .lit .w.on{color:#F5F5F7}
+  .lit .w.hl.on{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-  /* Team on a soft grey band: three equal cards, the founder in the middle */
-  .team-sec{padding:144px 0;background:var(--paper)}
-  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;align-items:stretch}
-  /* Reveal: cards rise and un-blur from the centre outwards (delay set in JS), photos settle from a slight zoom */
-  .tcard{
-    background:#fff;border:0;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;
-    opacity:0;transform:translateY(40px) scale(.97);
-    transition:opacity 1s cubic-bezier(.16,1,.3,1) var(--d,0ms),transform 1.1s cubic-bezier(.16,1,.3,1) var(--d,0ms),box-shadow .5s cubic-bezier(.16,1,.3,1)
-  }
-  .tcard.show{opacity:1;transform:none}
-  .tcard.show:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);transition-delay:0ms}
+  /* ---------- Shared section rhythm ---------- */
+  section{padding:150px 0}
+  .sec-head{text-align:center;max-width:720px;margin:0 auto 72px}
+  .sec-head .kicker{margin-bottom:12px}
+  h2{font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:1.04;margin-bottom:16px}
+  .sub{color:var(--slate);font-size:clamp(18px,1.5vw,22px);line-height:1.4;letter-spacing:-.012em;margin:0}
+
+  /* Anything with .rv rises out of a slight blur when it scrolls into view */
+  .rv{opacity:0;transform:translateY(32px);filter:blur(6px);
+    transition:opacity 1.1s var(--spring) var(--d,0ms),transform 1.1s var(--spring) var(--d,0ms),filter 1.1s var(--spring) var(--d,0ms)}
+  .rv.show{opacity:1;transform:none;filter:blur(0)}
+
+  /* ---------- Team on a soft grey band: founder in the middle, raised ---------- */
+  .team-sec{background:var(--paper)}
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+  .tcard{background:#fff;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;
+    transition:opacity 1.1s var(--spring) var(--d,0ms),transform 1.1s var(--spring) var(--d,0ms),filter 1.1s var(--spring) var(--d,0ms),box-shadow .6s var(--spring)}
+  .tcard.lead{margin-top:-28px}
+  .tcard.show:hover{box-shadow:0 30px 60px -20px rgba(0,0,0,.18);transition-delay:0ms}
   .tphoto{position:relative;aspect-ratio:4/5;background:var(--paper);overflow:hidden}
   .tphoto .tph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:13px}
   .tphoto .tph .big{font-size:40px;font-weight:700;color:#C7C7CC;font-family:var(--head)}
   .tphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;background:#F6F1E8;
-    transform:scale(1.12);transition:transform 1.6s cubic-bezier(.16,1,.3,1) var(--d,0ms)}
+    transform:scale(1.14);transition:transform 1.8s var(--spring) var(--d,0ms)}
   .tcard.show .tphoto img{transform:scale(1)}
-  .tcard.show:hover .tphoto img{transform:scale(1.04);transition-duration:.8s;transition-delay:0ms}
-  .tinfo{padding:24px 26px 28px;flex:1}
-  .tinfo h3{font-size:22px;margin-bottom:6px;letter-spacing:-.02em}
-  .tinfo .trole{display:block;font-size:15px;font-weight:600;color:var(--slate)}
-  .tcard.lead .trole{color:var(--red)}
-  .tinfo p{font-size:16px;color:var(--slate);margin-top:12px}
+  .tcard.show:hover .tphoto img{transform:scale(1.05);transition-duration:.9s;transition-delay:0ms}
+  .tinfo{padding:26px 28px 30px;flex:1}
+  .tinfo h3{font-size:23px;font-weight:700;margin-bottom:6px;letter-spacing:-.025em}
+  .tinfo .trole{display:inline-block;font-size:13px;font-weight:600;color:var(--slate);background:var(--paper);padding:4px 10px;border-radius:980px}
+  .tcard.lead .trole{color:#fff;background:var(--red)}
+  .tinfo p{font-size:16px;color:var(--slate);margin-top:14px;line-height:1.5}
 
   .team-wrap{position:relative}
-  /* Dots under the swipeable row on phones */
   .team-dots{display:none;justify-content:center;gap:8px;margin-top:20px}
-  .team-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:var(--line-strong);cursor:pointer;transition:background-color .3s ease,transform .3s cubic-bezier(.16,1,.3,1)}
-  .team-dots button.on{background:var(--ink);transform:scale(1.25)}
+  .team-dots button{width:8px;height:8px;padding:0;border:0;border-radius:980px;background:var(--line-strong);cursor:pointer;transition:background-color .3s ease,width .4s var(--spring)}
+  .team-dots button.on{background:var(--ink);width:22px}
+
+  /* ---------- Catalog tiles: one dark, one light, a soft light follows the cursor ---------- */
+  #catalog-cta{background:var(--white)}
+  .cta-btn{min-width:210px;font-size:17px;padding:14px 30px;min-height:52px}
+  .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .box{position:relative;overflow:hidden;isolation:isolate;
+    display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:380px;
+    background:var(--paper);border-radius:28px;padding:44px;color:var(--ink);
+    transition:opacity 1.1s var(--spring) var(--d,0ms),transform .8s var(--spring),filter 1.1s var(--spring) var(--d,0ms),box-shadow .6s var(--spring)}
+  .box::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .5s var(--ease);
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.9),transparent 60%)}
+  .box:hover::before{opacity:1}
+  .box.show:hover{transform:translateY(-6px);box-shadow:0 30px 60px -24px rgba(0,0,0,.22)}
+  .box-dark{background:#000;color:#F5F5F7}
+  .box-dark::before{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,55,95,.35),transparent 60%)}
+  .box-dark::after{content:"";position:absolute;right:-120px;bottom:-160px;width:420px;height:420px;border-radius:50%;z-index:-2;
+    background:radial-gradient(circle,rgba(255,55,95,.55),rgba(255,149,0,.25) 45%,transparent 70%);filter:blur(30px);transition:transform 1.2s var(--spring)}
+  .box-dark:hover::after{transform:translate(-30px,-30px) scale(1.1)}
+  .box-dark h3{color:#F5F5F7}
+  .box-dark p{color:#A1A1A6}
+  .box .tag{display:inline-block;font-size:13px;font-weight:600;color:var(--red);margin-bottom:14px}
+  .box-dark .tag{color:#FF6482}
+  .box h3{font-size:clamp(32px,3.4vw,44px);font-weight:700;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px}
+  .box p{color:var(--slate);font-size:18px;line-height:1.45;max-width:400px}
+  .box .go{font-size:17px;font-weight:600;color:var(--red);display:inline-flex;align-items:center;gap:6px}
+  .box-dark .go{color:#FF6482}
+  .box .go::after{content:"›";font-size:1.2em;line-height:1;transition:transform .4s var(--spring)}
+  .box:hover .go::after{transform:translateX(5px)}
+  .cat-all{text-align:center;margin-top:56px}
 
   @media (prefers-reduced-motion:reduce){
-    .hero-copy,.box,.tcard,.sec-head,.hero h1,.hero p,.hero-cta{opacity:1;transform:none;animation:none}
+    .hero-copy,.rv,.hero h1 .w,.eyebrow,.hero p,.hero-cta,.hero-stage{opacity:1;transform:none;filter:none;animation:none}
+    .hero-glow i,.eyebrow .dot{animation:none}
+    .ph-l{transform:translateX(-62%) translateY(48px) rotate(-5deg) scale(.9)}
+    .ph-r{transform:translateX(62%) translateY(48px) rotate(5deg) scale(.9)}
+    .ph-c{transform:none}
     .tphoto img{transform:none}
+    .lit .w{color:#F5F5F7}
   }
   @media (max-width:900px){
-    /* Phones and tablets: a swipeable row of equal cards that opens on the founder */
     .team{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -24px;padding:4px 24px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
     .team::-webkit-scrollbar{display:none}
     .tcard{flex:0 0 min(72%,340px);scroll-snap-align:center}
-    .tcard.show:hover{transform:none}
+    .tcard.lead{margin-top:0}
+    .tcard.show:hover{box-shadow:none}
     .team-dots{display:flex}
-    .hero{padding:80px 0 72px}
+    .hero{padding:72px 0 0}
+    .hero-stage{margin-top:56px}
+    .ph{border-radius:22px}
     .brand{font-size:16px;gap:8px;white-space:nowrap}
+    .statement{padding:120px 0}
+    .box{min-height:320px;padding:36px}
   }
   @media (max-width:560px){
-    .hero{padding:56px 0 56px}
-    .hero h1{font-size:40px}
-    .hero p{font-size:19px;margin-bottom:28px}
-    .hero-cta{flex-direction:column;gap:16px}
+    .hero{padding:48px 0 0}
+    .hero h1{font-size:42px;letter-spacing:-.04em}
+    .eyebrow{font-size:13px;margin-bottom:22px}
+    .hero p{font-size:19px;margin-bottom:30px}
+    .hero-cta{flex-direction:column;gap:18px}
     .hero .btn{width:100%;max-width:340px}
-    section,.team-sec{padding:96px 0}
+    .hero-stage{height:340px;margin-top:48px}
+    .ph{width:210px;border-radius:20px}
+    .ph-l{transform:translateX(calc(-48% - var(--hp,0) * 12%)) translateY(calc(40px - var(--hp,0) * 30px)) rotate(calc(-7deg + var(--hp,0) * 7deg)) scale(.86)}
+    .ph-r{transform:translateX(calc(48% + var(--hp,0) * 12%)) translateY(calc(40px - var(--hp,0) * 30px)) rotate(calc(7deg - var(--hp,0) * 7deg)) scale(.86)}
+    .ph figcaption{font-size:14px;padding:10px 12px;border-radius:14px}
+    section{padding:96px 0}
+    .statement{padding:96px 0}
+    .lit{font-size:30px}
     .sec-head{margin-bottom:44px}
-    h2{font-size:32px}
+    h2{font-size:36px}
     .sub{font-size:17px}
     .team{gap:12px;margin:0 -16px;padding:4px 16px 12px}
-    .tcard{flex-basis:80%}
-    .tinfo{padding:20px 20px 22px}
+    .tcard{flex-basis:80%;border-radius:22px}
+    .tinfo{padding:20px 20px 24px}
     .tinfo h3{font-size:20px}
     .tinfo p{font-size:15px}
     .boxes{grid-template-columns:1fr;gap:16px}
-    .box{padding:24px;min-height:0}
-    .box h3{font-size:26px}
+    .box{padding:28px;min-height:280px;border-radius:22px}
+    .box h3{font-size:32px}
+    .box p{font-size:17px}
   }
   @media (max-height:560px) and (orientation:landscape){
-    .hero{padding:32px 0}
-    .hero h1{font-size:32px;margin-bottom:10px}
+    .hero{padding:32px 0 0}
+    .hero h1{font-size:34px;margin-bottom:10px}
     .hero p{font-size:16px;margin-bottom:18px}
-    section,.team-sec{padding:48px 0}
+    .hero-stage{height:300px;margin-top:32px}
+    .ph{width:200px}
+    section,.statement{padding:56px 0}
     .team{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0;padding:0}
+    .tcard.lead{margin-top:0}
     .team-dots{display:none}
     .tphoto{aspect-ratio:4/3}
     .boxes{grid-template-columns:repeat(2,1fr)}
@@ -154,7 +225,7 @@
   /* Desktop with a mouse: the WhatsApp button fades in after the hero instead of being there from the first frame */
   @media (min-width:1024px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
     @keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    .fab-wa{animation:fabIn .7s cubic-bezier(.16,1,.3,1) .9s backwards}
+    .fab-wa{animation:fabIn .7s var(--spring) 1.4s backwards}
   }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
@@ -184,7 +255,7 @@
 	})
 })()
 </script>
-	<header class="site-header">
+	<header class="site-header top" id="siteHeader">
 	  <div class="wrap nav">
 	    <a class="brand" href="index.html"><span class="brand-mark" id="brandMark">GN</span> FinTrust</a>
 	    <nav class="nav-links" id="siteNav">
@@ -219,27 +290,44 @@
 
 <main>
   <div class="hero">
+    <div class="hero-glow" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="wrap">
       <div class="hero-copy">
-        <h1>Налоги, учёт и деньги в бизнесе&nbsp;— <em>простым языком</em></h1>
-        <p>Вебинары и курсы для предпринимателей. Перед покупкой можно бесплатно посмотреть анонс.</p>
+        <span class="eyebrow"><span class="dot"></span>Вебинары и курсы для предпринимателей</span>
+        <h1 id="heroTitle">Налоги, учёт и деньги в бизнесе&nbsp;— <em>простым языком</em></h1>
+        <p>Без воды и сложных терминов. Перед покупкой можно бесплатно посмотреть анонс.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="catalog.html">Смотреть каталог</a>
           <a class="link-more" href="meet.html">Записаться на консультацию</a>
         </div>
       </div>
     </div>
+    <div class="hero-stage" aria-hidden="true">
+      <div class="stack">
+        <figure class="ph ph-l"><img src="team-2.jpg" alt="" decoding="async" onerror="this.remove()"></figure>
+        <figure class="ph ph-r"><img src="team-3.jpg" alt="" decoding="async" onerror="this.remove()"></figure>
+        <figure class="ph ph-c"><img src="team-1.jpg" alt="" fetchpriority="high" decoding="async" onerror="this.remove()">
+          <figcaption>Кубатова Гулзат<small>Основатель, главный эксперт</small></figcaption></figure>
+      </div>
+    </div>
   </div>
+
+  <section class="statement">
+    <div class="wrap">
+      <p class="lit" id="lit">Разбираем реальные кейсы предпринимателей. <span class="hl">Налоги, отчётность и деньги</span> — на примерах из практики, чтобы вы сразу применили это в своём деле.</p>
+    </div>
+  </section>
 
   <section id="team" class="team-sec">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head rv">
+        <span class="kicker">Команда</span>
         <h2>Наша команда</h2>
         <p class="sub">Кто ведёт вебинары и отвечает на ваши вопросы.</p>
       </div>
       <div class="team-wrap">
       <div class="team">
-        <article class="tcard">
+        <article class="tcard rv">
           <div class="tphoto">
             <div class="tph"><span class="big">GN</span><span>Чолпонбек кызы Назима</span></div>
             <img src="team-2.jpg" alt="Чолпонбек кызы Назима" loading="lazy" decoding="async" onerror="this.remove()">
@@ -250,7 +338,7 @@
             <p>Отвечает предпринимателям на вебинарах и живых встречах — разбирает реальные кейсы.</p>
           </div>
         </article>
-        <article class="tcard lead">
+        <article class="tcard lead rv">
           <div class="tphoto">
             <div class="tph"><span class="big">GN</span><span>Кубатова Гулзат</span></div>
             <img src="team-1.jpg" alt="Кубатова Гулзат" loading="lazy" decoding="async" onerror="this.remove()">
@@ -261,7 +349,7 @@
             <p>Ведёт программу GN FinTrust: налоги, учёт и деньги в бизнесе. Объясняет на примерах из практики.</p>
           </div>
         </article>
-        <article class="tcard">
+        <article class="tcard rv">
           <div class="tphoto">
             <div class="tph"><span class="big">GN</span><span>Болчурова Алия</span></div>
             <img src="team-3.jpg" alt="Болчурова Алия" loading="lazy" decoding="async" onerror="this.remove()">
@@ -280,21 +368,22 @@
 
   <section id="catalog-cta">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head rv">
+        <span class="kicker">Каталог</span>
         <h2>Вебинары и курсы</h2>
         <p class="sub">У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
       </div>
       <div class="boxes">
-        <a class="box" href="catalog.html?type=webinar">
-          <div><h3>Вебинары</h3><p>Короткие разборы одной темы: налоги, отчётность, деньги в бизнесе.</p></div>
+        <a class="box box-dark rv" href="catalog.html?type=webinar">
+          <div><span class="tag">Одна тема</span><h3>Вебинары</h3><p>Короткие разборы одной темы: налоги, отчётность, деньги в бизнесе.</p></div>
           <span class="go">Смотреть вебинары</span>
         </a>
-        <a class="box" href="catalog.html?type=course">
-          <div><h3>Курсы</h3><p>Программа из нескольких уроков, чтобы разобраться в теме от начала до конца.</p></div>
+        <a class="box rv" href="catalog.html?type=course">
+          <div><span class="tag">Несколько уроков</span><h3>Курсы</h3><p>Программа из нескольких уроков, чтобы разобраться в теме от начала до конца.</p></div>
           <span class="go">Смотреть курсы</span>
         </a>
       </div>
-      <p class="cat-all"><a class="btn btn-primary cta-btn" href="catalog.html">Открыть каталог</a></p>
+      <p class="cat-all rv"><a class="btn btn-primary cta-btn" href="catalog.html">Открыть каталог</a></p>
     </div>
   </section>
 </main>
@@ -332,11 +421,42 @@
 <script src="catalog.js"></script>
 <script>
 ;(function(){
-	// Команда появляется от центра (основатель) к краям, остальные блоки — по порядку
+	var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+	// Слова заголовка и строки манифеста оборачиваем в <span class="w">, чтобы анимировать их по одному
+	function splitWords(root){
+		var n = 0
+		;(function walk(node){
+			Array.prototype.slice.call(node.childNodes).forEach(function(c){
+				if (c.nodeType === 3) {
+					var frag = document.createDocumentFragment()
+					c.textContent.split(/(\s+)/).forEach(function(part){
+						if (!part) return
+						if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return }
+						var w = document.createElement("span")
+						w.className = "w"
+						w.style.setProperty("--i", n++)
+						w.textContent = part
+						frag.appendChild(w)
+					})
+					c.parentNode.replaceChild(frag, c)
+				} else if (c.nodeType === 1) walk(c)
+			})
+		})(root)
+	}
+	var heroTitle = document.getElementById("heroTitle")
+	if (heroTitle && !reduce) splitWords(heroTitle)
+	var lit = document.getElementById("lit")
+	if (lit) {
+		splitWords(lit)
+		Array.prototype.forEach.call(lit.querySelectorAll(".hl .w"), function(w){ w.classList.add("hl") })
+	}
+
+	// Команда появляется от центра (основатель) к краям, плитки — по порядку
 	document.querySelectorAll(".tcard").forEach(function(c, i, all){
 		c.style.setProperty("--d", Math.abs(i - (all.length - 1) / 2) * 160 + "ms")
 	})
-	document.querySelectorAll(".box").forEach(function(c, i){ c.style.transitionDelay = i * 120 + "ms" })
+	document.querySelectorAll(".box").forEach(function(c, i){ c.style.setProperty("--d", i * 140 + "ms") })
 	var observer = new IntersectionObserver(function(entries){
 		entries.forEach(function(entry){
 			if(entry.isIntersecting){
@@ -346,30 +466,52 @@
 				els.forEach(function(el){
 					el.classList.add("show")
 					// После появления убираем задержку, чтобы наведение откликалось сразу
-					setTimeout(function(){ el.style.removeProperty("--d"); el.style.transitionDelay = "" }, 1800)
+					setTimeout(function(){ el.style.removeProperty("--d") }, 1900)
 				})
 			}
 		})
 	}, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" })
-	document.querySelectorAll(".box, .team, .sec-head").forEach(function(b){ observer.observe(b) })
+	document.querySelectorAll(".rv:not(.tcard), .team").forEach(function(b){ observer.observe(b) })
 
 	var hero = document.querySelector(".hero")
-	// Scroll only drives a 0..1 CSS variable (transform/opacity), so the page height never changes mid-scroll
-	function heroProgress(y){
-		if (!hero) return
-		hero.style.setProperty("--hp", Math.min(1, Math.max(0, y / (hero.offsetHeight * 0.8))).toFixed(3))
+	var header = document.getElementById("siteHeader")
+	var litWords = lit ? lit.querySelectorAll(".w") : []
+	// Scroll only drives 0..1 CSS variables and classes (transform/opacity/colour), so the page height never changes mid-scroll
+	function onScroll(){
+		var y = window.scrollY
+		if (hero) hero.style.setProperty("--hp", Math.min(1, Math.max(0, y / (hero.offsetHeight * 0.6))).toFixed(3))
+		if (header) header.classList.toggle("top", y < 24)
+		if (lit && litWords.length) {
+			// Слова загораются, пока абзац проходит от низа экрана до его середины
+			var r = lit.getBoundingClientRect(), vh = window.innerHeight
+			var p = reduce ? 1 : Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.35)))
+			var on = Math.round(p * litWords.length)
+			for (var i = 0; i < litWords.length; i++) litWords[i].classList.toggle("on", i < on)
+		}
 	}
-	heroProgress(window.scrollY)
+	onScroll()
 	var ticking = false
 	window.addEventListener("scroll", function(){
 		if (!ticking) {
 			window.requestAnimationFrame(function(){
-				heroProgress(window.scrollY)
+				onScroll()
 				ticking = false
 			})
 			ticking = true
 		}
 	}, { passive: true })
+	window.addEventListener("resize", onScroll)
+
+	// Мягкий свет на плитках каталога следует за курсором
+	if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+		document.querySelectorAll(".box").forEach(function(b){
+			b.addEventListener("pointermove", function(e){
+				var r = b.getBoundingClientRect()
+				b.style.setProperty("--mx", (e.clientX - r.left) + "px")
+				b.style.setProperty("--my", (e.clientY - r.top) + "px")
+			})
+		})
+	}
 
 	// Телефоны: ряд карточек листается пальцем и открывается на основателе (средняя карточка)
 	var teamRow = document.querySelector(".team")
