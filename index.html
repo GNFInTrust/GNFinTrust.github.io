@@ -43,11 +43,6 @@
   /* As you scroll down, the hero text drifts up and fades out (--hp is 0..1, set by JS) */
   .hero-copy{max-width:920px;margin:0 auto;transform:translateY(calc(var(--hp,0) * -80px));opacity:calc(1 - var(--hp,0) * 1.4);will-change:transform,opacity}
   @keyframes heroReveal{from{opacity:0;transform:translateY(18px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;letter-spacing:-.005em;color:var(--ink);
-    padding:7px 14px 7px 10px;border-radius:980px;background:rgba(255,255,255,.7);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);margin-bottom:28px;animation:heroReveal 1s var(--spring) both}
-  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(215,15,46,.15);animation:pulse 2.4s ease-in-out infinite}
-  @keyframes pulse{50%{box-shadow:0 0 0 7px rgba(215,15,46,0)}}
   .hero h1{font-size:clamp(44px,7.2vw,96px);font-weight:700;line-height:1.02;letter-spacing:-.045em;margin:0 0 24px}
   /* Each word of the headline rises out of a blur, one after another (split by JS) */
   .hero h1 .w{display:inline-block;opacity:0;transform:translateY(.35em);filter:blur(10px);
@@ -163,8 +158,8 @@
   .cat-all{text-align:center;margin-top:56px}
 
   @media (prefers-reduced-motion:reduce){
-    .hero-copy,.rv,.hero h1 .w,.eyebrow,.hero p,.hero-cta,.hero-stage{opacity:1;transform:none;filter:none;animation:none}
-    .hero-glow i,.eyebrow .dot{animation:none}
+    .hero-copy,.rv,.hero h1 .w,.hero p,.hero-cta,.hero-stage{opacity:1;transform:none;filter:none;animation:none}
+    .hero-glow i{animation:none}
     .ph-l{transform:translateX(-62%) translateY(48px) rotate(-5deg) scale(.9)}
     .ph-r{transform:translateX(62%) translateY(48px) rotate(5deg) scale(.9)}
     .ph-c{transform:none}
@@ -188,7 +183,6 @@
   @media (max-width:560px){
     .hero{padding:48px 0 0}
     .hero h1{font-size:42px;letter-spacing:-.04em}
-    .eyebrow{font-size:13px;margin-bottom:22px}
     .hero p{font-size:19px;margin-bottom:30px}
     .hero-cta{flex-direction:column;gap:18px}
     .hero .btn{width:100%;max-width:340px}
@@ -303,7 +297,6 @@
     <div class="hero-glow" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="wrap">
       <div class="hero-copy">
-        <span class="eyebrow"><span class="dot"></span>Вебинары и курсы для предпринимателей</span>
         <h1 id="heroTitle">Налоги, учёт и деньги в бизнесе&nbsp;— <em>простым языком</em></h1>
         <p>Без воды и сложных терминов. Перед покупкой можно бесплатно посмотреть анонс.</p>
         <div class="hero-cta">
@@ -435,14 +428,17 @@
 
 	// Слова заголовка и строки манифеста оборачиваем в <span class="w">, чтобы анимировать их по одному
 	function splitWords(root){
+		// Сначала переводим (KG): после разбивки на слова словарь уже не узнает фразу целиком
+		if (typeof gnTranslate === "function") gnTranslate(root)
 		var n = 0
 		;(function walk(node){
 			Array.prototype.slice.call(node.childNodes).forEach(function(c){
 				if (c.nodeType === 3) {
 					var frag = document.createDocumentFragment()
-					c.textContent.split(/(\s+)/).forEach(function(part){
+					// Делим только по обычным пробелам: неразрывный (&nbsp;) держит «бизнесе —» вместе
+					c.textContent.split(/([ \t\n\r]+)/).forEach(function(part){
 						if (!part) return
-						if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return }
+						if (/^[ \t\n\r]+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return }
 						var w = document.createElement("span")
 						w.className = "w"
 						w.style.setProperty("--i", n++)
