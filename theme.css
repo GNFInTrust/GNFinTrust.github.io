@@ -141,10 +141,11 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 20px)}
   background:rgba(255,255,255,.72);
   -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid rgba(0,0,0,.08);
-  transition:background-color .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease)
+  transition:background-color .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease),-webkit-backdrop-filter .4s var(--ease),backdrop-filter .4s var(--ease)
 }
-/* Pages that toggle .top (home): the header is see-through over the hero and frosts once you scroll */
-.site-header.top{background:rgba(255,255,255,0);border-bottom-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+/* Pages that toggle .top (home): the header is see-through over the hero and frosts once it sticks.
+   Blur goes to 0 instead of "none" so it fades in rather than popping on. */
+.site-header.top{background:rgba(255,255,255,0);border-bottom-color:transparent;-webkit-backdrop-filter:saturate(100%) blur(0px);backdrop-filter:saturate(100%) blur(0px)}
 .nav{display:flex;align-items:center;gap:18px;height:var(--header-h);position:relative}
 .nav-links{display:flex;align-items:center;justify-content:center;gap:4px;flex:1;min-width:0}
 .nav-links a{

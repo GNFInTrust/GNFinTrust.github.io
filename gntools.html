@@ -198,7 +198,7 @@
         <span class="eyebrow">Программа для Windows <span class="badge">Бета</span></span>
         <h1>GN Tools</h1>
         <p class="tagline">Переписки и документы — <em>без ручной работы</em></p>
-        <p class="lede">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Вход — тот же аккаунт, что на сайте, и сразу <strong>бесплатные пробные токены</strong>.</p>
+        <p class="lede">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Вход — тот же аккаунт, что на сайте, и сразу бесплатные пробные токены.</p>
         <div>
           <div class="cta">
             <a class="btn btn-primary btn-dl" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Скачать GNTools.exe</a>
@@ -253,15 +253,15 @@
         <div class="card rv">
           <h3>Установка</h3>
           <ol class="steps">
-            <li><span>Скачайте <strong>GNTools.exe</strong> и запустите мастер.</span></li>
-            <li><span>Программа уже стоит? Выберите <strong>«Обновить»</strong> — вход, WhatsApp-сессия, Node.js и Excel останутся. Если нет — мастер сам всё установит.</span></li>
-            <li><span>Откройте ярлык <strong>GN Tools</strong> и войдите с почтой и паролем от этого сайта. Пробные токены начислятся сами.</span></li>
+            <li><span>Скачайте GNTools.exe и запустите мастер.</span></li>
+            <li><span>Программа уже стоит? Выберите «Обновить» — вход, WhatsApp-сессия, Node.js и Excel останутся. Если нет — мастер сам всё установит.</span></li>
+            <li><span>Откройте ярлык GN Tools и войдите с почтой и паролем от этого сайта. Пробные токены начислятся сами.</span></li>
           </ol>
         </div>
         <div class="card rv">
           <h3>Переписки → Excel</h3>
           <ol class="steps">
-            <li><span><strong>Выберите сервис</strong> (WhatsApp, Instagram или Telegram), браузер Chrome или Brave и файл Excel.</span></li>
+            <li><span>Выберите сервис (WhatsApp, Instagram или Telegram), браузер Chrome или Brave и файл Excel.</span></li>
             <li><span><strong>WhatsApp:</strong> отсканируйте QR-код телефоном. <strong>Instagram, Telegram:</strong> войдите в открывшемся окне.</span></li>
             <li><span>Контакты появятся в таблице внутри GN Tools и в Excel.</span></li>
           </ol>
@@ -270,9 +270,9 @@
         <div class="card rv">
           <h3>Документы на отгрузку</h3>
           <ol class="steps">
-            <li><span>Откройте вкладку <strong>«Документы»</strong> → <strong>«Открыть документы»</strong>.</span></li>
-            <li><span>Заполните вкладку <strong>«Данные»</strong>: товары, отправитель, получатель, транспорт. Остальное заполнится само.</span></li>
-            <li><span>Откройте нужный документ и нажмите <strong>Ctrl+P</strong>.</span></li>
+            <li><span>Откройте вкладку «Документы» → «Открыть документы».</span></li>
+            <li><span>Заполните вкладку «Данные»: товары, отправитель, получатель, транспорт. Остальное заполнится само.</span></li>
+            <li><span>Откройте нужный документ и нажмите Ctrl+P.</span></li>
           </ol>
           <div class="note">Токены списываются один раз, при открытии папки документов. Дальше печатайте без ограничений.</div>
         </div>
@@ -376,7 +376,7 @@ function renderG() {
 	// Админ может подменить ссылку на установщик в settings/gntools.url
 	if (G.url && /\.exe(\?|#|$)/i.test(G.url)) document.getElementById("dl").href = G.url
 	if (G.costs) {
-		var tokWord = function (n) { n = Number(n) || 0; var a = n % 10, b = n % 100; if (a === 1 && b !== 11) return n + " токен"; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + " токена"; return n + " токенов" }
+		var tokWord = function (n) { n = Number(n) || 0; if (GN_LANG === "ky") return n + " токен"; var a = n % 10, b = n % 100; if (a === 1 && b !== 11) return n + " токен"; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + " токена"; return n + " токенов" }
 		var setP = function (id, v) { var e = document.getElementById(id); if (e && v !== undefined && v !== null) e.textContent = tokWord(v) }
 		setP("pWa46", G.costs.waOpus46); setP("pWa48", G.costs.waOpus48)
 		setP("pInsta", G.costs.instagram); setP("pTg", G.costs.telegram)
