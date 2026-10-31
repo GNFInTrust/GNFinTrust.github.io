@@ -146,6 +146,15 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 20px)}
 /* Pages that toggle .top (home): the header is see-through over the hero and frosts once it sticks.
    Blur goes to 0 instead of "none" so it fades in rather than popping on. */
 .site-header.top{background:rgba(255,255,255,0);border-bottom-color:transparent;-webkit-backdrop-filter:saturate(100%) blur(0px);backdrop-filter:saturate(100%) blur(0px)}
+/* Over a dark section (home: the black statement band) the glass turns dark too */
+.site-header.dark{background:rgba(22,22,23,.78);border-bottom-color:rgba(255,255,255,.08)}
+.site-header .brand,.site-header .nav-links a,.site-header .nav-account{transition:color .4s var(--ease),opacity .2s ease,background-color .2s ease}
+.site-header.dark .brand,.site-header.dark .nav-links a,.site-header.dark .nav-account{color:#F5F5F7}
+.site-header.dark .nav-links a:hover{background:rgba(255,255,255,.1)}
+.site-header.dark .lang-slider{background:rgba(255,255,255,.16)}
+.site-header.dark .lang-slider .lbl{color:rgba(255,255,255,.6)}
+.site-header.dark .nav-toggle span{background:#F5F5F7}
+.site-header.dark .nav-toggle:hover{background:rgba(255,255,255,.1)}
 .nav{display:flex;align-items:center;gap:18px;height:var(--header-h);position:relative}
 .nav-links{display:flex;align-items:center;justify-content:center;gap:4px;flex:1;min-width:0}
 .nav-links a{
@@ -237,6 +246,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 20px)}
   @keyframes navMenuDrop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
   .nav-links a{padding:12px 14px;min-height:46px;border-radius:var(--radius-sm);font-size:17px;opacity:1}
   .nav-links a[aria-current="page"]{box-shadow:none;background:rgba(0,0,0,.05)}
+  /* The dropdown stays a white panel, so its links stay dark even over the black band */
+  .site-header.dark .nav-links a{color:var(--ink)}
+  .site-header.dark .nav-links a:hover{background:rgba(0,0,0,.05)}
   .nav-tools .btn{display:none}
   .nav-tools #navAdmin{display:none !important}
   .site-header{position:sticky}

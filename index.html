@@ -127,7 +127,7 @@
   .team-dots button{width:8px;height:8px;padding:0;border:0;border-radius:980px;background:var(--line-strong);cursor:pointer;transition:background-color .3s ease,width .4s var(--spring)}
   .team-dots button.on{background:var(--ink);width:22px}
 
-  /* ---------- Catalog tiles: one dark, one light, a soft light follows the cursor ---------- */
+  /* ---------- Catalog tiles: webinars in GN red, courses in deep black; a soft white light follows the cursor ---------- */
   #catalog-cta{background:var(--white)}
   .cta-btn{min-width:210px;font-size:17px;padding:14px 30px;min-height:52px}
   .boxes{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
@@ -139,19 +139,25 @@
     background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.9),transparent 60%)}
   .box:hover::before{opacity:1}
   .box.show:hover{transform:translateY(-6px);box-shadow:0 30px 60px -24px rgba(0,0,0,.22)}
-  .box-dark{background:#000;color:#F5F5F7}
-  .box-dark::before{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,55,95,.35),transparent 60%)}
-  .box-dark::after{content:"";position:absolute;right:-120px;bottom:-160px;width:420px;height:420px;border-radius:50%;z-index:-2;
-    background:radial-gradient(circle,rgba(255,55,95,.55),rgba(255,149,0,.25) 45%,transparent 70%);filter:blur(30px);transition:transform 1.2s var(--spring)}
-  .box-dark:hover::after{transform:translate(-30px,-30px) scale(1.1)}
-  .box-dark h3{color:#F5F5F7}
-  .box-dark p{color:#A1A1A6}
+  .box-red,.box-dark{color:#fff}
+  .box-red{background:linear-gradient(140deg,#EC1C3F 0%,#C70E2D 50%,#8E0920 100%)}
+  .box-dark{background:linear-gradient(140deg,#2C2C2E 0%,#121214 55%,#000 100%)}
+  .box-red::before,.box-dark::before{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.16),transparent 60%)}
+  /* One clean glow per tile (no mixed colours that turn muddy) */
+  .box-red::after,.box-dark::after{content:"";position:absolute;right:-140px;bottom:-180px;width:440px;height:440px;border-radius:50%;z-index:-2;filter:blur(40px);transition:transform 1.2s var(--spring)}
+  .box-red::after{background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+  .box-dark::after{background:radial-gradient(circle,rgba(215,15,46,.55),transparent 65%)}
+  .box-red:hover::after,.box-dark:hover::after{transform:translate(-30px,-30px) scale(1.1)}
+  .box-red h3,.box-dark h3{color:#fff}
+  .box.box-red p{color:rgba(255,255,255,.85)}
+  .box.box-dark p{color:#A1A1A6}
   .box .tag{display:inline-block;font-size:13px;font-weight:600;color:var(--red);margin-bottom:14px}
+  .box-red .tag{color:rgba(255,255,255,.75)}
   .box-dark .tag{color:#FF6482}
   .box h3{font-size:clamp(32px,3.4vw,44px);font-weight:700;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px}
   .box p{color:var(--slate);font-size:18px;line-height:1.45;max-width:400px}
   .box .go{font-size:17px;font-weight:600;color:var(--red);display:inline-flex;align-items:center;gap:6px}
-  .box-dark .go{color:#FF6482}
+  .box-red .go,.box-dark .go{color:#fff}
   .box .go::after{content:"›";font-size:1.2em;line-height:1;transition:transform .4s var(--spring)}
   .box:hover .go::after{transform:translateX(5px)}
   .cat-all{text-align:center;margin-top:56px}
@@ -378,11 +384,11 @@
         <p class="sub">У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
       </div>
       <div class="boxes">
-        <a class="box box-dark rv" href="catalog.html?type=webinar">
+        <a class="box box-red rv" href="catalog.html?type=webinar">
           <div><span class="tag">Одна тема</span><h3>Вебинары</h3><p>Короткие разборы одной темы: налоги, отчётность, деньги в бизнесе.</p></div>
           <span class="go">Смотреть вебинары</span>
         </a>
-        <a class="box rv" href="catalog.html?type=course">
+        <a class="box box-dark rv" href="catalog.html?type=course">
           <div><span class="tag">Несколько уроков</span><h3>Курсы</h3><p>Программа из нескольких уроков, чтобы разобраться в теме от начала до конца.</p></div>
           <span class="go">Смотреть курсы</span>
         </a>
@@ -479,12 +485,18 @@
 
 	var hero = document.querySelector(".hero")
 	var header = document.getElementById("siteHeader")
+	var statement = document.querySelector(".statement")
 	var litWords = lit ? lit.querySelectorAll(".w") : []
 	// Scroll only drives 0..1 CSS variables and classes (transform/opacity/colour), so the page height never changes mid-scroll
 	function onScroll(){
 		var y = window.scrollY
 		if (hero) hero.style.setProperty("--hp", Math.min(1, Math.max(0, y / (hero.offsetHeight * 0.6))).toFixed(3))
 		if (header) {
+			// Над чёрной полосой шапка становится тёмной, иначе светлое стекло выглядит серым пятном
+			if (statement) {
+				var sr = statement.getBoundingClientRect(), mid = header.offsetHeight / 2
+				header.classList.toggle("dark", sr.top <= mid && sr.bottom >= mid)
+			}
 			// Матовой шапка становится ровно тогда, когда прилипает к верху (над ней — полоса акции).
 			// Запас в 8px не даёт ей мигать при медленной прокрутке у самой границы.
 			var promo = document.getElementById("promoBar")
