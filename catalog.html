@@ -59,23 +59,26 @@
 
   /* Product grid */
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  .pcard{display:flex;flex-direction:column;background:#fff;border-radius:var(--radius);overflow:hidden;cursor:pointer;box-shadow:var(--shadow-sm),0 0 0 1px rgba(0,0,0,.04);transition:box-shadow .4s var(--ease),transform .4s cubic-bezier(.16,1,.3,1);animation:cardIn .6s cubic-bezier(.16,1,.3,1) backwards}
-  @keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  .pcard:hover{box-shadow:var(--shadow-md),0 0 0 1px rgba(0,0,0,.04);transform:translateY(-4px)}
+  .pcard{display:flex;flex-direction:column;background:#fff;border-radius:var(--radius);overflow:hidden;cursor:pointer;box-shadow:var(--shadow-sm),0 0 0 1px rgba(0,0,0,.04);transition:box-shadow .5s var(--spring),transform .5s var(--spring);animation:cardIn .8s var(--spring) backwards}
+  @keyframes cardIn{from{opacity:0;transform:translateY(24px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+  /* Hover: the whole card grows a little (like the team cards on the home page); the picture stays put */
+  @media (hover:hover) and (pointer:fine){ .pcard:hover{box-shadow:0 30px 60px -24px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.04);transform:scale(1.025)} }
   .pcard:focus-visible{outline:3px solid rgba(215,15,46,.35);outline-offset:2px}
   .pthumb{position:relative;aspect-ratio:16/9;background:radial-gradient(120% 90% at 50% 0%,#2a2a2e 0%,#000 70%);overflow:hidden}
   /* Same colours as the tiles on the home page: webinars red, courses black */
   .pthumb.t-webinar{background:radial-gradient(130% 110% at 25% 0%,#F0294B 0%,#C70E2D 45%,#7A0718 100%)}
   .pthumb.t-course{background:radial-gradient(130% 110% at 25% 0%,#3A3A3C 0%,#1C1C1E 45%,#000 100%)}
   .pthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
-  .pcard:hover .pthumb img{transform:scale(1.04)}
   .pthumb .play{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:18px;padding-left:4px;transition:transform .3s cubic-bezier(.16,1,.3,1),background-color .2s ease}
   .pcard:hover .play{background:rgba(255,255,255,.32);transform:scale(1.08)}
-  .pthumb .hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;color:rgba(255,255,255,.85);font-size:14px;font-weight:500}
+  .pthumb .hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);white-space:nowrap;color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:980px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background-color .3s ease}
+  .pcard:hover .hint{background:rgba(255,255,255,.28)}
   .pthumb img+.play+.hint{display:none}
-  .badge{position:absolute;left:12px;top:12px;z-index:1;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;font-weight:600;padding:4px 9px;border-radius:var(--radius-xs)}
-  .pbody{display:flex;flex-direction:column;flex:1;padding:20px 22px 22px}
-  .pbody h3{font-size:20px;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px}
+  /* Type label above the title: red for webinars, grey for courses (same colours as the pictures) */
+  .ptype{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--slate)}
+  .ptype.t-webinar{color:var(--red)}
+  .pbody{display:flex;flex-direction:column;flex:1;padding:22px 24px 24px}
+  .pbody h3{font-size:21px;font-weight:700;line-height:1.2;letter-spacing:-.025em;margin-bottom:8px}
   .pbody p{font-size:15px;color:var(--slate);line-height:1.5;margin-bottom:20px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .prow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
   mark{background:rgba(215,15,46,.14);color:inherit;border-radius:2px}
@@ -88,13 +91,31 @@
   .skel .c{height:14px;margin:0 22px 24px;border-radius:4px;width:90%}
   @keyframes shim{from{background-position:100% 0}to{background-position:-100% 0}}
 
-  /* Empty / nothing found */
+  /* Catalog not filled yet: fanned cards that float, one clear action */
+  .soon{grid-column:1/-1;text-align:center;padding:72px 24px 80px;background:var(--paper);border-radius:28px;overflow:hidden}
+  .soon-art{position:relative;height:200px;max-width:420px;margin:0 auto 44px}
+  .soon-art i{position:absolute;left:50%;top:10px;width:220px;height:140px;margin-left:-110px;border-radius:18px;box-shadow:0 24px 48px -16px rgba(0,0,0,.35);
+    display:flex;align-items:center;justify-content:center;animation:soonFloat 6s ease-in-out infinite}
+  .soon-art i::after{content:"▶";display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-style:normal;font-size:15px;padding-left:3px}
+  .soon-art i:nth-child(-n+2)::after{display:none}
+  .soon-art i:nth-child(1){background:radial-gradient(130% 110% at 25% 0%,#3A3A3C 0%,#1C1C1E 45%,#000 100%);transform:translateX(-46%) rotate(-9deg);animation-delay:-2s}
+  .soon-art i:nth-child(2){background:radial-gradient(130% 110% at 25% 0%,#3A3A3C 0%,#1C1C1E 45%,#000 100%);transform:translateX(46%) rotate(9deg);animation-delay:-4s}
+  .soon-art i:nth-child(3){background:radial-gradient(130% 110% at 25% 0%,#F0294B 0%,#C70E2D 45%,#7A0718 100%);z-index:1;top:0}
+  @keyframes soonFloat{50%{translate:0 -8px}}
+  .soon h2{font-size:clamp(26px,3vw,36px);font-weight:700;letter-spacing:-.03em;margin-bottom:12px}
+  .soon p{color:var(--slate);font-size:18px;line-height:1.45;max-width:560px;margin:0 auto 28px}
+  .soon .btn{font-size:17px;padding:14px 28px;min-height:52px}
+
+  /* Nothing found */
   .none{grid-column:1/-1;text-align:center;padding:64px 24px;background:var(--paper);border-radius:var(--radius)}
   .none h2{font-size:24px;margin-bottom:8px}
   .none p{color:var(--slate);font-size:16px;max-width:520px;margin:0 auto 20px}
   .none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
 
 
+  /* Toolbar parts appear only when they help: tabs when both types exist, search and sort once the list is long */
+  .toolbar[hidden]{display:none}
+  .toolbar.no-tabs .tabs,.toolbar.short .search,.toolbar.short .sort{display:none}
   @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:900px){ .brand{font-size:16px;gap:8px;white-space:nowrap} }
   @media (max-width:640px){
@@ -110,12 +131,17 @@
     .sort{flex:1}
     .grid{grid-template-columns:1fr;gap:16px}
     .pbody{padding:18px}
+    .soon{padding:48px 20px 56px;border-radius:22px}
+    .soon-art{height:150px;margin-bottom:32px}
+    .soon-art i{width:160px;height:102px;margin-left:-80px;border-radius:14px}
+    .soon p{font-size:16px}
+    .soon .btn{width:100%;font-size:16px;padding:14px 18px}
     .results{padding:20px 0 80px}
     .wbody h3{font-size:22px}
   }
   @media (min-width:1440px){ .wrap{max-width:1200px} }
   @media (pointer:coarse){ .buy{min-height:44px} }
-  @media (prefers-reduced-motion:reduce){ .pcard{animation:none} .skel .a,.skel .b,.skel .c{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .pcard,.soon-art i{animation:none} .skel .a,.skel .b,.skel .c{animation:none} }
 </style>
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js">
@@ -183,7 +209,7 @@
     </div>
   </div>
 
-  <div class="toolbar" id="toolbar">
+  <div class="toolbar" id="toolbar" hidden>
     <div class="wrap tb">
       <div class="tabs" role="group" aria-label="Тип материала">
         <button class="tab" type="button" data-type="all" aria-pressed="true"><span>Все</span> <span class="n" id="n-all"></span></button>
@@ -261,7 +287,7 @@
       <p id="wDesc"></p>
       <div class="prow">
         <div class="price-wrap"><span class="price-main" id="wPrice"></span><span class="price-sub" id="wPriceSub"></span></div>
-        <a class="btn btn-primary buy" id="wBuy" href="buy.html">Купите</a>
+        <a class="btn btn-primary buy" id="wBuy" href="buy.html">Купить</a>
       </div>
     </div>
   </div>
@@ -339,6 +365,13 @@ function renderCatalog() {
 	Object.keys(counts).forEach(function (k) { document.getElementById("n-" + k).textContent = CAT.loading ? "" : counts[k] })
 	document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.type === CAT.type ? "true" : "false") })
 	document.getElementById("searchWrap").classList.toggle("has-q", !!CAT.q)
+	// Панель фильтров показываем, только когда есть что фильтровать
+	var tb = document.getElementById("toolbar")
+	var showTabs = (counts.webinar > 0 && counts.course > 0) || CAT.type !== "all"
+	var showSearch = counts.all > 6 || !!CAT.q || CAT.sort !== "new"
+	tb.classList.toggle("no-tabs", !showTabs)
+	tb.classList.toggle("short", !showSearch)
+	tb.hidden = CAT.loading || !(showTabs || showSearch)
 
 	var grid = document.getElementById("grid")
 	var found = document.getElementById("found")
@@ -372,8 +405,15 @@ function renderCatalog() {
 		var none = document.createElement("div")
 		none.className = "none"
 		if (!all.length) {
-			none.innerHTML = '<h2>Первые вебинары и курсы скоро появятся</h2><p>Мы готовим материалы. Хотите разобрать свой вопрос уже сейчас — запишитесь на консультацию или напишите нам.</p>' +
-				'<div class="none-cta"><a class="btn btn-primary" href="meet.html">Записаться на консультацию</a><a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a></div>'
+			// Каталог ещё пуст: одно понятное действие — попросить сообщить о первых материалах (консультация — в чёрной полосе ниже)
+			none.className = "soon"
+			var waText = GN_LANG === "ky"
+				? "Саламатсызбы! Каталогдо биринчи вебинарлар жана курстар чыкканда мага жазыңызчы."
+				: "Здравствуйте! Напишите мне, пожалуйста, когда в каталоге появятся первые вебинары и курсы."
+			none.innerHTML = '<div class="soon-art" aria-hidden="true"><i></i><i></i><i></i></div>' +
+				'<h2>Первые вебинары и курсы скоро появятся</h2>' +
+				'<p>Мы готовим материалы по налогам, учёту и деньгам в бизнесе. Напишите нам в WhatsApp — сообщим, как только откроем первый.</p>' +
+				'<a class="btn btn-primary" href="https://wa.me/996500797441?text=' + encodeURIComponent(waText) + '" target="_blank" rel="noopener">Сообщить о первых материалах</a>'
 		} else {
 			none.innerHTML = '<h2>Ничего не нашли</h2><p>Попробуйте другое слово или посмотрите все материалы.</p><button class="btn btn-ghost" type="button" id="resetAll">Показать все</button>'
 		}
@@ -395,11 +435,11 @@ function renderCatalog() {
 		card.setAttribute("role", "button")
 		card.style.animationDelay = Math.min(idx, 8) * 40 + "ms"
 		card.innerHTML =
-			'<div class="pthumb t-' + encodeURIComponent(p.type || "") + '"><span class="badge"></span><span class="play">▶</span><span class="hint">Смотреть анонс</span></div>' +
-			'<div class="pbody"><h3></h3><p></p>' +
+			'<div class="pthumb t-' + encodeURIComponent(p.type || "") + '"><span class="play">▶</span><span class="hint">Смотреть анонс</span></div>' +
+			'<div class="pbody"><span class="ptype t-' + encodeURIComponent(p.type || "") + '"></span><h3></h3><p></p>' +
 			'<div class="prow"><div class="price-wrap"><span class="price-main">' + formatPrice(p.price) + '</span><span class="price-sub" title="Сменить валюту">' + formatPriceSub(p.price) + '</span></div>' +
-			'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купите</a></div></div>'
-		card.querySelector(".badge").textContent = TYPE_LABEL[p.type] || ""
+			'<a class="btn btn-primary btn-sm buy" href="buy.html?item=' + encodeURIComponent(p.id) + '">Купить</a></div></div>'
+		card.querySelector(".ptype").textContent = TYPE_LABEL[p.type] || ""
 		var t = thumbUrl(p.preview)
 		if (t) {
 			var img = document.createElement("img")
