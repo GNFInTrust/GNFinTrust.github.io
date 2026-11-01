@@ -35,33 +35,26 @@
   .wrap.gt{max-width:1080px}
 
   @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  .rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-  .rv.show{opacity:1;transform:none}
 
-  /* Hero: product name, one line, download — then the app window */
-  .gt-hero{padding:96px 0 0;text-align:center;overflow:hidden;background:#fff}
-  .gt-hero .copy>*{animation:up .8s cubic-bezier(.16,1,.3,1) both}
-  .gt-hero .copy>:nth-child(2){animation-delay:.06s}
-  .gt-hero .copy>:nth-child(3){animation-delay:.12s}
-  .gt-hero .copy>:nth-child(4){animation-delay:.18s}
-  .gt-hero .copy>:nth-child(5){animation-delay:.24s}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--slate);font-size:16px;font-weight:500;margin-bottom:14px}
+  /* Hero: black, like Apple's pro product pages; the app window floats on a red glow */
+  .gt-hero{padding:120px 0 40px;text-align:center;background:#000;color:#F5F5F7}
+  .gt-hero::before{content:"";position:absolute;left:50%;bottom:-260px;width:1100px;height:620px;margin-left:-550px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(215,15,46,.55),rgba(215,15,46,.12) 60%,transparent);filter:blur(30px);pointer-events:none}
+  .gt-hero .wrap{position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#A1A1A6;font-size:17px;font-weight:500;margin-bottom:18px}
   .badge{display:inline-block;font-size:12px;font-weight:600;line-height:1;padding:5px 8px;border-radius:var(--radius-xs);background:var(--paper);color:var(--slate)}
+  .gt-hero .badge{background:rgba(255,255,255,.14);color:#F5F5F7}
   .badge.green{background:var(--green-soft);color:var(--green)}
-  .gt-hero h1{font-size:clamp(52px,8vw,96px);font-weight:700;line-height:1;letter-spacing:-.04em;margin-bottom:14px}
-  .tagline{font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:18px}
-  .tagline em{font-style:normal;color:var(--red)}
-  .lede{color:var(--slate);font-size:clamp(17px,1.4vw,20px);line-height:1.5;max-width:640px;margin:0 auto 30px}
+  .gt-hero h1{font-size:clamp(60px,10vw,128px);font-weight:700;line-height:.98;letter-spacing:-.05em;margin-bottom:18px;color:#F5F5F7}
+  .tagline{font-size:clamp(26px,3.4vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:20px;color:#F5F5F7}
+  .lede{color:#A1A1A6;font-size:clamp(17px,1.5vw,21px);line-height:1.5;max-width:660px;margin:0 auto 34px}
   .cta{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:center}
   .btn-dl{padding:14px 26px;font-size:17px;min-height:52px}
   .btn-dl svg{width:19px;height:19px}
-  .link-more{font-size:17px;font-weight:500;color:var(--red)}
-  .link-more::after{content:" ›"}
-  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
-  .cta-meta{display:block;margin-top:14px;font-size:14px;color:var(--muted)}
+  .cta-meta{display:block;margin-top:16px;font-size:14px;color:#86868B}
 
   /* App window (Windows-style title bar, it is a Windows program) */
-  .mock{max-width:880px;margin:56px auto 0;text-align:left;background:#fff;border-radius:var(--radius) var(--radius) 0 0;box-shadow:0 30px 80px rgba(0,0,0,.14),0 0 0 1px rgba(0,0,0,.05);overflow:hidden;animation:up 1s cubic-bezier(.16,1,.3,1) .3s both}
+  .mock{position:relative;max-width:920px;margin:72px auto 0;text-align:left;background:#fff;color:var(--ink);border-radius:var(--radius);box-shadow:0 40px 120px -20px rgba(215,15,46,.45),0 0 0 1px rgba(255,255,255,.08);overflow:hidden;animation:up 1s cubic-bezier(.16,1,.3,1) .3s both}
   .mock-bar{display:flex;align-items:center;height:40px;padding:0 0 0 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;color:var(--slate)}
   .mock-bar .ctl{margin-left:auto;display:flex;height:100%}
   .mock-bar .ctl i{width:46px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;color:var(--muted)}
@@ -79,6 +72,21 @@
   .mock-row em{font-style:normal;justify-self:start;font-size:12px;font-weight:600;padding:3px 8px;border-radius:var(--radius-xs);background:var(--green-soft);color:var(--green)}
   .mock-row em.w{background:var(--amber-soft);color:var(--amber)}
   .sk{display:block;height:8px;border-radius:4px;background:var(--line)}
+
+  /* Statement right after the hero: keeps the black going, words light up */
+  .gt-band{padding:40px 0 160px}
+
+  /* Sticky section bar (like Apple's product pages): appears with the content, highlights where you are */
+  .localnav{position:sticky;top:var(--header-h);z-index:30;background:rgba(255,255,255,.82);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+  .ln{display:flex;align-items:center;gap:20px;height:52px}
+  .ln strong{font-family:var(--head);font-size:19px;font-weight:700;letter-spacing:-.02em;flex:none}
+  .ln-links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .ln-links::-webkit-scrollbar{display:none}
+  .ln-links a{flex:none;font-size:14px;font-weight:500;color:var(--slate);padding:6px 12px;border-radius:var(--radius-xs);transition:color .2s ease,background-color .2s ease}
+  .ln-links a:hover{color:var(--ink);background:rgba(0,0,0,.05)}
+  .ln-links a.on{color:var(--ink);font-weight:600}
+  .ln .btn{flex:none}
+  section[id]{scroll-margin-top:calc(var(--header-h) + 72px)}
 
   /* Sections */
   .sec{padding:112px 0}
@@ -143,13 +151,18 @@
   .faq .ans{padding:0 4px 22px;font-size:16px;color:var(--slate);max-width:660px}
   .faq details[open] .ans{animation:up .35s cubic-bezier(.16,1,.3,1) both}
 
-  @media (prefers-reduced-motion:reduce){.rv,.mock,.mock-row,.gt-hero .copy>*{opacity:1;transform:none;animation:none}}
+  @media (prefers-reduced-motion:reduce){.mock,.mock-row{opacity:1;transform:none;animation:none}}
   @media (max-width:980px){
     .how{grid-template-columns:1fr}
     .chips{grid-template-columns:repeat(3,1fr)}
   }
   @media (max-width:760px){
-    .gt-hero{padding:56px 0 0}
+    .gt-hero{padding:64px 0 0}
+    .gt-band{padding:24px 0 96px}
+    .ln strong{display:none}
+    .ln{gap:8px}
+    .ln-links{margin-left:-8px}
+    .ln-links a{padding:6px 8px}
     .feats,.split{grid-template-columns:1fr}
     .sec{padding:80px 0}
     .sec-head{margin-bottom:36px}
@@ -192,14 +205,14 @@
 </header>
 
 <main>
-  <section class="gt-hero">
+  <section class="gt-hero band">
     <div class="wrap gt">
       <div class="copy">
-        <span class="eyebrow">Программа для Windows <span class="badge">Бета</span></span>
-        <h1>GN Tools</h1>
-        <p class="tagline">Переписки и документы — <em>без ручной работы</em></p>
-        <p class="lede">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Вход — тот же аккаунт, что на сайте, и сразу бесплатные пробные токены.</p>
-        <div>
+        <span class="eyebrow fade-up" style="--fd:0s">Программа для Windows <span class="badge">Бета</span></span>
+        <h1 class="words">GN Tools</h1>
+        <p class="tagline fade-up" style="--fd:.3s">Переписки и документы — <span class="grad">без ручной работы</span></p>
+        <p class="lede fade-up" style="--fd:.45s">Выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Вход — тот же аккаунт, что на сайте, и сразу бесплатные пробные токены.</p>
+        <div class="fade-up" style="--fd:.6s">
           <div class="cta">
             <a class="btn btn-primary btn-dl" id="dl" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg> Скачать GNTools.exe</a>
             <a class="link-more" href="#install">Как установить</a>
@@ -207,7 +220,7 @@
           <span class="cta-meta">Установка и обновление · около 42 МБ</span>
         </div>
       </div>
-      <div class="mock" aria-hidden="true">
+      <div class="mock fade-up" style="--fd:.75s" aria-hidden="true">
         <div class="mock-bar">GN Tools<span class="ctl"><i>&#8211;</i><i>&#9633;</i><i>&#10005;</i></span></div>
         <div class="mock-body">
           <div class="mock-side">
@@ -228,29 +241,49 @@
     </div>
   </section>
 
-  <section class="sec soft">
+  <!-- The black goes on: a sentence whose words light up while you scroll -->
+  <section class="band gt-band">
     <div class="wrap gt">
-      <div class="sec-head">
+      <p class="band-lit">Клиенты пишут в WhatsApp, Instagram и Telegram. <span class="hl">GN Tools сам переносит переписки в Excel</span> и собирает документы на отгрузку — вам остаётся работать.</p>
+    </div>
+  </section>
+
+  <nav class="localnav" aria-label="Разделы GN Tools">
+    <div class="wrap gt ln">
+      <strong>GN Tools</strong>
+      <div class="ln-links" id="lnLinks">
+        <a href="#features">Возможности</a>
+        <a href="#install">Установка</a>
+        <a href="#prices">Цены</a>
+        <a href="#faq">Вопросы</a>
+      </div>
+      <a class="btn btn-primary btn-sm" id="dl2" href="https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools/GNTools.exe">Скачать</a>
+    </div>
+  </nav>
+
+  <section class="sec soft" id="features">
+    <div class="wrap gt">
+      <div class="sec-head reveal">
         <h2>Четыре инструмента в одном окне</h2>
         <p class="sub">Программа запускается в своём окне Windows, не в браузере.</p>
       </div>
-      <div class="feats">
-        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><h3>Переписки → Excel</h3><p>Читает диалоги WhatsApp, Instagram и Telegram и заполняет таблицу: имя, телефон, компания, интерес, статус.</p></article>
-        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span><h3>База контактов</h3><p>Поиск и просмотр всех записанных строк прямо в GN Tools, без открытия Excel.</p></article>
-        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg></span><h3>Документы на отгрузку</h3><p>Упаковочный лист, ТТН (1-Т), ТН (ТОРГ-12) и CMR заполняются из одной вкладки «Данные».</p></article>
-        <article class="feat rv"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg></span><h3>Конвертер таблиц <span class="badge green">бесплатно</span></h3><p>XLSX ↔ XLS ↔ CSV, все 6 направлений. Файлы не уходят в интернет.</p></article>
+      <div class="feats" data-stagger="120">
+        <article class="feat reveal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><h3>Переписки → Excel</h3><p>Читает диалоги WhatsApp, Instagram и Telegram и заполняет таблицу: имя, телефон, компания, интерес, статус.</p></article>
+        <article class="feat reveal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span><h3>База контактов</h3><p>Поиск и просмотр всех записанных строк прямо в GN Tools, без открытия Excel.</p></article>
+        <article class="feat reveal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg></span><h3>Документы на отгрузку</h3><p>Упаковочный лист, ТТН (1-Т), ТН (ТОРГ-12) и CMR заполняются из одной вкладки «Данные».</p></article>
+        <article class="feat reveal"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg></span><h3>Конвертер таблиц <span class="badge green">бесплатно</span></h3><p>XLSX ↔ XLS ↔ CSV, все 6 направлений. Файлы не уходят в интернет.</p></article>
       </div>
     </div>
   </section>
 
   <section class="sec" id="install">
     <div class="wrap gt">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <h2>Как начать</h2>
         <p class="sub">Установка занимает пару минут. Дальше — три шага на каждую задачу.</p>
       </div>
-      <div class="how">
-        <div class="card rv">
+      <div class="how" data-stagger="120">
+        <div class="card reveal">
           <h3>Установка</h3>
           <ol class="steps">
             <li><span>Скачайте GNTools.exe и запустите мастер.</span></li>
@@ -258,7 +291,7 @@
             <li><span>Откройте ярлык GN Tools и войдите с почтой и паролем от этого сайта. Пробные токены начислятся сами.</span></li>
           </ol>
         </div>
-        <div class="card rv">
+        <div class="card reveal">
           <h3>Переписки → Excel</h3>
           <ol class="steps">
             <li><span>Выберите сервис (WhatsApp, Instagram или Telegram), браузер Chrome или Brave и файл Excel.</span></li>
@@ -267,7 +300,7 @@
           </ol>
           <div class="note"><strong>Кнопки WhatsApp:</strong> «Остановить» — пауза; «Прочитать всё заново» — пройти чаты снова; «Заполнить пустые поля» — дозаполнить строки.</div>
         </div>
-        <div class="card rv">
+        <div class="card reveal">
           <h3>Документы на отгрузку</h3>
           <ol class="steps">
             <li><span>Откройте вкладку «Документы» → «Открыть документы».</span></li>
@@ -277,7 +310,7 @@
           <div class="note">Токены списываются один раз, при открытии папки документов. Дальше печатайте без ограничений.</div>
         </div>
       </div>
-      <div class="warn rv">
+      <div class="warn reveal">
         <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg></span>
         <div>
           <span class="warn-title">Windows или браузер пишет «вирус»?</span>
@@ -295,12 +328,12 @@
 
   <section class="sec soft" id="prices">
     <div class="wrap gt">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <h2>Платите только за то, чем пользуетесь</h2>
         <p class="sub">Подписок нет. Новый аккаунт получает пробные токены бесплатно — их хватит, чтобы проверить каждую функцию.</p>
       </div>
-      <div class="split">
-        <div class="card rv">
+      <div class="split" data-stagger="120">
+        <div class="card reveal">
           <h3>Что сколько стоит</h3>
           <table class="prices">
             <tr><td>Разбор чата WhatsApp — Opus 4.6</td><td id="pWa46">1 токен</td></tr>
@@ -313,7 +346,7 @@
             <tr><td>Конвертер таблиц</td><td class="free">бесплатно</td></tr>
           </table>
         </div>
-        <div class="card rv">
+        <div class="card reveal">
           <h3>Как устроен доступ</h3>
           <div class="access">
             <div><span class="n">1</span><span><strong>Сначала — бесплатно</strong>Скачали, вошли — пробные токены уже на счёте. Начисляются один раз, при первом входе.</span></div>
@@ -321,7 +354,7 @@
           </div>
         </div>
       </div>
-      <div class="card rv" style="margin-top:20px">
+      <div class="card reveal" style="margin-top:20px">
         <h3>Пакеты токенов</h3>
         <div class="chips" id="opts">
           <div class="chip"><span class="t">10 токенов</span><span class="p">100 сом</span></div>
@@ -338,9 +371,9 @@
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="faq">
     <div class="wrap gt">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <h2>Частые вопросы</h2>
         <p class="sub">Не нашли ответ — напишите нам в WhatsApp.</p>
       </div>
@@ -369,12 +402,16 @@
 </footer>
 
 <script src="catalog.js"></script>
+<script src="motion.js"></script>
 <script>
 var G = { url: "", tokensAmount: 50, tokensPrice: 500 }
 
 function renderG() {
 	// Админ может подменить ссылку на установщик в settings/gntools.url
-	if (G.url && /\.exe(\?|#|$)/i.test(G.url)) document.getElementById("dl").href = G.url
+	if (G.url && /\.exe(\?|#|$)/i.test(G.url)) {
+		document.getElementById("dl").href = G.url
+		document.getElementById("dl2").href = G.url
+	}
 	if (G.costs) {
 		var tokWord = function (n) { n = Number(n) || 0; if (GN_LANG === "ky") return n + " токен"; var a = n % 10, b = n % 100; if (a === 1 && b !== 11) return n + " токен"; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + " токена"; return n + " токенов" }
 		var setP = function (id, v) { var e = document.getElementById(id); if (e && v !== undefined && v !== null) e.textContent = tokWord(v) }
@@ -386,17 +423,16 @@ function renderG() {
 renderG()
 
 ;(function () {
-	var items = document.querySelectorAll(".rv")
-	if (!("IntersectionObserver" in window)) { items.forEach(function (n) { n.classList.add("show") }); return }
+	// Полоса разделов: подсвечиваем тот, что сейчас на экране
+	var links = Array.prototype.slice.call(document.querySelectorAll("#lnLinks a"))
+	if (!links.length || !("IntersectionObserver" in window)) return
 	var io = new IntersectionObserver(function (entries) {
 		entries.forEach(function (e) {
 			if (!e.isIntersecting) return
-			var i = Array.prototype.indexOf.call(e.target.parentElement.children, e.target)
-			setTimeout(function () { e.target.classList.add("show") }, Math.max(0, i) * 70)
-			io.unobserve(e.target)
+			links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id) })
 		})
-	}, { threshold: 0.12 })
-	items.forEach(function (n) { io.observe(n) })
+	}, { rootMargin: "-45% 0px -50% 0px" })
+	links.forEach(function (a) { var sec = document.querySelector(a.getAttribute("href")); if (sec) io.observe(sec) })
 })()
 </script>
 <script type="module">

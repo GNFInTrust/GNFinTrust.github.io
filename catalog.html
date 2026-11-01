@@ -30,9 +30,10 @@
 <link rel="stylesheet" href="theme.css">
 <style>
   /* Page head */
-  .cat-head{padding:72px 0 40px;text-align:center}
-  .cat-head h1{font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.05;letter-spacing:-.035em;margin-bottom:14px}
-  .cat-head p{color:var(--slate);font-size:clamp(17px,1.5vw,21px);line-height:1.4;max-width:620px;margin:0 auto}
+  .cat-head{padding:104px 0 56px;text-align:center}
+  .cat-head .kicker{margin-bottom:14px}
+  .cat-head h1{font-size:clamp(44px,6.4vw,88px);font-weight:700;line-height:1.02;letter-spacing:-.045em;margin-bottom:20px}
+  .cat-head p{color:var(--slate);font-size:clamp(18px,1.7vw,23px);line-height:1.4;letter-spacing:-.015em;max-width:640px;margin:0 auto}
 
   /* Toolbar: type tabs, search, sort. Sticks under the header while scrolling the grid */
   .toolbar{position:sticky;top:var(--header-h);z-index:30;background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid transparent;transition:border-color .2s ease}
@@ -92,14 +93,7 @@
   .none h2{font-size:24px;margin-bottom:8px}
   .none p{color:var(--slate);font-size:16px;max-width:520px;margin:0 auto 20px}
   .none-cta{display:flex;align-items:center;justify-content:center;gap:12px 28px;flex-wrap:wrap}
-  .link-more{font-size:17px;font-weight:500;color:var(--red)}
-  .link-more::after{content:" ›"}
-  .link-more:hover{text-decoration:underline;text-underline-offset:3px}
 
-  /* Help band under the grid */
-  .help{margin-top:72px;background:var(--paper);border-radius:var(--radius);padding:40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-  .help h2{font-size:26px;margin-bottom:6px}
-  .help p{color:var(--slate);font-size:16px;max-width:520px}
 
   @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:900px){ .brand{font-size:16px;gap:8px;white-space:nowrap} }
@@ -109,7 +103,7 @@
     .wvideo{position:sticky;top:0;z-index:1}
   }
   @media (max-width:560px){
-    .cat-head{padding:44px 0 24px}
+    .cat-head{padding:56px 0 32px}
     .tb{gap:10px}
     .tabs{width:100%}
     .tab{flex:1;justify-content:center;padding:7px 8px}
@@ -117,8 +111,6 @@
     .grid{grid-template-columns:1fr;gap:16px}
     .pbody{padding:18px}
     .results{padding:20px 0 80px}
-    .help{padding:28px 22px;margin-top:48px}
-    .help .btn{width:100%}
     .wbody h3{font-size:22px}
   }
   @media (min-width:1440px){ .wrap{max-width:1200px} }
@@ -185,8 +177,9 @@
 <main>
   <div class="cat-head">
     <div class="wrap">
-      <h1>Каталог</h1>
-      <p>Вебинары и курсы по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
+      <span class="kicker fade-up" style="--fd:0s">Каталог</span>
+      <h1 class="words">Вебинары и <span class="grad">курсы</span></h1>
+      <p class="fade-up">Вебинары и курсы по налогам, учёту и деньгам в бизнесе. У каждого материала есть бесплатный анонс — смотрите прямо на сайте.</p>
     </div>
   </div>
 
@@ -214,12 +207,16 @@
     <div class="wrap">
       <p class="found" id="found" aria-live="polite"></p>
       <div class="grid" id="grid"></div>
-      <div class="help">
-        <div>
-          <h2>Не знаете, с чего начать?</h2>
-          <p>Запишитесь на консультацию — эксперт разберёт вашу ситуацию и подскажет, какой материал подойдёт.</p>
-        </div>
-        <a class="btn btn-dark" href="meet.html">Записаться на консультацию</a>
+    </div>
+  </section>
+
+  <!-- Under the grid: a black band whose words light up while you scroll -->
+  <section class="band">
+    <div class="wrap">
+      <p class="band-lit">Не знаете, с чего начать? <span class="hl">Эксперт разберёт вашу ситуацию</span> и подскажет, какой материал подойдёт именно вам.</p>
+      <div class="band-cta">
+        <a class="btn btn-primary" href="meet.html">Записаться на консультацию</a>
+        <a class="link-more" href="https://wa.me/996500797441" target="_blank" rel="noopener">Написать в WhatsApp</a>
       </div>
     </div>
   </section>
@@ -271,6 +268,7 @@
 </div>
 
 <script src="catalog.js"></script>
+<script src="motion.js"></script>
 <script>
 var CAT = { products: [], loading: true, type: "all", q: "", sort: "new" }
 var TYPE_PLURAL = { webinar: "Вебинары", course: "Курсы" }
