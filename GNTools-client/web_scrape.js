@@ -25,7 +25,7 @@ async function launchPage(execPath, userDataDir) {
     headless: false,
     userDataDir,
     defaultViewport: null,
-    args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--disable-dev-shm-usage']
   });
   const pages = await browser.pages();
   const page = pages[0] || await browser.newPage();

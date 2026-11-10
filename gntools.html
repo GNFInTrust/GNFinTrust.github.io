@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://www.gstatic.com/firebasejs/10.12.0/ https://apis.google.com 'sha256-tDq9oICRF8Jp/s+lHiPbqkMzSSwhqfKbcp2anWR5SKY=' 'sha256-gnmcT6Yn5RWRMMWN6O1Rhkfq8voQc6xbCnEfG0aq8MA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#15202B">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 <title>GN Tools — GN FinTrust</title>
 <meta name="description" content="GN Tools выгружает переписки WhatsApp, Instagram и Telegram в Excel, собирает документы на отгрузку и конвертирует таблицы. Бесплатные пробные токены при входе.">
@@ -408,9 +408,15 @@ var G = { url: "", tokensAmount: 50, tokensPrice: 500 }
 
 function renderG() {
 	// Админ может подменить ссылку на установщик в settings/gntools.url
-	if (G.url && /\.exe(\?|#|$)/i.test(G.url)) {
-		document.getElementById("dl").href = G.url
-		document.getElementById("dl2").href = G.url
+	if (G.url) {
+		try {
+			var download = new URL(G.url)
+			if (download.protocol === "https:" && download.hostname === "github.com" && !download.username && !download.password &&
+				/^\/GNFinTrust\/GNFinTrust\.github\.io\/releases\/download\/[^/]+\/[^/]+\.exe$/i.test(download.pathname)) {
+				document.getElementById("dl").href = download.href
+				document.getElementById("dl2").href = download.href
+			}
+		} catch (e) {}
 	}
 	if (G.costs) {
 		var tokWord = function (n) { n = Number(n) || 0; if (GN_LANG === "ky") return n + " токен"; var a = n % 10, b = n % 100; if (a === 1 && b !== 11) return n + " токен"; if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + " токена"; return n + " токенов" }

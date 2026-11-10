@@ -455,7 +455,7 @@ function register(){
     .catch(function(e){document.getElementById('aErr').textContent=e.message;document.getElementById('aErr').style.display='block'})
 }
 
-function logout(){fetch('/auth/logout',{method:'POST'}).then(function(){LIC=null;showLoggedIn();setView('bot')})}
+function logout(){fetch('/auth/logout',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(function(){LIC=null;showLoggedIn();setView('bot')})}
 
 function start(){
   var excel=document.getElementById('excel').value.trim();
@@ -508,8 +508,9 @@ function updateQR(qr){var q=document.getElementById('qr');q.innerHTML='';if(qr)n
 function openDok(){
   var err=document.getElementById('dokErr');
   if(err){err.style.display='none';err.textContent=''}
-  fetch('/dokumenty?mode='+encodeURIComponent(DOK_MODE)).then(function(r){
+  fetch('/dokumenty',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:DOK_MODE})}).then(function(r){
     if(r.status===403)throw new Error('Нет токенов. Пополните на сайте.');
+    if(!r.ok)throw new Error('Не удалось открыть документы.');
     return r.text();
   }).then(function(html){
     if(!html)return;
@@ -552,7 +553,7 @@ function loadBase(){
   }).catch(function(e){err.textContent=e.message;err.style.display='block'});
 }
 function openBase(){
-  fetch('/base/open',{method:'POST'}).then(function(r){return r.json()}).then(function(d){
+  fetch('/base/open',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).then(function(r){return r.json()}).then(function(d){
     if(d.error){document.getElementById('baseErr').textContent=d.error==='excel_not_found'?'Сначала создайте или укажите файл Excel.':d.error;document.getElementById('baseErr').style.display='block'}
   });
 }

@@ -1,6 +1,9 @@
 # GN Tools Wizard — installer + in-place updater
 # Build: pyinstaller --noconfirm --onefile --windowed --name GNTools wizard.py
 import json
+import hashlib
+import tempfile
+from installer_security import plan_archive
 import os
 import shutil
 import subprocess
@@ -19,7 +22,9 @@ APP_NAME = "GN Tools"
 VERSION = "4.3.0"
 GITHUB_RELEASES = "https://github.com/GNFinTrust/GNFinTrust.github.io/releases/download/gntools"
 APP_FILES_URL = GITHUB_RELEASES + "/GNTools-client.zip"
-NODE_URL = "https://nodejs.org/dist/v18.20.8/win-x64/node.exe"
+NODE_URL = "https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip"
+NODE_SHA256 = "ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e7799e2"
+NODE_EXE_SHA256 = "1c331340fa6cac5e4294725959070a143fa0507195a78ad77eed7943f719aac9"
 
 INSTALL_DIR = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "GNFinTrust", "GNTools")
 
@@ -400,44 +405,43 @@ class GNWizard:
         t = threading.Thread(target=self._do_install, daemon=True)
         t.start()
 
-    def _download(self, url, dest, desc):
+    def _download(self, url, dest, desc, expected_sha256=None):
         self.update_progress(self.progress_var.get(), desc, "Подключение...")
         req = urllib.request.Request(url, headers={"User-Agent": "GNTools-Wizard/1.1"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            total = int(resp.headers.get("Content-Length") or 0)
-            downloaded = 0
-            blocksize = 64 * 1024
-            os.makedirs(os.path.dirname(dest) or ".", exist_ok=True)
-            with open(dest, "wb") as f:
-                while True:
-                    chunk = resp.read(blocksize)
-                    if not chunk:
-                        break
-                    f.write(chunk)
-                    downloaded += len(chunk)
-                    if total:
-                        pct = min(99, downloaded * 100 / total)
-                        mb = downloaded / (1024 * 1024)
-                        all_mb = total / (1024 * 1024)
-                        self.update_progress(max(self.progress_var.get(), pct * 0.35 + 20), desc, f"{mb:.1f} / {all_mb:.1f} МБ")
+        os.makedirs(os.path.dirname(dest) or ".", exist_ok=True)
+        temp_path = None
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                total = int(resp.headers.get("Content-Length") or 0)
+                downloaded = 0
+                digest = hashlib.sha256()
+                with tempfile.NamedTemporaryFile(dir=os.path.dirname(dest) or ".", delete=False) as out:
+                    temp_path = out.name
+                    while chunk := resp.read(64 * 1024):
+                        downloaded += len(chunk)
+                        if downloaded > 512 * 1024 * 1024:
+                            raise ValueError("Download is too large")
+                        digest.update(chunk)
+                        out.write(chunk)
+                if total and downloaded != total:
+                    raise ValueError("Incomplete download")
+                if expected_sha256 and digest.hexdigest() != expected_sha256:
+                    raise ValueError("Download checksum mismatch")
+            os.replace(temp_path, dest)
+        finally:
+            if temp_path and os.path.exists(temp_path):
+                os.remove(temp_path)
 
     def _extract_zip(self, zip_path, install_dir, updating):
         with zipfile.ZipFile(zip_path, "r") as zf:
             names = zf.namelist()
             prefix = flatten_zip_prefix(names)
-            for info in zf.infolist():
-                name = info.filename.replace("\\", "/")
-                if name.endswith("/") or name.startswith("__MACOSX"):
-                    continue
-                rel = name[len(prefix):] if prefix and name.startswith(prefix) else name
-                rel = rel.lstrip("/")
-                if not rel:
-                    continue
+            entries = plan_archive(zf, install_dir, prefix)
+            for info, rel, dest in entries:
                 top = rel.split("/", 1)[0]
                 if top in KEEP_DIRS and updating:
                     continue
                 base = os.path.basename(rel)
-                dest = os.path.join(install_dir, rel.replace("/", os.sep))
                 if updating and (base in KEEP_ON_UPDATE) and os.path.exists(dest):
                     continue
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -453,7 +457,7 @@ class GNWizard:
             "http.createServer((req, res) => {\n"
             "  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});\n"
             "  res.end('<html><body style=\"font-family:sans-serif;padding:40px;text-align:center\"><h1>GN Tools</h1><p>Загрузка...</p></body></html>');\n"
-            "}).listen(PORT);\n"
+            "}).listen(PORT, '127.0.0.1');\n"
         )
         index_path = os.path.join(install_dir, "index.js")
         if not os.path.exists(index_path):
@@ -522,18 +526,25 @@ class GNWizard:
             updating = self.mode.get() == "update" and _exists_install(install_dir)
             node_dest = os.path.join(install_dir, "node.exe")
 
-            if updating and os.path.isfile(node_dest):
+            node_current = False
+            if os.path.isfile(node_dest):
+                with open(node_dest, "rb") as node_file:
+                    node_current = hashlib.file_digest(node_file, "sha256").hexdigest() == NODE_EXE_SHA256
+            npm_cli = os.path.join(install_dir, "node_modules", "npm", "bin", "npm-cli.js")
+            if node_current and os.path.isfile(npm_cli):
                 self.update_progress(18, "Node.js уже есть — пропускаю загрузку", node_dest)
             else:
                 self.update_progress(5, "Скачивание Node.js...", "портативная версия")
                 try:
-                    self._download(NODE_URL, node_dest, "Скачивание Node.js (портативная версия)")
+                    node_archive = os.path.join(install_dir, "node-runtime.zip")
+                    self._download(NODE_URL, node_archive, "Скачивание Node.js (портативная версия)", NODE_SHA256)
+                    try:
+                        self._extract_zip(node_archive, install_dir, False)
+                    finally:
+                        os.remove(node_archive)
                     self.update_progress(22, "Node.js загружен ✓")
                 except Exception as e:
-                    if os.path.isfile(node_dest):
-                        self.update_progress(22, "Не удалось скачать Node.js, использую уже установленный")
-                    else:
-                        raise e
+                    raise RuntimeError("Не удалось установить проверенную версию Node.js") from e
 
             app_zip = os.path.join(install_dir, "app.zip")
             self.update_progress(28, "Скачивание файлов приложения...")
@@ -551,25 +562,22 @@ class GNWizard:
                     pass
 
             npm_cli = os.path.join(install_dir, "node_modules", "npm", "bin", "npm-cli.js")
-            need_npm = not os.path.isdir(os.path.join(install_dir, "node_modules", "whatsapp-web.js"))
+            checks = subprocess.run(
+                [node_dest, "-e", "for (const p of ['whatsapp-web.js','exceljs','xlsx','./license.js','./converter.js']) require(p); if(require('xlsx').version !== '0.20.3') process.exit(1)"],
+                cwd=install_dir, capture_output=True, timeout=30
+            )
+            need_npm = checks.returncode != 0
             if updating and not need_npm:
                 self.update_progress(82, "Зависимости на месте — npm пропускаю")
             else:
                 self.update_progress(70, "Установка npm-зависимостей...")
                 try:
-                    script = (
-                        "const {execSync} = require('child_process');\n"
-                        "try {\n"
-                        "  execSync('npm install --omit=dev', {cwd: process.argv[1], stdio: 'pipe', timeout: 180000});\n"
-                        "  console.log('OK');\n"
-                        "} catch(e) { console.log('FAIL:' + e.message); }\n"
-                    )
                     subprocess.run(
-                        [node_dest, "-e", script, install_dir],
-                        capture_output=True, text=True, timeout=200, cwd=install_dir
+                        [node_dest, npm_cli, "install", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund"],
+                        capture_output=True, text=True, timeout=200, cwd=install_dir, check=True
                     )
-                except Exception:
-                    pass
+                except Exception as error:
+                    raise RuntimeError("Не удалось установить зависимости GN Tools") from error
 
             self.update_progress(90, "Копирую GN Tools на рабочий стол...")
             self._copy_app_to_desktop(install_dir)
@@ -586,7 +594,7 @@ class GNWizard:
             self.update_progress(100, "Обновление завершено!" if updating else "Установка завершена!", "Запускаю GN Tools…")
             self.root.after(400, self.launch_app)
         except Exception as e:
-            self.root.after(0, lambda: messagebox.showerror("Ошибка", "Не удалось скачать:\n" + str(e) + "\n\nПроверьте интернет-соединение.\n\n"))
+            self.root.after(0, lambda error=str(e): messagebox.showerror("Ошибка", "Не удалось скачать:\n" + error + "\n\nПроверьте интернет-соединение.\n\n"))
             self.update_progress(self.progress_var.get(), "Ошибка: " + str(e), "")
 
     def show_done(self):

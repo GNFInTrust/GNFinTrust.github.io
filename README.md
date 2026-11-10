@@ -83,3 +83,8 @@ Project settings → General → Your apps → Web app → скопируйте 
 3. Обновите SHA-256 в `GNTools.exe.sha256` и в `gntools.html` (`certutil -hashfile GNTools.exe SHA256`).
 
 Большие файлы (`.exe`, `.zip`) в репозиторий не коммитьте — только в релиз.
+
+## Проверки безопасности и надёжности
+
+Изменения, команды проверки и ограничения перед публикацией описаны в [HARDENING.md](HARDENING.md).
+После изменения встроенного JavaScript обновляйте CSP: `python scripts/check_site.py --write`.

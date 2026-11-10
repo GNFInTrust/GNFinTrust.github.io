@@ -228,13 +228,10 @@ const API_TIMEOUT_MS = 120000;
 const MAX_RETRIES = 3;
 
 async function fetchWithTimeout(url, options, timeoutMs) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, { ...options, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
+  const endpoint = new URL(url);
+  if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) throw new Error('https_endpoint_required');
+  // Keep the deadline active while callers read the response body, too.
+  return fetch(endpoint.href, { ...options, redirect: 'error', signal: AbortSignal.timeout(timeoutMs) });
 }
 
 let MODEL_OVERRIDE = '';
@@ -266,10 +263,10 @@ function readConfigFile() {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
     OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
     CLAUDE_API_KEY: process.env.CLAUDE_API_KEY || '',
-    OPENAI_ENDPOINT: process.env.OPENAI_ENDPOINT || 'https://codex-free.com/v1/chat/completions',
+    OPENAI_ENDPOINT: process.env.OPENAI_ENDPOINT || 'https://api.openai.com/v1/chat/completions',
     OPENAI_MODEL: process.env.OPENAI_MODEL || 'gpt-5.5',
     CLAUDE_MODEL: process.env.CLAUDE_MODEL || 'claude-opus-4-8',
-    CLAUDE_ENDPOINT: process.env.CLAUDE_ENDPOINT || 'https://codex-free.com/v1/messages'
+    CLAUDE_ENDPOINT: process.env.CLAUDE_ENDPOINT || 'https://api.anthropic.com/v1/messages'
   };
   
   try {
@@ -496,12 +493,6 @@ async function parseMessage(text) {
     if (provider === 'openai' && config.OPENAI_API_KEY && config.OPENAI_API_KEY !== 'sk-ВашКлючОтChatGPTЗдесь') {
       return await parseWithOpenAI(text, config.OPENAI_API_KEY, config.OPENAI_ENDPOINT, config.OPENAI_MODEL);
     } else if (provider === 'claude' && config.CLAUDE_API_KEY && config.CLAUDE_API_KEY !== 'sk-ant-ВашКлючОтКлодаЗдесь') {
-      // FIX: proxy keys are fine when CLAUDE_ENDPOINT points to the proxy.
-      // Reroute only if a non-Anthropic key targets the official Anthropic API.
-      if (!config.CLAUDE_API_KEY.startsWith('sk-ant-') && config.CLAUDE_ENDPOINT.includes('api.anthropic.com')) {
-        console.warn('⚠️ CLAUDE_API_KEY — не ключ Anthropic, а CLAUDE_ENDPOINT указывает на api.anthropic.com. Отправляю через OPENAI_ENDPOINT...');
-        return await parseWithOpenAI(text, config.CLAUDE_API_KEY, config.OPENAI_ENDPOINT, config.OPENAI_MODEL);
-      }
       return await parseWithClaude(text, config.CLAUDE_API_KEY, config.CLAUDE_MODEL, config.CLAUDE_ENDPOINT);
     } else if (provider === 'gemini' && config.GEMINI_API_KEY && config.GEMINI_API_KEY !== 'ВашКлючОтGoogleЗдесь') {
       return await parseWithGemini(text, config.GEMINI_API_KEY);

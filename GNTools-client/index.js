@@ -7,7 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const http = require('http');
-const { exec, spawn } = require('child_process');
+const { spawn } = require('child_process');
+const { guardRequest, readBody } = require('./local-http.js');
+const { writeJson } = require('./atomic-file.js');
 const ExcelJS = require('exceljs');
 const { parseMessage, setModel } = require('./parser.js');
 const { appendRow, flush: flushExcel, closeWorkbook, listRows, ensureWorkbook } = require('./excel_helper.js');
@@ -108,25 +110,30 @@ let LIC = null;
 let lastTokenLog = -1;
 
 function canSpend(cost) {
-  if (!license.configured()) return true;
+  if (!license.configured()) return false;
   return !!(LIC && (LIC.admin || LIC.tokens >= cost));
 }
 
-async function licenseGate(costOverride) {
-  const cost = costOverride || TOKEN_COST.waDefault;
-  if (!license.configured()) return true;
-  if (!LIC) return false;
-  if (LIC.admin) return true;
-  if (LIC.tokens >= cost) {
-    try { await license.consumeTokens(cost); } catch (e) { log('License:', e.message); return false; }
-    LIC.tokens -= cost;
+let spending = Promise.resolve();
+function licenseGate(costOverride) {
+  const spend = spending.then(async () => {
+    const cost = costOverride || TOKEN_COST.waDefault;
+    if (!license.configured() || !LIC) return false;
+    const account = LIC;
+    let updated;
+    try { updated = await license.consumeTokens(cost); }
+    catch (error) { log('License:', error.message); return false; }
+    if (LIC !== account) return false;
+    LIC = updated;
     broadcast({ type: 'license', lic: LIC });
-    if (LIC.tokens % 10 === 0 && LIC.tokens !== lastTokenLog) { lastTokenLog = LIC.tokens; log(T.licTokens(LIC.tokens)); }
+    if (LIC.tokens % 10 === 0 && LIC.tokens !== lastTokenLog) {
+      lastTokenLog = LIC.tokens;
+      log(T.licTokens(LIC.tokens));
+    }
     return true;
-  }
-  LIC.active = false;
-  broadcast({ type: 'license', lic: LIC });
-  return false;
+  });
+  spending = spend.catch(() => false);
+  return spend;
 }
 
 // Browsers
@@ -163,19 +170,22 @@ function setStatus(st) { STATUS = st; broadcast({ type: 'status', status: st });
 
 // Chat cache
 const CACHE_PATH = path.join(BASE_DIR, 'processed_cache.json');
-let cache = {};
+let cache = Object.create(null);
 let cacheTimer = null;
-try { cache = JSON.parse(fs.readFileSync(CACHE_PATH, 'utf8')); } catch {}
+try {
+  const saved = JSON.parse(fs.readFileSync(CACHE_PATH, 'utf8'));
+  if (saved && typeof saved === 'object' && !Array.isArray(saved)) cache = Object.assign(Object.create(null), saved);
+} catch {}
 function saveCache() {
   if (cacheTimer) return;
   cacheTimer = setTimeout(() => {
     cacheTimer = null;
-    try { fs.writeFileSync(CACHE_PATH, JSON.stringify(cache)); } catch {}
+    try { writeJson(CACHE_PATH, cache); } catch {}
   }, 400);
 }
 function flushCache() {
   if (cacheTimer) { clearTimeout(cacheTimer); cacheTimer = null; }
-  try { fs.writeFileSync(CACHE_PATH, JSON.stringify(cache)); } catch {}
+  try { writeJson(CACHE_PATH, cache); } catch {}
 }
 
 const KNOWN_PHONES = new Set();
@@ -276,6 +286,9 @@ let ACTIVE_SOURCE = 'whatsapp';
 const pendingChats = new Map();
 
 async function stopAllBots() {
+  RUNNING = false;
+  for (const timer of pendingChats.values()) clearTimeout(timer);
+  pendingChats.clear();
   if (webScanTimer) { clearTimeout(webScanTimer); webScanTimer = null; }
   try { if (client) await client.destroy(); } catch {}
   client = null;
@@ -324,6 +337,7 @@ async function startWebMessenger(source, execPath) {
     const chats = await session.scan();
     let total = 0;
     for (const chat of chats) {
+      if (!RUNNING) break;
       const r = await saveWebChat(chat, source);
       if (r === 'blocked') break;
       if (r && r !== 'skip') {
@@ -355,6 +369,7 @@ async function scanChats() {
   log(T.foundChats(chats.length));
   let total = 0, idx = 0;
   for (const chat of chats) {
+    if (!RUNNING) break;
     idx++;
     try {
       if (!chat.isGroup) log(T.chatOf(idx, chats.length, chat.name || chat.id.user || ''));
@@ -397,6 +412,7 @@ async function refreshSparse() {
   log(T.refreshFound(targets.length));
   let done = 0;
   for (const d of targets) {
+    if (!RUNNING) break;
     try {
       const chat = await client.getChatById(d + '@c.us');
       if (!chat || chat.isGroup) continue;
@@ -420,7 +436,7 @@ function startWhatsApp(execPath) {
     webVersionCache: { type: 'none' },
     puppeteer: {
       executablePath: execPath, headless: false, protocolTimeout: 300000,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+      args: ['--disable-dev-shm-usage']
     }
   });
 
@@ -441,7 +457,7 @@ function startWhatsApp(execPath) {
   });
 
   client.on('message', async msg => {
-    if (msg.fromMe) return;
+    if (msg.fromMe || !RUNNING) return;
     try {
       const chat = await msg.getChat();
       const key = chat.id._serialized;
@@ -460,28 +476,6 @@ function startWhatsApp(execPath) {
 }
 
 // HTTP Server
-function readBody(req, maxBytes) {
-  const limit = maxBytes || 2 * 1024 * 1024;
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    let size = 0;
-    req.on('data', (c) => {
-      size += c.length;
-      if (size > limit) {
-        req.destroy();
-        reject(new Error('body_too_large'));
-        return;
-      }
-      chunks.push(c);
-    });
-    req.on('end', () => {
-      try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}')); }
-      catch { resolve({}); }
-    });
-    req.on('error', () => resolve({}));
-  });
-}
-
 function sendJson(res, code, obj) {
   res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8' });
   res.end(JSON.stringify(obj));
@@ -514,6 +508,7 @@ function serveFile(res, filename, code = 200) {
 
 const server = http.createServer(async (req, res) => {
   try {
+  guardRequest(req, res, PORT);
   const rawUrl = req.url || '/';
   const url = rawUrl.split('?')[0];
   const qs = rawUrl.includes('?') ? rawUrl.slice(rawUrl.indexOf('?') + 1) : '';
@@ -525,9 +520,10 @@ const server = http.createServer(async (req, res) => {
   } else if (req.method === 'GET' && (url === '/favicon.ico' || url === '/favicon.png')) {
     if (serveFile(res, url.slice(1))) return;
     res.writeHead(404); res.end();
-  } else if (req.method === 'GET' && url === '/dokumenty') {
-    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 403, { error: 'no_license' }); return; }
-    const mode = params.get('mode') || DOK_MODE;
+  } else if (req.method === 'POST' && url === '/dokumenty') {
+    if (!license.configured() || !LIC || !LIC.active) { sendJson(res, 403, { error: 'no_license' }); return; }
+    const b = await readBody(req);
+    const mode = b.mode || DOK_MODE;
     DOK_MODE = mode === 'opus' ? 'opus' : 'basic';
     const cost = DOK_MODE === 'opus' ? TOKEN_COST.dokOpus : TOKEN_COST.dokBasic;
     if (!(await licenseGate(cost))) { sendJson(res, 403, { error: 'no_tokens' }); return; }
@@ -554,7 +550,8 @@ const server = http.createServer(async (req, res) => {
     }
   } else if (req.method === 'POST' && url === '/base/create') {
     const b = await readBody(req);
-    const suggested = String(b.path || '').trim() || path.join(BASE_DIR, 'база ватсап ии.xlsx');
+    const suggested = path.resolve(String(b.path || '').trim() || path.join(BASE_DIR, 'база ватсап ии.xlsx'));
+    if (path.extname(suggested).toLowerCase() !== '.xlsx') { sendJson(res, 400, { error: 'xlsx_required' }); return; }
     try {
       const created = await ensureWorkbook(suggested);
       EXCEL_PATH = created;
@@ -567,8 +564,15 @@ const server = http.createServer(async (req, res) => {
     if (!file || !fs.existsSync(file)) { sendJson(res, 400, { error: 'excel_not_found' }); return; }
     try { await flushExcel(); } catch {}
     try {
-      if (process.platform === 'win32') exec('start "" "' + file.replace(/"/g, '') + '"');
-      else exec('xdg-open "' + file.replace(/"/g, '') + '"');
+      const resolved = path.resolve(file);
+      if (path.extname(resolved).toLowerCase() !== '.xlsx') throw new Error('xlsx_required');
+      const command = process.platform === 'win32' ? 'rundll32.exe' : process.platform === 'darwin' ? 'open' : 'xdg-open';
+      const args = process.platform === 'win32' ? ['url.dll,FileProtocolHandler', resolved] : [resolved];
+      await new Promise((resolve, reject) => {
+        const child = spawn(command, args, { shell: false, detached: true, stdio: 'ignore' });
+        child.once('error', reject);
+        child.once('spawn', () => { child.unref(); resolve(); });
+      });
       sendJson(res, 200, { ok: true, path: file });
     } catch (e) {
       sendJson(res, 400, { error: (e && e.message) || 'open_failed' });
@@ -603,11 +607,14 @@ const server = http.createServer(async (req, res) => {
     sendJson(res, 200, { configured: license.configured(), loggedIn: !!LIC, lic: LIC, trialTokens: license.trialTokens(), tokenCosts: TOKEN_COST });
   } else if (req.method === 'POST' && url === '/auth/logout') {
     license.signOut(); LIC = null;
+    await stopAllBots();
+    await flushExcel();
+    flushCache();
     sendJson(res, 200, { ok: true });
 
   } else if (req.method === 'POST' && url === '/start') {
     if (RUNNING) { sendJson(res, 400, { error: 'already_running' }); return; }
-    if (license.configured() && (!LIC || !LIC.active)) { sendJson(res, 400, { error: 'no_license' }); return; }
+    if (!license.configured() || !LIC || !LIC.active) { sendJson(res, 400, { error: 'no_license' }); return; }
     const b = await readBody(req);
     const ALLOWED_MODELS = ['claude-haiku-4-5', 'claude-opus-4-5', 'claude-opus-4-6', 'claude-opus-4-7', 'claude-opus-4-8', 'claude-sonnet-4-5', 'claude-sonnet-4-6', 'gpt-5.3', 'gpt-5.4', 'gpt-5.5'];
     if (b.model && ALLOWED_MODELS.includes(String(b.model))) {
@@ -654,7 +661,8 @@ const server = http.createServer(async (req, res) => {
     } else if (cmd === 'rewind') {
       sendJson(res, 200, { ok: true });
       if (!RUNNING) { log(T.notRunning); return; }
-      log(T.rewinding); cache = {}; saveCache();
+      if (ACTIVE_SOURCE !== 'whatsapp') { log('Пересканирование доступно только для WhatsApp'); return; }
+      log(T.rewinding); cache = Object.create(null); saveCache();
       setStatus('scanning'); await scanChatsWithRetry(); setStatus('listening');
     } else if (cmd === 'refresh') {
       sendJson(res, 200, { ok: true });
@@ -677,14 +685,14 @@ const server = http.createServer(async (req, res) => {
 
  const from = converter.detectFormat(name);
  if (!from) { sendJson(res,400, { error: 'unsupported_format', supported: Object.keys(converter.FORMATS) }); return; }
- if (!converter.FORMATS[to]) { sendJson(res,400, { error: 'unsupported_target', supported: Object.keys(converter.FORMATS) }); return; }
+ if (!Object.hasOwn(converter.FORMATS, to)) { sendJson(res,400, { error: 'unsupported_target', supported: Object.keys(converter.FORMATS) }); return; }
  if (from === to) { sendJson(res,400, { error: 'same_format' }); return; }
 
  let buf;
  try { buf = Buffer.from(data, 'base64'); } catch { sendJson(res,400, { error: 'bad_data' }); return; }
 
  try {
- const out = converter.convertBuffer(buf, from, to);
+ const out = await converter.convert(buf, from, to);
  const outName = converter.outputName(name, to);
  log(`🔄 Конвертер: ${name} → ${outName} (${(out.length /1024).toFixed(1)} КБ)`);
  sendJson(res,200, {
@@ -699,7 +707,9 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404); res.end('Not found');
   }
   } catch (e) {
-    if (!res.headersSent) sendJson(res, 500, { error: (e && e.message) || 'server_error' });
+    if (!res.headersSent && !res.destroyed) sendJson(res, e.statusCode || 500, { error: e.statusCode ? e.message : 'server_error' });
+    else if (!res.writableEnded) res.end();
+    if (!e.statusCode) console.error('Request failed:', e.message);
   }
 });
 
@@ -708,6 +718,14 @@ const server = http.createServer(async (req, res) => {
     try { if (await license.restoreSession()) LIC = await license.getLicense(); } catch {}
   }
 })();
+
+server.requestTimeout = 30000;
+server.headersTimeout = 10000;
+server.maxHeadersCount = 50;
+server.on('error', error => {
+  console.error('GN Tools server:', error.code === 'EADDRINUSE' ? 'Port 3390 is already in use.' : error.message);
+  process.exitCode = 1;
+});
 
 server.listen(PORT, '127.0.0.1', () => {
   console.log('\n  GN Tools готов: http://127.0.0.1:' + PORT + '\n');
