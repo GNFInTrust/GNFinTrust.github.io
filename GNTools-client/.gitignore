@@ -1,3 +1,12 @@
 node_modules/
 processed_cache.json
 license_session.json
+
+config.txt
+.web_instagram/
+.web_telegram/
+.wwebjs_auth/
+.wwebjs_cache/
+*.xlsx
+*.xls
+*.csv

@@ -30,7 +30,17 @@ function isRealLink(v) {
 function safeEmbed(mount, url, title) {
 	mount.textContent = ""
 	var f = document.createElement("iframe")
-	f.src = url
+	if (!isRealLink(url)) return
+	var parsed
+	try { parsed = new URL(url) } catch (e) { return }
+	var allowed = ["www.youtube.com", "www.youtube-nocookie.com", "drive.google.com", "docs.google.com", "player.vimeo.com"]
+	if (parsed.protocol !== "https:" || parsed.username || parsed.password || allowed.indexOf(parsed.hostname) < 0) {
+		mount.textContent = "Видео недоступно: проверьте ссылку."
+		return
+	}
+	f.src = parsed.href
+	f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation allow-popups")
+	f.referrerPolicy = "no-referrer"
 	f.loading = "lazy"
 	f.setAttribute("allow", "autoplay; fullscreen")
 	f.setAttribute("allowfullscreen", "")

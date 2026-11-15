@@ -3,6 +3,8 @@
 'use strict';
 
 const ExcelJS = require('exceljs');
+const fs = require('node:fs/promises');
+const { temporaryPath } = require('./atomic-file');
 
 const cache = { path: '', wb: null, dirty: false, writeTimer: null };
 let queue = Promise.resolve();
@@ -17,14 +19,19 @@ async function flushNow() {
     clearTimeout(cache.writeTimer);
     cache.writeTimer = null;
   }
-  await cache.wb.xlsx.writeFile(cache.path);
-  cache.dirty = false;
+  const temp = temporaryPath(cache.path);
+  try {
+    await cache.wb.xlsx.writeFile(temp);
+    await fs.rename(temp, cache.path);
+    cache.dirty = false;
+  } finally { await fs.unlink(temp).catch(() => {}); }
 }
 
 function scheduleFlush() {
   if (cache.writeTimer) clearTimeout(cache.writeTimer);
   cache.writeTimer = setTimeout(() => {
-    flushNow().catch((e) => console.warn('Excel flush:', e.message));
+    cache.writeTimer = null;
+    flush().catch((e) => console.warn('Excel flush:', e.message));
   }, 350);
 }
 
@@ -97,11 +104,21 @@ function appendRow(filePath, rowData) {
   return run;
 }
 
-async function closeWorkbook() {
-  try { await flushNow(); } catch {}
-  cache.path = '';
-  cache.wb = null;
-  cache.dirty = false;
+function enqueue(operation) {
+  const run = queue.then(operation);
+  queue = run.catch(() => {});
+  return run;
+}
+
+function flush() { return enqueue(flushNow); }
+
+function closeWorkbook() {
+  return enqueue(async () => {
+    await flushNow();
+    cache.path = '';
+    cache.wb = null;
+    cache.dirty = false;
+  });
 }
 
 function cellText(v) {
@@ -114,12 +131,13 @@ function cellText(v) {
   return String(v).trim();
 }
 
-async function ensureWorkbook(filePath) {
-  const fs = require('fs');
+async function ensureWorkbookInner(filePath) {
+  await flushNow();
+  const fsSync = require('fs');
   const path = require('path');
-  if (fs.existsSync(filePath)) return filePath;
+  if (fsSync.existsSync(filePath)) return filePath;
   const dir = path.dirname(filePath);
-  if (dir && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (dir && !fsSync.existsSync(dir)) fsSync.mkdirSync(dir, { recursive: true });
   const wb = new ExcelJS.Workbook();
   const ws = wb.addWorksheet('База');
   ws.getRow(1).values = ['GN Tools', 'Контакты из WhatsApp / Instagram / Telegram'];
@@ -130,13 +148,16 @@ async function ensureWorkbook(filePath) {
     { width: 22 }, { width: 18 }, { width: 12 }, { width: 16 },
     { width: 22 }, { width: 12 }, { width: 10 }, { width: 10 }, { width: 14 }
   ];
-  await wb.xlsx.writeFile(filePath);
+  // Exclusive creation preserves an existing file, including one created concurrently.
+  const buffer = await wb.xlsx.writeBuffer();
+  try { await fs.writeFile(filePath, buffer, { flag: 'wx' }); }
+  catch (error) { if (error.code !== 'EEXIST') throw error; }
   cache.path = '';
   cache.wb = null;
   return filePath;
 }
 
-async function listRows(filePath, q, limit) {
+async function listRowsInner(filePath, q, limit) {
   await flushNow();
   const wb = await loadWorkbook(filePath);
   const ws = wb.worksheets[0];
@@ -174,4 +195,6 @@ async function listRows(filePath, q, limit) {
   return { path: filePath, total, shown: rows.length, rows, sources };
 }
 
-module.exports = { appendRow, flush: flushNow, closeWorkbook, listRows, ensureWorkbook };
+function listRows(...args) { return enqueue(() => listRowsInner(...args)); }
+function ensureWorkbook(filePath) { return enqueue(() => ensureWorkbookInner(filePath)); }
+module.exports = { appendRow, flush, closeWorkbook, listRows, ensureWorkbook };

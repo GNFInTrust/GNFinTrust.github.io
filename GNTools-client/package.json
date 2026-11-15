@@ -4,13 +4,15 @@
   "description": "GN Tools: WhatsApp/Instagram/Telegram → Excel + Documents",
   "main": "index.js",
   "bin": "index.js",
+  "engines": { "node": ">=22" },
   "scripts": {
     "start": "node index.js",
+    "test": "node --test --test-isolation=none test/*.test.js",
     "build": "echo Use build_exe.bat (portable Node.js method)"
   },
   "dependencies": {
   "exceljs": "^4.3.0",
   "whatsapp-web.js": "^1.34.7",
-  "xlsx": "^0.18.5"
+  "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }

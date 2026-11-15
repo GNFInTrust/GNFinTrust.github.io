@@ -93,10 +93,13 @@ service cloud.firestore {
         && shortString(request.resource.data.get('itemTitle', ''), 300)
         && shortString(request.resource.data.get('method', ''), 50)
         && shortString(request.resource.data.get('contact', ''), 200)
+        && request.resource.data.get('contact', '').size() > 0
         && shortString(request.resource.data.get('buyer', ''), 200)
         && shortString(request.resource.data.get('email', ''), 200)
         && shortString(request.resource.data.get('createdAt', ''), 40)
-        && request.resource.data.get('price', 0) is number;
+        && request.resource.data.get('price', 0) is number
+        && request.resource.data.get('price', 0) >= 0
+        && request.resource.data.get('price', 0) <= 100000000;
     }
 
     // Запись на встречу (meet.html): любой посетитель может записаться,
@@ -107,7 +110,7 @@ service cloud.firestore {
           'kind', 'place', 'date', 'time', 'method', 'contact', 'name',
           'note', 'lang', 'status', 'createdAt', 'slot'
         ])
-        && request.resource.data.keys().hasAll(['kind', 'place', 'date', 'time', 'method', 'contact', 'status'])
+        && request.resource.data.keys().hasAll(['kind', 'place', 'date', 'time', 'method', 'contact', 'status', 'slot'])
         && request.resource.data.status == 'new'
         && request.resource.data.kind in ['consult', 'seminar', 'webinar']
         && request.resource.data.place in ['online', 'offline']
@@ -115,7 +118,7 @@ service cloud.firestore {
         && request.resource.data.date is string
         && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
         && request.resource.data.time is string
-        && request.resource.data.time.matches('[0-9]{2}:[0-9]{2}')
+        && request.resource.data.time.matches('1[0-8]:00')
         && request.resource.data.contact is string
         && request.resource.data.contact.size() > 0
         && request.resource.data.contact.size() <= 200
@@ -124,10 +127,9 @@ service cloud.firestore {
         && request.resource.data.get('lang', 'ru') in ['ru', 'ky']
         && shortString(request.resource.data.get('createdAt', ''), 40)
         // Запись со слотом создаётся только вместе со слотом в busy на те же день и время
-        && (!('slot' in request.resource.data) || (
-          request.resource.data.slot == request.resource.data.date + '_' + request.resource.data.time
-          && existsAfter(/databases/$(database)/documents/busy/$(request.resource.data.slot))
-        ));
+        && request.resource.data.slot == request.resource.data.date + '_' + request.resource.data.time
+        && !exists(/databases/$(database)/documents/busy/$(request.resource.data.slot))
+        && getAfter(/databases/$(database)/documents/busy/$(request.resource.data.slot)).data.meetingId == id;
     }
 
     // Занятые слоты записи (meet.html): только день и время, без данных о людях.
@@ -135,12 +137,18 @@ service cloud.firestore {
     // свободный слот (занятый — это уже update, он запрещён); освобождает админ.
     match /busy/{slot} {
       allow read: if true;
-      allow create: if request.resource.data.keys().hasOnly(['date', 'time'])
+      allow create: if request.resource.data.keys().hasOnly(['date', 'time', 'meetingId'])
         && request.resource.data.date is string
         && request.resource.data.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
         && request.resource.data.time is string
-        && request.resource.data.time.matches('[0-9]{2}:00')
-        && slot == request.resource.data.date + '_' + request.resource.data.time;
+        && request.resource.data.time.matches('1[0-8]:00')
+        && slot == request.resource.data.date + '_' + request.resource.data.time
+        && shortString(request.resource.data.meetingId, 128)
+        && request.resource.data.meetingId.size() > 0
+        && !exists(/databases/$(database)/documents/meetings/$(request.resource.data.meetingId))
+        && getAfter(/databases/$(database)/documents/meetings/$(request.resource.data.meetingId)).data.slot == slot
+        && getAfter(/databases/$(database)/documents/meetings/$(request.resource.data.meetingId)).data.date == request.resource.data.date
+        && getAfter(/databases/$(database)/documents/meetings/$(request.resource.data.meetingId)).data.time == request.resource.data.time;
       allow delete: if isAdmin();
     }
 
