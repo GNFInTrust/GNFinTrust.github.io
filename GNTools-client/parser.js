@@ -488,6 +488,12 @@ async function parseWithClaude(text, apiKey, model, endpoint) {
 async function parseMessage(text) {
   const config = loadConfig();
   const provider = (config.PROVIDER || 'gemini').toLowerCase();
+  // Older builds sent every key to a third-party proxy by default. A proxy key
+  // sent to the official API only yields 401, so say what to change instead.
+  if (provider === 'claude' && config.CLAUDE_API_KEY && !config.CLAUDE_API_KEY.startsWith('sk-ant-') &&
+      new URL(config.CLAUDE_ENDPOINT).hostname === 'api.anthropic.com') {
+    console.warn('CLAUDE_API_KEY не похож на ключ Anthropic (sk-ant-...). Если это ключ прокси-сервиса, укажите его адрес в config.txt: CLAUDE_ENDPOINT=https://<адрес прокси>/v1/messages');
+  }
   
   try {
     if (provider === 'openai' && config.OPENAI_API_KEY && config.OPENAI_API_KEY !== 'sk-ВашКлючОтChatGPTЗдесь') {

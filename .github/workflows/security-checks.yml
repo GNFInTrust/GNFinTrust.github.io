@@ -32,6 +32,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - run: npm install --ignore-scripts --no-audit --no-fund --prefix GNTools-client
+      - run: npm ci --ignore-scripts --no-audit --no-fund --allow-remote=root --prefix GNTools-client
       - run: npm test --prefix GNTools-client
       - run: npx --yes firebase-tools emulators:exec --only firestore,auth --project demo-gnfintrust 'python -m unittest discover -s tests -p test_firestore_rules.py -v'

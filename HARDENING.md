@@ -72,7 +72,7 @@ Five database rules tests were skipped because Firebase emulators are unavailabl
 Run them in a network-enabled environment with Java 21 and Node 24:
 
 ```sh
-npm install --ignore-scripts --no-audit --no-fund --prefix GNTools-client
+npm ci --ignore-scripts --no-audit --no-fund --allow-remote=root --prefix GNTools-client
 npm test --prefix GNTools-client
 npx --yes firebase-tools emulators:exec --only firestore,auth --project demo-gnfintrust \
   'python -m unittest discover -s tests -p test_firestore_rules.py -v'
@@ -145,3 +145,19 @@ Existing cached/course URLs do not constitute DRM for third-party hosted videos.
 - [Node process execution without a shell](https://nodejs.org/api/child_process.html)
 - [Node 24.22.2 release and published checksums](https://nodejs.org/en/blog/release/v24.22.2)
 - [Official SheetJS package installation](https://docs.sheetjs.com/docs/getting-started/installation/frameworks/)
+
+## Update 2026-11-15
+
+- Rebased onto `main` after #26/#27. Resolved the `gntools.html` conflict so the
+  installer-URL check also covers the new second download button (`dl2`).
+  Refreshed stale CSP hashes for `catalog.html` and `gntools.html`.
+- Team photos that fail before the fallback script runs are now removed too
+  (previously only errors after the listener was attached were handled).
+- Added `GNTools-client/package-lock.json`; CI now uses `npm ci`. npm 12 refuses
+  URL tarball dependencies by default, so installs pass `--allow-remote=root`
+  (needed for the pinned SheetJS tarball).
+- GN Tools warns, rather than failing silently with 401, when a non-Anthropic
+  (proxy) key is used without a `CLAUDE_ENDPOINT` in `config.txt`.
+- With dependencies installed, all 28 JavaScript tests pass and 9 Python tests
+  pass. The 5 Firestore emulator tests still need Java, so they run in CI's
+  `integration` job.
