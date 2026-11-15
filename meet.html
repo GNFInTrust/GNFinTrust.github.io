@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://www.gstatic.com/firebasejs/10.12.0/ https://apis.google.com 'sha256-scSHVVFwrhyaGcBEky+EVAvenyeGlar6uxba7x+Patg=' 'sha256-dl7edXhDEa5ptYllQls4w0SkopkXSYS2SnNF71MlFPY=' 'sha256-7CdRp23a8xOD8f6sHe9arKILcLCUHc214BPgiqsmEec=' 'sha256-RtZYfTBbsf9qneS4qP1za6c1K3ek+j/x10H9xFTsLtU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://www.gstatic.com/firebasejs/10.12.0/ https://apis.google.com 'sha256-scSHVVFwrhyaGcBEky+EVAvenyeGlar6uxba7x+Patg=' 'sha256-dl7edXhDEa5ptYllQls4w0SkopkXSYS2SnNF71MlFPY=' 'sha256-7CdRp23a8xOD8f6sHe9arKILcLCUHc214BPgiqsmEec=' 'sha256-RtZYfTBbsf9qneS4qP1za6c1K3ek+j/x10H9xFTsLtU='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#15202B">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" href="fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
 <title>Запись на встречу — GN FinTrust</title>
 <meta name="description" content="Семинары, вебинары и консультации GN FinTrust — онлайн и очно. Выберите формат, день и время — мы подтвердим встречу в WhatsApp, Telegram или по почте.">
 <link rel="canonical" href="https://fintrust.dev/meet.html">
@@ -31,7 +29,7 @@
   .page{padding:88px 0 0}
   .page-head{max-width:720px;margin:0 auto 48px;text-align:center}
   .page-head .sec-kicker{margin-bottom:14px}
-  .page-head h1{font-size:clamp(42px,6vw,80px);font-weight:700;line-height:1.02;letter-spacing:-.045em;margin:0 0 20px}
+  .page-head h1{font-size:clamp(42px,6vw,80px);font-weight:500;line-height:1.02;letter-spacing:-.045em;margin:0 0 20px}
   .page-head p{color:var(--slate);font-size:clamp(18px,1.6vw,22px);line-height:1.42;letter-spacing:-.015em}
   .book{max-width:820px;margin:0 auto;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
   .step{padding:32px 36px}
@@ -44,9 +42,9 @@
   .wiz-bar{flex:1;display:flex;gap:6px;list-style:none;min-width:0}
   .wiz-bar li{flex:1;min-width:0}
   .wiz-bar button{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;font:inherit;text-align:left;padding:6px 10px;border-radius:var(--radius-sm);color:var(--muted);cursor:default}
-  .wiz-bar .n{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+  .wiz-bar .n{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;transition:background-color .3s ease,color .3s ease,border-color .3s ease}
   .wiz-bar .t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
-  .wiz-bar b{font-size:14px;font-weight:600}
+  .wiz-bar b{font-size:14px;font-weight:500}
   .wiz-bar small{font-size:12.5px;color:var(--slate);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .wiz-bar small:empty{display:none}
   .wiz-bar li.cur button{color:var(--ink)}
@@ -64,8 +62,8 @@
   .pane-top h2{margin:0}
   .pane-top .seg{margin-top:0}
   .other-day{display:none;border:0;background:transparent;font:inherit;font-size:15px;font-weight:500;color:var(--ink);padding:6px 0;margin-bottom:6px;cursor:pointer}
-  .step h2 .n{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
-  .book label{display:block;font-size:14px;font-weight:600;margin:18px 0 8px;color:var(--ink)}
+  .step h2 .n{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex:none}
+  .book label{display:block;font-size:14px;font-weight:500;margin:18px 0 8px;color:var(--ink)}
   .book input,.book textarea{width:100%;border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:13px 15px;font-size:16px;font-family:var(--body);background:#fff;color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease}
   .book textarea{min-height:92px;resize:vertical}
   .book input:focus,.book textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
@@ -82,7 +80,7 @@
   /* Format: big tiles; the chosen one gets a 2px black outline and a tick, text stays readable */
   .kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .kinds .pick{position:relative;text-align:left;padding:20px 44px 20px 20px;min-height:104px}
-  .kinds strong{display:block;font-size:16px;font-weight:600;margin-bottom:4px}
+  .kinds strong{display:block;font-size:16px;font-weight:500;margin-bottom:4px}
   /* An icon per format, so the three are told apart at a glance */
   .kinds .kico{display:flex;width:40px;height:40px;border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);align-items:center;justify-content:center;margin-bottom:14px;transition:background-color .25s ease,color .25s ease}
   .kinds .kico svg{width:21px;height:21px}
@@ -97,7 +95,7 @@
   .seg{display:inline-flex;border-radius:var(--radius-sm);padding:3px;background:var(--paper);margin-top:16px;gap:2px;flex-wrap:wrap}
   .seg .pick{border:0;background:transparent;border-radius:var(--radius-xs);padding:8px 18px;font-size:15px;font-weight:500;color:var(--slate)}
   .seg .pick:hover{color:var(--ink)}
-  .seg .pick.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .seg .pick.on{background:#fff;color:var(--ink);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.12)}
   .seg .pick:disabled{opacity:.4}
   .seg .pick:disabled:hover{color:var(--slate)}
   .hint{font-size:14px;color:var(--muted);margin-top:16px}
@@ -105,21 +103,21 @@
   /* День и время: месяц слева, свободные часы выбранного дня справа (как в Cal.com) */
   .cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:36px;align-items:start}
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .cal-head strong{font-family:var(--head);font-size:17px;font-weight:600;text-transform:capitalize}
+  .cal-head strong{font-family:var(--head);font-size:17px;font-weight:500;text-transform:capitalize}
   .cal-nav{width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--ink);font-size:20px;line-height:1;cursor:pointer;transition:background-color .2s ease}
   .cal-nav:hover:not(:disabled){background:var(--paper)}
   .cal-nav:disabled{color:#C7C7CC;cursor:default}
   .cal-wd,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
   .cal-wd span{text-align:center;font-size:12px;font-weight:500;color:var(--muted);padding:4px 0}
-  .cal-grid .pick{height:46px;font-size:16px;font-weight:600;padding:0;position:relative;background:var(--paper);border-color:transparent}
+  .cal-grid .pick{height:46px;font-size:16px;font-weight:500;padding:0;position:relative;background:var(--paper);border-color:transparent}
   .cal-grid .pick:hover:not(:disabled){border-color:var(--ink)}
   .cal-grid .pick:disabled{background:transparent;color:#C7C7CC;font-weight:400}
   .cal-grid .pick.today::after{content:"";position:absolute;left:50%;bottom:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:currentColor}
   .cal-grid .pick.on{background:var(--ink);border-color:var(--ink);color:#fff}
   .slots{scroll-margin-top:calc(var(--header-h) + 16px)}
-  .slots-title{font-size:17px;font-weight:600;margin:0 0 12px;line-height:36px}
+  .slots-title{font-size:17px;font-weight:500;margin:0 0 12px;line-height:36px}
   .times{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .times .pick{height:46px;font-size:16px;font-weight:600}
+  .times .pick{height:46px;font-size:16px;font-weight:500}
   .times-empty{font-size:15px;color:var(--muted);line-height:1.45}
   .add-cal{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
@@ -127,22 +125,22 @@
   .book-foot{margin:28px -36px -32px;padding:24px 36px 32px;background:var(--paper)}
   .summary{display:flex;gap:10px;align-items:baseline;font-size:16px;color:var(--ink)}
   .summary .k{font-size:14px;color:var(--muted);flex:none}
-  .summary b{font-weight:600}
+  .summary b{font-weight:500}
   .summary.empty b{color:var(--muted);font-weight:400}
   .submit{
     width:100%;margin-top:18px;min-height:52px;background:var(--red);color:#fff;border:0;border-radius:var(--radius-sm);
-    padding:15px;font-size:17px;font-weight:600;font-family:var(--body);cursor:pointer;transition:background-color .2s ease,transform .2s ease
+    padding:15px;font-size:17px;font-weight:500;font-family:var(--body);cursor:pointer;transition:background-color .2s ease,transform .2s ease
   }
   .submit:hover{background:var(--red-dark)}
   .submit:active{transform:scale(.99)}
   .submit:disabled{opacity:.6;cursor:default}
   .err{display:none;background:var(--err-soft);border:1px solid var(--err-border);color:var(--err);border-radius:var(--radius-sm);padding:12px 14px;margin-top:14px;font-size:15px}
-  .err a{color:inherit;font-weight:600;text-decoration:underline}
+  .err a{color:inherit;font-weight:500;text-decoration:underline}
   .done{display:none;padding:56px 36px;text-align:center}
   .done .ok-mark{width:56px;height:56px;border-radius:50%;background:var(--green-soft);color:var(--green);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px}
   .done h2{font-size:26px;margin:0 0 10px}
   .done p{color:var(--slate);font-size:17px;max-width:460px;margin:0 auto}
-  .done .when{display:inline-block;margin:18px 0 4px;padding:10px 16px;border-radius:var(--radius-sm);background:var(--paper);font-weight:600}
+  .done .when{display:inline-block;margin:18px 0 4px;padding:10px 16px;border-radius:var(--radius-sm);background:var(--paper);font-weight:500}
   .book.sent .wiz-head,.book.sent .pane{display:none}
   .book.sent .done{display:block}
   .note{margin-top:18px;text-align:center;color:var(--muted);font-size:14px}

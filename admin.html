@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://www.gstatic.com/firebasejs/10.12.0/ https://apis.google.com 'sha256-3G2MeDpk5+/qfojiMpfjnRwwBv6PL7VDyZF6ijg35ow=' 'sha256-ewtgZmxDWuijdFTq+0YCnZz3dciW1kOB3dyD/6ZzJ5g='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://www.gstatic.com/firebasejs/10.12.0/ https://apis.google.com 'sha256-3G2MeDpk5+/qfojiMpfjnRwwBv6PL7VDyZF6ijg35ow=' 'sha256-ewtgZmxDWuijdFTq+0YCnZz3dciW1kOB3dyD/6ZzJ5g='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com https://*.google.com; frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://drive.google.com https://docs.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#15202B">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" href="favicon.png" type="image/png" sizes="256x256">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" href="fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
 <title>Админ — GN FinTrust</title>
 <meta name="robots" content="noindex">
 <style>
@@ -22,23 +20,23 @@
     --red:#D70F2E; --red-dark:#B50C26; --red-soft:#FDEEF0; --red-border:#F5C2CA;
     --text:#1D1D1F; --text2:#6E6E73; --soft:#F5F5F7; --border:#E5E5EA;
     --green:#1E7B4E; --green-soft:#E8F5EE; --amber:#A15C00; --amber-soft:#FFF4E5; --err:#C4271B; --err-soft:#FDEDEB;
-    --head:"Inter Tight","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    --body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    --head:"Onest",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    --body:"Onest",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     --radius:20px; --radius-sm:6px; --radius-xs:4px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--body);color:var(--text);background:var(--soft);font-size:15px;line-height:1.55;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:var(--head);font-weight:600;letter-spacing:-.02em}
+  h1,h2,h3{font-family:var(--head);font-weight:500;letter-spacing:-.02em}
   a{color:var(--red);text-decoration:none}
   a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   ::selection{background:rgba(215,15,46,.18)}
   header{border-bottom:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.78);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:20}
   .nav{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
-  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:-.03em;cursor:pointer;transition:opacity .18s ease}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-family:var(--head);font-weight:500;font-size:17px;letter-spacing:-.03em;cursor:pointer;transition:opacity .18s ease}
   .brand:hover{opacity:.82}
   .brand:hover .brand-mark{transform:translateY(-1px)}
   .brand:active .brand-mark{transform:translateY(0)}
-  .brand-mark{width:30px;height:30px;border-radius:var(--radius-xs);background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;transition:transform .18s ease,box-shadow .18s ease}
+  .brand-mark{width:30px;height:30px;border-radius:var(--radius-xs);background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;font-family:var(--head);overflow:hidden;background-size:cover;background-position:center;flex:none;transition:transform .18s ease,box-shadow .18s ease}
   .navr{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text2)}
   .navr button{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-family:var(--body);cursor:pointer}
   .navr button:hover{border-color:var(--red);color:var(--red)}
@@ -47,7 +45,7 @@
   .gatebox{max-width:460px;margin:60px auto;text-align:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px}
   .gatebox h1{font-size:23px;margin-bottom:10px}
   .gatebox p{color:var(--text2);font-size:14.5px;margin-bottom:22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);padding:11px 22px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);padding:11px 22px;font-size:14px;font-weight:500;font-family:var(--body);cursor:pointer;border:0;background:var(--red);color:#fff;min-height:42px;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
   .btn:hover{background:var(--red-dark)}
   .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
   .btn-ghost:hover{background:var(--soft);color:var(--red);border-color:var(--red)}
@@ -56,7 +54,7 @@
   h1.page{font-size:24px;margin-bottom:4px}
   .lede{color:var(--text2);font-size:14px;margin-bottom:16px}
   .mtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;position:sticky;top:62px;z-index:15;background:var(--soft);padding:8px 0}
-  .mtab{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 14px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .mtab{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 14px;font-family:var(--body);font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
   .mtab.on{border-color:var(--text);color:#fff;background:var(--text)}
   .tab-n{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--red);color:#fff;font-size:11px;line-height:20px;text-align:center;display:none}
   .tab-n.on{display:inline-block}
@@ -66,10 +64,10 @@
   .panel .sub{color:var(--text2);font-size:13.5px;margin-bottom:26px;max-width:760px}
 
   table{width:100%;border-collapse:collapse;font-size:14px}
-  th{text-align:left;color:var(--text2);font-weight:600;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
+  th{text-align:left;color:var(--text2);font-weight:500;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--border)}
   td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:top}
   tr:last-child td{border-bottom:0}
-  .tag{display:inline-block;font-size:12px;font-weight:600;border-radius:var(--radius-xs);padding:2px 10px}
+  .tag{display:inline-block;font-size:12px;font-weight:500;border-radius:var(--radius-xs);padding:2px 10px}
   .tag.new{background:var(--amber-soft);color:var(--amber)}
   .tag.done{background:var(--green-soft);color:var(--green)}
   .tag.admin{background:var(--red-soft);color:var(--red)}
@@ -77,7 +75,7 @@
   .price-input{width:110px}
   .tip{background:var(--soft);border:0;border-radius:var(--radius-sm);padding:14px 16px;font-size:13.5px;color:var(--text2);margin-bottom:20px}
   .tip strong{color:var(--text)}
-  .contact a{font-weight:600}
+  .contact a{font-weight:500}
   .empty{color:var(--text2);font-size:14px;padding:18px 4px}
   .reqs{display:flex;flex-direction:column;gap:10px}
   .req{border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;background:#fff}
@@ -89,7 +87,7 @@
 
   form.grid{display:grid;grid-template-columns:160px 120px 1fr;gap:12px;margin-bottom:8px}
   form.grid .full{grid-column:1/-1}
-  label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)}
+  label{display:block;font-size:12px;font-weight:500;margin-bottom:4px;color:var(--text2)}
   input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--body);background:#fff;transition:border-color .15s ease}
   textarea{min-height:70px;resize:vertical}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--text);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
@@ -233,7 +231,7 @@
       <p class="sub">Программа для Windows: WhatsApp → Excel и документы на отгрузку. Аккаунты общие с сайтом — пользователь входит в приложение с той же почтой и паролем. Здесь — настройки страницы «GN Tools» на сайте и выдача доступа.</p>
 
       <details style="margin-bottom:20px">
-        <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--red);user-select:none">&#9654; Инструкция для админа (развернуть)</summary>
+        <summary style="cursor:pointer;font-weight:500;font-size:14px;color:var(--red);user-select:none">&#9654; Инструкция для админа (развернуть)</summary>
         <div style="margin-top:14px;display:grid;gap:10px">
           <div style="background:var(--soft);border-radius:var(--radius-sm);padding:14px 16px">
             <strong style="font-size:13px;display:block;margin-bottom:6px">Что такое пользователь видит в приложении</strong>
